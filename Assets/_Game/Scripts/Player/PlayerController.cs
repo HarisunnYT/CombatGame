@@ -232,21 +232,21 @@ public class PlayerController : Character
         base.OnDeath(killedFrom);
 
         if (isServer)
-            RpcOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom));
+            RpcOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom), MatchManager.Instance.GetPlayerID(this));
         else
-            CmdOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom));
+            CmdOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom), MatchManager.Instance.GetPlayerID(this));
     }
 
     [Command]
-    private void CmdOnDeath(int playerID)
+    private void CmdOnDeath(uint killerID, uint victimID)
     {
-        RpcOnDeath(playerID);
+        RpcOnDeath(killerID, victimID);
     }
 
     [ClientRpc]
-    private void RpcOnDeath(int playerID)
+    private void RpcOnDeath(uint killerID, uint victimID)
     {
-        CombatInterfaces.OnPlayerDied(this);
+        CombatInterfaces.OnPlayerDied(MatchManager.Instance.GetPlayer(killerID), MatchManager.Instance.GetPlayer(victimID));
 
         //TODO death anim and shiz
         gameObject.SetActive(false);

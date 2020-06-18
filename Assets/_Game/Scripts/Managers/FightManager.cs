@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class FightManager : Singleton<FightManager>, IFightEvents
 {
-    private List<PlayerController> alivePlayers = new List<PlayerController>();
+    public List<PlayerController> AlivePlayers { get; private set; } = new List<PlayerController>();
 
-    protected override void Initialize()
+    private void Start()
     {
-        alivePlayers = MatchManager.Instance.Players.Values.ToList();
-
         AddListener();
     }
 
@@ -20,13 +18,13 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         base.OnDestroy();
     }
 
-    public void OnPlayerDied(PlayerController player)
+    public void OnPlayerDied(PlayerController killer, PlayerController victim)
     {
-        alivePlayers.Remove(player);
+        AlivePlayers.Remove(victim);
 
-        if (alivePlayers.Count <= 1)
+        if (AlivePlayers.Count <= 1)
         {
-            CameraManager.Instance.CameraFollow.ZoomInOnPlayer(alivePlayers[0].gameObject, new Vector2(0, 0.75f), 2, 1, () =>
+            CameraManager.Instance.CameraFollow.ZoomInOnPlayer(AlivePlayers[0].gameObject, new Vector2(0, 0.75f), 2, 1, () =>
              {
                  MatchManager.Instance.BeginPhase(MatchManager.RoundPhase.Buy_Phase);
              });

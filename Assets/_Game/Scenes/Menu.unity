@@ -3099,6 +3099,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: autoCreatePlayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: minPlayers
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: RoomScene
+      value: Assets/_Game/Scenes/Menu.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: GameplayScene
+      value: Assets/_Game/Scenes/Game.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: disconnectInactiveConnections
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4421913961904659212, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
         type: 3}
       propertyPath: m_Name
@@ -3157,26 +3177,6 @@ PrefabInstance:
     - target: {fileID: 4999161417287854109, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1683995627, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
-      propertyPath: autoCreatePlayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1683995627, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
-      propertyPath: minPlayers
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1683995627, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
-      propertyPath: RoomScene
-      value: Assets/_Game/Scenes/Menu.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 1683995627, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
-      propertyPath: GameplayScene
-      value: Assets/_Game/Scenes/Game.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 1683995627, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
-      propertyPath: disconnectInactiveConnections
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

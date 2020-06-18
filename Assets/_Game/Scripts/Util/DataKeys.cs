@@ -22,15 +22,15 @@ public class DataKeys
         public const string RotationSpeed = "rotation_speed";
         public const string ConstantMovement = "constant_movement";
 
-        //wing keys -------------------------------------------------------------------------------------- \\\\\\\\\\\\\\\\\\\\
-        public const string GlideGravityScale = "glide_gravity_scale";
-
         //combat keys -------------------------------------------------------------------------------------- \\\\\\\\\\\\\\\\\\\\\\
         public const string AttackSpeedDamper = "attack_speed_damper";
 
         //technical keys -------------------------------------------------------------------------------------- \\\\\\\\\\\\\\\\\\\
         public const string AttackingButtonResetDelay = "attacking_button_reset_delay";
         public const string FlipScaleDamper = "flip_scale_damper";
+
+        //game keys -------------------------------------------------------------------------------------- \\\\\\\\\\\\\\\\\\\
+        public const string CashPerKill = "cash_per_kill";
     }
 
     public class SpawnableKeys

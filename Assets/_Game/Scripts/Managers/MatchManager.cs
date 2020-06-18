@@ -13,7 +13,7 @@ public class MatchManager : Singleton<MatchManager>
 
     public int WinsRequired { get; private set; } = 5;
 
-    public Dictionary<int, PlayerController> Players = new Dictionary<int, PlayerController>();
+    public Dictionary<uint, PlayerController> Players = new Dictionary<uint, PlayerController>();
 
     private FightManager currentFight;
 
@@ -36,8 +36,7 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginFightPhase()
     {
-        GameObject manager = new GameObject("Fight Manager");
-        currentFight = manager.AddComponent<FightManager>();
+        CreateFightManager();
     }
 
     private void BeginBuyPhase()
@@ -45,14 +44,24 @@ public class MatchManager : Singleton<MatchManager>
         PanelManager.Instance.ShowPanel<CharacterUpgradePanel>();
     }
 
+    private void CreateFightManager()
+    {
+        if (currentFight == null)
+        {
+            GameObject manager = new GameObject("Fight Manager");
+            currentFight = manager.AddComponent<FightManager>();
+        }
+    }
+
     #region PLAYER_ASSIGNMENTS
 
-    //used for setting id
-    int lastID = 0; 
     public void AddPlayer(PlayerController player)
     {
-        Players.Add(lastID, player);
-        lastID++;
+        Players.Add(player.netId, player);
+
+        CreateFightManager(); //lazy initialise fight manager
+
+        currentFight.AlivePlayers.Add(player);
     }
 
     public void RemovePlayer(PlayerController player)
@@ -60,12 +69,12 @@ public class MatchManager : Singleton<MatchManager>
         RemovePlayer(GetPlayerID(player));
     }
 
-    public void RemovePlayer(int playerID)
+    public void RemovePlayer(uint playerID)
     {
         Players.Remove(playerID);
     }
 
-    public PlayerController GetPlayer(int playerID)
+    public PlayerController GetPlayer(uint playerID)
     {
         return Players[playerID];
     }
@@ -83,7 +92,7 @@ public class MatchManager : Singleton<MatchManager>
         return null;
     }
 
-    public int GetPlayerID(PlayerController player)
+    public uint GetPlayerID(PlayerController player)
     {
         foreach(var p in Players)
         {

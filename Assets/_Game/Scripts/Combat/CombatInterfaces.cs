@@ -30,7 +30,7 @@ public interface IFightEvents
 {
     void AddListener();
     void RemoveListener();
-    void OnPlayerDied(PlayerController player);
+    void OnPlayerDied(PlayerController killer, PlayerController victim);
 }
 
 public class CombatInterfaces
@@ -47,11 +47,11 @@ public class CombatInterfaces
         fightEvents.Remove(listener);
     }
 
-    public static void OnPlayerDied(PlayerController player)
+    public static void OnPlayerDied(PlayerController killer, PlayerController victim)
     {
         foreach(var listener in fightEvents)
         {
-            listener.OnPlayerDied(player);
+            listener.OnPlayerDied(killer, victim);
         }
     }
 }
