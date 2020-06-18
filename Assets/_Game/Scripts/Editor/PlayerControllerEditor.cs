@@ -13,7 +13,7 @@ public class PlayerControllerEditor : Editor
             PlayerController player = target as PlayerController;
             if (GUILayout.Button("Die"))
             {
-                player.OnDamaged(9999);
+                player.OnDamaged(9999, null);
             }
         }
 

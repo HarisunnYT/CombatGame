@@ -714,7 +714,8 @@ namespace Mirror
                 }
                 logger.Log("NetworkManager created singleton (DontDestroyOnLoad)");
                 singleton = this;
-                if (Application.isPlaying) DontDestroyOnLoad(gameObject);
+                if (Application.isPlaying) 
+                    DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -1380,10 +1381,10 @@ namespace Mirror
             {
                 // Ready/AddPlayer is usually triggered by a scene load completing. if no scene was loaded, then Ready/AddPlayer it here instead.
                 if (!ClientScene.ready) ClientScene.Ready(conn);
-                if (autoCreatePlayer)
-                {
+                //if (autoCreatePlayer)
+                //{
                     ClientScene.AddPlayer(conn);
-                }
+               // }
             }
         }
 

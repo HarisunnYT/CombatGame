@@ -13,7 +13,7 @@ public interface IDamagable
 {
     int Health { get; set; }
 
-    void OnDamaged(int amount);
+    void OnDamaged(int amount, Character damagedFrom);
 }
 
 public interface IDamages

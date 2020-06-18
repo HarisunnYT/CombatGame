@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4999161417287854109}
-  - component: {fileID: 6310594794898423746}
-  - component: {fileID: 3336801176140296233}
-  - component: {fileID: 6867797654937309904}
+  - component: {fileID: 1683995626}
+  - component: {fileID: 1683995627}
+  - component: {fileID: 1683995628}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -33,22 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6310594794898423746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4421913961904659212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
---- !u!114 &3336801176140296233
+--- !u!114 &1683995626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,7 +89,7 @@ MonoBehaviour:
   serverMaxReceivesPerTick: 10000
   clientMaxMessageSize: 16384
   clientMaxReceivesPerTick: 1000
---- !u!114 &6867797654937309904
+--- !u!114 &1683995627
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,18 +98,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4421913961904659212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aab4c8111b7c411b9b92cf3dbc5bd4e, type: 3}
+  m_Script: {fileID: 11500000, guid: 615e6c6589cf9e54cad646b5a11e0529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
   runInBackground: 1
   startOnHeadless: 1
   showDebugMessages: 0
-  serverTickRate: 60
+  serverTickRate: 30
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 3336801176140296233}
-  networkAddress: 192.168.0.2
+  transport: {fileID: 1683995626}
+  networkAddress: localhost
   maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -132,7 +117,29 @@ MonoBehaviour:
   playerPrefab: {fileID: 8938859172034660462, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
     type: 3}
   autoCreatePlayer: 1
-  playerSpawnMethod: 1
-  spawnPrefabs:
-  - {fileID: 5890560936853567077, guid: b7dd46dbf38c643f09e206f9fa4be008, type: 3}
-  HUD: {fileID: 0}
+  playerSpawnMethod: 0
+  spawnPrefabs: []
+  HUD: {fileID: 1683995628}
+  showRoomGUI: 1
+  minPlayers: 2
+  roomPlayerPrefab: {fileID: 639944054087453084, guid: 9c0690602a01d9f4aba3962135543903,
+    type: 3}
+  RoomScene: Assets/_Game/Scenes/Menu.unity
+  GameplayScene: Assets/_Game/Scenes/Game.unity
+  _allPlayersReady: 0
+  roomSlots: []
+--- !u!114 &1683995628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4421913961904659212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0

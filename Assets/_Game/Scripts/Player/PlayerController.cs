@@ -72,20 +72,20 @@ public class PlayerController : Character
         originalScale = transform.localScale;
 
         SetMovementType(MovementType.Normal, false);
-
-        GameManager.Instance.AddPlayer(this);
     }
 
     private void Start()
     {
         //we don't want physics on network players as their positions are set over the server
         Rigidbody.isKinematic = !isLocalPlayer;
+
+        MatchManager.Instance.AddPlayer(this);
     }
 
     private void OnDestroy()
     {
         if (GameManager.Instance)
-            GameManager.Instance.RemovePlayer(this);
+            MatchManager.Instance.RemovePlayer(this);
     }
 
     protected override void Update()
@@ -222,15 +222,30 @@ public class PlayerController : Character
 
     #region COMBAT
 
-    public override void OnDamaged(int amount)
+    public override void OnDamaged(int amount, Character damagedFrom)
     {
-        base.OnDamaged(amount);
+        base.OnDamaged(amount, damagedFrom);
     }
 
-    protected override void OnDeath()
+    protected override void OnDeath(Character killedFrom)
     {
-        base.OnDeath();
+        base.OnDeath(killedFrom);
 
+        if (isServer)
+            RpcOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom));
+        else
+            CmdOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom));
+    }
+
+    [Command]
+    private void CmdOnDeath(int playerID)
+    {
+        RpcOnDeath(playerID);
+    }
+
+    [ClientRpc]
+    private void RpcOnDeath(int playerID)
+    {
         CombatInterfaces.OnPlayerDied(this);
 
         //TODO death anim and shiz

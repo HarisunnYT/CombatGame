@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,20 +13,15 @@ public class MatchManager : Singleton<MatchManager>
 
     public int WinsRequired { get; private set; } = 5;
 
-    private PlayerRoundInformation playerRoundInformation;
+    public Dictionary<int, PlayerController> Players = new Dictionary<int, PlayerController>();
 
     private FightManager currentFight;
 
     private RoundPhase currentPhase;
 
-    private void Start()
+    public void BeginMatch()
     {
-        //TODO BEGIN ROUND WHEN PLAYERS ARE READY
         BeginPhase(RoundPhase.Fight_Phase);
-
-        //create the player round info ... stores info like current cash, wins etc
-        GameObject manager = new GameObject("Player Round Information");
-        playerRoundInformation = manager.AddComponent<PlayerRoundInformation>();
     }
 
     public void BeginPhase(RoundPhase phase)
@@ -46,6 +42,59 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginBuyPhase()
     {
-
+        PanelManager.Instance.ShowPanel<CharacterUpgradePanel>();
     }
+
+    #region PLAYER_ASSIGNMENTS
+
+    //used for setting id
+    int lastID = 0; 
+    public void AddPlayer(PlayerController player)
+    {
+        Players.Add(lastID, player);
+        lastID++;
+    }
+
+    public void RemovePlayer(PlayerController player)
+    {
+        RemovePlayer(GetPlayerID(player));
+    }
+
+    public void RemovePlayer(int playerID)
+    {
+        Players.Remove(playerID);
+    }
+
+    public PlayerController GetPlayer(int playerID)
+    {
+        return Players[playerID];
+    }
+
+    public PlayerController GetPlayer(GameObject obj)
+    {
+        foreach (var player in Players)
+        {
+            if (player.Value.gameObject == obj)
+            {
+                return player.Value;
+            }
+        }
+
+        return null;
+    }
+
+    public int GetPlayerID(PlayerController player)
+    {
+        foreach(var p in Players)
+        {
+            if (p.Value == player)
+            {
+                return p.Key;
+            }
+        }
+
+        return 0;
+    }
+
+    #endregion
 }

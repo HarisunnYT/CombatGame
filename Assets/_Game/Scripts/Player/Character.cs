@@ -41,7 +41,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         Health = startingHealth;
     }
 
-    public virtual void OnDamaged(int amount)
+    public virtual void OnDamaged(int amount, Character damagedFrom)
     {
         if (Alive && !Invincible)
         {
@@ -66,7 +66,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
             if (Health <= 0)
             {
-                OnDeath();
+                OnDeath(damagedFrom);
             }
         }
     }
@@ -76,7 +76,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         Grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), Vector2.down, 0.5f, invertedCharacterMask);
     }
 
-    protected virtual void OnDeath()
+    protected virtual void OnDeath(Character killedBy)
     {
         Alive = false;
     }
@@ -115,7 +115,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         IDamages damages = collision.gameObject.GetComponent<IDamages>();
         if (damages != null)
         {
-            OnDamaged(damages.Damage);
+            OnDamaged(damages.Damage, this);
         }
     }
 

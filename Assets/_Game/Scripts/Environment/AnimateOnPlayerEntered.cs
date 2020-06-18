@@ -23,7 +23,7 @@ public class AnimateOnPlayerEntered : NetworkBehaviour
     {
         if (GameManager.Instance.IsPlayer(collision.gameObject))
         {
-            if (requiresGrounded && Mathf.CeilToInt(GameManager.Instance.GetPlayerFromObject(collision.gameObject).Rigidbody.velocity.y) == 0)
+            if (requiresGrounded && Mathf.CeilToInt(MatchManager.Instance.GetPlayer(collision.gameObject).Rigidbody.velocity.y) == 0)
             {
                 PlayerInteracted(true);
                 triggeredEnterAnimation = true;

@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 10
-  Knockback: 50
+  Knockback: 5
 --- !u!1 &1559206525632463343
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 10
-  InvincibleTime: 1.5
+  InvincibleTime: 0
 --- !u!114 &8938859172034660496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneId: 0
   serverOnly: 0
-  m_AssetId: 5cb81fba8dbb2db4faa04aeba56b05c7
+  m_AssetId: 
   hasSpawned: 0
 --- !u!114 &3935543542433192975
 MonoBehaviour:

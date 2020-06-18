@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FightManager : Singleton<FightManager>, IFightEvents
@@ -8,7 +9,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     protected override void Initialize()
     {
-        alivePlayers = GameManager.Instance.Players;
+        alivePlayers = MatchManager.Instance.Players.Values.ToList();
 
         AddListener();
     }
@@ -25,8 +26,10 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
         if (alivePlayers.Count <= 1)
         {
-            //TODO add win camera zoom in and stuff
-            MatchManager.Instance.BeginPhase(MatchManager.RoundPhase.Buy_Phase);
+            CameraManager.Instance.CameraFollow.ZoomInOnPlayer(alivePlayers[0].gameObject, new Vector2(0, 0.75f), 2, 1, () =>
+             {
+                 MatchManager.Instance.BeginPhase(MatchManager.RoundPhase.Buy_Phase);
+             });
         }
     }
 

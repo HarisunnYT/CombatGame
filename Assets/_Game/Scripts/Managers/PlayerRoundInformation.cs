@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRoundInformation : MonoBehaviour
+public class PlayerRoundInformation : Singleton<PlayerRoundInformation>
 {
     public int Cash { get; private set; }
     public int Wins { get; private set; }
