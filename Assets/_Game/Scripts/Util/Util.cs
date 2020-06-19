@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using System.Text;
 //using DG.Tweening;
 
 public enum Axis
@@ -79,4 +80,11 @@ public static class Util
         return newValue;
     }
 
+    public static string FormatToCurrency(int value)
+    {
+        string result = value.ToString("C");
+        result = result.Remove(result.Length - 3, 3);
+
+        return result;
+    }
 }

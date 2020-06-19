@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using ParadoxNotion.Design;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -13,5 +14,18 @@ public class GameManager : Singleton<GameManager>
     public bool IsPlayer(GameObject obj)
     {
         return obj.layer == LayerMask.NameToLayer("Player");
+    }
+
+    private void Update()
+    {
+        //show debug panel but only in dev builds
+        if (Debug.isDebugBuild)
+        {
+            if ((Input.GetButton("Left Bumper") && Input.GetButton("Right Bumper")) ||
+                (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D)))
+            {
+                PanelManager.Instance.ShowPanel<DebugPanel>();
+            }
+        }
     }
 }

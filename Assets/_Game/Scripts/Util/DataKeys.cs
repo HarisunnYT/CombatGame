@@ -31,6 +31,10 @@ public class DataKeys
 
         //game keys -------------------------------------------------------------------------------------- \\\\\\\\\\\\\\\\\\\
         public const string CashPerKill = "cash_per_kill";
+        public const string FirstPlaceCash = "first_place_cash";
+        public const string SecondPlaceCash = "second_place_cash";
+        public const string ThirdPlaceCash = "third_place_cash";
+        public const string FourthPlaceCash = "fourth_place_cash";
     }
 
     public class SpawnableKeys

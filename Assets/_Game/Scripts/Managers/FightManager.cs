@@ -20,14 +20,33 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     public void OnPlayerDied(PlayerController killer, PlayerController victim)
     {
-        AlivePlayers.Remove(victim);
+        //give the dead player their placement cash
+        DetermineCashForPlayer(victim, AlivePlayers.Count);
 
+        //remove player from alive players and see if there's only a single player left
+        AlivePlayers.Remove(victim);
         if (AlivePlayers.Count <= 1)
         {
-            CameraManager.Instance.CameraFollow.ZoomInOnPlayer(AlivePlayers[0].gameObject, new Vector2(0, 0.75f), 2, 1, () =>
-             {
-                 MatchManager.Instance.BeginPhase(MatchManager.RoundPhase.Buy_Phase);
-             });
+            FightOver(AlivePlayers[0]);
+        }
+    }
+
+    public void FightOver(PlayerController winner)
+    {
+        DetermineCashForPlayer(winner, 1);
+
+        CameraManager.Instance.CameraFollow.ZoomInOnPlayer(winner.gameObject, new Vector2(0, 0.75f), 2, 1, () =>
+        {
+            MatchManager.Instance.BeginPhase(MatchManager.RoundPhase.Buy_Phase);
+        });
+    }
+
+    private void DetermineCashForPlayer(PlayerController player, int placement)
+    {
+        //each client will do this, we only need to determine that cash for this client
+        if (player.isLocalPlayer)
+        {
+            PlayerRoundInformation.Instance.AddPlacementCash(placement);
         }
     }
 

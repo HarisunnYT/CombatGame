@@ -64,6 +64,9 @@ public class Panel : MonoBehaviour, IAnimationHandler
 
     public void ShowPanel()
     {
+        if (gameObject.activeSelf)
+            return;
+
         if (animator && gameObject.activeSelf)
         {
             animator.SetTrigger("Open");

@@ -41,7 +41,7 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginBuyPhase()
     {
-        PanelManager.Instance.ShowPanel<CharacterUpgradePanel>();
+        PanelManager.Instance.ShowPanel<PurchasePhasePanel>();
     }
 
     private void CreateFightManager()

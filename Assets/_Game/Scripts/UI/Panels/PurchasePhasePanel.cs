@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterUpgradePanel : Panel
+public class PurchasePhasePanel : Panel
 {
    
 }
