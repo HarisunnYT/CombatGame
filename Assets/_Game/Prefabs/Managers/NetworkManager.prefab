@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1683995626}
   - component: {fileID: 1683995628}
   - component: {fileID: 3393538192905813644}
+  - component: {fileID: 3648054332713307026}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -124,7 +125,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   transport: {fileID: 1683995626}
-  networkAddress: localhost
+  networkAddress: 
   maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -139,7 +140,23 @@ MonoBehaviour:
   minPlayers: 1
   roomPlayerPrefab: {fileID: 639944054087453084, guid: 9c0690602a01d9f4aba3962135543903,
     type: 3}
-  RoomScene: Assets/_Game/Scenes/Menu.unity
+  RoomScene: 
   GameplayScene: Assets/_Game/Scenes/Game.unity
   _allPlayersReady: 0
   roomSlots: []
+--- !u!114 &3648054332713307026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4421913961904659212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc654f29862fc2643b948f772ebb9e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showPing: 1
+  position: {x: 533.51, y: 307.5}
+  fontSize: 24
+  textColor: {r: 0, g: 0, b: 0, a: 0.7490196}
