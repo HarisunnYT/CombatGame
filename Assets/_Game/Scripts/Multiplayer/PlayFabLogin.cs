@@ -1,5 +1,6 @@
 ﻿using PlayFab;
 using PlayFab.ClientModels;
+using System;
 using UnityEngine;
 
 public class PlayFabLogin : PersistentSingleton<PlayFabLogin>
@@ -8,25 +9,29 @@ public class PlayFabLogin : PersistentSingleton<PlayFabLogin>
     public string EntityID { get; private set; }
     public string EntityType { get; private set; }
 
-    private const string titleID = "98261";
     private const string customIdKey = "client_custom_id";
 
     public void Start()
     {
         ClientsCustomID = PlayerPrefs.GetString(customIdKey, "EmptyID");
 
-        PlayFabSettings.TitleId = titleID;
-        var request = new LoginWithCustomIDRequest { CreateAccount = true, TitleId = titleID, CustomId = ClientsCustomID };
+        var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = ClientsCustomID };
         PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginFailure);
     }
 
     private void OnLoginSuccess(LoginResult result)
     {
-        PlayerPrefs.SetString(customIdKey, result.PlayFabId);
-        PlayerPrefs.Save();
+        GetAccountInfoRequest request = new GetAccountInfoRequest() { PlayFabId = result.PlayFabId };
+        PlayFabClientAPI.GetAccountInfo(request, GetAccountInfo, null);
 
         EntityID = result.EntityToken.Entity.Id;
         EntityType = result.EntityToken.Entity.Type;
+    }
+
+    private void GetAccountInfo(GetAccountInfoResult obj)
+    {
+        PlayerPrefs.SetString(customIdKey, obj.AccountInfo.CustomIdInfo.CustomId);
+        PlayerPrefs.Save();
 
         //TODO MOVE
         PlayFabMatchMaking.Instance.SearchForMatch();
