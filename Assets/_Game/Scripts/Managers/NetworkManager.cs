@@ -11,6 +11,12 @@ public class NetworkManager : NetworkRoomManager
     public override void Start()
     {
         base.Start();
+
+        if (ServerManager.Instance.IsServer)
+        {
+            SetupServer();
+            Debug.Log("SERVER SET UP");
+        }
     }
 
     public override void OnServerSceneChanged(string sceneName)
@@ -25,6 +31,9 @@ public class NetworkManager : NetworkRoomManager
 
     public override void OnRoomServerAddPlayer(NetworkConnection conn)
     {
+        base.OnRoomServerAddPlayer(conn);
+
+        return;
         Transform startPos = GetStartPosition();
         GameObject player = startPos != null
             ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
@@ -50,19 +59,5 @@ public class NetworkManager : NetworkRoomManager
         {
             obj.identity.gameObject.SetActive(true);
         }
-    }
-
-    public static string GetIP()
-    {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (var ip in host.AddressList)
-        {
-            if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-            {
-                return ip.ToString();
-            }
-        }
-
-        return "";
     }
 }

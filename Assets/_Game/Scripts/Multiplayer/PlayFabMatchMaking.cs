@@ -10,7 +10,6 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
 {
     public string CurrentTickedID { get; private set; }
     public string CurrentMatchID { get; private set; }
-    public string CurrentServerIP { get; private set; }
 
     private const int secondsBetweenTicketCheck = 6;
     private const string queueName = "MatchMakingQueue";
@@ -51,18 +50,7 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
                 {
                     DataObject = new
                     {
-                        latencies = new object[]
-                        {
-                            new {
-                                region = "EastUs",
-                                latency = 150
-                            },
-                            new {
-                                region = "WestUs",
-                                latency = 100
-                            }
-                        },
-                        IP = NetworkManager.GetIP()
+                        
                     },
                 },
             },
@@ -146,26 +134,6 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
 
     private void OnGetMatch(GetMatchResult obj)
     {
-        CurrentServerIP = "";
-
-        foreach (var member in obj.Members)
-        {
-            JsonObject attributes = (JsonObject)PlayFabSimpleJson.DeserializeObject(member.Attributes.DataObject.ToString());
-            foreach (var attribute in attributes)
-            {
-                if (attribute.Key == "IP")
-                {
-                    CurrentServerIP = (string)attribute.Value; //player IP
-                    break;
-                }
-            }
-
-            if (CurrentServerIP != "")
-            {
-                break;
-            }
-        }
-
         //TEMP
         UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
 

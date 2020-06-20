@@ -13,6 +13,9 @@ public class PlayFabLogin : PersistentSingleton<PlayFabLogin>
 
     public void Start()
     {
+        if (ServerManager.Instance.IsServer)
+            return;
+
         ClientsCustomID = PlayerPrefs.GetString(customIdKey, "EmptyID");
 
         var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = ClientsCustomID };

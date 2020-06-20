@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1683995628}
   - component: {fileID: 3393538192905813644}
   - component: {fileID: 3648054332713307026}
-  - component: {fileID: 1893493120723901176}
+  - component: {fileID: -6421047455593414382}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -68,7 +68,7 @@ MonoBehaviour:
   serverTickRate: 60
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 1893493120723901176}
+  transport: {fileID: -6421047455593414382}
   networkAddress: 
   maxConnections: 4
   disconnectInactiveConnections: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
   minPlayers: 1
   roomPlayerPrefab: {fileID: 639944054087453084, guid: 9c0690602a01d9f4aba3962135543903,
     type: 3}
-  RoomScene: 
+  RoomScene: Assets/_Game/Scenes/Lobby.unity
   GameplayScene: Assets/_Game/Scenes/Game.unity
   _allPlayersReady: 0
   roomSlots: []
@@ -104,7 +104,7 @@ MonoBehaviour:
   position: {x: 533.51, y: 307.5}
   fontSize: 24
   textColor: {r: 0, g: 0, b: 0, a: 0.7490196}
---- !u!114 &1893493120723901176
+--- !u!114 &-6421047455593414382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4421913961904659212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 330c9aab13d2d42069c6ebbe582b73ca, type: 3}
+  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClientConnected:
@@ -154,5 +154,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: Mirror.UnityEventInt, Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  transports:
-  - {fileID: 0}
+  port: 7777
+  NoDelay: 1
+  serverMaxMessageSize: 16384
+  serverMaxReceivesPerTick: 10000
+  clientMaxMessageSize: 16384
+  clientMaxReceivesPerTick: 1000

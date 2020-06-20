@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,17 +9,8 @@ public class LobbyManager : Singleton<LobbyManager>
     {
         if (PlayFabMatchMaking.Instance)
         {
-            string networkAddress = PlayFabMatchMaking.Instance.CurrentServerIP;
-            NetworkManager.singleton.networkAddress = networkAddress;
-
-            if (networkAddress == NetworkManager.GetIP())
-            {
-                NetworkManager.singleton.StartHost();
-            }
-            else
-            {
-                NetworkManager.singleton.StartClient();
-            }
+            NetworkManager.singleton.networkAddress = "172.197.128.73";
+            NetworkManager.singleton.StartClient();
         }
     }
 }
