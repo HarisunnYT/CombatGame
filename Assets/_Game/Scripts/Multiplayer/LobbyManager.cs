@@ -10,7 +10,7 @@ public class LobbyManager : Singleton<LobbyManager>
         if (PlayFabMatchMaking.Instance)
         {
             NetworkManager.singleton.networkAddress = "172.197.128.73";
-            NetworkManager.singleton.StartClient();
+            //NetworkManager.singleton.StartClient();
         }
     }
 }

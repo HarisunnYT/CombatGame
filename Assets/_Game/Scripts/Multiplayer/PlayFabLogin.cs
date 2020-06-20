@@ -37,7 +37,8 @@ public class PlayFabLogin : PersistentSingleton<PlayFabLogin>
         PlayerPrefs.Save();
 
         //TODO MOVE
-        PlayFabMatchMaking.Instance.SearchForMatch();
+        //PlayFabMatchMaking.Instance.SearchForMatch();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
 
         Debug.Log("Login Successful");
     }

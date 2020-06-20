@@ -8,17 +8,6 @@ public class NetworkManager : NetworkRoomManager
 {
     private List<NetworkConnection> currentConnectedPlayers = new List<NetworkConnection>();
 
-    public override void Start()
-    {
-        base.Start();
-
-        if (ServerManager.Instance.IsServer)
-        {
-            SetupServer();
-            Debug.Log("SERVER SET UP");
-        }
-    }
-
     public override void OnServerSceneChanged(string sceneName)
     {
         base.OnServerSceneChanged(sceneName);
@@ -33,17 +22,16 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnRoomServerAddPlayer(conn);
 
-        return;
-        Transform startPos = GetStartPosition();
-        GameObject player = startPos != null
-            ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
-            : Instantiate(playerPrefab);
+        //Transform startPos = GetStartPosition();
+        //GameObject player = startPos != null
+        //    ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
+        //    : Instantiate(playerPrefab);
 
-        player.SetActive(false);
+        //player.SetActive(false);
 
-        currentConnectedPlayers.Add(conn);
+        //currentConnectedPlayers.Add(conn);
 
-        NetworkServer.AddPlayerForConnection(conn, player);
+        //NetworkServer.AddPlayerForConnection(conn, player);
     }
 
     public override void OnRoomServerDisconnect(NetworkConnection conn)

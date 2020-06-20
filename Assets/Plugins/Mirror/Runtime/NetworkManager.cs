@@ -298,7 +298,7 @@ namespace Mirror
         }
 
         // full server setup code, without spawning objects yet
-        public void SetupServer()
+        void SetupServer()
         {
             if (logger.LogEnabled()) logger.Log("NetworkManager SetupServer");
             InitializeSingleton();
