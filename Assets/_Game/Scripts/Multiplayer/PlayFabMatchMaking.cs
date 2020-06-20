@@ -13,13 +13,28 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
     public string CurrentServerIP { get; private set; }
 
     private const int secondsBetweenTicketCheck = 6;
-    private const string queueName = "Test";
+    private const string queueName = "MatchMakingQueue";
 
     private float previousTicketCheckTimer = -1;
 
     public void SearchForMatch()
     {
-            PlayFabMultiplayerAPI.CreateMatchmakingTicket(
+        CancelAllMatchmakingTicketsForPlayerRequest request = new CancelAllMatchmakingTicketsForPlayerRequest()
+        {
+            QueueName = queueName,
+            Entity = new EntityKey
+            {
+                Id = PlayFabLogin.Instance.EntityID,
+                Type = PlayFabLogin.Instance.EntityType
+            }
+        };
+
+        PlayFabMultiplayerAPI.CancelAllMatchmakingTicketsForPlayer(request, MatchSearch, OnMatchmakingError);
+    }
+
+    private void MatchSearch(CancelAllMatchmakingTicketsForPlayerResult obj)
+    {
+        PlayFabMultiplayerAPI.CreateMatchmakingTicket(
         new CreateMatchmakingTicketRequest
         {
             // The ticket creator specifies their own player attributes.
@@ -36,6 +51,17 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
                 {
                     DataObject = new
                     {
+                        latencies = new object[]
+                        {
+                            new {
+                                region = "EastUs",
+                                latency = 150
+                            },
+                            new {
+                                region = "WestUs",
+                                latency = 100
+                            }
+                        },
                         IP = NetworkManager.GetIP()
                     },
                 },
@@ -50,7 +76,7 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
 
         // Callbacks for handling success and error.
         OnMatchmakingTicketCreated,
-        OnMatchmakingError);;
+        OnMatchmakingError);
     }
 
     private void OnMatchmakingTicketCreated(CreateMatchmakingTicketResult obj)

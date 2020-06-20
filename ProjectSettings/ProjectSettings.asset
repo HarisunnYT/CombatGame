@@ -612,10 +612,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: e598181e-b996-44bd-baac-66057ccd8f84
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: CombatGame
+  organizationId: harisunn
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
