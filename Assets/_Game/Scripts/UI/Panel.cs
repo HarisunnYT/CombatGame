@@ -58,6 +58,8 @@ public class Panel : MonoBehaviour, IAnimationHandler
 
     private void ObjectDisabled()
     {
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+
         gameObject.SetActive(false);
         OnClose();
     }
@@ -86,9 +88,15 @@ public class Panel : MonoBehaviour, IAnimationHandler
             Time.timeScale = 0;
         }
 
-        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(selectedButton);
-
         OnShow();
+    }
+
+    protected virtual void Update()
+    {
+        if (selectedButton != null && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(selectedButton);
+        }
     }
 
     protected virtual void OnClose() { }

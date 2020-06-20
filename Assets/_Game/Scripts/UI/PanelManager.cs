@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PanelManager : Singleton<PanelManager>
 {
+    [SerializeField]
+    private Panel initialPanel;
+
     private Panel[] panels;
 
     private int timeScaleCounter = 0;
@@ -11,6 +14,8 @@ public class PanelManager : Singleton<PanelManager>
     protected override void Initialize()
     {
         panels = transform.GetComponentsInChildren<Panel>(true);
+
+        initialPanel?.ShowPanel();
     }
 
     public void ShowPanel<T>() where T : Panel
