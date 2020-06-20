@@ -7,7 +7,7 @@ public class LobbyManager : Singleton<LobbyManager>
 {
     private void Start()
     {
-        if (PlayFabMatchMaking.Instance)
+        if (!ServerManager.Instance.IsServer && PlayFabMatchMaking.Instance)
         {
             CreateClient();
         }

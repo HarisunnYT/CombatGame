@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class NetworkManager : NetworkRoomManager
 {
-    private List<NetworkConnection> currentConnectedPlayers = new List<NetworkConnection>();
-
     public override void OnServerSceneChanged(string sceneName)
     {
         base.OnServerSceneChanged(sceneName);
@@ -18,34 +16,17 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
-    public override void OnRoomServerAddPlayer(NetworkConnection conn)
+    public override void OnServerConnect(NetworkConnection conn)
     {
-        base.OnRoomServerAddPlayer(conn);
+        base.OnServerConnect(conn);
 
-        //Transform startPos = GetStartPosition();
-        //GameObject player = startPos != null
-        //    ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
-        //    : Instantiate(playerPrefab);
-
-        //player.SetActive(false);
-
-        //currentConnectedPlayers.Add(conn);
-
-        //NetworkServer.AddPlayerForConnection(conn, player);
+        ServerManager.Instance.OnPlayerConnectedToServer(conn);
     }
 
-    public override void OnRoomServerDisconnect(NetworkConnection conn)
+    public override void OnServerDisconnect(NetworkConnection conn)
     {
-        base.OnRoomServerDisconnect(conn);
+        base.OnServerDisconnect(conn);
 
-        currentConnectedPlayers.Add(conn);
-    }
-
-    public void SpawnPlayers()
-    {
-        foreach(var obj in currentConnectedPlayers)
-        {
-            obj.identity.gameObject.SetActive(true);
-        }
+        ServerManager.Instance.OnPlayerDisconnectedFromServer(conn);
     }
 }
