@@ -115,7 +115,7 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
         }
     }
 
-    private void CancelMatchMaking()
+    public void CancelMatchMaking()
     {
         PlayFabMultiplayerAPI.CancelMatchmakingTicket(
         new CancelMatchmakingTicketRequest

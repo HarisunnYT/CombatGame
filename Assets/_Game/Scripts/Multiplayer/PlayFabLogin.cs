@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayFabLogin : PersistentSingleton<PlayFabLogin>
 {
+    public bool LoggedIn { get; private set; } = false;
+
     public string ClientsCustomID { get; private set; }
     public string EntityID { get; private set; }
     public string EntityType { get; private set; }
@@ -24,6 +26,8 @@ public class PlayFabLogin : PersistentSingleton<PlayFabLogin>
 
     private void OnLoginSuccess(LoginResult result)
     {
+        LoggedIn = true;
+
         GetAccountInfoRequest request = new GetAccountInfoRequest() { PlayFabId = result.PlayFabId };
         PlayFabClientAPI.GetAccountInfo(request, GetAccountInfo, null);
 
@@ -35,9 +39,6 @@ public class PlayFabLogin : PersistentSingleton<PlayFabLogin>
     {
         PlayerPrefs.SetString(customIdKey, obj.AccountInfo.CustomIdInfo.CustomId);
         PlayerPrefs.Save();
-
-        //TODO MOVE
-        PlayFabMatchMaking.Instance.SearchForMatch();
 
         Debug.Log("Login Successful");
     }

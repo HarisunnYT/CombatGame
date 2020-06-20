@@ -8,6 +8,7 @@ using System.ComponentModel.Design;
 public class ServerManager : PersistentSingleton<ServerManager>
 {
     public bool IsServer { get; private set; }
+    public bool IsInUse { get; private set; }
 
     private int connectUsersCount = 0;
 
@@ -35,7 +36,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
     {
         connectUsersCount--;
 
-        if (connectUsersCount <= 0)
+        if (connectUsersCount <= 0 && IsInUse)
         {
             NetworkManager.singleton.StopServer();
             Application.Quit();
@@ -45,5 +46,10 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public void OnPlayerConnectedToServer(NetworkConnection conn)
     {
         connectUsersCount++;
+    }
+
+    public void BeganMatch()
+    {
+        IsInUse = true;
     }
 }

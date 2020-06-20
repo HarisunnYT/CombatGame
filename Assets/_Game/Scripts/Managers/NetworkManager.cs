@@ -13,6 +13,10 @@ public class NetworkManager : NetworkRoomManager
         if (sceneName == "Game")
         {
             MatchManager.Instance.BeginMatch();
+            if (ServerManager.Instance.IsServer)
+            {
+                ServerManager.Instance.BeganMatch();
+            }
         }
     }
 

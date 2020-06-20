@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc654f29862fc2643b948f772ebb9e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showPing: 1
+  showPing: 0
   position: {x: 533.51, y: 307.5}
   fontSize: 24
   textColor: {r: 0, g: 0, b: 0, a: 0.7490196}
