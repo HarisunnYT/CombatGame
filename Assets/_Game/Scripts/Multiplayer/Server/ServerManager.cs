@@ -11,7 +11,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
     [SerializeField]
     private bool debugServer = false;
 
-    public bool MatchOnline { get; set; } = false;
+    public bool IsOnlineMatch { get; set; } = false;
 
     public bool IsServer { get; private set; }
     public bool IsInUse { get; private set; }

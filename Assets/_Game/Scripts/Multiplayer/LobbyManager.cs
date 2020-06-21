@@ -12,20 +12,16 @@ public class LobbyManager : Singleton<LobbyManager>
     {
         if (!ServerManager.Instance.IsServer && PlayFabMatchMaking.Instance)
         {
-            if (ServerManager.Instance.MatchOnline)
-            {
+            if (ServerManager.Instance.IsOnlineMatch)
                 CreateClient();
-            }
             else
-            {
                 NetworkManager.Instance.StartHost();
-            }
         }
     }
 
     private void CreateClient()
     {
-        NetworkManager.Instance.networkAddress = "49.178.32.53";
+        NetworkManager.Instance.networkAddress = "172.197.128.73";
         NetworkManager.Instance.StartClient();
     }
 

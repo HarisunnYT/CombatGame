@@ -18,17 +18,22 @@ public class ConnectPlayerCell : MonoBehaviour
 
     public void Configure(NetworkConnection conn, string playerName)
     {
-        playerNameText.text = playerName;
-        gameObject.SetActive(true);
-
+        Configure(playerName);
         Connection = conn;
-        Assigned = true;
 
         //if the connection is null, it's the client
         if (Connection == null)
         {
             Connection = NetworkClient.connection;
         }
+    }
+
+    public void Configure(string playerName)
+    {
+        playerNameText.text = playerName;
+        gameObject.SetActive(true);
+
+        Assigned = true;
     }
 
     public void SetReady(bool ready)

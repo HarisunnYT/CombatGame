@@ -45,10 +45,21 @@ public class CharacterSelectScreen : Panel
             cell.gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < NetworkManager.Instance.roomSlots.Count; i++)
+        if (ServerManager.Instance.IsOnlineMatch)
         {
-            NetworkRoomPlayer player = NetworkManager.Instance.roomSlots[i];
-            connectedPlayerCells[i].Configure(player.connectionToServer, ServerManager.Instance.GetPlayerName(player.connectionToServer));
+            for (int i = 0; i < NetworkManager.Instance.roomSlots.Count; i++)
+            {
+                NetworkRoomPlayer player = NetworkManager.Instance.roomSlots[i];
+                connectedPlayerCells[i].Configure(player.connectionToServer, ServerManager.Instance.GetPlayerName(player.connectionToServer));
+            }
+        }
+        else
+        {
+            //start from 1 as the host will add itself
+            for (int i = 1; i < LocalPlayersManager.Instance.LocalPlayers; i++)
+            {
+                connectedPlayerCells[i].Configure("Player " + (i + 1)); //TODO show proper name
+            }
         }
     }
 
