@@ -4,18 +4,25 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 using System.ComponentModel.Design;
+using PlayFab.MultiplayerModels;
 
 public class ServerManager : PersistentSingleton<ServerManager>
 {
+    [SerializeField]
+    private bool debugServer = false;
+
     public bool IsServer { get; private set; }
     public bool IsInUse { get; private set; }
 
-    public List<NetworkConnection> ConnectedPlayers = new List<NetworkConnection>();
-    public List<int> SelectedCharacterIndexes = new List<int>();
+    public List<NetworkConnection> ConnectedPlayers { get; private set; } = new List<NetworkConnection>();
+    private List<int> SelectedCharacterIndexes = new List<int>();
 
     protected override void Initialize()
     {
         IsServer = SystemInfo.graphicsDeviceID == 0;
+#if UNITY_EDITOR
+        IsServer = debugServer;
+#endif
     }
 
     private void Start()
@@ -71,5 +78,10 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public bool IsCharacterSelected(int characterID)
     {
         return SelectedCharacterIndexes.Contains(characterID);
+    }
+
+    public int GetTick()
+    {
+        return Time.frameCount; 
     }
 }

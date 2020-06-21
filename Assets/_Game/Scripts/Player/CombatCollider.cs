@@ -17,15 +17,18 @@ public class CombatCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        IDamagable damagable = other.GetComponent<IDamagable>();
-        if (damagable != null)
+        if (ServerManager.Instance.IsServer)
         {
-            damagable.OnDamaged(Damage, playerController);
-            playerController.Knockback((transform.position - other.transform.position).normalized, playerController.CharacterStats.Weight);
-        }
+            IDamagable damagable = other.GetComponent<IDamagable>();
+            if (damagable != null)
+            {
+                damagable.RpcOnDamaged(Damage, MatchManager.Instance.GetPlayerID(playerController));
+                playerController.Knockback((transform.position - other.transform.position).normalized, playerController.CharacterStats.Weight);
+            }
 
-        IKnockable knockable = other.GetComponent<IKnockable>();
-        if (knockable != null)
-            knockable.OnKnockback(Knockback, (other.transform.position - transform.position).normalized + Vector3.up);
+            IKnockable knockable = other.GetComponent<IKnockable>();
+            if (knockable != null)
+                knockable.OnKnockback(Knockback, (other.transform.position - transform.position).normalized + Vector3.up);
+        }
     }
 }

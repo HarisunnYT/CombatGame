@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,8 @@ public interface IDamagable
 {
     int Health { get; set; }
 
-    void OnDamaged(int amount, Character damagedFrom);
+    [ClientRpc]
+    void RpcOnDamaged(int amount, uint playerID);
 }
 
 public interface IDamages

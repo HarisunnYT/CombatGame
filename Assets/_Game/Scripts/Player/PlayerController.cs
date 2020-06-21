@@ -222,19 +222,14 @@ public class PlayerController : Character
 
     #region COMBAT
 
-    public override void OnDamaged(int amount, Character damagedFrom)
+    protected override void OnDeath(uint killedFromPlayerID)
     {
-        base.OnDamaged(amount, damagedFrom);
-    }
-
-    protected override void OnDeath(Character killedFrom)
-    {
-        base.OnDeath(killedFrom);
+        base.OnDeath(killedFromPlayerID);
 
         if (isServer)
-            RpcOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom), MatchManager.Instance.GetPlayerID(this));
+            RpcOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
         else
-            CmdOnDeath(MatchManager.Instance.GetPlayerID((PlayerController)killedFrom), MatchManager.Instance.GetPlayerID(this));
+            CmdOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
     }
 
     [Command]
