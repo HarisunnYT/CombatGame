@@ -18,7 +18,7 @@ public class LobbyManager : Singleton<LobbyManager>
 
     private void CreateClient()
     {
-        NetworkManager.singleton.networkAddress = "localhost";
+        NetworkManager.singleton.networkAddress = "172.197.128.73";
         NetworkManager.singleton.StartClient();
     }
 
