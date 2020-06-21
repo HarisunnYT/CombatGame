@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGUI: 1
+  showGUI: 0
   offsetX: 0
   offsetY: 0
 --- !u!114 &3393538192905813644
@@ -80,9 +80,9 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs: []
   HUD: {fileID: 1683995628}
-  showRoomGUI: 1
+  showRoomGUI: 0
   minPlayers: 1
-  roomPlayerPrefab: {fileID: 639944054087453084, guid: 9c0690602a01d9f4aba3962135543903,
+  roomPlayerPrefab: {fileID: 3083466524672307662, guid: 9c0690602a01d9f4aba3962135543903,
     type: 3}
   RoomScene: Assets/_Game/Scenes/Lobby.unity
   GameplayScene: Assets/_Game/Scenes/Game.unity

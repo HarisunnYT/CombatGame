@@ -1284,6 +1284,10 @@ namespace Mirror
             }
         }
 
+        public virtual void OnClientEnterRoom(NetworkConnection conn) { }
+
+        public virtual void OnClientExitRoom(NetworkConnection conn) { }
+
         #endregion
 
         #region Server System Callbacks
@@ -1411,6 +1415,8 @@ namespace Mirror
         /// </summary>
         /// <param name="conn">Connection to the server.</param>
         public virtual void OnClientNotReady(NetworkConnection conn) { }
+
+        public virtual void OnClientReady(NetworkConnection conn, bool ready) { }
 
         // Deprecated 12/22/2019
         /// <summary>

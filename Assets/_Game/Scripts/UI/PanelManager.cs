@@ -48,7 +48,7 @@ public class PanelManager : Singleton<PanelManager>
     {
         foreach (var panel in panels)
         {
-            if (leaveOpenPanel == null || panel != leaveOpenPanel)
+            if (panel.gameObject.activeSelf && (leaveOpenPanel == null || panel != leaveOpenPanel))
             {
                 panel.Close();
             }

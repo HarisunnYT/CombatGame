@@ -6,6 +6,21 @@ using UnityEngine;
 
 public class NetworkManager : NetworkRoomManager
 {
+    public static NetworkManager Instance;
+
+    public CustomNetworkRoomPlayer RoomPlayer { get; set; }
+
+    public delegate void ConnectionEvent(NetworkConnection conn);
+    public event ConnectionEvent OnClientEnteredRoom;
+    public event ConnectionEvent OnClientExitedRoom;
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        Instance = this;
+    }
+
     public override void OnServerSceneChanged(string sceneName)
     {
         base.OnServerSceneChanged(sceneName);
@@ -18,6 +33,16 @@ public class NetworkManager : NetworkRoomManager
                 ServerManager.Instance.BeganMatch();
             }
         }
+    }
+
+    public override void OnClientEnterRoom(NetworkConnection conn)
+    {
+        OnClientEnteredRoom?.Invoke(conn);
+    }
+
+    public override void OnClientExitRoom(NetworkConnection conn)
+    {
+        OnClientExitedRoom?.Invoke(conn);
     }
 
     public override void OnServerConnect(NetworkConnection conn)

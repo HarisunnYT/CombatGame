@@ -238,6 +238,7 @@ namespace Mirror
                 if (player != null)
                 {
                     player.OnClientExitRoom();
+                    NetworkManager.singleton.OnClientExitRoom(player.connectionToServer);
                 }
         }
 
@@ -322,7 +323,9 @@ namespace Mirror
 
                 GameObject newRoomGameObject = OnRoomServerCreateRoomPlayer(conn);
                 if (newRoomGameObject == null)
+                {
                     newRoomGameObject = Instantiate(roomPlayerPrefab.gameObject, Vector3.zero, Quaternion.identity);
+                }
 
                 NetworkServer.AddPlayerForConnection(conn, newRoomGameObject);
             }

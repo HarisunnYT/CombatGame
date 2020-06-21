@@ -1968,10 +1968,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: showGUI
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4421913961904659212, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
         type: 3}
       propertyPath: m_Name
       value: NetworkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3393538192905813644, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
+        type: 3}
+      propertyPath: RoomScene
+      value: Assets/_Game/Scenes/Lobby.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 3393538192905813644, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
+        type: 3}
+      propertyPath: GameplayScene
+      value: Assets/_Game/Scenes/Game.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 3393538192905813644, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
+        type: 3}
+      propertyPath: showRoomGUI
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4999161417287854109, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
         type: 3}
@@ -2028,24 +2047,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3393538192905813644, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
-        type: 3}
-      propertyPath: RoomScene
-      value: Assets/_Game/Scenes/Lobby.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 3393538192905813644, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
-        type: 3}
-      propertyPath: GameplayScene
-      value: Assets/_Game/Scenes/Game.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 3393538192905813644, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
-        type: 3}
-      propertyPath: showRoomGUI
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1683995628, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
       propertyPath: showGUI
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
@@ -3246,6 +3250,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ServerManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8220710010727383998, guid: 964c2380b04960e428eeace5e5f356e1,
+        type: 3}
+      propertyPath: isServer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7502686047577081625, guid: 964c2380b04960e428eeace5e5f356e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3299,11 +3308,6 @@ PrefabInstance:
     - target: {fileID: 7502686047577081625, guid: 964c2380b04960e428eeace5e5f356e1,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8220710010727383998, guid: 964c2380b04960e428eeace5e5f356e1,
-        type: 3}
-      propertyPath: isServer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

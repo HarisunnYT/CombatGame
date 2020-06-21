@@ -59,7 +59,10 @@ namespace Mirror
                 room.RecalculateRoomPlayerIndices();
 
                 if (NetworkClient.active)
+                {
                     OnClientEnterRoom();
+                    NetworkManager.singleton.OnClientEnterRoom(connectionToServer);
+                }
             }
             else
                 logger.LogError("RoomPlayer could not find a NetworkRoomManager. The RoomPlayer requires a NetworkRoomManager object to function. Make sure that there is one in the scene.");
@@ -123,7 +126,10 @@ namespace Mirror
         /// Obsolete: Override <see cref="ReadyStateChanged(bool, bool)">ReadyStateChanged(bool, bool)</see> instead.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Override ReadyStateChanged(bool, bool) instead")]
-        public virtual void OnClientReady(bool readyState) { }
+        public virtual void OnClientReady(bool readyState) 
+        {
+            NetworkManager.singleton.OnClientReady(connectionToServer, readyState);
+        }
 
         #endregion
 

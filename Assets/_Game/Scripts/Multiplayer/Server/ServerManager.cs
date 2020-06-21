@@ -10,7 +10,8 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public bool IsServer { get; private set; }
     public bool IsInUse { get; private set; }
 
-    private int connectUsersCount = 0;
+    public List<NetworkConnection> ConnectedPlayers = new List<NetworkConnection>();
+    public List<int> SelectedCharacterIndexes = new List<int>();
 
     protected override void Initialize()
     {
@@ -32,24 +33,43 @@ public class ServerManager : PersistentSingleton<ServerManager>
         Debug.Log("SERVER SET UP");
     }
 
+    public void OnPlayerConnectedToServer(NetworkConnection conn)
+    {
+        ConnectedPlayers.Add(conn);
+    }
+
     public void OnPlayerDisconnectedFromServer(NetworkConnection conn)
     {
-        connectUsersCount--;
-
-        if (connectUsersCount <= 0 && IsInUse)
+        ConnectedPlayers.Remove(conn);
+        if (ConnectedPlayers.Count <= 0 && IsInUse)
         {
             NetworkManager.singleton.StopServer();
             Application.Quit();
         }
     }
 
-    public void OnPlayerConnectedToServer(NetworkConnection conn)
-    {
-        connectUsersCount++;
-    }
-
     public void BeganMatch()
     {
         IsInUse = true;
+    }
+
+    public string GetPlayerName(NetworkConnection conn)
+    {
+        return "Player";
+    }
+
+    public void SetCharacterSelected(int characterID)
+    {
+        SelectedCharacterIndexes.Add(characterID);
+    }
+
+    public void SetCharacterUnselected(int characterID)
+    {
+        SelectedCharacterIndexes.Remove(characterID);
+    }
+
+    public bool IsCharacterSelected(int characterID)
+    {
+        return SelectedCharacterIndexes.Contains(characterID);
     }
 }
