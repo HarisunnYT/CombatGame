@@ -103,10 +103,7 @@ public class PlayerController : Character
         //flip scale
         if (InputAxis.x != 0 && Time.time > previousScaleSwappedTimer)
         {
-            Direction = roundedXAxis;
-
-            SetDirection(Direction);
-
+            CmdSetDirection(roundedXAxis);
             previousScaleSwappedTimer = Time.time + technicalData.GetValue(DataKeys.VariableKeys.FlipScaleDamper);
         }
 

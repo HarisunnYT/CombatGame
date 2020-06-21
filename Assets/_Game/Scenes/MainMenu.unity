@@ -3246,6 +3246,11 @@ PrefabInstance:
       propertyPath: isServer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8220710010727383998, guid: 964c2380b04960e428eeace5e5f356e1,
+        type: 3}
+      propertyPath: debugServer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7502686047577081625, guid: 964c2380b04960e428eeace5e5f356e1,
         type: 3}
       propertyPath: m_LocalPosition.x

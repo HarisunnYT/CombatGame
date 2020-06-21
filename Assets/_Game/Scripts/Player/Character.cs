@@ -90,25 +90,25 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         }
     }
 
-    protected void SetDirection(int direction)
+    private void SetDirection(int direction)
     {
-        if (isServer)
-            RpcSetDirection(direction);
-        else
-            CmdSetDirection(direction);
+        spriteRenderer.flipX = direction == 1 ? false : true;
+        scaleFlipper.transform.localScale = new Vector3(direction, 1, 1);
+
+        Direction = direction;
     }
 
     [Command]
     protected void CmdSetDirection(int direction)
     {
-        RpcSetDirection(direction);
+        SetDirection(direction); //set direction on server
+        RpcSetDirection(direction); //set direction on client
     }
 
     [ClientRpc]
     protected void RpcSetDirection(int direction)
     {
-        spriteRenderer.flipX = direction == 1 ? false : true;
-        scaleFlipper.transform.localScale = new Vector3(direction, 1, 1);
+        SetDirection(direction);
     }
 
     private IEnumerator InvincibleCoroutine()
