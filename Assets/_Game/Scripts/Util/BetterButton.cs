@@ -24,4 +24,16 @@ public class BetterButton : Button
         if (animator)
             animator?.SetBool("Selected", false);
     }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        if (animator)
+            animator.SetBool("Selected", true);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        if (animator)
+            animator?.SetBool("Selected", false);
+    }
 }

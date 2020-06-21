@@ -148,7 +148,7 @@ public class PlayerController : Character
             baseMovement.MoveVertical(Time.deltaTime);
     }
 
-    #region MOVEMENT
+#region MOVEMENT
 
     public void SetMovementType(MovementType movementType, bool displayPuffParticle = true)
     {
@@ -215,9 +215,9 @@ public class PlayerController : Character
         Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
-    #endregion
+#endregion
 
-    #region COMBAT
+#region COMBAT
 
     protected override void OnDeath(uint killedFromPlayerID)
     {
@@ -244,9 +244,9 @@ public class PlayerController : Character
         gameObject.SetActive(false);
     }
 
-    #endregion
+#endregion
 
-    #region DISABLE_INPUT
+#region DISABLE_INPUT
 
     public void DisableHorizontalMovement(float duration)
     {
@@ -282,6 +282,6 @@ public class PlayerController : Character
         verticalMovementCoroutine = null;
     }
 
-    #endregion
+#endregion
 
 }

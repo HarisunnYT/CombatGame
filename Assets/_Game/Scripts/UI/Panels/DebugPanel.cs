@@ -22,4 +22,9 @@ public class DebugPanel : Panel
     {
         PlayerRoundInformation.Instance.AddCash(amount);
     }
+
+    public void InstantHost()
+    {
+        NetworkManager.Instance.StartHost();
+    }
 }

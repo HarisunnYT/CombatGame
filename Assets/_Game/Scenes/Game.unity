@@ -366,9 +366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shapeType: 1
-  extraOffset: 0
-  invertPolygon: 0
 --- !u!1 &434841096
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,28 +1486,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029713165}
   m_CullTransparentMesh: 0
---- !u!1 &1098150694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1361955564604271138, guid: 09084a34e8eab8a43952d8993a68ca79,
-    type: 3}
-  m_PrefabInstance: {fileID: 4103942831210107047}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1098150695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098150694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 3598327376
-  serverOnly: 0
-  m_AssetId: 09084a34e8eab8a43952d8993a68ca79
-  hasSpawned: 0
 --- !u!1 &1141870798
 GameObject:
   m_ObjectHideFlags: 0
@@ -2622,6 +2597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fffbd8aa93c0b6447bdaef3e39f03717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPanel: {fileID: 0}
 --- !u!114 &1475639338
 MonoBehaviour:
   m_ObjectHideFlags: 0

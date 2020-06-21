@@ -134,7 +134,6 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
 
     private void OnGetMatch(GetMatchResult obj)
     {
-        //TEMP
         UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
 
         Debug.Log("match successful");
