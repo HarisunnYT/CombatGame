@@ -38,7 +38,10 @@ public class InputProfile : PlayerActionSet
 
         this.playerIndex = playerIndex;
 
-        AddBindings();
+        if (controllerGUID == default)
+            AddKeyboardBindings();
+        else
+            AddControllerBindings();
 
         //assign device
         for (int i = 0; i < InControl.InputManager.Devices.Count; i++)
@@ -55,34 +58,39 @@ public class InputProfile : PlayerActionSet
         }
     }
 
-    public void AddBindings()
+    private void AddKeyboardBindings()
     {
         Left.AddDefaultBinding(Key.A);
+        Right.AddDefaultBinding(Key.D);
+        Up.AddDefaultBinding(Key.W);
+        Down.AddDefaultBinding(Key.S);
+
+        Jump.AddDefaultBinding(Key.Space);
+
+        Attack1.AddDefaultBinding(Mouse.LeftButton);
+        Attack2.AddDefaultBinding(Mouse.MiddleButton);
+        Attack3.AddDefaultBinding(Mouse.RightButton);
+
+    }
+
+    private void AddControllerBindings()
+    {
         Left.AddDefaultBinding(InputControlType.DPadLeft);
         Left.AddDefaultBinding(InputControlType.LeftStickLeft);
 
-        Right.AddDefaultBinding(Key.D);
         Right.AddDefaultBinding(InputControlType.DPadRight);
         Right.AddDefaultBinding(InputControlType.LeftStickRight);
 
-        Up.AddDefaultBinding(Key.W);
         Up.AddDefaultBinding(InputControlType.DPadUp);
         Up.AddDefaultBinding(InputControlType.LeftStickUp);
 
-        Down.AddDefaultBinding(Key.S);
         Down.AddDefaultBinding(InputControlType.DPadDown);
         Down.AddDefaultBinding(InputControlType.LeftStickDown);
 
-        Jump.AddDefaultBinding(Key.Space);
         Jump.AddDefaultBinding(InputControlType.Action1);
 
-        Attack1.AddDefaultBinding(Mouse.LeftButton);
         Attack1.AddDefaultBinding(InputControlType.Action3);
-
-        Attack2.AddDefaultBinding(Mouse.MiddleButton);
         Attack2.AddDefaultBinding(InputControlType.Action4);
-
-        Attack3.AddDefaultBinding(Mouse.RightButton);
         Attack3.AddDefaultBinding(InputControlType.Action2);
     }
 }

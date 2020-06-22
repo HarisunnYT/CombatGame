@@ -17,12 +17,12 @@ public class CombatCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (ServerManager.Instance.IsServer)
+        if (ServerManager.Instance.IsServer || !ServerManager.Instance.IsOnlineMatch)
         {
             IDamagable damagable = other.GetComponent<IDamagable>();
             if (damagable != null)
             {
-                damagable.RpcOnDamaged(Damage, MatchManager.Instance.GetPlayerID(playerController));
+                damagable.OnDamaged(Damage, playerController);
                 playerController.Knockback((transform.position - other.transform.position).normalized, playerController.CharacterStats.Weight);
             }
 

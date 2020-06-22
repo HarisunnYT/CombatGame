@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MatchManager : Singleton<MatchManager>
@@ -21,6 +22,15 @@ public class MatchManager : Singleton<MatchManager>
 
     public void BeginMatch()
     {
+        if (!ServerManager.Instance.IsOnlineMatch)
+        {
+            //we start at 1 as the main player has already spawned
+            for (int i = 1; i < LocalPlayersManager.Instance.LocalPlayers; i++)
+            {
+                NetworkManager.Instance.OnServerAddPlayer(NetworkClient.connection);
+            }
+        }
+
         BeginPhase(RoundPhase.Fight_Phase);
     }
 
@@ -55,9 +65,9 @@ public class MatchManager : Singleton<MatchManager>
 
     #region PLAYER_ASSIGNMENTS
 
-    public void AddPlayer(PlayerController player)
+    public void AddPlayer(PlayerController player, uint id)
     {
-        Players.Add(player.netId, player);
+        Players.Add(id, player);
 
         CreateFightManager(); //lazy initialise fight manager
 

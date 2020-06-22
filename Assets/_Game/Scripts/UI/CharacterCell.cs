@@ -44,6 +44,8 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                     LocalPlayersManager.Instance.LocalPlayerReadiedUp(0);
                 else
                     LocalPlayersManager.Instance.LocalPlayerReadiedUp(InControl.InputManager.ActiveDevice.GUID);
+
+                SetCharacterSelected(true);
             }
         }
     }

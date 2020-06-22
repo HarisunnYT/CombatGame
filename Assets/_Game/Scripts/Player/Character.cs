@@ -40,9 +40,16 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
         Health = startingHealth;
     }
-    
-    [ClientRpc]
-    public virtual void RpcOnDamaged(int amount, uint playerID)
+
+    public void OnDamaged(int amount, PlayerController player)
+    {
+        if (ServerManager.Instance.IsOnlineMatch)
+            RpcOnDamaged(amount, MatchManager.Instance.GetPlayerID(player));
+        else
+            OnDamagedClient(amount, MatchManager.Instance.GetPlayerID(player));
+    }
+
+    private void OnDamagedClient(int amount, uint playerID)
     {
         if (Alive && !Invincible)
         {
@@ -72,6 +79,12 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         }
     }
 
+    [ClientRpc]
+    public virtual void RpcOnDamaged(int amount, uint playerID)
+    {
+        OnDamagedClient(amount, playerID);
+    }
+
     protected virtual void Update()
     {
         Grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), Vector2.down, 0.5f, invertedCharacterMask);
@@ -90,7 +103,15 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         }
     }
 
-    private void SetDirection(int direction)
+    protected void SetDirection(int direction)
+    {
+        if (!ServerManager.Instance.IsOnlineMatch)
+            SetDirectionClient(direction);
+        else
+            CmdSetDirection(direction);
+    }
+
+    private void SetDirectionClient(int direction)
     {
         spriteRenderer.flipX = direction == 1 ? false : true;
         scaleFlipper.transform.localScale = new Vector3(direction, 1, 1);
@@ -99,16 +120,16 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
     }
 
     [Command]
-    protected void CmdSetDirection(int direction)
+    private void CmdSetDirection(int direction)
     {
-        SetDirection(direction); //set direction on server
+        SetDirectionClient(direction); //set direction on server
         RpcSetDirection(direction); //set direction on client
     }
 
     [ClientRpc]
-    protected void RpcSetDirection(int direction)
+    private void RpcSetDirection(int direction)
     {
-        SetDirection(direction);
+        SetDirectionClient(direction);
     }
 
     private IEnumerator InvincibleCoroutine()

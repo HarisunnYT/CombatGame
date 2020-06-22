@@ -41,6 +41,8 @@ public class PlayerController : Character
     private BaseMovement baseMovement;
     private Animator animator;
 
+    private InputProfile inputProfile;
+
     #endregion
 
     #region RUNTIME_VARIABLES
@@ -62,6 +64,8 @@ public class PlayerController : Character
     private Coroutine horizontalMovementCoroutine;
     private Coroutine verticalMovementCoroutine;
 
+    private uint playerIndexID = 0;
+
     #endregion
 
     protected override void Awake()
@@ -77,9 +81,13 @@ public class PlayerController : Character
     private void Start()
     {
         //we don't want physics on network players as their positions are set over the server
-        Rigidbody.isKinematic = !isLocalPlayer;
+        Rigidbody.isKinematic = !isLocalPlayer && ServerManager.Instance.IsOnlineMatch;
 
-        MatchManager.Instance.AddPlayer(this);
+        playerIndexID = (uint)MatchManager.Instance.Players.Count;
+
+        MatchManager.Instance.AddPlayer(this, ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID);
+
+        inputProfile = new InputProfile((int)playerIndexID, playerIndexID > 0 ? LocalPlayersManager.Instance.GetGUIDFromPlayerIndex((int)playerIndexID) : default);
     }
 
     private void OnDestroy()
@@ -90,12 +98,12 @@ public class PlayerController : Character
 
     protected override void Update()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer && ServerManager.Instance.IsOnlineMatch)
             return;
 
         base.Update();
 
-        InputAxis = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        InputAxis = inputProfile.Move;
         int roundedXAxis = InputAxis.x > 0 ? 1 : -1;
 
         animator.SetBool("Running", InputAxis.x != 0);
@@ -103,20 +111,20 @@ public class PlayerController : Character
         //flip scale
         if (InputAxis.x != 0 && Time.time > previousScaleSwappedTimer)
         {
-            CmdSetDirection(roundedXAxis);
+            SetDirection(roundedXAxis);
             previousScaleSwappedTimer = Time.time + technicalData.GetValue(DataKeys.VariableKeys.FlipScaleDamper);
         }
 
-        if (Input.GetButtonDown("Jump") && Time.time > timeBetweenJumpTimer)
+        if (inputProfile.Jump.WasPressed && Time.time > timeBetweenJumpTimer)
         {
             baseMovement.Jump();
             timeBetweenJumpTimer = Time.time + CurrentMovementData.GetValue(DataKeys.VariableKeys.TimeBetweenJump);
         }
 
-        HoldingJump = Input.GetButton("Jump");
+        HoldingJump = inputProfile.Jump;
 
         //attacking
-        if (Input.GetButtonDown("Attack"))
+        if (inputProfile.Attack1.WasPressed)
         {
             baseMovement.Attack();
             attacking = true;
@@ -136,7 +144,7 @@ public class PlayerController : Character
 
     private void FixedUpdate()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer && ServerManager.Instance.IsOnlineMatch)
             return;
 
         baseMovement.Update(Time.time);
@@ -223,10 +231,25 @@ public class PlayerController : Character
     {
         base.OnDeath(killedFromPlayerID);
 
-        if (isServer)
-            RpcOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
+        if (ServerManager.Instance.IsOnlineMatch)
+        {
+            if (isServer)
+                RpcOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
+            else
+                CmdOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
+        }
         else
-            CmdOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
+        {
+            OnDeathClient(killedFromPlayerID, playerIndexID);
+        }
+    }
+
+    private void OnDeathClient(uint killerID, uint victimID)
+    {
+        CombatInterfaces.OnPlayerDied(MatchManager.Instance.GetPlayer(killerID), MatchManager.Instance.GetPlayer(victimID));
+
+        //TODO death anim and shiz
+        gameObject.SetActive(false);
     }
 
     [Command]
@@ -238,10 +261,7 @@ public class PlayerController : Character
     [ClientRpc]
     private void RpcOnDeath(uint killerID, uint victimID)
     {
-        CombatInterfaces.OnPlayerDied(MatchManager.Instance.GetPlayer(killerID), MatchManager.Instance.GetPlayer(victimID));
-
-        //TODO death anim and shiz
-        gameObject.SetActive(false);
+        OnDeathClient(killerID, victimID);
     }
 
 #endregion

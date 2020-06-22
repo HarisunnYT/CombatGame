@@ -25,7 +25,7 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnServerSceneChanged(sceneName);
 
-        if (sceneName == "Game")
+        if (sceneName.Contains("Game.unity"))
         {
             MatchManager.Instance.BeginMatch();
             if (ServerManager.Instance.IsServer)

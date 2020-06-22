@@ -46,6 +46,19 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
         return -1;
     }
 
+    public System.Guid GetGUIDFromPlayerIndex(int playerIndex)
+    {
+        foreach (var player in localPlayers)
+        {
+            if (player.Key == playerIndex)
+            {
+                return player.Value;
+            }
+        }
+
+        return default;
+    }
+
     public void LocalPlayerReadiedUp(int playerIndex)
     {
         if (playerIndex == -1)

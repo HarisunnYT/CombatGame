@@ -28,4 +28,4 @@ MonoBehaviour:
   - keyName: jump_requires_grounded
     value: 1
   - keyName: flying_linear_drag
-    value: 0
+    value: 2
