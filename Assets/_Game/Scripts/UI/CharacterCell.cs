@@ -39,13 +39,11 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             }
             else
             {
-                //detects whether or not it was a mouse or controller that pressed the button
-                if (cursorOverButton && !LocalPlayersManager.Instance.HasLocalPlayerJoinedAlready(0))
-                    LocalPlayersManager.Instance.LocalPlayerReadiedUp(0);
-                else
-                    LocalPlayersManager.Instance.LocalPlayerReadiedUp(InControl.InputManager.ActiveDevice.GUID);
-
-                SetCharacterSelected(true);
+                if (!LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
+                {
+                    LocalPlayersManager.Instance.LocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
+                    SetCharacterSelected(true);
+                }
             }
         }
     }

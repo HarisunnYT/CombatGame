@@ -9,33 +9,33 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
     public event LocalPlayerConnectionEvent OnLocalPlayerConnected;
 
     //player index and controller id
-    private Dictionary<int, System.Guid> localPlayers = new Dictionary<int, System.Guid>();
+    public Dictionary<int, System.Guid> LocalPlayers { get; private set; } = new Dictionary<int, System.Guid>();
 
     private List<int> localPlayersReady = new List<int>();
 
-    public int LocalPlayers { get; private set; } = 1;
+    public int LocalPlayersCount { get; private set; } = 1;
 
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
-        localPlayers.Add(playerIndex, controllerID);
+        LocalPlayers.Add(playerIndex, controllerID);
         OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
 
-        LocalPlayers++;
+        LocalPlayersCount++;
     }
 
     public bool HasLocalPlayerJoinedAlready(System.Guid controllerID)
     {
-        return localPlayers.ContainsValue(controllerID);
+        return LocalPlayers.ContainsValue(controllerID);
     }
 
     public bool HasLocalPlayerJoinedAlready(int playerIndex)
     {
-        return localPlayers.ContainsKey(playerIndex);
+        return LocalPlayers.ContainsKey(playerIndex);
     }
 
     public int GetPlayerIndexFromController(System.Guid controllerID)
     {
-        foreach(var player in localPlayers)
+        foreach(var player in LocalPlayers)
         {
             if (player.Value == controllerID)
             {
@@ -48,7 +48,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public System.Guid GetGUIDFromPlayerIndex(int playerIndex)
     {
-        foreach (var player in localPlayers)
+        foreach (var player in LocalPlayers)
         {
             if (player.Key == playerIndex)
             {
@@ -69,7 +69,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
             localPlayersReady.Add(playerIndex);
         }
 
-        if (localPlayersReady.Count >= LocalPlayers)
+        if (localPlayersReady.Count >= LocalPlayersCount)
         {
             NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(true);
         }
@@ -78,5 +78,15 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
     public void LocalPlayerReadiedUp(System.Guid controllerID)
     {
         LocalPlayerReadiedUp(GetPlayerIndexFromController(controllerID));
+    }
+
+    public bool HasLocalPlayerReadiedUp(int playerIndex)
+    {
+        return localPlayersReady.Contains(playerIndex);
+    }
+
+    public bool HasLocalPlayerReadiedUp(System.Guid controllerID)
+    {
+        return localPlayersReady.Contains(GetPlayerIndexFromController(controllerID));
     }
 }

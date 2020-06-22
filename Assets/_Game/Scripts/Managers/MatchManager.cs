@@ -25,7 +25,7 @@ public class MatchManager : Singleton<MatchManager>
         if (!ServerManager.Instance.IsOnlineMatch)
         {
             //we start at 1 as the main player has already spawned
-            for (int i = 1; i < LocalPlayersManager.Instance.LocalPlayers; i++)
+            for (int i = 1; i < LocalPlayersManager.Instance.LocalPlayersCount; i++)
             {
                 NetworkManager.Instance.OnServerAddPlayer(NetworkClient.connection);
             }

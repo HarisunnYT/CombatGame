@@ -915,16 +915,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 311008666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: b24994c7bab8d436a8b302ce62dfa856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  submitButton: 19
+  cancelButton: 20
+  analogMoveThreshold: 0.5
+  moveRepeatFirstDuration: 0.8
+  moveRepeatDelayDuration: 0.1
+  forceModuleActive: 0
+  allowMouseInput: 0
+  focusOnMouseHover: 0
+  allowTouchInput: 1
 --- !u!114 &311008668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1891,7 +1893,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.8149996, y: 4.997902}
+  m_AnchoredPosition: {x: 3.8150024, y: 4.997902}
   m_SizeDelta: {x: 33.41, y: 9.9957}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &884170568
@@ -3455,7 +3457,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.8149996, y: 4.997902}
+  m_AnchoredPosition: {x: 3.8150024, y: 4.997902}
   m_SizeDelta: {x: 33.41, y: 9.9957}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1508846829
@@ -4462,7 +4464,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.8149996, y: 4.997902}
+  m_AnchoredPosition: {x: 3.8150024, y: 4.997902}
   m_SizeDelta: {x: 33.41, y: 9.9957}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1763890891
@@ -5274,6 +5276,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106267374}
   m_CullTransparentMesh: 0
+--- !u!1001 &3658965920130982929
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6745003669330115623, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_Name
+      value: CursorManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400308863819823804, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081251362996998231, guid: 0f537b0074ae33e4f95bc92431244b67,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f537b0074ae33e4f95bc92431244b67, type: 3}
 --- !u!222 &5348992103034605874
 CanvasRenderer:
   m_ObjectHideFlags: 0

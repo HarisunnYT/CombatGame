@@ -13,16 +13,16 @@ public class InputProfile : PlayerActionSet
     public PlayerTwoAxisAction Move;
 
     public PlayerAction Jump;
+
     public PlayerAction Attack1;
     public PlayerAction Attack2;
     public PlayerAction Attack3;
 
+    public PlayerAction Select;
+
     public InputDevice device = null;
 
-    private int playerIndex;
-    private int slot;
-
-    public InputProfile(int playerIndex, System.Guid controllerGUID)
+    public InputProfile(System.Guid controllerGUID)
     {
         Left = CreatePlayerAction("Move Left");
         Right = CreatePlayerAction("Move Right");
@@ -30,13 +30,13 @@ public class InputProfile : PlayerActionSet
         Down = CreatePlayerAction("Down");
 
         Jump = CreatePlayerAction("Jump");
+        Select = CreatePlayerAction("Select");
+
         Attack1 = CreatePlayerAction("Attack1");
         Attack2 = CreatePlayerAction("Attack2");
         Attack3 = CreatePlayerAction("Attack3");
 
         Move = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
-
-        this.playerIndex = playerIndex;
 
         if (controllerGUID == default)
             AddKeyboardBindings();
@@ -48,10 +48,10 @@ public class InputProfile : PlayerActionSet
         {
             if (InControl.InputManager.Devices[i].GUID == controllerGUID)
             {
-                slot = i;
-
                 device = InControl.InputManager.Devices[i];
-                IncludeDevices.Add(device);
+
+                if (!IncludeDevices.Contains(device))
+                    IncludeDevices.Add(device);
 
                 break;
             }
@@ -66,11 +66,11 @@ public class InputProfile : PlayerActionSet
         Down.AddDefaultBinding(Key.S);
 
         Jump.AddDefaultBinding(Key.Space);
+        Select.AddDefaultBinding(Mouse.LeftButton);
 
         Attack1.AddDefaultBinding(Mouse.LeftButton);
         Attack2.AddDefaultBinding(Mouse.MiddleButton);
         Attack3.AddDefaultBinding(Mouse.RightButton);
-
     }
 
     private void AddControllerBindings()
@@ -88,6 +88,7 @@ public class InputProfile : PlayerActionSet
         Down.AddDefaultBinding(InputControlType.LeftStickDown);
 
         Jump.AddDefaultBinding(InputControlType.Action1);
+        Select.AddDefaultBinding(InputControlType.Action1);
 
         Attack1.AddDefaultBinding(InputControlType.Action3);
         Attack2.AddDefaultBinding(InputControlType.Action4);

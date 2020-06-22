@@ -56,7 +56,7 @@ public class CharacterSelectScreen : Panel
         else
         {
             //start from 1 as the host will add itself
-            for (int i = 1; i < LocalPlayersManager.Instance.LocalPlayers; i++)
+            for (int i = 1; i < LocalPlayersManager.Instance.LocalPlayersCount; i++)
             {
                 connectedPlayerCells[i].Configure("Player " + (i + 1)); //TODO show proper name
             }

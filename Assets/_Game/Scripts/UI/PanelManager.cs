@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PanelManager : Singleton<PanelManager>
 {
@@ -9,11 +10,14 @@ public class PanelManager : Singleton<PanelManager>
 
     private Panel[] panels;
 
+    public GraphicRaycaster Raycaster { get; private set; }
+
     private int timeScaleCounter = 0;
 
     protected override void Initialize()
     {
         panels = transform.GetComponentsInChildren<Panel>(true);
+        Raycaster = GetComponent<GraphicRaycaster>();
 
         initialPanel?.ShowPanel();
     }
