@@ -18,10 +18,6 @@ public class Panel : MonoBehaviour, IAnimationHandler
     private bool pauseTime = false;
     public bool PauseTime { get { return pauseTime; } }
 
-    [Header("Optional")]
-    [SerializeField]
-    public GameObject selectedButton;
-
     private Animator animatorGetter;
     private Animator animator
     {
@@ -89,14 +85,6 @@ public class Panel : MonoBehaviour, IAnimationHandler
         }
 
         OnShow();
-    }
-
-    protected virtual void Update()
-    {
-        if (selectedButton != null && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == null)
-        {
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(selectedButton);
-        }
     }
 
     protected virtual void OnClose() { }

@@ -87,7 +87,7 @@ public class PlayerController : Character
 
         MatchManager.Instance.AddPlayer(this, ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID);
 
-        inputProfile = new InputProfile(playerIndexID > 0 ? LocalPlayersManager.Instance.GetGUIDFromPlayerIndex((int)playerIndexID) : default);
+        inputProfile = new InputProfile(playerIndexID > 0 ? LocalPlayersManager.Instance.GetGUIDFromPlayerIndex((int)playerIndexID) : default, ServerManager.Instance.IsOnlineMatch);
     }
 
     private void OnDestroy()

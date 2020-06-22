@@ -22,7 +22,7 @@ public class InputProfile : PlayerActionSet
 
     public InputDevice device = null;
 
-    public InputProfile(System.Guid controllerGUID)
+    public InputProfile(System.Guid controllerGUID, bool allowAllControllers = false)
     {
         Left = CreatePlayerAction("Move Left");
         Right = CreatePlayerAction("Move Right");
@@ -43,18 +43,26 @@ public class InputProfile : PlayerActionSet
         else
             AddControllerBindings();
 
-        //assign device
-        for (int i = 0; i < InControl.InputManager.Devices.Count; i++)
+        if (!allowAllControllers)
         {
-            if (InControl.InputManager.Devices[i].GUID == controllerGUID)
+            //assign device
+            for (int i = 0; i < InControl.InputManager.Devices.Count; i++)
             {
-                device = InControl.InputManager.Devices[i];
+                if (InControl.InputManager.Devices[i].GUID == controllerGUID)
+                {
+                    device = InControl.InputManager.Devices[i];
 
-                if (!IncludeDevices.Contains(device))
-                    IncludeDevices.Add(device);
+                    if (!IncludeDevices.Contains(device))
+                        IncludeDevices.Add(device);
 
-                break;
+                    break;
+                }
             }
+        }
+        else
+        {
+            //auto add controller bindings all controllers allowed
+            AddControllerBindings();
         }
     }
 
