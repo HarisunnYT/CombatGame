@@ -23,10 +23,8 @@ public class PlayPanel : Panel
         LocalPlayersManager.Instance.OnLocalPlayerConnected += OnLocalPlayerConnected;
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
-
         foreach (var device in InputManager.ActiveDevices)
         {
             if (device.CommandWasPressed && !LocalPlayersManager.Instance.HasLocalPlayerJoinedAlready(device.GUID))

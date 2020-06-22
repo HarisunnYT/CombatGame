@@ -56,6 +56,8 @@ public class CursorManager : PersistentSingleton<CursorManager>
     {
         Cursor cursor = Instantiate(cursorPrefab, transform);
         cursor.AssignDevice(playerIndex, controllerID);
+
+        cursors.Add(cursor);
     }
 
     public void HideCursor(Cursor cursor)

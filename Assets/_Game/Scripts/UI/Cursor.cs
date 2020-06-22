@@ -35,6 +35,11 @@ public class Cursor : MonoBehaviour
 
     private void Update()
     {
+        if (playerIndex == 0) //0 means it's the person on the PC
+        {
+            transform.position = Input.mousePosition;
+        }
+
         if (previousCursorPosition != transform.position || inputProfile.Select.WasPressed)
         {
             PointerEventData pointerEventData = new PointerEventData(eventSystem);
@@ -63,16 +68,14 @@ public class Cursor : MonoBehaviour
             }
         }
 
+
+
         previousCursorPosition = transform.position;
     }
 
     private void FixedUpdate()
     {
-        if (playerIndex == 0) //0 means it's the person on the PC
-        {
-            transform.position = Input.mousePosition;
-        }
-        else
+        if (playerIndex != 0) //0 means it's the person on the PC, we want a controller player only
         {
             transform.position += new Vector3(inputProfile.Move.X * cursorMoveSpeed, inputProfile.Move.Y * cursorMoveSpeed, 0);
         }

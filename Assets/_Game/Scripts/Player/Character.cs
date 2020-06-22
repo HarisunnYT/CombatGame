@@ -103,7 +103,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         }
     }
 
-    protected void SetDirection(int direction)
+    public void SetDirection(int direction)
     {
         if (!ServerManager.Instance.IsOnlineMatch)
             SetDirectionClient(direction);

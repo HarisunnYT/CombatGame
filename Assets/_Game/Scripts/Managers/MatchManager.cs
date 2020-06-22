@@ -6,19 +6,37 @@ using UnityEngine;
 
 public class MatchManager : Singleton<MatchManager>
 {
+    #region EXTENSIONS
     public enum RoundPhase
     {
         Fight_Phase,
         Buy_Phase
     }
 
+    #endregion
+
+    #region EXPOSED_VARIABLES
+
+    [SerializeField]
+    private SpawnPosition[] spawnPositions;
+
+    #endregion
+
+    #region COMPONENTS
+
+    #endregion
+
+    #region RUNTIME_VARIABLES
+
     public int WinsRequired { get; private set; } = 5;
 
     public Dictionary<uint, PlayerController> Players = new Dictionary<uint, PlayerController>();
 
     private FightManager currentFight;
-
     private RoundPhase currentPhase;
+
+    #endregion
+
 
     public void BeginMatch()
     {
@@ -46,6 +64,14 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginFightPhase()
     {
+        CursorManager.Instance.HideAllCursors();
+
+        //place players in spawns
+        for (int i = 0; i < Players.Count; i++)
+        {
+            spawnPositions[i].SetPlayerSpawn(Players.ElementAt(i).Value);
+        }
+
         CreateFightManager();
     }
 
@@ -72,6 +98,8 @@ public class MatchManager : Singleton<MatchManager>
         CreateFightManager(); //lazy initialise fight manager
 
         currentFight.AlivePlayers.Add(player);
+
+        spawnPositions[Players.Count - 1].SetPlayerSpawn(Players.ElementAt(Players.Count - 1).Value);
     }
 
     public void RemovePlayer(PlayerController player)
