@@ -22,6 +22,10 @@ public class ServerManager : PersistentSingleton<ServerManager>
     protected override void Initialize()
     {
         IsServer = SystemInfo.graphicsDeviceID == 0;
+        if (IsServer)
+        {
+            IsOnlineMatch = true;
+        }
 #if UNITY_EDITOR
         IsServer = debugServer;
 #endif
