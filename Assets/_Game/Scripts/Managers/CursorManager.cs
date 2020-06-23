@@ -71,6 +71,17 @@ public class CursorManager : PersistentSingleton<CursorManager>
         }
     }
 
+    public void HideCursor(int playerIndex)
+    {
+        foreach (var c in cursors)
+        {
+            if (c.PlayerIndex == playerIndex)
+            {
+                c.gameObject.SetActive(false);
+            }
+        }
+    }
+
     public void HideCursor(System.Guid controllerGUID)
     {
         foreach (var c in cursors)

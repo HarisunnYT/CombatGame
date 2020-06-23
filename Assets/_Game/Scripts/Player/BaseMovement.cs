@@ -9,6 +9,8 @@ public class BaseMovement
     protected Animator animator;
     protected CharacterData movementData;
 
+    private int jumps = 0;
+
     public virtual BaseMovement Configure(PlayerController player, Rigidbody2D rigidbody, Animator animator)
     {
         this.player = player;
@@ -21,12 +23,14 @@ public class BaseMovement
 
     public virtual void Jump() 
     {
-        if (movementData.GetValue(DataKeys.VariableKeys.JumpRequiresGrounded) == 0 || player.Grounded)
+        if (movementData.GetValue(DataKeys.VariableKeys.JumpRequiresGrounded) == 0 || player.Grounded || jumps < movementData.GetValue(DataKeys.VariableKeys.JumpsBeforeGrounding))
         {
             if (movementData.GetValue(DataKeys.VariableKeys.ResetVerticalVelocityOnJump) == 1)
             {
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);
             }
+
+            jumps++;
 
             animator.SetTrigger("Jump");
             rigidbody.AddForce(new Vector2(0, movementData.GetValue(DataKeys.VariableKeys.JumpForce)));
@@ -61,6 +65,10 @@ public class BaseMovement
         float drag = movementData.GetValue(DataKeys.VariableKeys.GroundedLinearDrag, movementData.GetValue(DataKeys.VariableKeys.FlyingLinearDrag));
         rigidbody.drag = player.Grounded ? drag : movementData.GetValue(DataKeys.VariableKeys.FlyingLinearDrag);
 
+        if (player.Grounded)
+        {
+            jumps = 0;
+        }
     }
 
     public virtual void Deconfigure()

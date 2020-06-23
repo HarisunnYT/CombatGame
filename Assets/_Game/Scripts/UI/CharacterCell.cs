@@ -43,6 +43,8 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 {
                     LocalPlayersManager.Instance.LocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
                     SetCharacterSelected(true);
+
+                    CursorManager.Instance.HideCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
                 }
             }
         }

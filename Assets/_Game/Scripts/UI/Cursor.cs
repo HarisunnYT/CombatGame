@@ -13,7 +13,7 @@ public class Cursor : MonoBehaviour
 
     private EventSystem eventSystem;
 
-    private int playerIndex;
+    public int PlayerIndex { get; private set; }
 
     public System.Guid ControllerID { get; private set; }
 
@@ -27,7 +27,7 @@ public class Cursor : MonoBehaviour
     public void AssignDevice(int playerIndex, System.Guid controllerID)
     {
         ControllerID = controllerID;
-        this.playerIndex = playerIndex;
+        PlayerIndex = playerIndex;
 
         inputProfile = new InputProfile(controllerID);
         gameObject.SetActive(true);
@@ -35,7 +35,7 @@ public class Cursor : MonoBehaviour
 
     private void Update()
     {
-        if (playerIndex == 0) //0 means it's the person on the PC
+        if (PlayerIndex == 0) //0 means it's the person on the PC
         {
             transform.position = Input.mousePosition;
         }
@@ -58,7 +58,7 @@ public class Cursor : MonoBehaviour
             //clicked pressed from either mouse or controller
             if (inputProfile.Select.WasPressed)
             {
-                CursorManager.Instance.SetLastInteractedPlayer(playerIndex);
+                CursorManager.Instance.SetLastInteractedPlayer(PlayerIndex);
 
                 foreach (RaycastResult result in results)
                 {
@@ -68,14 +68,12 @@ public class Cursor : MonoBehaviour
             }
         }
 
-
-
         previousCursorPosition = transform.position;
     }
 
     private void FixedUpdate()
     {
-        if (playerIndex != 0) //0 means it's the person on the PC, we want a controller player only
+        if (PlayerIndex != 0) //0 means it's the person on the PC, we want a controller player only
         {
             transform.position += new Vector3(inputProfile.Move.X * cursorMoveSpeed, inputProfile.Move.Y * cursorMoveSpeed, 0);
         }

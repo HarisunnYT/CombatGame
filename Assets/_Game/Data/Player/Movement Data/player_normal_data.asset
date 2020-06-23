@@ -15,8 +15,6 @@ MonoBehaviour:
   data:
   - keyName: max_horizontal_speed
     value: 10
-  - keyName: attack_speed_damper
-    value: 8000
   - keyName: horizontal_acceleration
     value: 150
   - keyName: gravity_scale
@@ -29,3 +27,7 @@ MonoBehaviour:
     value: 1
   - keyName: flying_linear_drag
     value: 2
+  - keyName: jumps_before_grounding
+    value: 1
+  - keyName: reset_vertical_velocity_on_jump
+    value: 1

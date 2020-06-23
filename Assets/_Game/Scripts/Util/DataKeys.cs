@@ -16,6 +16,7 @@ public class DataKeys
         public const string FlyingLinearDrag = "flying_linear_drag";
         public const string JumpForce = "jump_force";
         public const string JumpRequiresGrounded = "jump_requires_grounded";
+        public const string JumpsBeforeGrounding = "jumps_before_grounding";
         public const string TimeBetweenJump = "time_between_jump";
         public const string ResetVerticalVelocityOnJump = "reset_vertical_velocity_on_jump";
         public const string RotateTowardsDirection = "rotate_towards_direction";

@@ -214,7 +214,7 @@ public class PlayerController : Character
 
     public float GetMaxHorizontalSpeed()
     {
-        return attacking ? CurrentMovementData.GetValue(DataKeys.VariableKeys.MaxHorizontalSpeed) / CurrentMovementData.GetValue(DataKeys.VariableKeys.AttackSpeedDamper) :
+        return attacking ? CurrentMovementData.GetValue(DataKeys.VariableKeys.MaxHorizontalSpeed) / CurrentMovementData.GetValue(DataKeys.VariableKeys.AttackSpeedDamper, 1) :
                            CurrentMovementData.GetValue(DataKeys.VariableKeys.MaxHorizontalSpeed);
     }
 

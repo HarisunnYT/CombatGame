@@ -32,6 +32,11 @@ public class LobbyManager : Singleton<LobbyManager>
             NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(true);
         }
 
+        if (connectionID == NetworkClient.connection.identity.netId)
+        {
+            CursorManager.Instance.HideAllCursors();
+        }
+
         OnCharacterSelected?.Invoke(connectionID, characterIndex);
     }
 }
