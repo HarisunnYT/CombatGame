@@ -10,6 +10,7 @@ public class SpawnPosition : MonoBehaviour
     public void SetPlayerSpawn(PlayerController player)
     {
         player.transform.position = transform.position;
+        player.gameObject.SetActive(true);
 
         player.SetDirection(spawnDirection);
         player.DisableInput();

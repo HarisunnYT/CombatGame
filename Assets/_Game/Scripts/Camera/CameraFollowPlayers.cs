@@ -9,8 +9,17 @@ public class CameraFollowPlayers : MonoBehaviour
     [SerializeField]
     private float followSpeed;
 
+    private Vector3 originalPosition;
+    private float originalZoom;
+
     private Transform forcedTarget = null;
     private Vector2 offset;
+
+    private void Start()
+    {
+        originalPosition = transform.position;
+        originalZoom = CameraManager.Instance.Camera.orthographicSize;
+    }
 
     private void FixedUpdate()
     {
@@ -44,9 +53,11 @@ public class CameraFollowPlayers : MonoBehaviour
         CameraManager.Instance.Camera.DOOrthoSize(zoom, duration).OnComplete(() => callback?.Invoke());
     }
 
-    public void ResetZoom()
+    public void ResetCamera()
     {
+        transform.position = originalPosition;
+
         forcedTarget = null;
-        CameraManager.Instance.Camera.orthographicSize = 5;
+        CameraManager.Instance.Camera.orthographicSize = originalZoom;
     }
 }

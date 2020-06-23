@@ -6,12 +6,12 @@ using UnityEngine;
 public class FightManager : Singleton<FightManager>, IFightEvents
 {
     [SerializeField]
-    private int countDownTimeInSeconds = 3;
+    private int startFightCountDownTimeInSeconds = 3;
 
     public List<PlayerController> AlivePlayers { get; private set; } = new List<PlayerController>();
 
-    private bool countdownInProgress = false;
-    private float countdownTimer = 0;
+    private bool startFightCountdownInProgress = false;
+    private float startFightCountdownTimer = 0;
 
     private HUDPanel hudPanel;
 
@@ -20,13 +20,22 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         base.Initialize();
 
         hudPanel = PanelManager.Instance.GetPanel<HUDPanel>();
-
     }
 
     private void Start()
     {
         AddListener();
         BeginFightCountdown();
+
+        PanelManager.Instance.ShowPanel<HUDPanel>();
+
+        if (AlivePlayers.Count == 0)
+        {
+            foreach(var player in MatchManager.Instance.Players)
+            {
+                AlivePlayers.Add(player.Value);
+            }
+        }
     }
 
     protected override void OnDestroy()
@@ -37,9 +46,9 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     private void Update()
     {
-        if (countdownInProgress)
+        if (startFightCountdownInProgress)
         {
-            int roundedTime = Mathf.RoundToInt(countdownTimer - Time.time);
+            int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - Time.time);
             hudPanel.UpdateCountdownText(roundedTime.ToString());
 
             //countdown is finished
@@ -52,13 +61,13 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     private void BeginFightCountdown()
     {
-        countdownInProgress = true;
-        countdownTimer = Time.time + countDownTimeInSeconds;
+        startFightCountdownInProgress = true;
+        startFightCountdownTimer = Time.time + startFightCountDownTimeInSeconds;
     }
 
     private void CountdownOver()
     {
-        countdownInProgress = false;
+        startFightCountdownInProgress = false;
         hudPanel.HideCountdownText();
 
         foreach(var player in AlivePlayers)

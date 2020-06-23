@@ -18,6 +18,9 @@ public class MatchManager : Singleton<MatchManager>
     #region EXPOSED_VARIABLES
 
     [SerializeField]
+    private int buyPhaseTimeInSeconds = 45;
+
+    [SerializeField]
     private SpawnPosition[] spawnPositions;
 
     #endregion
@@ -35,7 +38,16 @@ public class MatchManager : Singleton<MatchManager>
     private FightManager currentFight;
     private RoundPhase currentPhase;
 
+    private PurchasePhasePanel purchasePanel;
+
+    private float buyPhaseCountdownTimer = 0;
+
     #endregion
+
+    private void Start()
+    {
+        purchasePanel = PanelManager.Instance.GetPanel<PurchasePhasePanel>();
+    }
 
     public void BeginMatch()
     {
@@ -63,6 +75,7 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginFightPhase()
     {
+        purchasePanel.Close();
         CursorManager.Instance.HideAllCursors();
 
         //place players in spawns
@@ -76,7 +89,15 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginBuyPhase()
     {
-        PanelManager.Instance.ShowPanel<PurchasePhasePanel>();
+        buyPhaseCountdownTimer = Time.time + buyPhaseTimeInSeconds;
+        purchasePanel.ShowPanel();
+
+        currentFight.AlivePlayers.Clear();
+
+        Destroy(currentFight.gameObject);
+        currentFight = null;
+
+        CameraManager.Instance.CameraFollow.ResetCamera();
     }
 
     private void CreateFightManager()
@@ -85,6 +106,21 @@ public class MatchManager : Singleton<MatchManager>
         {
             GameObject manager = new GameObject("Fight Manager");
             currentFight = manager.AddComponent<FightManager>();
+        }
+    }
+
+    private void Update()
+    {
+        if (currentPhase == RoundPhase.Buy_Phase)
+        {
+            int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - Time.time);
+            purchasePanel.UpdateCountdownTimer(roundedTime.ToString());
+
+            //countdown is finished
+            if (roundedTime <= 0)
+            {
+                BeginPhase(RoundPhase.Fight_Phase);
+            }
         }
     }
 
