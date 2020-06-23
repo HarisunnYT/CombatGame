@@ -60,7 +60,7 @@ public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightE
 
     public void OnPlayerDied(PlayerController killer, PlayerController victim)
     {
-        if (killer.isLocalPlayer)
+        if (killer.isLocalPlayer && killer != victim)
         {
             AddCash((int)GameManager.Instance.GameData.GetValue(DataKeys.VariableKeys.CashPerKill));
         }

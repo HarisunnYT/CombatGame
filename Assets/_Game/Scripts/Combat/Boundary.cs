@@ -8,7 +8,8 @@ public class Boundary : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            collision.GetComponent<PlayerController>().OnDamaged(int.MaxValue, null);
+            PlayerController player = collision.GetComponent<PlayerController>();
+            player.OnDamaged(int.MaxValue, player); //we pass the player through as the killer as they killed themselves (may change this to last attack enemy)
         }
     }
 }

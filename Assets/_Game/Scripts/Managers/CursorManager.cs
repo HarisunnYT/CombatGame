@@ -20,7 +20,10 @@ public class CursorManager : PersistentSingleton<CursorManager>
         CreateCursor(0, default);
 
         UnityEngine.Cursor.visible = false;
+    }
 
+    private void Start()
+    {
         LocalPlayersManager.Instance.OnLocalPlayerConnected += OnLocalPlayerConnected;
     }
 
