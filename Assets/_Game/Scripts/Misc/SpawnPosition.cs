@@ -10,7 +10,9 @@ public class SpawnPosition : MonoBehaviour
     public void SetPlayerSpawn(PlayerController player)
     {
         player.transform.position = transform.position;
+
         player.SetDirection(spawnDirection);
+        player.DisableInput();
     }
 
     private void OnDrawGizmos()

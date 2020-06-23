@@ -37,7 +37,6 @@ public class MatchManager : Singleton<MatchManager>
 
     #endregion
 
-
     public void BeginMatch()
     {
         if (!ServerManager.Instance.IsOnlineMatch)

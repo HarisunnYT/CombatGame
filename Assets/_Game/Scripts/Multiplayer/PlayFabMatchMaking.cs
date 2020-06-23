@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
 {
+    public int PlayersInLobby { get; private set; }
+
     public string CurrentTickedID { get; private set; }
     public string CurrentMatchID { get; private set; }
 
@@ -134,6 +136,7 @@ public class PlayFabMatchMaking : PersistentSingleton<PlayFabMatchMaking>
 
     private void OnGetMatch(GetMatchResult obj)
     {
+        PlayersInLobby = obj.Members.Count;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
 
         Debug.Log("match successful");

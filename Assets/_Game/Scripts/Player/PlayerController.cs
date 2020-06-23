@@ -47,6 +47,8 @@ public class PlayerController : Character
 
     #region RUNTIME_VARIABLES
 
+    public bool InputEnabled { get; private set; }
+
     public Vector2 InputAxis { get; private set; }
 
     public bool HoldingJump { get; private set; } = false;
@@ -101,6 +103,9 @@ public class PlayerController : Character
         if (!isLocalPlayer && ServerManager.Instance.IsOnlineMatch)
             return;
 
+        if (!InputEnabled)
+            return;
+
         base.Update();
 
         InputAxis = inputProfile.Move;
@@ -147,6 +152,9 @@ public class PlayerController : Character
         if (!isLocalPlayer && ServerManager.Instance.IsOnlineMatch)
             return;
 
+        if (!InputEnabled)
+            return;
+
         baseMovement.Update(Time.time);
 
         if (HorizontalMovementEnabled)
@@ -156,7 +164,7 @@ public class PlayerController : Character
             baseMovement.MoveVertical(Time.deltaTime);
     }
 
-#region MOVEMENT
+    #region MOVEMENT
 
     public void SetMovementType(MovementType movementType, bool displayPuffParticle = true)
     {
@@ -223,9 +231,19 @@ public class PlayerController : Character
         Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
+    public void DisableInput()
+    {
+        InputEnabled = false;
+    }
+
+    public void EnableInput()
+    {
+        InputEnabled = true;
+    }
+
 #endregion
 
-#region COMBAT
+    #region COMBAT
 
     protected override void OnDeath(uint killedFromPlayerID)
     {
@@ -266,7 +284,7 @@ public class PlayerController : Character
 
 #endregion
 
-#region DISABLE_INPUT
+    #region DISABLE_INPUT
 
     public void DisableHorizontalMovement(float duration)
     {
