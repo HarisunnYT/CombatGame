@@ -21,6 +21,10 @@ public class CharacterSelectScreen : Panel
 
         if (LobbyManager.Instance)
             LobbyManager.Instance.OnCharacterSelected += OnCharacterSelected;
+
+        if (LocalPlayersManager.Instance)
+            LocalPlayersManager.Instance.OnLocalPlayerConnected += OnLocalPlayerConnected;
+
     }
 
     private void OnDestroy()
@@ -33,6 +37,9 @@ public class CharacterSelectScreen : Panel
 
         if (LobbyManager.Instance)
             LobbyManager.Instance.OnCharacterSelected -= OnCharacterSelected;
+
+        if (LocalPlayersManager.Instance)
+            LocalPlayersManager.Instance.OnLocalPlayerConnected -= OnLocalPlayerConnected;
     }
 
     protected override void OnShow()
@@ -51,14 +58,6 @@ public class CharacterSelectScreen : Panel
             {
                 NetworkRoomPlayer player = NetworkManager.Instance.roomSlots[i];
                 connectedPlayerCells[i].Configure(player.connectionToServer, ServerManager.Instance.GetPlayerName(player.connectionToServer));
-            }
-        }
-        else
-        {
-            //start from 1 as the host will add itself
-            for (int i = 1; i < LocalPlayersManager.Instance.LocalPlayersCount; i++)
-            {
-                connectedPlayerCells[i].Configure("Player " + (i + 1)); //TODO show proper name
             }
         }
     }
@@ -96,5 +95,10 @@ public class CharacterSelectScreen : Panel
                 characterCell.SetCharacterSelected(true);
             }
         }
+    }
+
+    private void OnLocalPlayerConnected(int playerIndex, System.Guid controllerGUID)
+    {
+        connectedPlayerCells[playerIndex].Configure("Player " + (playerIndex + 1)); //TODO show proper name
     }
 }

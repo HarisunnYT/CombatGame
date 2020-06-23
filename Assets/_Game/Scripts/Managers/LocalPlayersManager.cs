@@ -1,7 +1,9 @@
 ﻿using InControl;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 {
@@ -15,11 +17,27 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public int LocalPlayersCount { get; private set; } = 1;
 
+    private void Update()
+    {
+        if (!ServerManager.Instance.IsOnlineMatch && SceneManager.GetActiveScene().name == "Lobby")
+        {
+            foreach (var device in InputManager.ActiveDevices)
+            {
+                if (device.CommandWasPressed && !HasLocalPlayerJoinedAlready(device.GUID))
+                {
+                    LocalPlayerJoined(LocalPlayersCount, device.GUID);
+
+                    break;
+                }
+            }
+        }
+    }
+
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
         LocalPlayers.Add(playerIndex, controllerID);
-        OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
 
+        OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
         LocalPlayersCount++;
     }
 

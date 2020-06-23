@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CursorManager : PersistentSingleton<CursorManager>
 {
@@ -22,24 +21,12 @@ public class CursorManager : PersistentSingleton<CursorManager>
 
         UnityEngine.Cursor.visible = false;
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        LocalPlayersManager.Instance.OnLocalPlayerConnected += OnLocalPlayerConnected;
     }
 
-    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+    private void OnLocalPlayerConnected(int playerIndex, System.Guid controllerGUID)
     {
-        if (arg0.name == "Lobby")
-        {
-            CreateLocalPlayerCursors();
-        }
-    }
-
-    public void CreateLocalPlayerCursors()
-    {
-        for (int i = 0; i < LocalPlayersManager.Instance.LocalPlayers.Count; i++)
-        {
-            //+ 1 to the index as the first player cursor is already created
-            CreateCursor(i + 1, LocalPlayersManager.Instance.LocalPlayers.ElementAt(i).Value); //value is controller GUID
-        }
+        CreateCursor(playerIndex, controllerGUID);
     }
 
     public void SetLastInteractedPlayer(int playerIndex)
