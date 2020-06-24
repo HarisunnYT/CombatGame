@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Bird Buds/Spawnable Object")]
+[CreateAssetMenu(menuName = "Fisty Cuffs/Spawnable Object")]
 public class SpawnableObjectData : ScriptableObject
 {
     public GameObject Prefab;

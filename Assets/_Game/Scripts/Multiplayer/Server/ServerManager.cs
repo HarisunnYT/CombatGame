@@ -17,7 +17,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public bool IsInUse { get; private set; }
 
     public List<NetworkConnection> ConnectedPlayers { get; private set; } = new List<NetworkConnection>();
-    private List<int> SelectedCharacterIndexes = new List<int>();
+    private List<string> SelectedCharacters = new List<string>();
 
     protected override void Initialize()
     {
@@ -71,19 +71,19 @@ public class ServerManager : PersistentSingleton<ServerManager>
         return "Player";
     }
 
-    public void SetCharacterSelected(int characterID)
+    public void SetCharacterSelected(string characterName)
     {
-        SelectedCharacterIndexes.Add(characterID);
+        SelectedCharacters.Add(characterName);
     }
 
-    public void SetCharacterUnselected(int characterID)
+    public void SetCharacterUnselected(string characterName)
     {
-        SelectedCharacterIndexes.Remove(characterID);
+        SelectedCharacters.Remove(characterName);
     }
 
-    public bool IsCharacterSelected(int characterID)
+    public bool IsCharacterSelected(string characterName)
     {
-        return SelectedCharacterIndexes.Contains(characterID);
+        return SelectedCharacters.Contains(characterName);
     }
 
     public int GetTick()

@@ -9,8 +9,8 @@ using UnityEngine.UI;
 public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
-    private int characterIndex = 0; 
-    public int CharacterIndex { get { return characterIndex; } }
+    private string characterName = ""; 
+    public string CharacterName { get { return characterName; } }
 
     [SerializeField]
     private GameObject selectedIcon;
@@ -35,16 +35,17 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if (ServerManager.Instance.IsOnlineMatch)
             {
-                NetworkManager.Instance.RoomPlayer.SelectCharacter(NetworkClient.connection.identity.netId, characterIndex);
+                NetworkManager.Instance.RoomPlayer.SelectCharacter(NetworkClient.connection.identity.netId, characterName);
             }
             else
             {
                 if (!LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
                 {
                     LocalPlayersManager.Instance.LocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
-                    SetCharacterSelected(true);
-
                     CursorManager.Instance.HideCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
+                    LobbyManager.Instance.CharacterSelected((uint)CursorManager.Instance.GetLastInteractedPlayerIndex(), characterName);
+
+                    SetCharacterSelected(true);
                 }
             }
         }

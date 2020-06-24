@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbyManager : Singleton<LobbyManager>
+public class LobbyManager : PersistentSingleton<LobbyManager>
 {
-    public delegate void CharacterEvent(uint playerID, int characterID);
+    public delegate void CharacterEvent(uint playerID, string characterName);
     public event CharacterEvent OnCharacterSelected;
+
+    public delegate void PlayerControllerEvent(uint playerID, PlayerController playerController);
+    public event PlayerControllerEvent OnPlayerCreated;
+
+    //for both online and local
+    public List<uint> Players { get; set; } = new List<uint>();
 
     private void Start()
     {
@@ -25,18 +31,23 @@ public class LobbyManager : Singleton<LobbyManager>
         NetworkManager.Instance.StartClient();
     }
 
-    public void CharacterSelected(uint connectionID, int characterIndex)
+    public void CharacterSelected(uint playerID, string characterName)
     {
-        if (connectionID == NetworkClient.connection.identity.netId)
+        if (playerID == NetworkClient.connection.identity.netId)
         {
             NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(true);
-        }
-
-        if (connectionID == NetworkClient.connection.identity.netId)
-        {
             CursorManager.Instance.HideAllCursors();
         }
 
-        OnCharacterSelected?.Invoke(connectionID, characterIndex);
+        Players.Add(playerID);
+
+        FighterManager.Instance.FighterSelected(playerID, characterName);
+
+        OnCharacterSelected?.Invoke(playerID, characterName);
+    }
+
+    public void PlayerCreated(uint playerID, PlayerController player)
+    {
+        OnPlayerCreated?.Invoke(playerID, player);
     }
 }

@@ -86,11 +86,11 @@ public class CharacterSelectScreen : Panel
         }
     }
 
-    private void OnCharacterSelected(uint connectionID, int characterId)
+    private void OnCharacterSelected(uint connectionID, string characterName)
     {
         foreach(var characterCell in characterCells)
         {
-            if (characterCell.CharacterIndex == characterId)
+            if (characterCell.CharacterName == characterName)
             {
                 characterCell.SetCharacterSelected(true);
             }

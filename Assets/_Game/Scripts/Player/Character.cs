@@ -31,6 +31,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     private Coroutine invincibleRoutine;
 
+    public delegate void HealthEvent(int health);
+    public event HealthEvent OnHealthChanged;
+
     protected virtual void Awake()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
@@ -54,6 +57,8 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         if (Alive && !Invincible)
         {
             Health -= amount;
+
+            OnHealthChanged?.Invoke(Health);
 
             //damage text
             GameObject obj = ObjectPooler.GetPooledObject(SpawnObjectsManager.Instance.GetPrefab(DataKeys.SpawnableKeys.WorldSpaceText));

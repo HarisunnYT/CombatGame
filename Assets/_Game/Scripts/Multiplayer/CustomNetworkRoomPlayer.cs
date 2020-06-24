@@ -15,27 +15,27 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         }
     }
 
-    public void SelectCharacter(uint connectionID, int characterIndex)
+    public void SelectCharacter(uint connectionID, string characterName)
     {
         if (isServer)
-            RpcSelectCharacter(connectionID, characterIndex);
+            RpcSelectCharacter(connectionID, characterName);
         else 
-            CmdSelectCharacter(connectionID, characterIndex);
+            CmdSelectCharacter(connectionID, characterName);
     }
 
     [Command]
-    private void CmdSelectCharacter(uint connectionID, int characterIndex)
+    private void CmdSelectCharacter(uint connectionID, string characterName)
     {
-        if (!ServerManager.Instance.IsCharacterSelected(characterIndex))
+        if (!ServerManager.Instance.IsCharacterSelected(characterName))
         {
-            RpcSelectCharacter(connectionID, characterIndex);
+            RpcSelectCharacter(connectionID, characterName);
         }
     }
     
     [ClientRpc]
-    private void RpcSelectCharacter(uint connectionID, int characterIndex)
+    private void RpcSelectCharacter(uint connectionID, string characterName)
     {
-        LobbyManager.Instance.CharacterSelected(connectionID, characterIndex);
-        ServerManager.Instance.SetCharacterSelected(characterIndex);
+        LobbyManager.Instance.CharacterSelected(connectionID, characterName);
+        ServerManager.Instance.SetCharacterSelected(characterName);
     }
 }

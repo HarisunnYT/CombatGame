@@ -55,6 +55,8 @@ public class PlayerController : Character
     public bool HorizontalMovementEnabled { get; private set; } = true;
     public bool VerticalMovementEnabled { get; private set; } = true;
 
+    public FighterData Fighter { get; private set; }
+
     private Vector3 originalScale;
 
     private float previousScaleSwappedTimer = 0;
@@ -67,6 +69,13 @@ public class PlayerController : Character
     private Coroutine verticalMovementCoroutine;
 
     private uint playerIndexID = 0;
+
+    #endregion
+
+    #region CALLBACKS
+
+    public delegate void NormalEvent();
+    public event NormalEvent OnPlayerDisconnected;
 
     #endregion
 
@@ -86,6 +95,9 @@ public class PlayerController : Character
         Rigidbody.isKinematic = !isLocalPlayer && ServerManager.Instance.IsOnlineMatch;
 
         playerIndexID = (uint)MatchManager.Instance.Players.Count;
+        Fighter = FighterManager.Instance.GetFighterForPlayer(ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID);
+
+        LobbyManager.Instance.PlayerCreated(ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID, this);
 
         MatchManager.Instance.AddPlayer(this, ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID);
 
@@ -94,6 +106,8 @@ public class PlayerController : Character
 
     private void OnDestroy()
     {
+        OnPlayerDisconnected?.Invoke();
+
         if (GameManager.Instance)
             MatchManager.Instance.RemovePlayer(this);
     }
@@ -162,6 +176,11 @@ public class PlayerController : Character
 
         if (VerticalMovementEnabled)
             baseMovement.MoveVertical(Time.deltaTime);
+    }
+
+    public void SetFighter(FighterData fighter)
+    {
+        Fighter = fighter;
     }
 
     #region MOVEMENT
