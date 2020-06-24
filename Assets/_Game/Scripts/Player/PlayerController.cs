@@ -95,11 +95,11 @@ public class PlayerController : Character
         Rigidbody.isKinematic = !isLocalPlayer && ServerManager.Instance.IsOnlineMatch;
 
         playerIndexID = (uint)MatchManager.Instance.Players.Count;
-        Fighter = FighterManager.Instance.GetFighterForPlayer(ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID);
+        Fighter = FighterManager.Instance.GetFighterForPlayer(playerIndexID);
 
-        LobbyManager.Instance.PlayerCreated(ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID, this);
+        LobbyManager.Instance.PlayerCreated(playerIndexID, this);
 
-        MatchManager.Instance.AddPlayer(this, ServerManager.Instance.IsOnlineMatch ? netId : playerIndexID);
+        MatchManager.Instance.AddPlayer(this, playerIndexID);
 
         inputProfile = new InputProfile(playerIndexID > 0 ? LocalPlayersManager.Instance.GetGUIDFromPlayerIndex((int)playerIndexID) : default, ServerManager.Instance.IsOnlineMatch);
     }

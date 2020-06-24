@@ -33,7 +33,10 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
     public void CharacterSelected(uint playerID, string characterName)
     {
-        if (playerID == NetworkClient.connection.identity.netId)
+        if (Players.Contains(playerID))
+            return;
+
+        if (ServerManager.Instance.IsOnlineMatch && playerID == NetworkManager.Instance.RoomPlayer.netId - 1)
         {
             NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(true);
             CursorManager.Instance.HideAllCursors();
