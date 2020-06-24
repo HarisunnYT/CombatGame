@@ -135,6 +135,14 @@ public class MatchManager : Singleton<MatchManager>
             wins.Add(player, 1);
     }
 
+    public int GetWins(PlayerController player)
+    {
+        if (wins.ContainsKey(player))
+            return wins[player];
+        else
+            return 0;
+    }
+
     #region PLAYER_ASSIGNMENTS
 
     public void AddPlayer(PlayerController player, uint id)
