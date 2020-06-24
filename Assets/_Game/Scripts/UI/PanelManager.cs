@@ -20,6 +20,11 @@ public class PanelManager : Singleton<PanelManager>
         Raycaster = GetComponent<GraphicRaycaster>();
 
         initialPanel?.ShowPanel();
+
+        foreach(var panel in panels)
+        {
+            panel.Initialise();
+        }
     }
 
     public void ShowPanel<T>() where T : Panel
@@ -29,7 +34,7 @@ public class PanelManager : Singleton<PanelManager>
 
     public T GetPanel<T>() where T : Panel
     {
-        foreach(var panel in panels)
+        foreach (var panel in panels)
         {
             if (panel is T)
                 return panel as T;
@@ -52,10 +57,18 @@ public class PanelManager : Singleton<PanelManager>
     {
         foreach (var panel in panels)
         {
-            if (panel.gameObject.activeSelf && (leaveOpenPanel == null || panel != leaveOpenPanel))
+            if ((leaveOpenPanel == null || panel != leaveOpenPanel) && panel.PanelOpenType != Panel.PanelType.LeaveOut)
             {
                 panel.Close();
             }
+        }
+    }
+
+    public void ForceCloseAllPanels()
+    {
+        foreach (var panel in panels)
+        {
+            panel.Close();
         }
     }
 
@@ -81,5 +94,18 @@ public class PanelManager : Singleton<PanelManager>
                 Time.timeScale = 1;
             }
         }
+    }
+
+    public bool CanOpenPanel()
+    {
+        foreach (var panel in panels)
+        {
+            if (panel.gameObject.activeSelf && panel.PanelOpenType != Panel.PanelType.Modal && !(panel is HUDPanel))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

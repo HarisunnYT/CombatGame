@@ -35,6 +35,9 @@ public class MatchManager : Singleton<MatchManager>
 
     public Dictionary<uint, PlayerController> Players = new Dictionary<uint, PlayerController>();
 
+    //int being the amount of wins the player has
+    private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
+
     private FightManager currentFight;
     private RoundPhase currentPhase;
 
@@ -75,6 +78,8 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginFightPhase()
     {
+        CameraManager.Instance.CameraFollow.ResetCamera();
+
         purchasePanel.Close();
         CursorManager.Instance.HideAllCursors();
 
@@ -96,8 +101,6 @@ public class MatchManager : Singleton<MatchManager>
 
         Destroy(currentFight.gameObject);
         currentFight = null;
-
-        CameraManager.Instance.CameraFollow.ResetCamera();
     }
 
     private void CreateFightManager()
@@ -122,6 +125,14 @@ public class MatchManager : Singleton<MatchManager>
                 BeginPhase(RoundPhase.Fight_Phase);
             }
         }
+    }
+
+    public void AddWin(PlayerController player)
+    {
+        if (wins.ContainsKey(player))
+            wins[player]++;
+        else
+            wins.Add(player, 1);
     }
 
     #region PLAYER_ASSIGNMENTS

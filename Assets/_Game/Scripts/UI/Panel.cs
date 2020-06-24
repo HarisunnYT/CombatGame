@@ -5,14 +5,16 @@ using UnityEngine;
 public class Panel : MonoBehaviour, IAnimationHandler
 {
     [System.Serializable]
-    enum PanelType
+    public enum PanelType
     {
         Normal,
-        Modal
+        Modal,
+        LeaveOut
     }
 
     [SerializeField]
     private PanelType panelType;
+    public PanelType PanelOpenType { get { return panelType; } }
 
     [SerializeField]
     private bool pauseTime = false;
@@ -31,13 +33,15 @@ public class Panel : MonoBehaviour, IAnimationHandler
         }
     }
 
+    public virtual void Initialise() { }
+
     public void Close()
     {
         PanelManager.Instance.PanelClosed(this);
 
         if (animator)
         {
-            animator.SetTrigger("Close");
+            PanelManager.Instance.StartCoroutine(AnimatorBoolFrameDelay("Close"));
         }
         else
         {
@@ -52,22 +56,17 @@ public class Panel : MonoBehaviour, IAnimationHandler
         ObjectDisabled();
     }
 
-    private void ObjectDisabled()
+    public void ObjectDisabled()
     {
-        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-
         gameObject.SetActive(false);
         OnClose();
     }
 
     public void ShowPanel()
     {
-        if (gameObject.activeSelf)
-            return;
-
         if (animator && gameObject.activeSelf)
         {
-            animator.SetTrigger("Open");
+            PanelManager.Instance.StartCoroutine(AnimatorBoolFrameDelay("Open"));
         }
 
         gameObject.SetActive(true);
@@ -92,8 +91,17 @@ public class Panel : MonoBehaviour, IAnimationHandler
 
     public void OnAnimationBegin() { }
 
-    public void OnAnimationComplete() 
+    public void OnAnimationComplete()
     {
         ObjectDisabled();
+    }
+
+    private IEnumerator AnimatorBoolFrameDelay(string boolName)
+    {
+        animator.SetBool(boolName, true);
+
+        yield return new WaitForEndOfFrame();
+
+        animator.SetBool(boolName, false);
     }
 }

@@ -11,6 +11,9 @@ public class HUDPanel : Panel
     private TMP_Text countDownText;
 
     [SerializeField]
+    private GameObject playerCellsParent;
+
+    [SerializeField]
     private PlayerVarCell[] playerCells;
 
     private void Start()
@@ -30,5 +33,10 @@ public class HUDPanel : Panel
     public void HideCountdownText()
     {
         countDownText.gameObject.SetActive(false);
+    }
+
+    public void HidePlayerCells(bool hide)
+    {
+        playerCellsParent.SetActive(!hide);
     }
 }

@@ -27,7 +27,8 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         AddListener();
         BeginFightCountdown();
 
-        PanelManager.Instance.ShowPanel<HUDPanel>();
+        hudPanel.ShowPanel();
+        hudPanel.HidePlayerCells(false);
 
         if (AlivePlayers.Count == 0)
         {
@@ -91,11 +92,17 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     public void FightOver(PlayerController winner)
     {
+        winner.DisableInput();
+
+        MatchManager.Instance.AddWin(winner);
+
+        hudPanel.HidePlayerCells(true);
+
         DetermineCashForPlayer(winner, 1);
 
         CameraManager.Instance.CameraFollow.ZoomInOnPlayer(winner.gameObject, new Vector2(0, 0.75f), 2, 1, () =>
         {
-            MatchManager.Instance.BeginPhase(MatchManager.RoundPhase.Buy_Phase);
+            PanelManager.Instance.ShowPanel<WinsPanel>();
         });
     }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 {
     [SerializeField]
-    private int startingHealth = 100;
+    protected int startingHealth = 100;
 
     [SerializeField]
     protected LayerMask invertedCharacterMask;
@@ -106,6 +106,13 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         {
             Rigidbody.AddForce(direction * knockback, ForceMode2D.Impulse);
         }
+    }
+
+    public void ResetCharacter()
+    {
+        Alive = true;
+        Health = startingHealth;
+        OnHealthChanged?.Invoke(startingHealth);
     }
 
     public void SetDirection(int direction)
