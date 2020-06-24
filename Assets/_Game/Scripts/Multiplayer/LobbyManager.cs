@@ -27,7 +27,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
     private void CreateClient()
     {
-        NetworkManager.Instance.networkAddress = "localhost";
+        NetworkManager.Instance.networkAddress = "172.197.128.73";
         NetworkManager.Instance.StartClient();
     }
 
