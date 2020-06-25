@@ -41,15 +41,22 @@ public class MatchManager : Singleton<MatchManager>
     private FightManager currentFight;
     private RoundPhase currentPhase;
 
-    private PurchasePhasePanel purchasePanel;
+    private CharacterPurchasePanel purchasePanel;
 
     private float buyPhaseCountdownTimer = 0;
 
     #endregion
 
+    #region CALLBACKS
+
+    public delegate void TimeEvent(int time);
+    public event TimeEvent OnBuyPhaseTimePassed;
+
+    #endregion
+
     private void Start()
     {
-        purchasePanel = PanelManager.Instance.GetPanel<PurchasePhasePanel>();
+        purchasePanel = PanelManager.Instance.GetPanel<CharacterPurchasePanel>();
     }
 
     public void BeginMatch()
@@ -80,7 +87,11 @@ public class MatchManager : Singleton<MatchManager>
     {
         CameraManager.Instance.CameraFollow.ResetCamera();
 
-        purchasePanel.Close();
+        if (ServerManager.Instance.IsOnlineMatch)
+            purchasePanel.Close();
+        else
+            LocalPlayerUIManager.Instance.DisplayLocalScreens(false);
+
         CursorManager.Instance.HideAllCursors();
 
         //place players in spawns
@@ -95,7 +106,11 @@ public class MatchManager : Singleton<MatchManager>
     private void BeginBuyPhase()
     {
         buyPhaseCountdownTimer = Time.time + buyPhaseTimeInSeconds;
-        purchasePanel.ShowPanel();
+
+        if (ServerManager.Instance.IsOnlineMatch)
+            purchasePanel.ShowPanel();
+        else
+            LocalPlayerUIManager.Instance.DisplayLocalScreens(true);
 
         currentFight.AlivePlayers.Clear();
 
@@ -117,7 +132,7 @@ public class MatchManager : Singleton<MatchManager>
         if (currentPhase == RoundPhase.Buy_Phase)
         {
             int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - Time.time);
-            purchasePanel.UpdateCountdownTimer(roundedTime.ToString());
+            OnBuyPhaseTimePassed?.Invoke(roundedTime);
 
             //countdown is finished
             if (roundedTime <= 0)

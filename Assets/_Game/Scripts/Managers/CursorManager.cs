@@ -98,4 +98,17 @@ public class CursorManager : PersistentSingleton<CursorManager>
             cursor.gameObject.SetActive(true);
         }
     }
+
+    public Cursor GetCursor(int playerIndex)
+    {
+        foreach (var cursor in cursors)
+        {
+            if (cursor.PlayerIndex == playerIndex)
+            {
+                return cursor;
+            }
+        }
+
+        return null;
+    }
 }

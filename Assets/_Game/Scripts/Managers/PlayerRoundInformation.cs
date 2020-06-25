@@ -28,9 +28,11 @@ public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightE
         OnCashUpdated?.Invoke(Cash);
     }
 
+
     public void RemoveCash(int amount)
     {
         Cash = Mathf.Clamp(Cash - amount, 0, maxCash);
+        OnCashUpdated?.Invoke(Cash);
     }
 
     public void AddWin()

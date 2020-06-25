@@ -19,9 +19,13 @@ public class Cursor : MonoBehaviour
 
     private Vector3 previousCursorPosition;
 
+    private GraphicRaycaster assignedRaycaster;
+    private Camera assignedCamera;
+
     private void Awake()
     {
         eventSystem = EventSystem.current;
+        ResetCamera();
     }
 
     public void AssignDevice(int playerIndex, System.Guid controllerID)
@@ -47,7 +51,10 @@ public class Cursor : MonoBehaviour
 
             List<RaycastResult> results = new List<RaycastResult>();
 
-            PanelManager.Instance.Raycaster.Raycast(pointerEventData, results);
+            if (assignedRaycaster)
+                assignedRaycaster.Raycast(pointerEventData, results);
+            else
+                PanelManager.Instance.Raycaster.Raycast(pointerEventData, results);
 
             foreach (RaycastResult result in results)
             {
@@ -68,6 +75,15 @@ public class Cursor : MonoBehaviour
             }
         }
 
+        if (assignedCamera == null)
+            ResetCamera();
+
+        //clamp cursor to camera bounds
+        Vector3 pos = assignedCamera.ScreenToViewportPoint(transform.position);
+        pos.x = Mathf.Clamp(pos.x, 0.0f, 0.95f);
+        pos.y = Mathf.Clamp(pos.y, 0.05f, 1.0f);
+        transform.position = assignedCamera.ViewportToScreenPoint(pos);
+
         previousCursorPosition = transform.position;
     }
 
@@ -77,5 +93,30 @@ public class Cursor : MonoBehaviour
         {
             transform.position += new Vector3(inputProfile.Move.X * cursorMoveSpeed, inputProfile.Move.Y * cursorMoveSpeed, 0);
         }
+    }
+
+    public void AssignRaycaster(GraphicRaycaster assignedRaycaster)
+    {
+        this.assignedRaycaster = assignedRaycaster;
+    }
+
+    public void ResetRaycaster()
+    {
+        assignedRaycaster = PanelManager.Instance.Raycaster;
+    }
+
+    public void AssignCamera(Camera camera)
+    {
+        assignedCamera = camera;
+    }
+
+    public void ResetCamera()
+    {
+        assignedCamera = Camera.main;
+    }
+
+    public void SetScale(Vector3 scale)
+    {
+        transform.localScale = scale;
     }
 }

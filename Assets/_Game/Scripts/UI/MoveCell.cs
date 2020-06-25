@@ -22,11 +22,18 @@ public class MoveCell : MonoBehaviour
     [SerializeField]
     private Sprite defensiveSprite;
 
-    private MoveData moveData;
+    public MoveData MoveData { get; private set; }
+
+    protected CharacterPurchasePanel purchasePanel;
+
+    private void Start()
+    {
+        purchasePanel = GetComponentInParent<CharacterPurchasePanel>();
+    }
 
     public virtual void Configure(MoveData moveData)
     {
-        this.moveData = moveData;
+        this.MoveData = moveData;
 
         moveImage.sprite = moveData.Icon;
         cooldownText.text = moveData.Cooldown.ToString();
