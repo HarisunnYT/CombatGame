@@ -43,5 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc60ad0b05221624bae7f7bdd89a822c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buyPhaseTimeInSeconds: 5
+  buyPhaseTimeInSeconds: 10
   spawnPositions: []

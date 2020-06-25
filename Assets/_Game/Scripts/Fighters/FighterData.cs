@@ -7,4 +7,6 @@ public class FighterData : ScriptableObject
 {
     public string FighterName;
     public Sprite FigherIcon;
+
+    public MoveData[] Moves;
 }

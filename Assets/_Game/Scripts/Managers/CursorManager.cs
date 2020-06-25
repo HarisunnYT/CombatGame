@@ -90,4 +90,12 @@ public class CursorManager : PersistentSingleton<CursorManager>
             cursor.gameObject.SetActive(false);
         }
     }
+
+    public void ShowAllCursors()
+    {
+        foreach(var cursor in cursors)
+        {
+            cursor.gameObject.SetActive(true);
+        }
+    }
 }

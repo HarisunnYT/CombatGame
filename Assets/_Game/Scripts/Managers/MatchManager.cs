@@ -143,6 +143,19 @@ public class MatchManager : Singleton<MatchManager>
             return 0;
     }
 
+    public PlayerController GetClientPlayer()
+    {
+        foreach(var player in Players)
+        {
+            if (player.Value.isClient)
+            {
+                return player.Value;
+            }
+        }
+
+        return null;
+    }
+
     #region PLAYER_ASSIGNMENTS
 
     public void AddPlayer(PlayerController player, uint id)

@@ -12,10 +12,20 @@ public class DebugPanel : Panel
         }
     }
 
+    protected override void OnShow()
+    {
+        CursorManager.Instance.ShowAllCursors();
+    }
+
+    protected override void OnClose()
+    {
+        CursorManager.Instance.HideAllCursors();
+    }
+
     public void AutoWin()
     {
         FightManager.Instance.FightOver(FightManager.Instance.AlivePlayers[0]);
-        Close();
+        ForceClose();
     }
 
     public void AddCash(int amount)

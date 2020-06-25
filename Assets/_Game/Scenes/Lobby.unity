@@ -127,17 +127,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1533188291}
     m_Modifications:
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterCell (3)
+      objectReference: {fileID: 0}
     - target: {fileID: 8584401560021137145, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: cb0260f320cabbb458a09bb0f763fc50,
         type: 3}
-    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterCell (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -272,6 +272,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -498,6 +503,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterIndex
@@ -709,17 +719,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1533188291}
     m_Modifications:
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterCell (5)
+      objectReference: {fileID: 0}
     - target: {fileID: 8584401560021137145, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 20f7b4a695b4a3f45afbb8385f18e765,
         type: 3}
-    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterCell (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -855,6 +865,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterIndex
@@ -898,17 +913,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1533188291}
     m_Modifications:
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterCell (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 8584401560021137145, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: f319d94c0c6305448bb38b392a516240,
         type: 3}
-    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterCell (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1044,6 +1059,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterIndex
@@ -1151,17 +1171,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1533188291}
     m_Modifications:
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterCell (6)
+      objectReference: {fileID: 0}
     - target: {fileID: 8584401560021137145, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 533d2f940463217458b28eca6b1ae05a,
         type: 3}
-    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterCell (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1297,6 +1317,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterIndex
@@ -1417,17 +1442,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1533188291}
     m_Modifications:
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterCell (4)
+      objectReference: {fileID: 0}
     - target: {fileID: 8584401560021137145, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: be87cc4e743240a4ab25aea8a8c40eb1,
         type: 3}
-    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterCell (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1562,6 +1587,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -1845,17 +1875,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1533188291}
     m_Modifications:
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterCell (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 8584401560021137145, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d381fc1c28e47174e8596699fafbdd29,
         type: 3}
-    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterCell (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1990,6 +2020,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -2638,6 +2673,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterIndex
@@ -2818,17 +2858,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1533188291}
     m_Modifications:
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterCell
+      objectReference: {fileID: 0}
     - target: {fileID: 8584401560021137145, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 6a8b89f9e4dfc4044866178a3c655ca8,
         type: 3}
-    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterCell
-      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
