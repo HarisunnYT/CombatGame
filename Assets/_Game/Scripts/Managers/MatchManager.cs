@@ -162,7 +162,7 @@ public class MatchManager : Singleton<MatchManager>
     {
         foreach(var player in Players)
         {
-            if (player.Value.isClient)
+            if (player.Value.isLocalPlayer)
             {
                 return player.Value;
             }

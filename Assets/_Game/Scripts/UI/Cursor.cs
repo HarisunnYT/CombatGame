@@ -71,6 +71,9 @@ public class Cursor : MonoBehaviour
                 {
                     Button button = result.gameObject.GetComponentInParent<Button>();
                     button?.onClick?.Invoke();
+
+                    if (button) //we don't want to click more than one button at a time
+                        break;
                 }
             }
         }

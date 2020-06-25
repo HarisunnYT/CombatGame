@@ -28,7 +28,7 @@ public class ColorFlash : MonoBehaviour
             StopCoroutine(flashRoutine);
 
         this.flashDuration = flashDuration;
-        flashRoutine = StartCoroutine(FlashCoroutine());
+        flashRoutine = GameManager.Instance.StartCoroutine(FlashCoroutine());
 
         return this;
     }
