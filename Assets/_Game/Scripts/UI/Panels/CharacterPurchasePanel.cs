@@ -32,7 +32,7 @@ public class CharacterPurchasePanel : Panel
         if (ServerManager.Instance.IsOnlineMatch)
             moves = MatchManager.Instance.GetClientPlayer().Fighter.Moves;
         else
-            moves = MatchManager.Instance.GetPlayer((uint)playerIndex).Fighter.Moves;
+            moves = MatchManager.Instance.GetPlayer(playerIndex).Fighter.Moves;
 
         foreach (var move in moves.OrderBy(x => x.Price)) //sort by lowest price first
         {

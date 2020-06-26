@@ -33,8 +33,6 @@ public class MatchManager : Singleton<MatchManager>
 
     public int WinsRequired { get; private set; } = 5;
 
-    public Dictionary<uint, PlayerController> Players = new Dictionary<uint, PlayerController>();
-
     //int being the amount of wins the player has
     private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
 
@@ -44,6 +42,8 @@ public class MatchManager : Singleton<MatchManager>
     private CharacterPurchasePanel purchasePanel;
 
     private float buyPhaseCountdownTimer = 0;
+
+    private int spawnIndex = 0;
 
     #endregion
 
@@ -94,17 +94,18 @@ public class MatchManager : Singleton<MatchManager>
 
         CursorManager.Instance.HideAllCursors();
 
-        //place players in spawns
-        for (int i = 0; i < Players.Count; i++)
-        {
-            spawnPositions[i].SetPlayerSpawn(Players.ElementAt(i).Value);
-        }
+        spawnIndex = 0;
 
         CreateFightManager();
     }
 
     private void BeginBuyPhase()
     {
+        foreach(var player in ServerManager.Instance.Players)
+        {
+            player.PlayerController.ResetCharacter();
+        }
+
         buyPhaseCountdownTimer = Time.time + buyPhaseTimeInSeconds;
 
         if (ServerManager.Instance.IsOnlineMatch)
@@ -158,71 +159,47 @@ public class MatchManager : Singleton<MatchManager>
             return 0;
     }
 
-    public PlayerController GetClientPlayer()
+    public void SetPlayerSpawn(PlayerController player)
     {
-        foreach(var player in Players)
-        {
-            if (player.Value.isLocalPlayer)
-            {
-                return player.Value;
-            }
-        }
-
-        return null;
+        spawnPositions[spawnIndex].SetPlayerSpawn(player);
+        spawnIndex++;
     }
 
     #region PLAYER_ASSIGNMENTS
 
-    public void AddPlayer(PlayerController player, uint id)
+    public void AddPlayer(PlayerController player, int id)
     {
-        Players.Add(id, player);
+        ServerManager.Instance.GetPlayer(id).PlayerController = player;
 
         CreateFightManager(); //lazy initialise fight manager
 
-        currentFight.AlivePlayers.Add(player);
+        if (!currentFight.AlivePlayers.Contains(id))
+            currentFight.AlivePlayers.Add(id);
 
-        spawnPositions[Players.Count - 1].SetPlayerSpawn(Players.ElementAt(Players.Count - 1).Value);
+        SetPlayerSpawn(player);
     }
 
-    public void RemovePlayer(PlayerController player)
+    public PlayerController GetPlayer(int playerID)
     {
-        RemovePlayer(GetPlayerID(player));
+        return ServerManager.Instance.GetPlayer(playerID).PlayerController;
     }
 
-    public void RemovePlayer(uint playerID)
+    public int GetPlayerID(PlayerController player)
     {
-        Players.Remove(playerID);
+        return ServerManager.Instance.GetPlayer(player).PlayerID;
     }
 
-    public PlayerController GetPlayer(uint playerID)
+    public PlayerController GetClientPlayer()
     {
-        return Players[playerID];
-    }
-
-    public PlayerController GetPlayer(GameObject obj)
-    {
-        foreach (var player in Players)
+        foreach (var player in ServerManager.Instance.Players)
         {
-            if (player.Value.gameObject == obj)
+            if (player.PlayerController.isLocalPlayer)
             {
-                return player.Value;
+                return player.PlayerController;
             }
         }
 
         return null;
-    }
-
-    public uint GetPlayerID(PlayerController player)
-    {
-        foreach(var p in Players)
-        {
-            if (p.Value == player)
-            {
-                return p.Key;
-            }
-        }
-
-        return 0;
     }
 
     #endregion

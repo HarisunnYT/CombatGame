@@ -18,9 +18,9 @@ public class HUDPanel : Panel
 
     private void Start()
     {
-        for (int i = 0; i < LobbyManager.Instance.Players.Count; i++)
+        for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
         {
-            playerCells[i].Configure(LobbyManager.Instance.Players[i]);
+            playerCells[i].Configure(ServerManager.Instance.Players[i].PlayerID);
         }
     }
 

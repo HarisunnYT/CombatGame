@@ -6,10 +6,13 @@ public class Boundary : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (ServerManager.Instance.IsServer || !ServerManager.Instance.IsOnlineMatch)
         {
-            PlayerController player = collision.GetComponent<PlayerController>();
-            player.OnDamaged(int.MaxValue, player); //we pass the player through as the killer as they killed themselves (may change this to last attack enemy)
+            IDamagable damagable = collision.GetComponent<IDamagable>();
+            if (damagable != null)
+            {
+                damagable.OnDamaged(int.MaxValue, collision.GetComponent<PlayerController>());
+            }
         }
     }
 }

@@ -52,7 +52,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
             OnDamagedClient(amount, MatchManager.Instance.GetPlayerID(player));
     }
 
-    private void OnDamagedClient(int amount, uint playerID)
+    private void OnDamagedClient(int amount, int playerID)
     {
         if (Alive && !Invincible)
         {
@@ -85,9 +85,31 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
     }
 
     [ClientRpc]
-    public virtual void RpcOnDamaged(int amount, uint playerID)
+    public virtual void RpcOnDamaged(int amount, int playerID)
     {
         OnDamagedClient(amount, playerID);
+    }
+
+    public void OnHealed(int amount)
+    {
+        if (ServerManager.Instance.IsOnlineMatch && ServerManager.Instance.IsServer)
+            RpcOnHealed(amount);
+        else
+            OnHealedClient(amount);
+    }
+
+    private void OnHealedClient(int amount)
+    {
+        Health = Mathf.Clamp(Health + amount, 0, startingHealth);
+        Alive = Health > 0;
+
+        OnHealthChanged?.Invoke(Health);
+    }
+
+    [ClientRpc]
+    public void RpcOnHealed(int amount)
+    {
+        OnHealedClient(amount);
     }
 
     protected virtual void Update()
@@ -95,7 +117,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         Grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), Vector2.down, 0.5f, invertedCharacterMask);
     }
 
-    protected virtual void OnDeath(uint playerID)
+    protected virtual void OnDeath(int playerID)
     {
         Alive = false;
     }
@@ -112,7 +134,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
     {
         Alive = true;
         Health = startingHealth;
-        OnHealthChanged?.Invoke(startingHealth);
+        OnHealthChanged?.Invoke(Health);
+
+        gameObject.SetActive(true);
     }
 
     public void SetDirection(int direction)

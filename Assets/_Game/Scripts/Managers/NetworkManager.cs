@@ -1,6 +1,8 @@
 ﻿using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using UnityEngine;
 
@@ -28,9 +30,31 @@ public class NetworkManager : NetworkRoomManager
         if (sceneName.Contains("Game.unity"))
         {
             MatchManager.Instance.BeginMatch();
-            if (ServerManager.Instance.IsServer)
+        }
+    }
+
+    public override GameObject OnServerAddPlayer(NetworkConnection conn)
+    {
+        GameObject player = base.OnServerAddPlayer(conn);
+        OnPlayerCreated(conn, player.GetComponent<PlayerController>(), true);
+        return player;
+    }
+
+    public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
+    {
+        PlayerController player = Instantiate(playerPrefab).GetComponent<PlayerController>();
+        OnPlayerCreated(conn, player, true);
+        return player.gameObject;
+    }
+
+    public void OnPlayerCreated(NetworkConnection conn, PlayerController player, bool isServer)
+    {
+        foreach (var slot in roomSlots)
+        {
+            if ((isServer && slot.connectionToClient == conn) || (!isServer && slot.connectionToServer == conn))
             {
-                ServerManager.Instance.BeganMatch();
+                player.AssignID(slot.index);
+                break;
             }
         }
     }
@@ -43,19 +67,5 @@ public class NetworkManager : NetworkRoomManager
     public override void OnClientExitRoom(NetworkConnection conn)
     {
         OnClientExitedRoom?.Invoke(conn);
-    }
-
-    public override void OnServerConnect(NetworkConnection conn)
-    {
-        base.OnServerConnect(conn);
-
-        ServerManager.Instance.OnPlayerConnectedToServer(conn);
-    }
-
-    public override void OnServerDisconnect(NetworkConnection conn)
-    {
-        base.OnServerDisconnect(conn);
-
-        ServerManager.Instance.OnPlayerDisconnectedFromServer(conn);
     }
 }

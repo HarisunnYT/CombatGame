@@ -57,7 +57,7 @@ public class CharacterSelectScreen : Panel
             for (int i = 0; i < NetworkManager.Instance.roomSlots.Count; i++)
             {
                 NetworkRoomPlayer player = NetworkManager.Instance.roomSlots[i];
-                connectedPlayerCells[i].Configure(player.connectionToServer, ServerManager.Instance.GetPlayerName(player.connectionToServer));
+                connectedPlayerCells[i].Configure(player.connectionToServer, ServerManager.Instance.GetPlayerName(player.index));
             }
         }
     }
@@ -86,7 +86,7 @@ public class CharacterSelectScreen : Panel
         }
     }
 
-    private void OnCharacterSelected(uint connectionID, string characterName)
+    private void OnCharacterSelected(int playerID, string characterName)
     {
         foreach(var characterCell in characterCells)
         {

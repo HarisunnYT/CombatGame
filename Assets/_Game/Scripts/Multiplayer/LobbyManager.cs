@@ -5,14 +5,11 @@ using UnityEngine;
 
 public class LobbyManager : PersistentSingleton<LobbyManager>
 {
-    public delegate void CharacterEvent(uint playerID, string characterName);
+    public delegate void CharacterEvent(int playerID, string characterName);
     public event CharacterEvent OnCharacterSelected;
 
-    public delegate void PlayerControllerEvent(uint playerID, PlayerController playerController);
+    public delegate void PlayerControllerEvent(int playerID, PlayerController playerController);
     public event PlayerControllerEvent OnPlayerCreated;
-
-    //for both online and local
-    public List<uint> Players { get; set; } = new List<uint>();
 
     private void Start()
     {
@@ -31,25 +28,25 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         NetworkManager.Instance.StartClient();
     }
 
-    public void CharacterSelected(uint playerID, string characterName)
+    public void CharacterSelected(int playerID, string characterName)
     {
-        if (Players.Contains(playerID))
-            return;
+        foreach(var player in ServerManager.Instance.Players)
+        {
+            if (player.Figher == characterName)
+                return;
+        }
 
-        if (ServerManager.Instance.IsOnlineMatch && playerID == NetworkManager.Instance.RoomPlayer.netId - 1)
+        if (!ServerManager.Instance.IsServer && ServerManager.Instance.IsOnlineMatch && playerID == NetworkManager.Instance.RoomPlayer.index)
         {
             NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(true);
             CursorManager.Instance.HideAllCursors();
         }
 
-        Players.Add(playerID);
-
-        FighterManager.Instance.FighterSelected(playerID, characterName);
-
+        ServerManager.Instance.GetPlayer(playerID).Figher = characterName;
         OnCharacterSelected?.Invoke(playerID, characterName);
     }
 
-    public void PlayerCreated(uint playerID, PlayerController player)
+    public void PlayerCreated(int playerID, PlayerController player)
     {
         OnPlayerCreated?.Invoke(playerID, player);
     }

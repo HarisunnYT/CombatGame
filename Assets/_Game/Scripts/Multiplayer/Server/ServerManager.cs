@@ -5,18 +5,37 @@ using UnityEngine.SceneManagement;
 using Mirror;
 using System.ComponentModel.Design;
 using PlayFab.MultiplayerModels;
+using Steamworks;
 
 public class ServerManager : PersistentSingleton<ServerManager>
 {
+    public class ConnectedPlayer
+    {
+        public int PlayerID;
+        public uint SteamClientID;
+        public string Figher;
+        public PlayerController PlayerController;
+        public System.Guid ControllerGUID;
+
+        public ConnectedPlayer(int playerID, uint steamClientID)
+        {
+            PlayerID = playerID;
+            SteamClientID = steamClientID;
+
+            Figher = "";
+            PlayerController = null;
+            ControllerGUID = default;
+        }
+    }
+
     [SerializeField]
     private bool debugServer = false;
 
     public bool IsOnlineMatch { get; set; } = false;
 
     public bool IsServer { get; private set; }
-    public bool IsInUse { get; private set; }
 
-    public List<NetworkConnection> ConnectedPlayers { get; private set; } = new List<NetworkConnection>();
+    public List<ConnectedPlayer> Players { get; private set; } = new List<ConnectedPlayer>();
     private List<string> SelectedCharacters = new List<string>();
 
     protected override void Initialize()
@@ -46,27 +65,133 @@ public class ServerManager : PersistentSingleton<ServerManager>
         Debug.Log("SERVER SET UP");
     }
 
-    public void OnPlayerConnectedToServer(NetworkConnection conn)
+    public void OnPlayerDisconnectedFromServer()
     {
-        ConnectedPlayers.Add(conn);
-    }
-
-    public void OnPlayerDisconnectedFromServer(NetworkConnection conn)
-    {
-        ConnectedPlayers.Remove(conn);
-        if (ConnectedPlayers.Count <= 0 && IsInUse)
+        if (Players.Count <= 0)
         {
             NetworkManager.singleton.StopServer();
             Application.Quit();
         }
     }
 
-    public void BeganMatch()
+    public ConnectedPlayer AddConnectedPlayer(int id, uint steamClientID)
     {
-        IsInUse = true;
+        if (GetPlayer(id) != null)
+            return GetPlayer(id);
+
+        ConnectedPlayer player = new ConnectedPlayer(id, steamClientID);
+        Players.Add(player);
+
+        return player;
     }
 
-    public string GetPlayerName(NetworkConnection conn)
+    public void RemovePlayer(int id)
+    {
+        for (int i = 0; i < Players.Count; i++)
+        {
+            if (Players[i].PlayerID == id)
+            {
+                Players.RemoveAt(i);
+                OnPlayerDisconnectedFromServer();
+
+                break;
+            }
+        }
+    }
+
+    public void RemovePlayer(NetworkConnection conn)
+    {
+        for (int i = 0; i < NetworkManager.Instance.roomSlots.Count; i++)
+        {
+            if (NetworkManager.Instance.roomSlots[i].connectionToClient == conn)
+            {
+                NetworkManager.Instance.roomSlots.RemoveAt(i);
+                OnPlayerDisconnectedFromServer();
+
+                break;
+            }
+        }
+    }
+
+    public ConnectedPlayer GetPlayer(int id)
+    {
+        foreach(var player in Players)
+        {
+            if (player.PlayerID == id)
+            {
+                return player;
+            }
+        }
+
+        return default;
+    }
+
+    public ConnectedPlayer GetPlayer(PlayerController playerController)
+    {
+        foreach (var player in Players)
+        {
+            if (player.PlayerController == playerController)
+            {
+                return player;
+            }
+        }
+
+        return default;
+    }
+
+    public ConnectedPlayer GetPlayer(System.Guid id)
+    {
+        foreach (var player in Players)
+        {
+            if (player.ControllerGUID == id)
+            {
+                return player;
+            }
+        }
+
+        return default;
+    }
+
+    public ConnectedPlayer GetPlayerLocal()
+    {
+        foreach (var player in Players)
+        {
+            if (player.PlayerID == NetworkManager.Instance.RoomPlayer.index)
+            {
+                return player;
+            }
+        }
+
+        return default;
+    }
+
+    public bool ContainsPlayer(int id)
+    {
+        foreach (var player in Players)
+        {
+            if (player.PlayerID == id)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool ContainsPlayer(System.Guid id)
+    {
+        foreach (var player in Players)
+        {
+            if (player.ControllerGUID == id)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public string GetPlayerName(int id)
     {
         return "Player";
     }

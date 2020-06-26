@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,30 +13,45 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (isLocalPlayer)
         {
             NetworkManager.Instance.RoomPlayer = this;
+            CmdAddConnectedPlayer(index, SteamClient.SteamId.AccountId);
         }
     }
 
-    public void SelectCharacter(uint connectionID, string characterName)
+    private void SelectCharacter(int playerID, string characterName)
     {
-        if (isServer)
-            RpcSelectCharacter(connectionID, characterName);
-        else 
-            CmdSelectCharacter(connectionID, characterName);
+        LobbyManager.Instance.CharacterSelected(playerID, characterName);
+        ServerManager.Instance.SetCharacterSelected(characterName);
     }
 
     [Command]
-    private void CmdSelectCharacter(uint connectionID, string characterName)
+    public void CmdSelectCharacter(int playerID, string characterName)
     {
         if (!ServerManager.Instance.IsCharacterSelected(characterName))
         {
-            RpcSelectCharacter(connectionID, characterName);
+            SelectCharacter(playerID, characterName);
+            RpcSelectCharacter(playerID, characterName);
         }
     }
     
     [ClientRpc]
-    private void RpcSelectCharacter(uint connectionID, string characterName)
+    private void RpcSelectCharacter(int playerID, string characterName)
     {
-        LobbyManager.Instance.CharacterSelected(connectionID, characterName);
-        ServerManager.Instance.SetCharacterSelected(characterName);
+        SelectCharacter(playerID, characterName);
+    }
+
+    [Command]
+    private void CmdAddConnectedPlayer(int netID, uint steamClientID)
+    {
+        ServerManager.Instance.AddConnectedPlayer(netID, steamClientID);
+        foreach (var connectPlayer in ServerManager.Instance.Players)
+        {
+            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.SteamClientID);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcAddConnectedPlayer(int netID, uint steamClientID)
+    {
+        ServerManager.Instance.AddConnectedPlayer(netID, steamClientID);
     }
 }

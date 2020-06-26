@@ -68,7 +68,7 @@ public class PlayerController : Character
     private Coroutine horizontalMovementCoroutine;
     private Coroutine verticalMovementCoroutine;
 
-    private uint playerIndexID = 0;
+    private int playerID;
 
     #endregion
 
@@ -94,14 +94,13 @@ public class PlayerController : Character
         //we don't want physics on network players as their positions are set over the server
         Rigidbody.isKinematic = !isLocalPlayer && ServerManager.Instance.IsOnlineMatch;
 
-        playerIndexID = (uint)MatchManager.Instance.Players.Count;
-        Fighter = FighterManager.Instance.GetFighterForPlayer(playerIndexID);
+        NetworkManager.Instance.OnPlayerCreated(connectionToServer, this, ServerManager.Instance.IsServer);
 
-        LobbyManager.Instance.PlayerCreated(playerIndexID, this);
+        Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
+        LobbyManager.Instance.PlayerCreated(playerID, this);
+        MatchManager.Instance.AddPlayer(this, playerID);
 
-        MatchManager.Instance.AddPlayer(this, playerIndexID);
-
-        inputProfile = new InputProfile(playerIndexID > 0 ? LocalPlayersManager.Instance.GetGUIDFromPlayerIndex((int)playerIndexID) : default, ServerManager.Instance.IsOnlineMatch);
+        inputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID);
     }
 
     private void OnDestroy()
@@ -109,7 +108,7 @@ public class PlayerController : Character
         OnPlayerDisconnected?.Invoke();
 
         if (GameManager.Instance)
-            MatchManager.Instance.RemovePlayer(this);
+            ServerManager.Instance.RemovePlayer(playerID);
     }
 
     protected override void Update()
@@ -176,6 +175,14 @@ public class PlayerController : Character
 
         if (VerticalMovementEnabled)
             baseMovement.MoveVertical(Time.deltaTime);
+    }
+
+    public void AssignID(int id)
+    {
+        playerID = id;
+
+        if (!ServerManager.Instance.IsOnlineMatch && !ServerManager.Instance.IsServer)
+            playerID = ++LocalPlayersManager.Instance.PlayerIndexForAssigning;
     }
 
     public void SetFighter(FighterData fighter)
@@ -264,7 +271,7 @@ public class PlayerController : Character
 
     #region COMBAT
 
-    protected override void OnDeath(uint killedFromPlayerID)
+    protected override void OnDeath(int killedFromPlayerID)
     {
         base.OnDeath(killedFromPlayerID);
 
@@ -277,11 +284,11 @@ public class PlayerController : Character
         }
         else
         {
-            OnDeathClient(killedFromPlayerID, playerIndexID);
+            OnDeathClient(killedFromPlayerID, playerID);
         }
     }
 
-    private void OnDeathClient(uint killerID, uint victimID)
+    private void OnDeathClient(int killerID, int victimID)
     {
         CombatInterfaces.OnPlayerDied(MatchManager.Instance.GetPlayer(killerID), MatchManager.Instance.GetPlayer(victimID));
 
@@ -290,13 +297,13 @@ public class PlayerController : Character
     }
 
     [Command]
-    private void CmdOnDeath(uint killerID, uint victimID)
+    private void CmdOnDeath(int killerID, int victimID)
     {
         RpcOnDeath(killerID, victimID);
     }
 
     [ClientRpc]
-    private void RpcOnDeath(uint killerID, uint victimID)
+    private void RpcOnDeath(int killerID, int victimID)
     {
         OnDeathClient(killerID, victimID);
     }

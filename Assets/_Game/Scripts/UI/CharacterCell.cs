@@ -35,7 +35,7 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if (ServerManager.Instance.IsOnlineMatch)
             {
-                NetworkManager.Instance.RoomPlayer.SelectCharacter(NetworkManager.Instance.RoomPlayer.netId - 1, characterName);
+                NetworkManager.Instance.RoomPlayer.CmdSelectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
             }
             else
             {
@@ -43,7 +43,7 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 {
                     LocalPlayersManager.Instance.LocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
                     CursorManager.Instance.HideCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
-                    LobbyManager.Instance.CharacterSelected((uint)CursorManager.Instance.GetLastInteractedPlayerIndex(), characterName);
+                    LobbyManager.Instance.CharacterSelected(CursorManager.Instance.GetLastInteractedPlayerIndex(), characterName);
 
                     SetCharacterSelected(true);
                 }

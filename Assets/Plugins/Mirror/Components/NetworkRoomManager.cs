@@ -310,12 +310,12 @@ namespace Mirror
         /// <para>The default implementation for this function creates a new player object from the playerPrefab.</para>
         /// </summary>
         /// <param name="conn">Connection from client.</param>
-        public override void OnServerAddPlayer(NetworkConnection conn)
+        public override GameObject OnServerAddPlayer(NetworkConnection conn)
         {
             if (IsSceneActive(RoomScene))
             {
                 if (roomSlots.Count == maxConnections)
-                    return;
+                    return null;
 
                 allPlayersReady = false;
 
@@ -328,9 +328,11 @@ namespace Mirror
                 }
 
                 NetworkServer.AddPlayerForConnection(conn, newRoomGameObject);
+
+                return newRoomGameObject;
             }
             else
-                OnRoomServerAddPlayer(conn);
+                return OnRoomServerAddPlayer(conn);
         }
 
         public void RecalculateRoomPlayerIndices()
@@ -595,9 +597,9 @@ namespace Mirror
         /// <para>See <see cref="OnRoomServerCreateGamePlayer(NetworkConnection, GameObject)">OnRoomServerCreateGamePlayer(NetworkConnection, GameObject)</see> to customize the player object for the initial GamePlay scene.</para>
         /// </summary>
         /// <param name="conn">The connection the player object is for.</param>
-        public virtual void OnRoomServerAddPlayer(NetworkConnection conn)
+        public virtual GameObject OnRoomServerAddPlayer(NetworkConnection conn)
         {
-            base.OnServerAddPlayer(conn);
+            return base.OnServerAddPlayer(conn);
         }
 
         // Deprecated 02/22/2020

@@ -17,7 +17,12 @@ public interface IDamagable
     void OnDamaged(int amount, PlayerController player);
 
     [ClientRpc]
-    void RpcOnDamaged(int amount, uint playerID);
+    void RpcOnDamaged(int amount, int playerID);
+
+    void OnHealed (int amount);
+
+    [ClientRpc]
+    void RpcOnHealed(int amount);
 }
 
 public interface IDamages

@@ -11,13 +11,10 @@ public class FighterManager : PersistentSingleton<FighterManager>
     [SerializeField]
     private FighterData[] fighters;
 
-    //uint is the id of the player, string is the fighter name
-    private Dictionary<uint, string> playerFighters = new Dictionary<uint, string>();
-
     public delegate void MoveEvent(MoveData move);
     public event MoveEvent OnEquipedMove;
 
-    public FighterData GetFighterForPlayer(uint playerID)
+    public FighterData GetFighterForPlayer(int playerID)
     {
         string fighterName = GetFighterNameFromPlayerID(playerID);
 
@@ -32,22 +29,9 @@ public class FighterManager : PersistentSingleton<FighterManager>
         return null;
     }
 
-    public string GetFighterNameFromPlayerID(uint playerID)
+    public string GetFighterNameFromPlayerID(int playerID)
     {
-        foreach (var fighter in playerFighters)
-        {
-            if (fighter.Key == playerID)
-            {
-                return fighter.Value;
-            }
-        }
-
-        return "";
-    }
-
-    public void FighterSelected(uint connectionID, string characterName)
-    {
-        playerFighters.Add(connectionID, characterName);
+        return ServerManager.Instance.GetPlayer(playerID).Figher;
     }
 
     /// <param name="position">1, 2 or 3</param>

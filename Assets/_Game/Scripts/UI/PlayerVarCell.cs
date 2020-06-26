@@ -9,7 +9,7 @@ public class PlayerVarCell : PlayerCell
     [SerializeField]
     private Image healthBar;
 
-    protected override void OnPlayerCreated(uint playerID, PlayerController playerController)
+    protected override void OnPlayerCreated(int playerID, PlayerController playerController)
     {
         //only create this cell if it's the correct player id it's assigned to
         if (playerID == this.playerID)

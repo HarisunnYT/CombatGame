@@ -12,16 +12,16 @@ public class PlayerCell : MonoBehaviour
     [SerializeField]
     private TMP_Text playerNameText;
 
-    protected uint playerID;
+    protected int playerID;
     protected PlayerController playerController;
 
-    public virtual void Configure(uint playerID)
+    public virtual void Configure(int playerID)
     {
         this.playerID = playerID;
         LobbyManager.Instance.OnPlayerCreated += OnPlayerCreated;
     }
 
-    protected virtual void OnPlayerCreated(uint playerID, PlayerController playerController)
+    protected virtual void OnPlayerCreated(int playerID, PlayerController playerController)
     {
         if (playerID == this.playerID)
         {
@@ -29,7 +29,7 @@ public class PlayerCell : MonoBehaviour
 
             gameObject.SetActive(true);
 
-            playerNameText.text = ServerManager.Instance.GetPlayerName(playerController.connectionToServer);
+            playerNameText.text = ServerManager.Instance.GetPlayerName(playerID);
             playerIcon.sprite = playerController.Fighter.FigherIcon;
 
             playerController.OnPlayerDisconnected += OnPlayerDisconnected;

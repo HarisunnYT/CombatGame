@@ -1,5 +1,6 @@
 ﻿using InControl;
 using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,12 +11,12 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
     public delegate void LocalPlayerConnectionEvent(int playerIndex, System.Guid controllerGUID);
     public event LocalPlayerConnectionEvent OnLocalPlayerConnected;
 
-    //player index and controller id
-    public Dictionary<int, System.Guid> LocalPlayers { get; private set; } = new Dictionary<int, System.Guid>();
-
     private List<int> localPlayersReady = new List<int>();
 
     public int LocalPlayersCount { get; private set; } = 1;
+
+    //used for assigning an index to local players
+    public int PlayerIndexForAssigning { get; set; } = 0;
 
     private void Update()
     {
@@ -35,7 +36,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
-        LocalPlayers.Add(playerIndex, controllerID);
+        ServerManager.Instance.AddConnectedPlayer(playerIndex, SteamClient.SteamId.AccountId).ControllerGUID = controllerID;
 
         OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
         LocalPlayersCount++;
@@ -43,38 +44,22 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public bool HasLocalPlayerJoinedAlready(System.Guid controllerID)
     {
-        return LocalPlayers.ContainsValue(controllerID);
+        return ServerManager.Instance.ContainsPlayer(controllerID);
     }
 
     public bool HasLocalPlayerJoinedAlready(int playerIndex)
     {
-        return LocalPlayers.ContainsKey(playerIndex);
+        return ServerManager.Instance.ContainsPlayer(playerIndex);
     }
 
     public int GetPlayerIndexFromController(System.Guid controllerID)
     {
-        foreach(var player in LocalPlayers)
-        {
-            if (player.Value == controllerID)
-            {
-                return player.Key;
-            }
-        }
-
-        return -1;
+        return ServerManager.Instance.GetPlayer(controllerID).PlayerID;
     }
 
-    public System.Guid GetGUIDFromPlayerIndex(int playerIndex)
+    public System.Guid GetGUIDFromPlayerIndex(int playerID)
     {
-        foreach (var player in LocalPlayers)
-        {
-            if (player.Key == playerIndex)
-            {
-                return player.Value;
-            }
-        }
-
-        return default;
+        return ServerManager.Instance.GetPlayer(playerID).ControllerGUID;
     }
 
     public void LocalPlayerReadiedUp(int playerIndex)

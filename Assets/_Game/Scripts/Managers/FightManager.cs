@@ -8,7 +8,8 @@ public class FightManager : Singleton<FightManager>, IFightEvents
     [SerializeField]
     private int startFightCountDownTimeInSeconds = 3;
 
-    public List<PlayerController> AlivePlayers { get; private set; } = new List<PlayerController>();
+    //int == player id
+    public List<int> AlivePlayers { get; private set; } = new List<int>();
 
     private bool startFightCountdownInProgress = false;
     private float startFightCountdownTimer = 0;
@@ -32,9 +33,14 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
         if (AlivePlayers.Count == 0)
         {
-            foreach(var player in MatchManager.Instance.Players)
+            foreach(var player in ServerManager.Instance.Players)
             {
-                AlivePlayers.Add(player.Value);
+                AlivePlayers.Add(player.PlayerID);
+
+                if (player.PlayerController != null) //there's a chance it may not exist yet if it's the first round
+                {
+                    MatchManager.Instance.SetPlayerSpawn(player.PlayerController);
+                }
             }
         }
     }
@@ -73,7 +79,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
         foreach(var player in AlivePlayers)
         {
-            player.EnableInput();
+            ServerManager.Instance.GetPlayer(player).PlayerController.EnableInput();
         }
     }
 
@@ -83,10 +89,10 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         DetermineCashForPlayer(victim, AlivePlayers.Count);
 
         //remove player from alive players and see if there's only a single player left
-        AlivePlayers.Remove(victim);
+        AlivePlayers.Remove(ServerManager.Instance.GetPlayer(victim).PlayerID);
         if (AlivePlayers.Count <= 1)
         {
-            FightOver(AlivePlayers[0]);
+            FightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerController);
         }
     }
 
