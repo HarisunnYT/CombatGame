@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using MultiplayerBasicExample;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -95,16 +96,19 @@ public class PlayerController : Character
         Rigidbody.isKinematic = !isLocalPlayer && ServerManager.Instance.IsOnlineMatch;
 
         //id assigning
-        if (ServerManager.Instance.IsServer && ServerManager.Instance.IsOnlineMatch)
-            NetworkManager.Instance.OnPlayerCreated(connectionToServer, this, false);
-        else if (playerID == -1)
-            AssignID(playerID);
+        if (playerID == -1)
+        {
+            if (ServerManager.Instance.IsServer || ServerManager.Instance.IsOnlineMatch)
+                NetworkManager.Instance.OnPlayerCreated(connectionToServer, this, false);
+            else
+                AssignID(playerID);
+        }
 
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
         LobbyManager.Instance.PlayerCreated(playerID, this);
         MatchManager.Instance.AddPlayer(this, playerID);
 
-        inputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID);
+        inputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
     }
 
     private void OnDestroy()

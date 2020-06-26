@@ -6,21 +6,22 @@ using Mirror;
 using System.ComponentModel.Design;
 using PlayFab.MultiplayerModels;
 using Steamworks;
+using MultiplayerBasicExample;
 
 public class ServerManager : PersistentSingleton<ServerManager>
 {
     public class ConnectedPlayer
     {
         public int PlayerID;
-        public uint SteamClientID;
+        public string SteamName;
         public string Figher;
         public PlayerController PlayerController;
         public System.Guid ControllerGUID;
 
-        public ConnectedPlayer(int playerID, uint steamClientID)
+        public ConnectedPlayer(int playerID, string steamName)
         {
             PlayerID = playerID;
-            SteamClientID = steamClientID;
+            SteamName = steamName;
 
             Figher = "";
             PlayerController = null;
@@ -37,6 +38,10 @@ public class ServerManager : PersistentSingleton<ServerManager>
 
     public List<ConnectedPlayer> Players { get; private set; } = new List<ConnectedPlayer>();
     private List<string> SelectedCharacters = new List<string>();
+
+    public delegate void PlayerEvent(ConnectedPlayer connectedPlayer);
+    public event PlayerEvent OnPlayerAdded;
+    public event PlayerEvent OnPlayerRemoved;
 
     protected override void Initialize()
     {
@@ -74,13 +79,15 @@ public class ServerManager : PersistentSingleton<ServerManager>
         }
     }
 
-    public ConnectedPlayer AddConnectedPlayer(int id, uint steamClientID)
+    public ConnectedPlayer AddConnectedPlayer(int id, string steamName)
     {
         if (GetPlayer(id) != null)
             return GetPlayer(id);
 
-        ConnectedPlayer player = new ConnectedPlayer(id, steamClientID);
+        ConnectedPlayer player = new ConnectedPlayer(id, steamName);
         Players.Add(player);
+
+        OnPlayerAdded?.Invoke(player);
 
         return player;
     }
@@ -93,20 +100,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
             {
                 Players.RemoveAt(i);
                 OnPlayerDisconnectedFromServer();
-
-                break;
-            }
-        }
-    }
-
-    public void RemovePlayer(NetworkConnection conn)
-    {
-        for (int i = 0; i < NetworkManager.Instance.roomSlots.Count; i++)
-        {
-            if (NetworkManager.Instance.roomSlots[i].connectionToClient == conn)
-            {
-                NetworkManager.Instance.roomSlots.RemoveAt(i);
-                OnPlayerDisconnectedFromServer();
+                OnPlayerRemoved?.Invoke(Players[i]);
 
                 break;
             }
@@ -193,7 +187,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
 
     public string GetPlayerName(int id)
     {
-        return "Player";
+        return GetPlayer(id).SteamName;
     }
 
     public void SetCharacterSelected(string characterName)

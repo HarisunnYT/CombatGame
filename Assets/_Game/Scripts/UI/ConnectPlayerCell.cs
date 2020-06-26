@@ -10,22 +10,13 @@ public class ConnectPlayerCell : MonoBehaviour
     [SerializeField]
     private TMP_Text playerNameText;
 
-    [SerializeField]
-    private GameObject isReadyIcon;
-
-    public NetworkConnection Connection { get; private set; } = null;
+    public int PlayerID { get; private set; } = -1;
     public bool Assigned { get; private set; } = false;
 
-    public void Configure(NetworkConnection conn, string playerName)
+    public void Configure(int playerID, string playerName)
     {
         Configure(playerName);
-        Connection = conn;
-
-        //if the connection is null, it's the client
-        if (Connection == null)
-        {
-            Connection = NetworkClient.connection;
-        }
+        PlayerID = playerID;
     }
 
     public void Configure(string playerName)
@@ -34,11 +25,6 @@ public class ConnectPlayerCell : MonoBehaviour
         gameObject.SetActive(true);
 
         Assigned = true;
-    }
-
-    public void SetReady(bool ready)
-    {
-        isReadyIcon.SetActive(ready);
     }
 
     public void DisableCell()

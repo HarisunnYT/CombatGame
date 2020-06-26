@@ -36,7 +36,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
-        ServerManager.Instance.AddConnectedPlayer(playerIndex, SteamClient.SteamId.AccountId).ControllerGUID = controllerID;
+        ServerManager.Instance.AddConnectedPlayer(playerIndex, SteamClient.Name).ControllerGUID = controllerID;
 
         OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
         LocalPlayersCount++;

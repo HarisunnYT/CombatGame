@@ -15,8 +15,8 @@ public class CharacterSelectScreen : Panel
     {
         if (NetworkManager.Instance)
         {
-            NetworkManager.Instance.OnClientEnteredRoom += AddPlayerCell;
-            NetworkManager.Instance.OnClientExitedRoom += RemovePlayerCell;
+            ServerManager.Instance.OnPlayerAdded += AddPlayerCell;
+            ServerManager.Instance.OnPlayerRemoved += RemovePlayerCell;
         }
 
         if (LobbyManager.Instance)
@@ -31,8 +31,8 @@ public class CharacterSelectScreen : Panel
     {
         if (NetworkManager.Instance)
         {
-            NetworkManager.Instance.OnClientEnteredRoom -= AddPlayerCell;
-            NetworkManager.Instance.OnClientExitedRoom -= RemovePlayerCell;
+            ServerManager.Instance.OnPlayerAdded -= AddPlayerCell;
+            ServerManager.Instance.OnPlayerRemoved -= RemovePlayerCell;
         }
 
         if (LobbyManager.Instance)
@@ -57,28 +57,29 @@ public class CharacterSelectScreen : Panel
             for (int i = 0; i < NetworkManager.Instance.roomSlots.Count; i++)
             {
                 NetworkRoomPlayer player = NetworkManager.Instance.roomSlots[i];
-                connectedPlayerCells[i].Configure(player.connectionToServer, ServerManager.Instance.GetPlayerName(player.index));
+                connectedPlayerCells[i].Configure(player.index, ServerManager.Instance.GetPlayerName(player.index));
             }
         }
     }
 
-    private void AddPlayerCell(NetworkConnection conn)
+    private void AddPlayerCell(ServerManager.ConnectedPlayer player)
     {
         for (int i = 0; i < connectedPlayerCells.Length; i++)
         {
             if (!connectedPlayerCells[i].Assigned)
             {
-                connectedPlayerCells[i].Configure(conn, "Player " + (i + 1)); //TODO GET PLAYER NAME
+                string name = ServerManager.Instance.IsOnlineMatch ? player.SteamName : "Player " + (i + 1);
+                connectedPlayerCells[i].Configure(player.PlayerID, name); 
                 break;
             }
         }
     }
 
-    private void RemovePlayerCell(NetworkConnection conn)
+    private void RemovePlayerCell(ServerManager.ConnectedPlayer player)
     {
         for (int i = 0; i < connectedPlayerCells.Length; i++)
         {
-            if (connectedPlayerCells[i].Assigned && connectedPlayerCells[i].Connection == conn)
+            if (connectedPlayerCells[i].Assigned && connectedPlayerCells[i].PlayerID == player.PlayerID)
             {
                 connectedPlayerCells[i].DisableCell();
                 break;

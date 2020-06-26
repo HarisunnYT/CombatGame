@@ -13,7 +13,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (isLocalPlayer)
         {
             NetworkManager.Instance.RoomPlayer = this;
-            CmdAddConnectedPlayer(index, SteamClient.SteamId.AccountId);
+            CmdAddConnectedPlayer(index, SteamClient.Name);
         }
     }
 
@@ -40,18 +40,18 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     }
 
     [Command]
-    private void CmdAddConnectedPlayer(int netID, uint steamClientID)
+    private void CmdAddConnectedPlayer(int netID, string steamName)
     {
-        ServerManager.Instance.AddConnectedPlayer(netID, steamClientID);
+        ServerManager.Instance.AddConnectedPlayer(netID, steamName);
         foreach (var connectPlayer in ServerManager.Instance.Players)
         {
-            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.SteamClientID);
+            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.SteamName);
         }
     }
 
     [ClientRpc]
-    public void RpcAddConnectedPlayer(int netID, uint steamClientID)
+    public void RpcAddConnectedPlayer(int netID, string steamName)
     {
-        ServerManager.Instance.AddConnectedPlayer(netID, steamClientID);
+        ServerManager.Instance.AddConnectedPlayer(netID, steamName);
     }
 }

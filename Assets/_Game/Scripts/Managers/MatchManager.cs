@@ -101,6 +101,11 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginBuyPhase()
     {
+        foreach(var player in ServerManager.Instance.Players)
+        {
+            player.PlayerController.ResetCharacter();
+        }
+
         buyPhaseCountdownTimer = Time.time + buyPhaseTimeInSeconds;
 
         if (ServerManager.Instance.IsOnlineMatch)
