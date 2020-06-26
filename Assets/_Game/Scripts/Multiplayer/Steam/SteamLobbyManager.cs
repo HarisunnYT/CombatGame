@@ -21,6 +21,7 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
     private void OnLobbyCreated(Lobby? lobby)
     {
         CurrentLobby = lobby;
+        CurrentLobby.Value.SetPrivate();
         Debug.Log("Successfully created lobby");
     }
 

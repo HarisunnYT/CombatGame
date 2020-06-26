@@ -16,7 +16,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
     private void Start()
     {
-        if (!ServerManager.Instance.IsServer && PlayFabMatchMaking.Instance)
+        if (!ServerManager.Instance.IsServer)
         {
             if (ServerManager.Instance.IsOnlineMatch)
                 CreateClient();
