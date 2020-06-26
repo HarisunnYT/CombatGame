@@ -12,6 +12,8 @@ public class SpawnPosition : MonoBehaviour
         player.transform.position = transform.position;
         player.gameObject.SetActive(true);
 
+        player.ResetCharacter();
+
         player.SetDirection(spawnDirection);
         player.DisableInput();
     }

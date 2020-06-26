@@ -68,7 +68,7 @@ public class PlayerController : Character
     private Coroutine horizontalMovementCoroutine;
     private Coroutine verticalMovementCoroutine;
 
-    private int playerID;
+    private int playerID = -1;
 
     #endregion
 
@@ -94,7 +94,11 @@ public class PlayerController : Character
         //we don't want physics on network players as their positions are set over the server
         Rigidbody.isKinematic = !isLocalPlayer && ServerManager.Instance.IsOnlineMatch;
 
-        NetworkManager.Instance.OnPlayerCreated(connectionToServer, this, ServerManager.Instance.IsServer);
+        //id assigning
+        if (ServerManager.Instance.IsServer && ServerManager.Instance.IsOnlineMatch)
+            NetworkManager.Instance.OnPlayerCreated(connectionToServer, this, false);
+        else if (playerID == -1)
+            AssignID(playerID);
 
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
         LobbyManager.Instance.PlayerCreated(playerID, this);
@@ -182,7 +186,7 @@ public class PlayerController : Character
         playerID = id;
 
         if (!ServerManager.Instance.IsOnlineMatch && !ServerManager.Instance.IsServer)
-            playerID = ++LocalPlayersManager.Instance.PlayerIndexForAssigning;
+            playerID = LocalPlayersManager.Instance.PlayerIndexForAssigning++;
     }
 
     public void SetFighter(FighterData fighter)

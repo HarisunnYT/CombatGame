@@ -58,8 +58,6 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         {
             Health -= amount;
 
-            OnHealthChanged?.Invoke(Health);
-
             //damage text
             GameObject obj = ObjectPooler.GetPooledObject(SpawnObjectsManager.Instance.GetPrefab(DataKeys.SpawnableKeys.WorldSpaceText));
             obj.GetComponent<WorldSpaceText>().DisplayText("-" + amount, Color.red, transform.position + transform.up, 3, 1);
@@ -81,6 +79,8 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
             {
                 OnDeath(playerID);
             }
+
+            OnHealthChanged?.Invoke(Health);
         }
     }
 
