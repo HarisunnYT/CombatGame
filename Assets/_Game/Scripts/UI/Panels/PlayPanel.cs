@@ -13,13 +13,11 @@ public class PlayPanel : Panel
 
     public void Online()
     {
-        if (PlayFabLogin.Instance.LoggedIn)
-        {
-            PlayFabMatchMaking.Instance.SearchForMatch();
-            PanelManager.Instance.ShowPanel<MatchMakingSearchPanel>();
-
+        //if (PlayFabLogin.Instance.LoggedIn)
+        //{
+            PanelManager.Instance.ShowPanel<FriendLobbyPanel>();
             ServerManager.Instance.IsOnlineMatch = true;
-        }
+        //}
     }
 
     public void Local()

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MatchMakingSearchPanel : Panel
 {
+    protected override void OnShow()
+    {
+        SteamMatchMakingManager.Instance.SearchForMatch();
+    }
+
     public void Cancel()
     {
         PlayFabMatchMaking.Instance.CancelMatchMaking();
