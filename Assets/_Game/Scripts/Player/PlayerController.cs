@@ -98,10 +98,7 @@ public class PlayerController : Character
         //id assigning
         if (playerID == -1)
         {
-            if (ServerManager.Instance.IsServer || ServerManager.Instance.IsOnlineMatch)
-                NetworkManager.Instance.OnPlayerCreated(connectionToServer, this, false);
-            else
-                AssignID(playerID);
+            AssignID(playerID);
         }
 
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
@@ -187,10 +184,7 @@ public class PlayerController : Character
 
     public void AssignID(int id)
     {
-        playerID = id;
-
-        if (!ServerManager.Instance.IsOnlineMatch && !ServerManager.Instance.IsServer)
-            playerID = LocalPlayersManager.Instance.PlayerIndexForAssigning++;
+        playerID = LocalPlayersManager.Instance.PlayerIndexForAssigning++;
     }
 
     public void SetFighter(FighterData fighter)

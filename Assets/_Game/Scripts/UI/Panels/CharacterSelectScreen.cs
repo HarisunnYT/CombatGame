@@ -54,10 +54,9 @@ public class CharacterSelectScreen : Panel
 
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            for (int i = 0; i < NetworkManager.Instance.roomSlots.Count; i++)
+            for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
             {
-                NetworkRoomPlayer player = NetworkManager.Instance.roomSlots[i];
-                connectedPlayerCells[i].Configure(player.index, ServerManager.Instance.GetPlayerName(player.index));
+                connectedPlayerCells[i].Configure(ServerManager.Instance.Players[i].PlayerID, ServerManager.Instance.Players[i].SteamName);
             }
         }
     }

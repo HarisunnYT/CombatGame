@@ -33,30 +33,12 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
-    public override GameObject OnServerAddPlayer(NetworkConnection conn)
-    {
-        GameObject player = base.OnServerAddPlayer(conn);
-        OnPlayerCreated(conn, player.GetComponent<PlayerController>(), true);
-        return player;
-    }
-
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
         PlayerController player = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        OnPlayerCreated(conn, player, true);
-        return player.gameObject;
-    }
+        player.GetComponent<NetworkIdentity>().AssignClientAuthority(conn);
 
-    public void OnPlayerCreated(NetworkConnection conn, PlayerController player, bool isServer)
-    {
-        foreach (var slot in roomSlots)
-        {
-            if ((isServer && slot.connectionToClient == conn) || (!isServer && slot.connectionToServer == conn))
-            {
-                player.AssignID(slot.index);
-                break;
-            }
-        }
+        return player.gameObject;
     }
 
     public override void OnClientEnterRoom(NetworkConnection conn)
