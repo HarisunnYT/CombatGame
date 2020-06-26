@@ -33,7 +33,7 @@ public class SteamMatchMakingManager : Singleton<SteamMatchMakingManager>
         if (retrievingLobbiesTask != null && retrievingLobbiesTask.IsCompleted)
         {
             //we found at least one suitable lobby
-            if (retrievingLobbiesTask.Result.Length > 0)
+            if (retrievingLobbiesTask.Result != null && retrievingLobbiesTask.Result.Length > 0)
             {
                 JoinMatchMakingLobby(retrievingLobbiesTask.Result[0]);
             }
