@@ -11,7 +11,6 @@ public class MatchMakingSearchPanel : Panel
 
     public void Cancel()
     {
-        PlayFabMatchMaking.Instance.CancelMatchMaking();
         PanelManager.Instance.ShowPanel<PlayPanel>();
     }
 }

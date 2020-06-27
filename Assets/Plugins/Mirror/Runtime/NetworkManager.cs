@@ -158,7 +158,7 @@ namespace Mirror
         /// <summary>
         /// NetworkManager singleton
         /// </summary>
-        public static NetworkManager singleton { get; private set; }
+        public static NetworkManager singleton { get; set; }
 
         /// <summary>
         /// Number of active player objects across all connections on the server.

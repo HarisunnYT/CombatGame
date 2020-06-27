@@ -4,9 +4,13 @@ using UnityEngine;
 using Steamworks;
 using Steamworks.Data;
 using System.Threading.Tasks;
+using Mirror;
 
 public class SteamMatchMakingManager : Singleton<SteamMatchMakingManager>
 {
+    public bool IsHost { get; private set; }
+    public Lobby CurrentLobby { get; private set; }
+
     private Task<Lobby[]> retrievingLobbiesTask;
     private Task<Lobby?> joiningLobbyTask;
 
@@ -24,6 +28,8 @@ public class SteamMatchMakingManager : Singleton<SteamMatchMakingManager>
 
     private void OnLobbyJoined(Lobby lobby)
     {
+        CurrentLobby = lobby;
+
         UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
         Debug.Log("Lobby Joined");
     }
@@ -35,11 +41,12 @@ public class SteamMatchMakingManager : Singleton<SteamMatchMakingManager>
             //we found at least one suitable lobby
             if (retrievingLobbiesTask.Result != null && retrievingLobbiesTask.Result.Length > 0)
             {
+                IsHost = false;
                 JoinMatchMakingLobby(retrievingLobbiesTask.Result[0]);
             }
             else //no good lobbies, let's create one
             {
-                SteamLobbyManager.Instance.CurrentLobby.Value.SetPublic();
+                IsHost = true;
                 OnLobbyJoined(SteamLobbyManager.Instance.CurrentLobby.Value);
             }
 
@@ -51,5 +58,11 @@ public class SteamMatchMakingManager : Singleton<SteamMatchMakingManager>
             OnLobbyJoined(joiningLobbyTask.Result.Value);
             joiningLobbyTask = null;
         }
+    }
+
+    public void SetGameServer(string hostAddress, ushort hostPort)
+    {
+        CurrentLobby.SetGameServer(hostAddress, hostPort);
+        CurrentLobby.SetPublic();
     }
 }

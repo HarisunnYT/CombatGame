@@ -132,11 +132,15 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     public void ResetCharacter()
     {
-        Alive = true;
         Health = startingHealth;
         OnHealthChanged?.Invoke(Health);
 
         gameObject.SetActive(true);
+    }
+
+    public void SetAlive()
+    {
+        Alive = true;
     }
 
     public void SetDirection(int direction)

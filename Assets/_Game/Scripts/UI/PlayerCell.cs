@@ -18,7 +18,16 @@ public class PlayerCell : MonoBehaviour
     public virtual void Configure(int playerID)
     {
         this.playerID = playerID;
-        LobbyManager.Instance.OnPlayerCreated += OnPlayerCreated;
+
+        Invoke("TryAssignPlayerController", 0.5f);
+    }
+
+    private void TryAssignPlayerController()
+    {
+        if (playerController == null && ServerManager.Instance.GetPlayer(playerID).PlayerController != null)
+            OnPlayerCreated(playerID, ServerManager.Instance.GetPlayer(playerID).PlayerController);
+        else
+            Invoke("TryAssignPlayerController", 0.1f);
     }
 
     protected virtual void OnPlayerCreated(int playerID, PlayerController playerController)
@@ -33,7 +42,6 @@ public class PlayerCell : MonoBehaviour
             playerIcon.sprite = playerController.Fighter.FigherIcon;
 
             playerController.OnPlayerDisconnected += OnPlayerDisconnected;
-            LobbyManager.Instance.OnPlayerCreated -= OnPlayerCreated;
         }
     }
 

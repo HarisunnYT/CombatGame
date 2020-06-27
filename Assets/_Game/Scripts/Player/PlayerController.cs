@@ -119,7 +119,6 @@ public class PlayerController : Character
         playerID = id;
 
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
-        LobbyManager.Instance.PlayerCreated(playerID, this);
         MatchManager.Instance.AddPlayer(this, playerID);
 
         inputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);

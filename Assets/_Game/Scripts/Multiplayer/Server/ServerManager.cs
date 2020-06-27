@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 using System.ComponentModel.Design;
-using PlayFab.MultiplayerModels;
 using Steamworks;
 using MultiplayerBasicExample;
 
@@ -29,24 +28,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
             ControllerGUID = default;
         }
     }
-
-    [SerializeField]
-    private bool debugServer = false;
-
-    private bool isOnlineMatch = false;
-    public bool IsOnlineMatch
-    {
-        get
-        {
-            return isOnlineMatch || IsServer;
-        }
-        set
-        {
-            isOnlineMatch = value;
-        }
-    }
-
-    public bool IsServer { get; private set; }
+    public bool IsOnlineMatch { get; set; }
 
     public List<ConnectedPlayer> Players { get; private set; } = new List<ConnectedPlayer>();
     private List<string> SelectedCharacters = new List<string>();
@@ -54,26 +36,6 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public delegate void PlayerEvent(ConnectedPlayer connectedPlayer);
     public event PlayerEvent OnPlayerAdded;
     public event PlayerEvent OnPlayerRemoved;
-
-    protected override void Initialize()
-    {
-        IsServer = SystemInfo.graphicsDeviceID == 0;
-        if (IsServer)
-        {
-            IsOnlineMatch = true;
-        }
-#if UNITY_EDITOR
-        IsServer = debugServer;
-#endif
-    }
-
-    private void Start()
-    {
-        if (IsServer)
-        {
-            StartUpServer();
-        }
-    }
 
     private void StartUpServer()
     {

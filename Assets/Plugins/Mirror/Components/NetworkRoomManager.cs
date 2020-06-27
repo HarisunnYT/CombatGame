@@ -414,6 +414,8 @@ namespace Mirror
             }
 
             OnRoomStartServer();
+
+            base.OnStartServer();
         }
 
         /// <summary>

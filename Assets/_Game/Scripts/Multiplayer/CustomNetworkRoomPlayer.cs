@@ -3,8 +3,10 @@ using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NobleConnect.Mirror;
+using MultiplayerBasicExample;
 
-public class CustomNetworkRoomPlayer : NetworkRoomPlayer
+public class CustomNetworkRoomPlayer : NobleRoomPlayer
 {
     public override void OnClientEnterRoom()
     {
@@ -13,18 +15,20 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (isLocalPlayer)
         {
             NetworkManager.Instance.RoomPlayer = this;
-            CmdAddConnectedPlayer(index, SteamClient.Name);
+            AddConnectedPlayer(index, SteamClient.Name);
         }
     }
 
-    private void SelectCharacter(int playerID, string characterName)
+    public void SelectCharacter(int playerID, string characterName)
     {
-        LobbyManager.Instance.CharacterSelected(playerID, characterName);
-        ServerManager.Instance.SetCharacterSelected(characterName);
+        if (isServer)
+            RpcSelectCharacter(playerID, characterName);
+        else
+            CmdSelectCharacter(playerID, characterName);
     }
 
     [Command]
-    public void CmdSelectCharacter(int playerID, string characterName)
+    private void CmdSelectCharacter(int playerID, string characterName)
     {
         if (!ServerManager.Instance.IsCharacterSelected(characterName))
         {
@@ -36,7 +40,19 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     [ClientRpc]
     private void RpcSelectCharacter(int playerID, string characterName)
     {
-        SelectCharacter(playerID, characterName);
+        LobbyManager.Instance.CharacterSelected(playerID, characterName);
+        ServerManager.Instance.SetCharacterSelected(characterName);
+
+        NetworkManager.Instance.roomSlots[playerID].readyToBegin = true;
+        NetworkManager.Instance.ReadyStatusChanged();
+    }
+
+    public void AddConnectedPlayer(int netID, string steamName)
+    {
+        if (isServer)
+            RpcAddConnectedPlayer(netID, steamName);
+        else
+            CmdAddConnectedPlayer(netID, steamName);
     }
 
     [Command]
@@ -50,31 +66,29 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     }
 
     [ClientRpc]
-    public void RpcAddConnectedPlayer(int netID, string steamName)
+    private void RpcAddConnectedPlayer(int netID, string steamName)
     {
         ServerManager.Instance.AddConnectedPlayer(netID, steamName);
     }
 
-    public void CmdAssignPlayerID(int playerNetID, int playerID)
+    public void CmdAssignPlayerID(int[] playerNetID, int[] playerID)
     {
-        AssignPlayerID(playerNetID, playerID);
         RpcAssignPlayerID(playerNetID, playerID);
     }
 
     [ClientRpc]
-    private void RpcAssignPlayerID(int playerNetID, int playerID)
+    private void RpcAssignPlayerID(int[] playerNetID, int[] playerID)
     {
-        AssignPlayerID(playerNetID, playerID);
-    }
-
-    private void AssignPlayerID(int playerNetID, int playerID)
-    {
-        ServerManager.Instance.GetPlayer(playerID).NetID = playerNetID;
-        foreach(var player in FindObjectsOfType<PlayerController>())
+        for (int i = 0; i < playerNetID.Length; i++)
         {
-            if (player.netId == playerNetID)
+            ServerManager.Instance.GetPlayer(playerID[i]).NetID = playerNetID[i];
+            foreach (var player in FindObjectsOfType<PlayerController>())
             {
-                player.OnAssignedID(playerID);
+                if (player.netId == playerNetID[i])
+                {
+                    player.OnAssignedID(playerID[i]);
+                    break;
+                }
             }
         }
     }

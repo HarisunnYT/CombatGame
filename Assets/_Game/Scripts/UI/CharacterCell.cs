@@ -35,7 +35,7 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if (ServerManager.Instance.IsOnlineMatch)
             {
-                NetworkManager.Instance.RoomPlayer.CmdSelectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
+                NetworkManager.Instance.RoomPlayer.SelectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
             }
             else
             {

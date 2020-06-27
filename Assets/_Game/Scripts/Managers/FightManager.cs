@@ -79,7 +79,9 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
         foreach(var player in AlivePlayers)
         {
-            ServerManager.Instance.GetPlayer(player).PlayerController.EnableInput();
+            PlayerController playerController = ServerManager.Instance.GetPlayer(player).PlayerController;
+            playerController.EnableInput();
+            playerController.SetAlive();
         }
     }
 

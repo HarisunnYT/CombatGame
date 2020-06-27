@@ -3,14 +3,17 @@ using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 using UnityEngine;
 
-public class NetworkManager : NetworkRoomManager
+public class NetworkManager : NobleRoomManager
 {
     public static NetworkManager Instance;
 
     public CustomNetworkRoomPlayer RoomPlayer { get; set; }
+
+    private Dictionary<int, int> playerData = new Dictionary<int, int>();
 
     public override void Awake()
     {
@@ -48,8 +51,22 @@ public class NetworkManager : NetworkRoomManager
     //we need to wait a frame so the net id can be assigned
     private IEnumerator FrameDelayForID(CustomNetworkRoomPlayer roomPlayer, NetworkIdentity netIdentity, int index)
     {
-        yield return new WaitForEndOfFrame();
+        while (netIdentity.netId == 0)
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
-        roomPlayer.CmdAssignPlayerID((int)netIdentity.netId, index);
+        playerData.Add((int)netIdentity.netId, index);
+        if (playerData.Count >= ServerManager.Instance.Players.Count)
+        {
+            roomPlayer.CmdAssignPlayerID(playerData.Keys.ToArray(), playerData.Values.ToArray());
+            playerData.Clear();
+        }
+    }
+
+    public override void OnServerPrepared(string hostAddress, ushort hostPort)
+    {
+        if (ServerManager.Instance.IsOnlineMatch)
+            SteamMatchMakingManager.Instance.SetGameServer(hostAddress, hostPort);
     }
 }

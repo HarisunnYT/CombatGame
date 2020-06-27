@@ -1113,6 +1113,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa29afd25e411e4ea674e4a6eacc210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <LoggedIn>k__BackingField: 0
+  <ClientsCustomID>k__BackingField: 
+  <EntityID>k__BackingField: 
+  <EntityType>k__BackingField: 
 --- !u!4 &457730786
 Transform:
   m_ObjectHideFlags: 0
@@ -3847,6 +3851,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75b06a65ca8ed5418588924296d1a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PlayersInLobby>k__BackingField: 0
+  <CurrentTickedID>k__BackingField: 
+  <CurrentMatchID>k__BackingField: 
+  previousTicketCheckTimer: -1
 --- !u!4 &1860677363
 Transform:
   m_ObjectHideFlags: 0
@@ -4504,7 +4512,7 @@ PrefabInstance:
     - target: {fileID: 8220710010727383998, guid: 964c2380b04960e428eeace5e5f356e1,
         type: 3}
       propertyPath: debugServer
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 964c2380b04960e428eeace5e5f356e1, type: 3}

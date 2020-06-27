@@ -6,26 +6,15 @@ using UnityEngine;
 
 public class PlayPanel : Panel
 {
-    private void Awake()
-    {
-    }
-
-
     public void Online()
     {
-        //if (PlayFabLogin.Instance.LoggedIn)
-        //{
-            PanelManager.Instance.ShowPanel<FriendLobbyPanel>();
-            ServerManager.Instance.IsOnlineMatch = true;
-        //}
+        PanelManager.Instance.ShowPanel<FriendLobbyPanel>();
+        ServerManager.Instance.IsOnlineMatch = true;
     }
 
     public void Local()
     {
         ServerManager.Instance.IsOnlineMatch = false;
-
         UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
     }
-
-    
 }

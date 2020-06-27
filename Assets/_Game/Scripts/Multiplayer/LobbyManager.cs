@@ -8,23 +8,32 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
     public delegate void CharacterEvent(int playerID, string characterName);
     public event CharacterEvent OnCharacterSelected;
 
-    public delegate void PlayerControllerEvent(int playerID, PlayerController playerController);
-    public event PlayerControllerEvent OnPlayerCreated;
-
     private void Start()
     {
-        if (!ServerManager.Instance.IsServer)
+        if (ServerManager.Instance.IsOnlineMatch)
         {
-            if (ServerManager.Instance.IsOnlineMatch)
-                CreateClient();
-            else
+            if (SteamMatchMakingManager.Instance.IsHost)
                 NetworkManager.Instance.StartHost();
+            else
+                CreateClient();
+        }
+        else
+        {
+            NetworkManager.Instance.StartHostLANOnly();
         }
     }
 
     private void CreateClient()
     {
-        NetworkManager.Instance.networkAddress = "localhost";
+        uint ip = 0;
+        ushort port = 0;
+        Steamworks.SteamId serverID = new Steamworks.SteamId();
+
+        SteamMatchMakingManager.Instance.CurrentLobby.GetGameServer(ref ip, ref port, ref serverID);
+
+        NetworkManager.Instance.networkAddress = ip.ToString();
+        NetworkManager.Instance.networkPort = port;
+
         NetworkManager.Instance.StartClient();
     }
 
@@ -36,7 +45,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
                 return;
         }
 
-        if (!ServerManager.Instance.IsServer && ServerManager.Instance.IsOnlineMatch && playerID == NetworkManager.Instance.RoomPlayer.index)
+        if (ServerManager.Instance.IsOnlineMatch && playerID == NetworkManager.Instance.RoomPlayer.index)
         {
             NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(true);
             CursorManager.Instance.HideAllCursors();
@@ -44,10 +53,5 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
         ServerManager.Instance.GetPlayer(playerID).Figher = characterName;
         OnCharacterSelected?.Invoke(playerID, characterName);
-    }
-
-    public void PlayerCreated(int playerID, PlayerController player)
-    {
-        OnPlayerCreated?.Invoke(playerID, player);
     }
 }
