@@ -105,12 +105,17 @@ public class PlayerController : Character
         }
         else //local match id assigning
         {
-            OnAssignedID(LocalPlayersManager.Instance.PlayerIndexForAssigning++);
+            OnAssignedID(LocalPlayersManager.Instance.PlayerIndexForAssigning);
+            LocalPlayersManager.Instance.PlayerIndexForAssigning++;
         }
     }
 
     public void OnAssignedID(int id)
     {
+        //player id already assigned
+        if (playerID != -1)
+            return;
+
         playerID = id;
 
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
