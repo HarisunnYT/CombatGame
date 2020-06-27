@@ -95,11 +95,23 @@ public class PlayerController : Character
         //we don't want physics on network players as their positions are set over the server
         Rigidbody.isKinematic = !isLocalPlayer && ServerManager.Instance.IsOnlineMatch;
 
-        //id assigning
-        if (playerID == -1)
+        //server match id assigning
+        if (ServerManager.Instance.IsOnlineMatch)
         {
-            AssignID(playerID);
+            if (ServerManager.Instance.GetPlayer(netId) != null)
+            {
+                OnAssignedID(ServerManager.Instance.GetPlayer(netId).PlayerID);
+            }
         }
+        else //local match id assigning
+        {
+            OnAssignedID(LocalPlayersManager.Instance.PlayerIndexForAssigning++);
+        }
+    }
+
+    public void OnAssignedID(int id)
+    {
+        playerID = id;
 
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
         LobbyManager.Instance.PlayerCreated(playerID, this);
@@ -180,11 +192,6 @@ public class PlayerController : Character
 
         if (VerticalMovementEnabled)
             baseMovement.MoveVertical(Time.deltaTime);
-    }
-
-    public void AssignID(int id)
-    {
-        playerID = LocalPlayersManager.Instance.PlayerIndexForAssigning++;
     }
 
     public void SetFighter(FighterData fighter)

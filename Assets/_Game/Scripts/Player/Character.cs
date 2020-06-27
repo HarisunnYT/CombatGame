@@ -46,7 +46,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     public void OnDamaged(int amount, PlayerController player)
     {
-        if (ServerManager.Instance.IsOnlineMatch && ServerManager.Instance.IsServer)
+        if (ServerManager.Instance.IsOnlineMatch)
             RpcOnDamaged(amount, MatchManager.Instance.GetPlayerID(player));
         else
             OnDamagedClient(amount, MatchManager.Instance.GetPlayerID(player));
@@ -92,7 +92,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     public void OnHealed(int amount)
     {
-        if (ServerManager.Instance.IsOnlineMatch && ServerManager.Instance.IsServer)
+        if (ServerManager.Instance.IsOnlineMatch)
             RpcOnHealed(amount);
         else
             OnHealedClient(amount);

@@ -12,10 +12,6 @@ public class NetworkManager : NetworkRoomManager
 
     public CustomNetworkRoomPlayer RoomPlayer { get; set; }
 
-    public delegate void ConnectionEvent(NetworkConnection conn);
-    public event ConnectionEvent OnClientEnteredRoom;
-    public event ConnectionEvent OnClientExitedRoom;
-
     public override void Awake()
     {
         base.Awake();
@@ -36,18 +32,24 @@ public class NetworkManager : NetworkRoomManager
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
         PlayerController player = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        player.GetComponent<NetworkIdentity>().AssignClientAuthority(conn);
-
         return player.gameObject;
     }
 
-    public override void OnClientEnterRoom(NetworkConnection conn)
+    public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)
     {
-        OnClientEnteredRoom?.Invoke(conn);
+        CustomNetworkRoomPlayer customRoomPlayer = roomPlayer.GetComponent<CustomNetworkRoomPlayer>();
+        PlayerController playerController = gamePlayer.GetComponent<PlayerController>();
+
+        StartCoroutine(FrameDelayForID(customRoomPlayer, playerController.netIdentity, customRoomPlayer.index));
+
+        return true;
     }
 
-    public override void OnClientExitRoom(NetworkConnection conn)
+    //we need to wait a frame so the net id can be assigned
+    private IEnumerator FrameDelayForID(CustomNetworkRoomPlayer roomPlayer, NetworkIdentity netIdentity, int index)
     {
-        OnClientExitedRoom?.Invoke(conn);
+        yield return new WaitForEndOfFrame();
+
+        roomPlayer.CmdAssignPlayerID((int)netIdentity.netId, index);
     }
 }

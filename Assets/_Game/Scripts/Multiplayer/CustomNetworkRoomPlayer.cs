@@ -54,4 +54,28 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         ServerManager.Instance.AddConnectedPlayer(netID, steamName);
     }
+
+    public void CmdAssignPlayerID(int playerNetID, int playerID)
+    {
+        AssignPlayerID(playerNetID, playerID);
+        RpcAssignPlayerID(playerNetID, playerID);
+    }
+
+    [ClientRpc]
+    private void RpcAssignPlayerID(int playerNetID, int playerID)
+    {
+        AssignPlayerID(playerNetID, playerID);
+    }
+
+    private void AssignPlayerID(int playerNetID, int playerID)
+    {
+        ServerManager.Instance.GetPlayer(playerID).NetID = playerNetID;
+        foreach(var player in FindObjectsOfType<PlayerController>())
+        {
+            if (player.netId == playerNetID)
+            {
+                player.OnAssignedID(playerID);
+            }
+        }
+    }
 }

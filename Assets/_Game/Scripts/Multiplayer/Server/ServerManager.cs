@@ -13,6 +13,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public class ConnectedPlayer
     {
         public int PlayerID;
+        public int NetID;
         public string SteamName;
         public string Figher;
         public PlayerController PlayerController;
@@ -32,7 +33,18 @@ public class ServerManager : PersistentSingleton<ServerManager>
     [SerializeField]
     private bool debugServer = false;
 
-    public bool IsOnlineMatch { get; set; } = false;
+    private bool isOnlineMatch = false;
+    public bool IsOnlineMatch
+    {
+        get
+        {
+            return isOnlineMatch || IsServer;
+        }
+        set
+        {
+            isOnlineMatch = value;
+        }
+    }
 
     public bool IsServer { get; private set; }
 
@@ -112,6 +124,19 @@ public class ServerManager : PersistentSingleton<ServerManager>
         foreach(var player in Players)
         {
             if (player.PlayerID == id)
+            {
+                return player;
+            }
+        }
+
+        return default;
+    }
+
+    public ConnectedPlayer GetPlayer(uint netId)
+    {
+        foreach (var player in Players)
+        {
+            if (player.NetID == netId)
             {
                 return player;
             }
