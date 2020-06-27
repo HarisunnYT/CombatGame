@@ -68,5 +68,15 @@ public class NetworkManager : NobleRoomManager
     {
         if (ServerManager.Instance.IsOnlineMatch)
             SteamMatchMakingManager.Instance.SetGameServer(hostAddress, hostPort);
+
+        PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
+    }
+
+    public override void OnRoomClientConnect(NetworkConnection conn)
+    {
+        base.OnRoomClientConnect(conn);
+
+        if (!SteamMatchMakingManager.Instance.IsHost)
+            PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
     }
 }
