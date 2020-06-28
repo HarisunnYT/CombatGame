@@ -22,6 +22,8 @@ public class Cursor : MonoBehaviour
     private GraphicRaycaster assignedRaycaster;
     private Camera assignedCamera;
 
+    private Button previousHighlightedButton;
+
     private void Awake()
     {
         eventSystem = EventSystem.current;
@@ -43,6 +45,10 @@ public class Cursor : MonoBehaviour
         {
             transform.position = Input.mousePosition;
         }
+        else
+        {
+            transform.position += new Vector3(inputProfile.Move.X * cursorMoveSpeed, inputProfile.Move.Y * cursorMoveSpeed, 0) * Time.fixedDeltaTime;
+        }
 
         if (previousCursorPosition != transform.position || inputProfile.Select.WasPressed)
         {
@@ -56,10 +62,17 @@ public class Cursor : MonoBehaviour
             else
                 PanelManager.Instance.Raycaster.Raycast(pointerEventData, results);
 
+            eventSystem.SetSelectedGameObject(null);
+
             foreach (RaycastResult result in results)
             {
                 Button button = result.gameObject.GetComponentInParent<Button>();
-                button?.Select();
+                if (button)
+                {
+                    button.Select();
+                    previousHighlightedButton = button;
+                    break;
+                }
             }
 
             //clicked pressed from either mouse or controller
@@ -88,14 +101,6 @@ public class Cursor : MonoBehaviour
         transform.position = assignedCamera.ViewportToScreenPoint(pos);
 
         previousCursorPosition = transform.position;
-    }
-
-    private void FixedUpdate()
-    {
-        if (PlayerIndex != 0) //0 means it's the person on the PC, we want a controller player only
-        {
-            transform.position += new Vector3(inputProfile.Move.X * cursorMoveSpeed, inputProfile.Move.Y * cursorMoveSpeed, 0);
-        }
     }
 
     public void AssignRaycaster(GraphicRaycaster assignedRaycaster)

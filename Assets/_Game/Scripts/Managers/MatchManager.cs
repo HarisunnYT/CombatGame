@@ -166,6 +166,25 @@ public class MatchManager : Singleton<MatchManager>
         spawnIndex++;
     }
 
+    public void ExitMatch()
+    {
+        if (!ServerManager.Instance.IsOnlineMatch)
+            NetworkManager.Instance.StopHost();
+
+        LobbyManager.Instance.DestroyInstance();
+        ServerManager.Instance.DestroyInstance();
+        CursorManager.Instance.DestroyInstance();
+        LocalPlayersManager.Instance.DestroyInstance();
+
+        SteamMatchMakingManager.Instance.CurrentLobby.Leave();
+        SteamMatchMakingManager.Instance.DestroyInstance();
+
+        NetworkManager.Instance.StopClient();
+        Destroy(NetworkManager.Instance.gameObject);
+
+        SceneLoader.Instance.LoadScene("MainMenu");
+    }
+
     #region PLAYER_ASSIGNMENTS
 
     public void AddPlayer(PlayerController player, int id)

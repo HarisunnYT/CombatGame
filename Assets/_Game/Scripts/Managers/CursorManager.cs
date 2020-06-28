@@ -99,6 +99,17 @@ public class CursorManager : PersistentSingleton<CursorManager>
         }
     }
 
+    public void ShowCursor(System.Guid controllerGUID)
+    {
+        foreach (var cursor in cursors)
+        {
+            if (cursor.ControllerID == controllerGUID)
+            {
+                cursor.gameObject.SetActive(true);
+            }
+        }
+    }
+
     public Cursor GetCursor(int playerIndex)
     {
         foreach (var cursor in cursors)

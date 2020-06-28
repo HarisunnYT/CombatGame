@@ -15,6 +15,6 @@ public class PlayPanel : Panel
     public void Local()
     {
         ServerManager.Instance.IsOnlineMatch = false;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+        SceneLoader.Instance.LoadScene("Lobby");
     }
 }

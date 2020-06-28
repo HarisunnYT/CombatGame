@@ -22,4 +22,9 @@ public class PersistentSingleton<Ty> : Singleton<Ty> where Ty : MonoBehaviour
         }
         base.Register();
     }
+
+    public void DestroyInstance()
+    {
+        Destroy(gameObject);
+    }
 }

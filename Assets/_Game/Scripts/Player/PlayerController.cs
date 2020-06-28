@@ -110,25 +110,12 @@ public class PlayerController : Character
         }
     }
 
-    public void OnAssignedID(int id)
-    {
-        //player id already assigned
-        if (playerID != -1)
-            return;
-
-        playerID = id;
-
-        Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
-        MatchManager.Instance.AddPlayer(this, playerID);
-
-        inputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
-    }
-
     private void OnDestroy()
     {
         OnPlayerDisconnected?.Invoke();
+        inputProfile.Deinitialise();
 
-        if (GameManager.Instance)
+        if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(playerID);
     }
 
@@ -201,6 +188,20 @@ public class PlayerController : Character
     public void SetFighter(FighterData fighter)
     {
         Fighter = fighter;
+    }
+
+    public void OnAssignedID(int id)
+    {
+        //player id already assigned
+        if (playerID != -1)
+            return;
+
+        playerID = id;
+
+        Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
+        MatchManager.Instance.AddPlayer(this, playerID);
+
+        inputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
     }
 
     #region MOVEMENT

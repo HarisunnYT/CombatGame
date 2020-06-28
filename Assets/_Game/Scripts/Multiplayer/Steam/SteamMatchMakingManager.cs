@@ -6,7 +6,7 @@ using Steamworks.Data;
 using System.Threading.Tasks;
 using Mirror;
 
-public class SteamMatchMakingManager : Singleton<SteamMatchMakingManager>
+public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManager>
 {
     public bool IsHost { get; private set; }
     public Lobby CurrentLobby { get; private set; }
@@ -30,7 +30,7 @@ public class SteamMatchMakingManager : Singleton<SteamMatchMakingManager>
     {
         CurrentLobby = lobby;
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+        SceneLoader.Instance.LoadScene("Lobby");
         Debug.Log("Lobby Joined");
     }
 

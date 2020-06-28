@@ -37,13 +37,6 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public event PlayerEvent OnPlayerAdded;
     public event PlayerEvent OnPlayerRemoved;
 
-    private void StartUpServer()
-    {
-        SceneManager.LoadScene("Lobby");
-        NetworkManager.singleton.StartServer();
-        Debug.Log("SERVER SET UP");
-    }
-
     public void OnPlayerDisconnectedFromServer()
     {
         if (Players.Count <= 0)

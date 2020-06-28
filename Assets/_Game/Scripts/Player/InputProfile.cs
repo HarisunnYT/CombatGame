@@ -19,8 +19,13 @@ public class InputProfile : PlayerActionSet
     public PlayerAction Attack3;
 
     public PlayerAction Select;
+    public PlayerAction Menu;
 
     public InputDevice device = null;
+
+    public System.Guid GUID;
+
+    public static List<InputProfile> InputProfiles = new List<InputProfile>();
 
     public InputProfile(System.Guid controllerGUID, bool allowAllControllers = false)
     {
@@ -35,6 +40,8 @@ public class InputProfile : PlayerActionSet
         Attack1 = CreatePlayerAction("Attack1");
         Attack2 = CreatePlayerAction("Attack2");
         Attack3 = CreatePlayerAction("Attack3");
+
+        Menu = CreatePlayerAction("Menu");
 
         Move = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
 
@@ -64,6 +71,9 @@ public class InputProfile : PlayerActionSet
             //auto add controller bindings all controllers allowed
             AddControllerBindings();
         }
+
+        GUID = controllerGUID;
+        InputProfiles.Add(this);
     }
 
     private void AddKeyboardBindings()
@@ -79,6 +89,8 @@ public class InputProfile : PlayerActionSet
         Attack1.AddDefaultBinding(Mouse.LeftButton);
         Attack2.AddDefaultBinding(Mouse.MiddleButton);
         Attack3.AddDefaultBinding(Mouse.RightButton);
+
+        Menu.AddDefaultBinding(Key.Escape);
     }
 
     private void AddControllerBindings()
@@ -101,5 +113,12 @@ public class InputProfile : PlayerActionSet
         Attack1.AddDefaultBinding(InputControlType.Action3);
         Attack2.AddDefaultBinding(InputControlType.Action4);
         Attack3.AddDefaultBinding(InputControlType.Action2);
+
+        Menu.AddDefaultBinding(InputControlType.Menu);
+    }
+
+    public void Deinitialise()
+    {
+        InputProfiles.Remove(this);
     }
 }
