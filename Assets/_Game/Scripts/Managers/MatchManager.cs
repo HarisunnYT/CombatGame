@@ -166,6 +166,9 @@ public class MatchManager : Singleton<MatchManager>
         spawnIndex++;
     }
 
+    /// <summary>
+    /// this is for exiting match, exiting lobby is on the LobbyManager
+    /// </summary>
     public void ExitMatch()
     {
         if (!ServerManager.Instance.IsOnlineMatch)

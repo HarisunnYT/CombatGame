@@ -13,7 +13,7 @@ public class CharacterSelectScreen : Panel
 
     private void Awake()
     {
-        if (NetworkManager.Instance)
+        if (ServerManager.Instance)
         {
             ServerManager.Instance.OnPlayerAdded += AddPlayerCell;
             ServerManager.Instance.OnPlayerRemoved += RemovePlayerCell;
@@ -29,7 +29,7 @@ public class CharacterSelectScreen : Panel
 
     private void OnDestroy()
     {
-        if (NetworkManager.Instance)
+        if (ServerManager.Instance)
         {
             ServerManager.Instance.OnPlayerAdded -= AddPlayerCell;
             ServerManager.Instance.OnPlayerRemoved -= RemovePlayerCell;
@@ -100,5 +100,10 @@ public class CharacterSelectScreen : Panel
     private void OnLocalPlayerConnected(int playerIndex, System.Guid controllerGUID)
     {
         connectedPlayerCells[playerIndex].Configure("Player " + (playerIndex + 1)); //TODO show proper name
+    }
+
+    public void Cancel()
+    {
+        LobbyManager.Instance.ExitLobby();
     }
 }

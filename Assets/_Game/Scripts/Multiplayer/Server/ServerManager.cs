@@ -37,15 +37,6 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public event PlayerEvent OnPlayerAdded;
     public event PlayerEvent OnPlayerRemoved;
 
-    public void OnPlayerDisconnectedFromServer()
-    {
-        if (Players.Count <= 0)
-        {
-            NetworkManager.singleton.StopServer();
-            Application.Quit();
-        }
-    }
-
     public ConnectedPlayer AddConnectedPlayer(int id, string steamName)
     {
         if (GetPlayer(id) != null)
@@ -65,9 +56,8 @@ public class ServerManager : PersistentSingleton<ServerManager>
         {
             if (Players[i].PlayerID == id)
             {
-                Players.RemoveAt(i);
-                OnPlayerDisconnectedFromServer();
                 OnPlayerRemoved?.Invoke(Players[i]);
+                Players.RemoveAt(i);
 
                 break;
             }

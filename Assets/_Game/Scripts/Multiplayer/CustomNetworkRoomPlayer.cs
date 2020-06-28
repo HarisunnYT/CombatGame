@@ -19,6 +19,14 @@ public class CustomNetworkRoomPlayer : NobleRoomPlayer
         }
     }
 
+    private void OnDestroy()
+    {
+        if (ServerManager.Instance)
+        {
+            ServerManager.Instance.RemovePlayer(index);
+        }
+    }
+
     public void SelectCharacter(int playerID, string characterName)
     {
         if (isServer)

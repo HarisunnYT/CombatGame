@@ -54,4 +54,27 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         ServerManager.Instance.GetPlayer(playerID).Figher = characterName;
         OnCharacterSelected?.Invoke(playerID, characterName);
     }
+
+    /// <summary>
+    /// this is for exiting lobby, exiting match is on the MatchManager
+    /// </summary>
+    public void ExitLobby()
+    {
+        if (!ServerManager.Instance.IsOnlineMatch)
+            NetworkManager.Instance.StopHost();
+
+        ServerManager.Instance.DestroyInstance();
+        CursorManager.Instance.DestroyInstance();
+        LocalPlayersManager.Instance.DestroyInstance();
+
+        SteamMatchMakingManager.Instance.CurrentLobby.Leave();
+        SteamMatchMakingManager.Instance.DestroyInstance();
+
+        NetworkManager.Instance.StopClient();
+        Destroy(NetworkManager.Instance.gameObject);
+
+        DestroyInstance();
+
+        SceneLoader.Instance.LoadScene("MainMenu");
+    }
 }

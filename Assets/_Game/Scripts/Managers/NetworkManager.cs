@@ -79,9 +79,4 @@ public class NetworkManager : NobleRoomManager
         if (!SteamMatchMakingManager.Instance.IsHost)
             PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
     }
-
-    public void ResetInstance()
-    {
-        playerData.Clear();
-    }
 }
