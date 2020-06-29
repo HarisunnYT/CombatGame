@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6081251362996998231}
   - component: {fileID: 4478098767939515773}
-  - component: {fileID: 6073393959409720959}
+  - component: {fileID: 6580177531826210040}
   m_Layer: 0
   m_Name: CursorManager
   m_TagString: Untagged
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursorPrefab: {fileID: 1885511121434342956, guid: 587453767b6b8a4488cad65d1a89cf76,
     type: 3}
---- !u!223 &6073393959409720959
+--- !u!223 &6580177531826210040
 Canvas:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

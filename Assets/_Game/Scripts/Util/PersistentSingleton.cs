@@ -25,6 +25,7 @@ public class PersistentSingleton<Ty> : Singleton<Ty> where Ty : MonoBehaviour
 
     public void DestroyInstance()
     {
+        Instance = null;
         Destroy(gameObject);
     }
 }

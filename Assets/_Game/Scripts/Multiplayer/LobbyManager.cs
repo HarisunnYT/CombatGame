@@ -71,7 +71,17 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         SteamMatchMakingManager.Instance.DestroyInstance();
 
         NetworkManager.Instance.StopClient();
+        StartCoroutine(DelayedRemovalOfInstances());
+    }
+
+    private IEnumerator DelayedRemovalOfInstances()
+    {
+        yield return new WaitForEndOfFrame();
+
         Destroy(NetworkManager.Instance.gameObject);
+        NetworkManager.Instance = null;
+
+        yield return new WaitForEndOfFrame();
 
         DestroyInstance();
 

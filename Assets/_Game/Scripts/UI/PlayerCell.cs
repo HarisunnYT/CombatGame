@@ -19,7 +19,7 @@ public class PlayerCell : MonoBehaviour
     {
         this.playerID = playerID;
 
-        Invoke("TryAssignPlayerController", 0.5f);
+        Invoke("TryAssignPlayerController", 0.1f);
     }
 
     private void TryAssignPlayerController()

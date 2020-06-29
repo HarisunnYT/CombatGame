@@ -16,6 +16,8 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     private HUDPanel hudPanel;
 
+    private bool fightOver = false;
+
     protected override void Initialize()
     {
         base.Initialize();
@@ -100,18 +102,29 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     public void FightOver(PlayerController winner)
     {
-        winner.DisableInput();
+        if (fightOver)
+            return;
 
+        fightOver = true;
+
+        winner.DisableInput();
         MatchManager.Instance.AddWin(winner);
 
         hudPanel.HidePlayerCells(true);
-
         DetermineCashForPlayer(winner, 1);
 
         CameraManager.Instance.CameraFollow.ZoomInOnPlayer(winner.gameObject, new Vector2(0, 0.75f), 2, 1, () =>
         {
-            PanelManager.Instance.ShowPanel<WinsPanel>();
+            if (MatchManager.Instance.HasPlayerWon())
+                GameComplete();
+            else
+                PanelManager.Instance.ShowPanel<WinsPanel>();
         });
+    }
+
+    private void GameComplete()
+    {
+        PanelManager.Instance.ShowPanel<GameCompletePanel>();
     }
 
     private void DetermineCashForPlayer(PlayerController player, int placement)

@@ -30,7 +30,9 @@ public class PausePanel : Panel
 
     protected override void OnClose()
     {
-        CursorManager.Instance.HideCursor(interactingProfile.GUID);
+        if (CursorManager.Instance)
+            CursorManager.Instance.HideCursor(interactingProfile.GUID);
+
         Time.timeScale = 1;
     }
 

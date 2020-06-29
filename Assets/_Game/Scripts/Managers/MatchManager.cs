@@ -32,10 +32,11 @@ public class MatchManager : Singleton<MatchManager>
 
     #region RUNTIME_VARIABLES
 
-    public int WinsRequired { get; private set; } = 5;
+    public int WinsRequired { get; private set; } = 1;
 
     //int being the amount of wins the player has
     private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
+    public Dictionary<PlayerController, int> MatchResults { get { return wins; } }
 
     private FightManager currentFight;
     private RoundPhase currentPhase;
@@ -154,7 +155,7 @@ public class MatchManager : Singleton<MatchManager>
 
     public int GetWins(PlayerController player)
     {
-        if (wins.ContainsKey(player))
+        if (player != null && wins.ContainsKey(player))
             return wins[player];
         else
             return 0;
@@ -166,12 +167,25 @@ public class MatchManager : Singleton<MatchManager>
         spawnIndex++;
     }
 
+    public bool HasPlayerWon()
+    {
+        foreach(var player in wins)
+        {
+            if (player.Value >= WinsRequired)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// this is for exiting match, exiting lobby is on the LobbyManager
     /// </summary>
     public void ExitMatch()
     {
-        if (!ServerManager.Instance.IsOnlineMatch)
+        if (!ServerManager.Instance.IsOnlineMatch || SteamMatchMakingManager.Instance.IsHost)
             NetworkManager.Instance.StopHost();
 
         LobbyManager.Instance.DestroyInstance();
@@ -183,7 +197,17 @@ public class MatchManager : Singleton<MatchManager>
         SteamMatchMakingManager.Instance.DestroyInstance();
 
         NetworkManager.Instance.StopClient();
+        StartCoroutine(DelayedRemovalOfInstances());
+    }
+
+    private IEnumerator DelayedRemovalOfInstances()
+    {
+        yield return new WaitForEndOfFrame();
+
         Destroy(NetworkManager.Instance.gameObject);
+        NetworkManager.Instance = null;
+
+        yield return new WaitForEndOfFrame();
 
         SceneLoader.Instance.LoadScene("MainMenu");
     }
@@ -200,6 +224,7 @@ public class MatchManager : Singleton<MatchManager>
             currentFight.AlivePlayers.Add(id);
 
         SetPlayerSpawn(player);
+        wins.Add(player, 0);
     }
 
     public PlayerController GetPlayer(int playerID)
