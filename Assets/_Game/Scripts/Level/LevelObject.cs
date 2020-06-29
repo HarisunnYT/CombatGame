@@ -46,6 +46,8 @@ public class LevelObject : NetworkBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
+
+        collider.isTrigger = hasAuthority;
     }
 
     private void Update()
@@ -103,6 +105,6 @@ public class LevelObject : NetworkBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        insideObjectsCount--;
+        insideObjectsCount = Mathf.Clamp(insideObjectsCount - 1, 0, int.MaxValue);
     }
 }
