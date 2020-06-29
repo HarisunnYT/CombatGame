@@ -96,7 +96,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.008370876, y: -0.008293033}
@@ -127,6 +127,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   objectName: 
+  Placed: 0
 --- !u!114 &-8464824800539249684
 MonoBehaviour:
   m_ObjectHideFlags: 0

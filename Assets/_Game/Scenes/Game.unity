@@ -8575,6 +8575,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterPurchasePanel
       objectReference: {fileID: 0}
+    - target: {fileID: 5110882162576234458, guid: 5aba894fe11745047bfd45d961ed5772,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5110882162576234461, guid: 5aba894fe11745047bfd45d961ed5772,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9396,16 +9401,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1475639341}
     m_Modifications:
-    - target: {fileID: 7815052497105633570, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7815052497105633570, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -19.999878
-      objectReference: {fileID: 0}
     - target: {fileID: 7815052497708279818, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
         type: 3}
       propertyPath: m_LocalPosition.x

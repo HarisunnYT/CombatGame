@@ -32,7 +32,7 @@ public class PurchasableMoveCell : MoveCell
 
     public void OnPressed()
     {
-        if (PlayerRoundInformation.Instance.Cash >= MoveData.Price)
+        if (PlayerRoundInformation.Instance.CanPurchase(MoveData.Price))
         {
             purchasePanel.PurchasingMove(this);
         }

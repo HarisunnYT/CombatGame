@@ -46,6 +46,16 @@ public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightE
         return false;
     }
 
+    public bool CanPurchase(int price)
+    {
+        if (Cash >= price)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public void AddWin()
     {
         Wins++;

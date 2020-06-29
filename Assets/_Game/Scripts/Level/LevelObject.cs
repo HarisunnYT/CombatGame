@@ -9,6 +9,9 @@ public class LevelObject : NetworkBehaviour
     [SerializeField]
     private string objectName;
 
+    [SyncVar]
+    public bool Placed;
+
     private LevelObjectData levelObject;
     private LevelEditorPanel editorPanel;
     private Cursor cursor;
@@ -52,27 +55,31 @@ public class LevelObject : NetworkBehaviour
 
     private void Update()
     {
-        if (!hasAuthority && ServerManager.Instance.IsOnlineMatch)
-            return;
-        else if (cursor == null) //if this hit, it's an object spawned from the server
+        if (cursor == null) //if this hit, it's an object spawned from the server
             ServerConfigure();
 
-        int roundedSize = LevelEditorManager.Instance.RoundedGridSize;
-        Vector3 target = cursor.AssignedCamera.ScreenToWorldPoint(cursor.transform.position);
-        target.x = Mathf.Round(target.x / roundedSize) * roundedSize;
-        target.y = Mathf.Round(target.y / roundedSize) * roundedSize;
+        //set opacity of object
+        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, hasAuthority || Placed ? 1 : 0.5f);
 
-        transform.position = new Vector3(target.x, target.y, target.z + 1);
-
-        if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
+        if (hasAuthority || !ServerManager.Instance.IsOnlineMatch)
         {
-            if (PlayerRoundInformation.Instance.Purchase(levelObject.Price))
-            {
-                Purchased();
-            }
-        }
+            int roundedSize = LevelEditorManager.Instance.RoundedGridSize;
+            Vector3 target = cursor.AssignedCamera.ScreenToWorldPoint(cursor.transform.position);
+            target.x = Mathf.Round(target.x / roundedSize) * roundedSize;
+            target.y = Mathf.Round(target.y / roundedSize) * roundedSize;
 
-        spriteRenderer.color = insideObjectsCount > 0 ? Color.red : Color.white;
+            transform.position = new Vector3(target.x, target.y, target.z + 1);
+
+            if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
+            {
+                if (PlayerRoundInformation.Instance.Purchase(levelObject.Price))
+                {
+                    Purchased();
+                }
+            }
+
+            spriteRenderer.color = insideObjectsCount > 0 ? Color.red : Color.white;
+        }
     }
 
     private void Purchased()
@@ -80,9 +87,25 @@ public class LevelObject : NetworkBehaviour
         transform.parent = null;
         collider.isTrigger = false;
         editorPanel.ShowPurchasableBar(true);
-        MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
 
+        MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
         Destroy(this);
+
+        if (isServer)
+            RpcPlaceObject();
+        else
+            CmdPlaceObject();
+    }
+
+    [Command]
+    private void CmdPlaceObject()
+    {
+        RpcPlaceObject();
+    }
+
+    private void RpcPlaceObject()
+    {
+        Placed = true;
     }
 
     private void OnPhaseChanged(MatchManager.RoundPhase phase)
@@ -96,8 +119,8 @@ public class LevelObject : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if it's a level object, that means it hasn't been placed yet so we don't care
-        if (!collision.GetComponent<LevelObject>())
+        LevelObject lvlObj = collision.GetComponent<LevelObject>();
+        if (!lvlObj || lvlObj.Placed)
         {
             insideObjectsCount++;
         }

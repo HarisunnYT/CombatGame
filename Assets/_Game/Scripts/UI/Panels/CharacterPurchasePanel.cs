@@ -76,7 +76,7 @@ public class CharacterPurchasePanel : Panel
 
     public void PurchasedMove(MoveData move, int position)
     {
-        PlayerRoundInformation.Instance.RemoveCash(move.Price);
+        PlayerRoundInformation.Instance.Purchase(move.Price);
 
         CurrentPurchasingMove = null;
         SetDarkness(false);

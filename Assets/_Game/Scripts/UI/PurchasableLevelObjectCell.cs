@@ -26,7 +26,10 @@ public class PurchasableLevelObjectCell : MonoBehaviour
 
     public void OnPressed()
     {
-        levelEditorPanel.ShowPurchasableBar(false);
-        LevelEditorManager.Instance.CreateLevelObject(objectData, CursorManager.Instance.GetLastInteractedCursor(), levelEditorPanel);
+        if (PlayerRoundInformation.Instance.CanPurchase(objectData.Price))
+        {
+            levelEditorPanel.ShowPurchasableBar(false);
+            LevelEditorManager.Instance.CreateLevelObject(objectData, CursorManager.Instance.GetLastInteractedCursor(), levelEditorPanel);
+        }
     }
 }
