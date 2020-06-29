@@ -6,6 +6,10 @@ using UnityEngine;
 public class LevelEditorManager : Singleton<LevelEditorManager>
 {
     [SerializeField]
+    private int roundedGridSize = 5;
+    public int RoundedGridSize { get { return roundedGridSize; } }
+
+    [SerializeField]
     private DataList levelObjectsList;
     public DataList LevelObjectsList { get { return levelObjectsList; } }
 

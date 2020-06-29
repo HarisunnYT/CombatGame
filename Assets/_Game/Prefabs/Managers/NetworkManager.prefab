@@ -153,7 +153,7 @@ MonoBehaviour:
   serverIPv6BindAddress: '::'
   port: 7777
   useUpnP: 1
-  maxConnections: 20
+  maxConnections: 4
   ipv6Enabled: 1
   channels: 0204010300
   authCode: 

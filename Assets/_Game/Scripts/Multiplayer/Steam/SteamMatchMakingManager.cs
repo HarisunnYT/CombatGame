@@ -29,9 +29,7 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
     private void OnLobbyJoined(Lobby lobby)
     {
         CurrentLobby = lobby;
-
         SceneLoader.Instance.LoadScene("Lobby");
-        Debug.Log("Lobby Joined");
     }
 
     private void Update()
@@ -48,6 +46,7 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
             {
                 IsHost = true;
                 OnLobbyJoined(SteamLobbyManager.Instance.CurrentLobby.Value);
+                Debug.Log("Lobby Created");
             }
 
             retrievingLobbiesTask = null;
@@ -55,6 +54,7 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
 
         if (joiningLobbyTask != null && joiningLobbyTask.IsCompleted)
         {
+            Debug.Log("Lobby Joined");
             OnLobbyJoined(joiningLobbyTask.Result.Value);
             joiningLobbyTask = null;
         }

@@ -43,4 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6af0bd05eb01c4cb6ba3142b4c2c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundedGridSize: 1
   levelObjectsList: {fileID: 11400000, guid: a4063ce57c9485749b606825323be708, type: 2}
