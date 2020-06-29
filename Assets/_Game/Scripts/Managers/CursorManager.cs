@@ -122,4 +122,9 @@ public class CursorManager : PersistentSingleton<CursorManager>
 
         return null;
     }
+
+    public Cursor GetLastInteractedCursor()
+    {
+        return GetCursor(lastInteractedPlayerIndex);
+    }
 }

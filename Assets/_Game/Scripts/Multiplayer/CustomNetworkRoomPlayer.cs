@@ -100,4 +100,21 @@ public class CustomNetworkRoomPlayer : NobleRoomPlayer
             }
         }
     }
+
+    [Command]
+    public void CmdSpawnObject(int prefabID, NetworkConnectionToClient conn)
+    {
+        if (prefabID != -1)
+        {
+            GameObject instantiatedObject = Instantiate(NetworkManager.Instance.GetPrefabFromID(prefabID));
+            NetworkServer.Spawn(instantiatedObject, conn);
+        }
+    }
+
+    [Command]
+    public void CmdUnspawnObject(GameObject obj)
+    {
+        obj.SetActive(false);
+        NetworkServer.UnSpawn(obj);
+    }
 }

@@ -32,7 +32,7 @@ public class MatchManager : Singleton<MatchManager>
 
     #region RUNTIME_VARIABLES
 
-    public int WinsRequired { get; private set; } = 1;
+    public int WinsRequired { get; private set; } = 5;
 
     //int being the amount of wins the player has
     private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
@@ -53,6 +53,9 @@ public class MatchManager : Singleton<MatchManager>
 
     public delegate void TimeEvent(int time);
     public event TimeEvent OnBuyPhaseTimePassed;
+
+    public delegate void PhaseEvent(RoundPhase phase);
+    public event PhaseEvent OnPhaseChanged;
 
     #endregion
 
@@ -83,6 +86,7 @@ public class MatchManager : Singleton<MatchManager>
             BeginBuyPhase();
 
         currentPhase = phase;
+        OnPhaseChanged?.Invoke(currentPhase);
     }
 
     private void BeginFightPhase()
@@ -119,6 +123,18 @@ public class MatchManager : Singleton<MatchManager>
 
         Destroy(currentFight.gameObject);
         currentFight = null;
+
+        StartCoroutine(DisablePlayerObjects());
+    }
+
+    private IEnumerator DisablePlayerObjects()
+    {
+        yield return new WaitForSecondsRealtime(1);
+
+        foreach(var player in ServerManager.Instance.Players)
+        {
+            player.PlayerController.gameObject.SetActive(false);
+        }
     }
 
     private void CreateFightManager()

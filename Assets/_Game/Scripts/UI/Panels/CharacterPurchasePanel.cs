@@ -55,7 +55,6 @@ public class CharacterPurchasePanel : Panel
 
     protected override void OnClose()
     {
-        CursorManager.Instance.HideAllCursors();
         MatchManager.Instance.OnBuyPhaseTimePassed -= UpdateCountdownTimer;
     }
 
@@ -83,5 +82,16 @@ public class CharacterPurchasePanel : Panel
         SetDarkness(false);
 
         FighterManager.Instance.EquipedMove(move, position);
+    }
+
+    public void OpenLevelEditor()
+    {
+        if (ServerManager.Instance.IsOnlineMatch)
+            PanelManager.Instance.ShowPanel<LevelEditorPanel>();
+        else
+        {
+            transform.parent.GetComponentInChildren<LevelEditorPanel>(true).ShowPanel(); //if it's local, get the level editor panel that's on the same parent as this
+            Close();
+        }
     }
 }

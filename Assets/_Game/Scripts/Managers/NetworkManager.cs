@@ -79,4 +79,25 @@ public class NetworkManager : NobleRoomManager
         if (!SteamMatchMakingManager.Instance.IsHost)
             PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
     }
+
+    public int GetPrefabID(GameObject prefab)
+    {
+        for (int i = 0; i < spawnPrefabs.Count; i++)
+        {
+            if (spawnPrefabs[i] == prefab)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public GameObject GetPrefabFromID(int id)
+    {
+        if (id != -1)
+            return spawnPrefabs[id];
+        else
+            return null;
+    }
 }

@@ -9,20 +9,17 @@ public class Cursor : MonoBehaviour
     [SerializeField]
     private float cursorMoveSpeed = 10;
 
-    private InputProfile inputProfile;
-
-    private EventSystem eventSystem;
-
     public int PlayerIndex { get; private set; }
-
     public System.Guid ControllerID { get; private set; }
+    public Camera AssignedCamera { get; private set; }
+    public InputProfile InputProfile { get; private set; }
 
     private Vector3 previousCursorPosition;
 
     private GraphicRaycaster assignedRaycaster;
-    private Camera assignedCamera;
-
     private Button previousHighlightedButton;
+
+    private EventSystem eventSystem;
 
     private void Awake()
     {
@@ -35,7 +32,7 @@ public class Cursor : MonoBehaviour
         ControllerID = controllerID;
         PlayerIndex = playerIndex;
 
-        inputProfile = new InputProfile(controllerID);
+        InputProfile = new InputProfile(controllerID);
         gameObject.SetActive(true);
     }
 
@@ -47,10 +44,10 @@ public class Cursor : MonoBehaviour
         }
         else
         {
-            transform.position += new Vector3(inputProfile.Move.X * cursorMoveSpeed, inputProfile.Move.Y * cursorMoveSpeed, 0) * Time.fixedDeltaTime;
+            transform.position += new Vector3(InputProfile.Move.X * cursorMoveSpeed, InputProfile.Move.Y * cursorMoveSpeed, 0) * Time.fixedDeltaTime;
         }
 
-        if (previousCursorPosition != transform.position || inputProfile.Select.WasPressed)
+        if (previousCursorPosition != transform.position || InputProfile.Select.WasPressed)
         {
             PointerEventData pointerEventData = new PointerEventData(eventSystem);
             pointerEventData.position = transform.position;
@@ -76,7 +73,7 @@ public class Cursor : MonoBehaviour
             }
 
             //clicked pressed from either mouse or controller
-            if (inputProfile.Select.WasPressed)
+            if (InputProfile.Select.WasPressed)
             {
                 CursorManager.Instance.SetLastInteractedPlayer(PlayerIndex);
 
@@ -91,14 +88,14 @@ public class Cursor : MonoBehaviour
             }
         }
 
-        if (assignedCamera == null)
+        if (AssignedCamera == null)
             ResetCamera();
 
         //clamp cursor to camera bounds
-        Vector3 pos = assignedCamera.ScreenToViewportPoint(transform.position);
+        Vector3 pos = AssignedCamera.ScreenToViewportPoint(transform.position);
         pos.x = Mathf.Clamp(pos.x, 0.0f, 0.95f);
         pos.y = Mathf.Clamp(pos.y, 0.05f, 1.0f);
-        transform.position = assignedCamera.ViewportToScreenPoint(pos);
+        transform.position = AssignedCamera.ViewportToScreenPoint(pos);
 
         previousCursorPosition = transform.position;
     }
@@ -115,12 +112,12 @@ public class Cursor : MonoBehaviour
 
     public void AssignCamera(Camera camera)
     {
-        assignedCamera = camera;
+        AssignedCamera = camera;
     }
 
     public void ResetCamera()
     {
-        assignedCamera = Camera.main;
+        AssignedCamera = Camera.main;
     }
 
     public void SetScale(Vector3 scale)

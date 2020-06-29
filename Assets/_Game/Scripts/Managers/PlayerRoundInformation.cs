@@ -35,6 +35,17 @@ public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightE
         OnCashUpdated?.Invoke(Cash);
     }
 
+    public bool Purchase(int price)
+    {
+        if (Cash >= price)
+        {
+            RemoveCash(price);
+            return true;
+        }
+
+        return false;
+    }
+
     public void AddWin()
     {
         Wins++;
