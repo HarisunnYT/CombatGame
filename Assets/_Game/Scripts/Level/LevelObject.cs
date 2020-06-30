@@ -71,15 +71,14 @@ public class LevelObject : NetworkBehaviour
             target.y = Mathf.Round(target.y / roundedSize) * roundedSize;
 
             Vector3 result = new Vector3(target.x + offset.x, target.y + offset.y, target.z + 1);
+            transform.position = result;
 
             if (ServerManager.Instance.IsOnlineMatch)
                 CmdMoveObject(result);
-            else
-                transform.position = result;
 
             if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
             {
-                if (PlayerRoundInformation.Instance.Purchase(levelObject.Price))
+                if (!placed && PlayerRoundInformation.Instance.Purchase(levelObject.Price))
                 {
                     Purchased();
                 }
@@ -94,10 +93,8 @@ public class LevelObject : NetworkBehaviour
         editorPanel.ShowPurchasableBar(true);
         MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
 
-        if (!ServerManager.Instance.IsOnlineMatch)
-            PlaceObject();
-        else
-            CmdPlaceObject();
+        PlaceObject();
+        CmdPlaceObject();
     }
 
     [Command]

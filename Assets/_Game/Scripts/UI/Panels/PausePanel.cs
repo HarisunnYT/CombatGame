@@ -41,7 +41,7 @@ public class PausePanel : Panel
         PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, () =>
         {
             Time.timeScale = 1;
-            MatchManager.Instance.ExitMatch();
+            MatchManager.Instance.ExitMatch(false);
         });
     }
 

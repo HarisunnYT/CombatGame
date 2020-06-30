@@ -5,6 +5,7 @@ using Steamworks;
 using Steamworks.Data;
 using System.Threading.Tasks;
 using System;
+using UnityEngine.SceneManagement;
 
 public class SteamLobbyManager : Singleton<SteamLobbyManager>
 {
@@ -20,6 +21,7 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
     {
         SteamMatchmaking.OnLobbyInvite += OnLobbyInvite;
         SteamMatchmaking.OnLobbyEntered += OnLobbyJoined;
+        SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
     }
 
     protected override void Deinitialize()
@@ -30,11 +32,6 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
     private void OnLobbyJoined(Lobby lobby)
     {
         CurrentLobby = lobby;
-    }
-
-    private void OnLobbyInvite(Friend arg1, Lobby arg2)
-    {
-        Debug.Log("lobby invite");
     }
 
     public void CreateLobby()
@@ -67,8 +64,16 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
         }
     }
 
-    public void DestroyLobby()
+    private void OnLobbyInvite(Friend arg1, Lobby arg2)
     {
+        //TODO show invite prompt in-game
+    }
 
+    //this is when the user accepts an invite or clicks 'join game' in steam UI
+    private void OnGameLobbyJoinRequested(Lobby lobby, SteamId friendID)
+    {
+        CurrentLobby = lobby;
+        SceneLoader.Instance.LoadScene("Lobby");
+        Debug.Log("joined friends game");
     }
 }

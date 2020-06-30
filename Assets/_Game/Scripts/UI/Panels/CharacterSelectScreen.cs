@@ -104,6 +104,6 @@ public class CharacterSelectScreen : Panel
 
     public void Cancel()
     {
-        LobbyManager.Instance.ExitLobby();
+        LobbyManager.Instance.ExitLobby(false);
     }
 }

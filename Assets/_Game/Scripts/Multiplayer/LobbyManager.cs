@@ -58,9 +58,9 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
     /// <summary>
     /// this is for exiting lobby, exiting match is on the MatchManager
     /// </summary>
-    public void ExitLobby()
+    public void ExitLobby(bool forced)
     {
-        if (!ServerManager.Instance.IsOnlineMatch)
+        if (!ServerManager.Instance.IsOnlineMatch || SteamMatchMakingManager.Instance.IsHost)
             NetworkManager.Instance.StopHost();
 
         ServerManager.Instance.DestroyInstance();
@@ -69,6 +69,9 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
         SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
         SteamMatchMakingManager.Instance.DestroyInstance();
+
+        if (forced)
+            ErrorManager.Instance.DisconnectedError();
 
         NetworkManager.Instance.StopClient();
         StartCoroutine(DelayedRemovalOfInstances());
@@ -86,5 +89,13 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         DestroyInstance();
 
         SceneLoader.Instance.LoadScene("MainMenu");
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (MatchManager.Instance)
+            MatchManager.Instance.ExitMatch(false);
+        else
+            ExitLobby(false);
     }
 }

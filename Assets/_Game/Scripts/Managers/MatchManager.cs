@@ -199,7 +199,7 @@ public class MatchManager : Singleton<MatchManager>
     /// <summary>
     /// this is for exiting match, exiting lobby is on the LobbyManager
     /// </summary>
-    public void ExitMatch()
+    public void ExitMatch(bool forced)
     {
         if (!ServerManager.Instance.IsOnlineMatch || SteamMatchMakingManager.Instance.IsHost)
             NetworkManager.Instance.StopHost();
@@ -211,6 +211,9 @@ public class MatchManager : Singleton<MatchManager>
 
         SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
         SteamMatchMakingManager.Instance.DestroyInstance();
+
+        if (forced)
+            ErrorManager.Instance.DisconnectedError();
 
         NetworkManager.Instance.StopClient();
         StartCoroutine(DelayedRemovalOfInstances());

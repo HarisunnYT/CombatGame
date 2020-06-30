@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class NetworkManager : NobleRoomManager
@@ -83,7 +84,17 @@ public class NetworkManager : NobleRoomManager
         base.OnFatalError(error);
 
         //TODO show readable error to user
-        LobbyManager.Instance.ExitLobby();
+        LobbyManager.Instance.ExitLobby(true);
+    }
+
+    public override void OnClientDisconnect(NetworkConnection conn)
+    {
+        base.OnClientDisconnect(conn);
+
+        if (MatchManager.Instance)
+            MatchManager.Instance.ExitMatch(true);
+        else
+            LobbyManager.Instance.ExitLobby(true);
     }
 
     public override void OnRoomClientConnect(NetworkConnection conn)
