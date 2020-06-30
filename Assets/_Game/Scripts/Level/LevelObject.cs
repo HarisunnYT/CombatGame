@@ -70,7 +70,12 @@ public class LevelObject : NetworkBehaviour
             target.x = Mathf.Round(target.x / roundedSize) * roundedSize;
             target.y = Mathf.Round(target.y / roundedSize) * roundedSize;
 
-            transform.position = new Vector3(target.x + offset.x, target.y + offset.y, target.z + 1);
+            Vector3 result = new Vector3(target.x + offset.x, target.y + offset.y, target.z + 1);
+
+            if (ServerManager.Instance.IsOnlineMatch)
+                CmdMoveObject(result);
+            else
+                transform.position = result;
 
             if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
             {
@@ -89,10 +94,22 @@ public class LevelObject : NetworkBehaviour
         editorPanel.ShowPurchasableBar(true);
         MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
 
-        if (isServer || !ServerManager.Instance.IsOnlineMatch)
-            RpcPlaceObject();
+        if (!ServerManager.Instance.IsOnlineMatch)
+            PlaceObject();
         else
             CmdPlaceObject();
+    }
+
+    [Command]
+    private void CmdMoveObject(Vector3 position)
+    {
+        RpcMoveObject(position);
+    }
+
+    [ClientRpc]
+    private void RpcMoveObject(Vector3 position)
+    {
+        transform.position = position;
     }
 
     [Command]
@@ -103,6 +120,11 @@ public class LevelObject : NetworkBehaviour
 
     [ClientRpc]
     private void RpcPlaceObject()
+    {
+        PlaceObject();
+    }
+
+    private void PlaceObject()
     {
         collider.isTrigger = isTrigger;
         placed = true;

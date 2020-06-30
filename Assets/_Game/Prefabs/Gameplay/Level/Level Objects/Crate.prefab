@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7053512168087625051}
   - component: {fileID: 1713808219089675443}
   - component: {fileID: -8464824800539249684}
-  - component: {fileID: 2530745025543164855}
   - component: {fileID: -5480861508648681598}
   m_Layer: 0
   m_Name: Crate
@@ -126,8 +125,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  objectName: 
-  Placed: 0
+  offset: {x: 0, y: 0}
+  isTrigger: 0
 --- !u!114 &-8464824800539249684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,24 +143,6 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &2530745025543164855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 540773166623301826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
 --- !u!50 &-5480861508648681598
 Rigidbody2D:
   serializedVersion: 4

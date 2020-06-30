@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 5988295462337726034}
   - component: {fileID: 8938859172034660496}
   - component: {fileID: 1835729230993174615}
+  - component: {fileID: 1268306791404120107}
   - component: {fileID: 8938859172034660460}
   - component: {fileID: 8938859172034660461}
   - component: {fileID: 8938859172034660498}
@@ -210,7 +211,6 @@ MonoBehaviour:
   - MovementType: 11
     MovementData: {fileID: 0}
   technicalData: {fileID: 11400000, guid: 1de75a3608ce0594b9ef10b116afecf7, type: 2}
-  editorOverride: 1
 --- !u!114 &1835729230993174615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,6 +225,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 0}
   timeBetweenFlash: 0.15
+--- !u!114 &1268306791404120107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8938859172034660462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae2ce7a0d871f1d42bb91f3d7d306f9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechBubbleOffset: {x: 0.2, y: 2.1, z: 0}
+  speechBubblePrefab: {fileID: 4692645040350800931, guid: 9d2cc48b3e886554eb8c5e9ee70c8229,
+    type: 3}
+  messages:
+  - {fileID: 11400000, guid: 04ceb95a6c264fe4dadba7dc61473efe, type: 2}
 --- !u!212 &8938859172034660460
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -239,6 +256,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -359,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 3956516485
+  sceneId: 0
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0

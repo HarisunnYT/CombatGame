@@ -21,6 +21,8 @@ public class InputProfile : PlayerActionSet
     public PlayerAction Select;
     public PlayerAction Menu;
 
+    public PlayerAction CommunicationWheel;
+
     public InputDevice device = null;
 
     public System.Guid GUID;
@@ -42,6 +44,7 @@ public class InputProfile : PlayerActionSet
         Attack3 = CreatePlayerAction("Attack3");
 
         Menu = CreatePlayerAction("Menu");
+        CommunicationWheel = CreatePlayerAction("OpenCommunicationWheel");
 
         Move = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
 
@@ -91,6 +94,7 @@ public class InputProfile : PlayerActionSet
         Attack3.AddDefaultBinding(Mouse.RightButton);
 
         Menu.AddDefaultBinding(Key.Escape);
+        CommunicationWheel.AddDefaultBinding(Key.Tab);
     }
 
     private void AddControllerBindings()
@@ -115,6 +119,7 @@ public class InputProfile : PlayerActionSet
         Attack3.AddDefaultBinding(InputControlType.Action2);
 
         Menu.AddDefaultBinding(InputControlType.Menu);
+        CommunicationWheel.AddDefaultBinding(InputControlType.DPadUp);
     }
 
     public void Deinitialise()

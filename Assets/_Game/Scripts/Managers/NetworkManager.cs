@@ -72,6 +72,20 @@ public class NetworkManager : NobleRoomManager
         PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
     }
 
+    public override void OnServerError(NetworkConnection conn, int errorCode)
+    {
+        Debug.Log(errorCode);
+        base.OnServerError(conn, errorCode);
+    }
+
+    public override void OnFatalError(string error)
+    {
+        base.OnFatalError(error);
+
+        //TODO show readable error to user
+        LobbyManager.Instance.ExitLobby();
+    }
+
     public override void OnRoomClientConnect(NetworkConnection conn)
     {
         base.OnRoomClientConnect(conn);

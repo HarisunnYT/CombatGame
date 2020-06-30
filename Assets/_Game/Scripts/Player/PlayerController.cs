@@ -38,11 +38,11 @@ public class PlayerController : Character
 
     public CharacterData CurrentMovementData { get; private set; }
     public MovementType CurrentMovementType { get; private set; } = MovementType.Normal;
+    public InputProfile InputProfile { get; private set; }
 
     private BaseMovement baseMovement;
     private Animator animator;
-
-    private InputProfile inputProfile;
+    private CommunicationController communicationController;
 
     #endregion
 
@@ -85,6 +85,8 @@ public class PlayerController : Character
         base.Awake();
 
         animator = GetComponent<Animator>();
+        communicationController = GetComponent<CommunicationController>();
+
         originalScale = transform.localScale;
 
         SetMovementType(MovementType.Normal, false);
@@ -113,7 +115,7 @@ public class PlayerController : Character
     private void OnDestroy()
     {
         OnPlayerDisconnected?.Invoke();
-        inputProfile.Deinitialise();
+        InputProfile.Deinitialise();
 
         if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(playerID);
@@ -129,7 +131,7 @@ public class PlayerController : Character
 
         base.Update();
 
-        InputAxis = inputProfile.Move;
+        InputAxis = InputProfile.Move;
         int roundedXAxis = InputAxis.x > 0 ? 1 : -1;
 
         animator.SetBool("Running", InputAxis.x != 0);
@@ -141,16 +143,16 @@ public class PlayerController : Character
             previousScaleSwappedTimer = Time.time + technicalData.GetValue(DataKeys.VariableKeys.FlipScaleDamper);
         }
 
-        if (inputProfile.Jump.WasPressed && Time.time > timeBetweenJumpTimer)
+        if (InputProfile.Jump.WasPressed && Time.time > timeBetweenJumpTimer)
         {
             baseMovement.Jump();
             timeBetweenJumpTimer = Time.time + CurrentMovementData.GetValue(DataKeys.VariableKeys.TimeBetweenJump);
         }
 
-        HoldingJump = inputProfile.Jump;
+        HoldingJump = InputProfile.Jump;
 
         //attacking
-        if (inputProfile.Attack1.WasPressed)
+        if (InputProfile.Attack1.WasPressed)
         {
             baseMovement.Attack();
             attacking = true;
@@ -201,7 +203,7 @@ public class PlayerController : Character
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
         MatchManager.Instance.AddPlayer(this, playerID);
 
-        inputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
+        InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
     }
 
     #region MOVEMENT
