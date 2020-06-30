@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b36f7ef5e5b4a4d94da334c3f483d6, type: 3}
-  m_Name: lo_crate
+  m_Name: lo_trampoline
   m_EditorClassIdentifier: 
-  ObjectName: Crate
-  Icon: {fileID: 21300000, guid: 2c8770748edd7fa49925b1da18d56947, type: 3}
-  Prefab: {fileID: 1713808219089675443, guid: 611dfe9c893a6614ab479c81401d06c3, type: 3}
-  Price: 600
+  ObjectName: Trampoline
+  Icon: {fileID: 21300000, guid: 324f32df7d6867040afbc0c864e2266a, type: 3}
+  Prefab: {fileID: 7445113495280079869, guid: 3d0b2eb3003a603468f49640d3b97739, type: 3}
+  Price: 800

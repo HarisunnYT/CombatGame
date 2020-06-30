@@ -7,8 +7,12 @@ using UnityEngine;
 public class LevelObject : NetworkBehaviour
 {
     [SerializeField]
-    private string objectName;
+    private Vector2 offset;
 
+    [SerializeField]
+    private bool isTrigger;
+
+    [System.NonSerialized]
     [SyncVar]
     public bool Placed;
 
@@ -61,14 +65,14 @@ public class LevelObject : NetworkBehaviour
         //set opacity of object
         spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, hasAuthority || Placed ? 1 : 0.5f);
 
-        if (hasAuthority || !ServerManager.Instance.IsOnlineMatch)
+        if (!Placed && (hasAuthority || !ServerManager.Instance.IsOnlineMatch))
         {
             int roundedSize = LevelEditorManager.Instance.RoundedGridSize;
             Vector3 target = cursor.AssignedCamera.ScreenToWorldPoint(cursor.transform.position);
             target.x = Mathf.Round(target.x / roundedSize) * roundedSize;
             target.y = Mathf.Round(target.y / roundedSize) * roundedSize;
 
-            transform.position = new Vector3(target.x, target.y, target.z + 1);
+            transform.position = new Vector3(target.x + offset.x, target.y + offset.y, target.z + 1);
 
             if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
             {
@@ -85,11 +89,10 @@ public class LevelObject : NetworkBehaviour
     private void Purchased()
     {
         transform.parent = null;
-        collider.isTrigger = false;
+        collider.isTrigger = isTrigger;
         editorPanel.ShowPurchasableBar(true);
 
         MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
-        Destroy(this);
 
         if (isServer)
             RpcPlaceObject();

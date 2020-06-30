@@ -98,6 +98,6 @@ public class NetworkManager : NobleRoomManager
         if (id != -1)
             return spawnPrefabs[id];
         else
-            return null;
+            throw new System.Exception("Object not added to network spawnables list");
     }
 }
