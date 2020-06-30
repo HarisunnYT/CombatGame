@@ -79,10 +79,10 @@ public class Cursor : MonoBehaviour
 
                 foreach (RaycastResult result in results)
                 {
-                    Button button = result.gameObject.GetComponentInParent<Button>();
-                    button?.onClick?.Invoke();
+                    ISubmitHandler submitHandler = result.gameObject.GetComponentInParent<ISubmitHandler>();
+                    submitHandler?.OnSubmit(null);
 
-                    if (button) //we don't want to click more than one button at a time
+                    if (submitHandler != null) //we don't want to click more than one button at a time
                         break;
                 }
             }

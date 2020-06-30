@@ -4,6 +4,7 @@ using UnityEngine;
 using Steamworks;
 using Steamworks.Data;
 using System.Threading.Tasks;
+using System;
 
 public class SteamLobbyManager : Singleton<SteamLobbyManager>
 {
@@ -13,9 +14,22 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
 
     private Task<Lobby?> creatingLobbyTask;
 
+    public const string PrivateLobbyStatedKey = "private_lobby_started";
+
     protected override void Initialize()
     {
         SteamMatchmaking.OnLobbyInvite += OnLobbyInvite;
+        SteamMatchmaking.OnLobbyEntered += OnLobbyJoined;
+    }
+
+    protected override void Deinitialize()
+    {
+        base.Deinitialize();
+    }
+
+    private void OnLobbyJoined(Lobby lobby)
+    {
+        CurrentLobby = lobby;
     }
 
     private void OnLobbyInvite(Friend arg1, Lobby arg2)
@@ -31,8 +45,13 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
     private void OnLobbyCreated(Lobby? lobby)
     {
         CurrentLobby = lobby;
-        CurrentLobby.Value.SetFriendsOnly();
-        Debug.Log("Successfully created lobby");
+        if (CurrentLobby != null)
+        {
+            SteamMatchMakingManager.Instance.IsHost = true;
+            CurrentLobby.Value.SetFriendsOnly();
+            CurrentLobby.Value.SetFriendsOnly();
+            Debug.Log("Successfully created lobby");
+        }
     }
 
     private void Update()

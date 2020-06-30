@@ -209,7 +209,7 @@ public class MatchManager : Singleton<MatchManager>
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        SteamMatchMakingManager.Instance.CurrentLobby.Leave();
+        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
         SteamMatchMakingManager.Instance.DestroyInstance();
 
         NetworkManager.Instance.StopClient();

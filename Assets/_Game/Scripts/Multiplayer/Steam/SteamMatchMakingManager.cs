@@ -8,8 +8,8 @@ using Mirror;
 
 public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManager>
 {
-    public bool IsHost { get; private set; }
-    public Lobby CurrentLobby { get; private set; }
+    public bool IsHost { get; set; }
+    public Lobby CurrentMatchMakingLobby { get; private set; }
 
     private Task<Lobby[]> retrievingLobbiesTask;
     private Task<Lobby?> joiningLobbyTask;
@@ -28,7 +28,7 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
 
     private void OnLobbyJoined(Lobby lobby)
     {
-        CurrentLobby = lobby;
+        CurrentMatchMakingLobby = lobby;
         SceneLoader.Instance.LoadScene("Lobby");
     }
 
@@ -62,7 +62,7 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
 
     public void SetGameServer(string hostAddress, ushort hostPort)
     {
-        CurrentLobby.SetGameServer(hostAddress, hostPort);
-        CurrentLobby.SetPublic();
+        CurrentMatchMakingLobby.SetGameServer(hostAddress, hostPort);
+        CurrentMatchMakingLobby.SetPublic();
     }
 }
