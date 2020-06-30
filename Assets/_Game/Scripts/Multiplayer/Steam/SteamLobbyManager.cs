@@ -13,6 +13,16 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
 
     private Task<Lobby?> creatingLobbyTask;
 
+    protected override void Initialize()
+    {
+        SteamMatchmaking.OnLobbyInvite += OnLobbyInvite;
+    }
+
+    private void OnLobbyInvite(Friend arg1, Lobby arg2)
+    {
+        Debug.Log("lobby invite");
+    }
+
     public void CreateLobby()
     {
         creatingLobbyTask = SteamMatchmaking.CreateLobbyAsync(maxLobbyMembers);
@@ -21,7 +31,7 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
     private void OnLobbyCreated(Lobby? lobby)
     {
         CurrentLobby = lobby;
-        CurrentLobby.Value.SetPrivate();
+        CurrentLobby.Value.SetFriendsOnly();
         Debug.Log("Successfully created lobby");
     }
 
