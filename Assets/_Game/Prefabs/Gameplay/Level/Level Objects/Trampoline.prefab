@@ -52,7 +52,7 @@ MonoBehaviour:
   syncInterval: 0.1
   offset: {x: 0, y: 0.5}
   isTrigger: 1
-  force: 5
+  force: 40
 --- !u!212 &1119844274746097303
 SpriteRenderer:
   m_ObjectHideFlags: 0

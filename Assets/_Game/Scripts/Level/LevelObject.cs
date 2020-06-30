@@ -12,9 +12,7 @@ public class LevelObject : NetworkBehaviour
     [SerializeField]
     private bool isTrigger;
 
-    [System.NonSerialized]
-    [SyncVar]
-    public bool Placed;
+    private bool placed;
 
     private LevelObjectData levelObject;
     private LevelEditorPanel editorPanel;
@@ -63,9 +61,9 @@ public class LevelObject : NetworkBehaviour
             ServerConfigure();
 
         //set opacity of object
-        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, hasAuthority || Placed ? 1 : 0.5f);
+        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, hasAuthority || placed ? 1 : 0.5f);
 
-        if (!Placed && (hasAuthority || !ServerManager.Instance.IsOnlineMatch))
+        if (!placed && (hasAuthority || !ServerManager.Instance.IsOnlineMatch))
         {
             int roundedSize = LevelEditorManager.Instance.RoundedGridSize;
             Vector3 target = cursor.AssignedCamera.ScreenToWorldPoint(cursor.transform.position);
@@ -88,13 +86,10 @@ public class LevelObject : NetworkBehaviour
 
     private void Purchased()
     {
-        transform.parent = null;
-        collider.isTrigger = isTrigger;
         editorPanel.ShowPurchasableBar(true);
-
         MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
 
-        if (isServer)
+        if (isServer || !ServerManager.Instance.IsOnlineMatch)
             RpcPlaceObject();
         else
             CmdPlaceObject();
@@ -106,9 +101,11 @@ public class LevelObject : NetworkBehaviour
         RpcPlaceObject();
     }
 
+    [ClientRpc]
     private void RpcPlaceObject()
     {
-        Placed = true;
+        collider.isTrigger = isTrigger;
+        placed = true;
     }
 
     private void OnPhaseChanged(MatchManager.RoundPhase phase)
@@ -123,14 +120,20 @@ public class LevelObject : NetworkBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         LevelObject lvlObj = collision.GetComponent<LevelObject>();
-        if (!lvlObj || lvlObj.Placed)
+        if (!lvlObj || lvlObj.placed)
         {
             insideObjectsCount++;
         }
+
+        OnTriggerEntered(collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         insideObjectsCount = Mathf.Clamp(insideObjectsCount - 1, 0, int.MaxValue);
+        OnTriggerExited(collision);
     }
+
+    protected virtual void OnTriggerEntered(Collider2D collider) { }
+    protected virtual void OnTriggerExited(Collider2D collider) { }
 }
