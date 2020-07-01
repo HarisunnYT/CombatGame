@@ -60,7 +60,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
             //damage text
             GameObject obj = ObjectPooler.GetPooledObject(SpawnObjectsManager.Instance.GetPrefab(DataKeys.SpawnableKeys.WorldSpaceText));
-            obj.GetComponent<WorldSpaceText>().DisplayText("-" + amount, Color.red, transform.position + transform.up, 3, 1);
+            obj.GetComponent<WorldSpaceText>().Display("-" + amount, Color.red, transform.position + transform.up, 3, 1);
 
             //character flash
             currentFlash?.CancelFlash();

@@ -141,7 +141,6 @@
 			// triggerBindingChanged = true;
 		}
 
-
 		/// <summary>
 		/// A convenience method for adding a KeyBindingSource to the default bindings.
 		/// </summary>
@@ -181,6 +180,13 @@
 			AddDefaultBinding( new DeviceBindingSource( control ) );
 		}
 
+		public void AddDefaultBinding(params InputControlType[] control)
+		{
+			foreach (var c in control)
+			{
+				AddDefaultBinding(new DeviceBindingSource(c));
+			}
+		}
 
 		/// <summary>
 		/// Add a regular binding to the action. A binding cannot be added if it matches an

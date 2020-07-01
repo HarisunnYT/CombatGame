@@ -77,6 +77,7 @@ public class PlayerController : Character
 
     public delegate void NormalEvent();
     public event NormalEvent OnPlayerDisconnected;
+    public event NormalEvent OnInputProfileSet;
 
     #endregion
 
@@ -204,6 +205,7 @@ public class PlayerController : Character
         MatchManager.Instance.AddPlayer(this, playerID);
 
         InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
+        OnInputProfileSet?.Invoke();
     }
 
     #region MOVEMENT

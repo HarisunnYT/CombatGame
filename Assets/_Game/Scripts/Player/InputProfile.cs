@@ -21,7 +21,11 @@ public class InputProfile : PlayerActionSet
     public PlayerAction Select;
     public PlayerAction Menu;
 
-    public PlayerAction CommunicationWheel;
+    public PlayerAction CommunicationWheelOpen;
+    public PlayerAction CommunicationWheelUp;
+    public PlayerAction CommunicationWheelDown;
+    public PlayerAction CommunicationWheelRight;
+    public PlayerAction CommunicationWheelLeft;
 
     public InputDevice device = null;
 
@@ -44,7 +48,11 @@ public class InputProfile : PlayerActionSet
         Attack3 = CreatePlayerAction("Attack3");
 
         Menu = CreatePlayerAction("Menu");
-        CommunicationWheel = CreatePlayerAction("OpenCommunicationWheel");
+        CommunicationWheelOpen = CreatePlayerAction("CommunicationWheelOpen");
+        CommunicationWheelUp = CreatePlayerAction("CommunicationWheelUp");
+        CommunicationWheelDown = CreatePlayerAction("CommunicationWheelDown");
+        CommunicationWheelRight = CreatePlayerAction("CommunicationWheelRight");
+        CommunicationWheelLeft = CreatePlayerAction("CommunicationWheelLeft");
 
         Move = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
 
@@ -94,21 +102,24 @@ public class InputProfile : PlayerActionSet
         Attack3.AddDefaultBinding(Mouse.RightButton);
 
         Menu.AddDefaultBinding(Key.Escape);
-        CommunicationWheel.AddDefaultBinding(Key.Tab);
+
+        //for some reason it doesn't work if you add multiple keys in the same binding, weird
+        CommunicationWheelOpen.AddDefaultBinding(Key.Key1);
+        CommunicationWheelOpen.AddDefaultBinding(Key.Key2);
+        CommunicationWheelOpen.AddDefaultBinding(Key.Key3);
+        CommunicationWheelOpen.AddDefaultBinding(Key.Key4);
+
+        CommunicationWheelUp.AddDefaultBinding(Key.Key1);
+        CommunicationWheelRight.AddDefaultBinding(Key.Key2);
+        CommunicationWheelDown.AddDefaultBinding(Key.Key3);
+        CommunicationWheelLeft.AddDefaultBinding(Key.Key4);
     }
 
     private void AddControllerBindings()
     {
-        Left.AddDefaultBinding(InputControlType.DPadLeft);
         Left.AddDefaultBinding(InputControlType.LeftStickLeft);
-
-        Right.AddDefaultBinding(InputControlType.DPadRight);
         Right.AddDefaultBinding(InputControlType.LeftStickRight);
-
-        Up.AddDefaultBinding(InputControlType.DPadUp);
         Up.AddDefaultBinding(InputControlType.LeftStickUp);
-
-        Down.AddDefaultBinding(InputControlType.DPadDown);
         Down.AddDefaultBinding(InputControlType.LeftStickDown);
 
         Jump.AddDefaultBinding(InputControlType.Action1);
@@ -119,7 +130,11 @@ public class InputProfile : PlayerActionSet
         Attack3.AddDefaultBinding(InputControlType.Action2);
 
         Menu.AddDefaultBinding(InputControlType.Menu);
-        CommunicationWheel.AddDefaultBinding(InputControlType.DPadUp);
+        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadUp, InputControlType.DPadRight, InputControlType.DPadDown, InputControlType.DPadLeft);
+        CommunicationWheelUp.AddDefaultBinding(InputControlType.DPadUp);
+        CommunicationWheelRight.AddDefaultBinding(InputControlType.DPadRight);
+        CommunicationWheelDown.AddDefaultBinding(InputControlType.DPadDown);
+        CommunicationWheelLeft.AddDefaultBinding(InputControlType.DPadLeft);
     }
 
     public void Deinitialise()
