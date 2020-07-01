@@ -90,9 +90,12 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
         //remove player from alive players and see if there's only a single player left
         AlivePlayers.Remove(ServerManager.Instance.GetPlayer(victim).PlayerID);
-        if (SteamMatchMakingManager.Instance.IsHost && AlivePlayers.Count <= 1)
+        if (AlivePlayers.Count <= 1)
         {
-            NetworkManager.Instance.RoomPlayer.CmdFightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerID);
+            if (SteamMatchMakingManager.Instance.IsHost)
+                NetworkManager.Instance.RoomPlayer.CmdFightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerID);
+            else if (!ServerManager.Instance.IsOnlineMatch)
+                FightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerID);
         }
     }
 

@@ -73,9 +73,6 @@ public class LevelObject : NetworkBehaviour
             Vector3 result = new Vector3(target.x + offset.x, target.y + offset.y, target.z + 1);
             transform.position = result;
 
-            if (ServerManager.Instance.IsOnlineMatch)
-                CmdMoveObject(result);
-
             if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
             {
                 if (!placed && PlayerRoundInformation.Instance.Purchase(levelObject.Price))
@@ -95,18 +92,6 @@ public class LevelObject : NetworkBehaviour
 
         PlaceObject(transform.position);
         CmdPlaceObject(transform.position);
-    }
-
-    [Command]
-    private void CmdMoveObject(Vector3 position)
-    {
-        RpcMoveObject(position);
-    }
-
-    [ClientRpc]
-    private void RpcMoveObject(Vector3 position)
-    {
-        transform.position = position;
     }
 
     [Command]
