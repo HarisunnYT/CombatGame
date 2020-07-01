@@ -24,7 +24,7 @@ public class DebugPanel : Panel
 
     public void AutoWin()
     {
-        FightManager.Instance.FightOver(ServerManager.Instance.GetPlayer(FightManager.Instance.AlivePlayers[0]).PlayerController);
+        FightManager.Instance.FightOver(ServerManager.Instance.GetPlayer(FightManager.Instance.AlivePlayers[0]).PlayerID);
         ForceClose();
     }
 

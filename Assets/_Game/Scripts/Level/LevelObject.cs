@@ -93,8 +93,8 @@ public class LevelObject : NetworkBehaviour
         editorPanel.ShowPurchasableBar(true);
         MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
 
-        PlaceObject();
-        CmdPlaceObject();
+        PlaceObject(transform.position);
+        CmdPlaceObject(transform.position);
     }
 
     [Command]
@@ -110,19 +110,21 @@ public class LevelObject : NetworkBehaviour
     }
 
     [Command]
-    private void CmdPlaceObject()
+    private void CmdPlaceObject(Vector3 position)
     {
-        RpcPlaceObject();
+        RpcPlaceObject(position);
     }
 
     [ClientRpc]
-    private void RpcPlaceObject()
+    private void RpcPlaceObject(Vector3 position)
     {
-        PlaceObject();
+        PlaceObject(position);
     }
 
-    private void PlaceObject()
+    private void PlaceObject(Vector3 position)
     {
+        transform.position = position;
+
         collider.isTrigger = isTrigger;
         placed = true;
     }

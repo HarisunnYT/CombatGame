@@ -117,4 +117,16 @@ public class CustomNetworkRoomPlayer : NobleRoomPlayer
         obj.SetActive(false);
         NetworkServer.UnSpawn(obj);
     }
+
+    [Command]
+    public void CmdFightOver(int winnerPlayerID)
+    {
+        RpcFightOver(winnerPlayerID);
+    }
+
+    [ClientRpc]
+    private void RpcFightOver(int winnerPlayerID)
+    {
+        FightManager.Instance.FightOver(winnerPlayerID);
+    }
 }

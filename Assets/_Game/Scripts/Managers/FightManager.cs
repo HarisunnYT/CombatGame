@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,15 +19,10 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     private bool fightOver = false;
 
-    protected override void Initialize()
-    {
-        base.Initialize();
-
-        hudPanel = PanelManager.Instance.GetPanel<HUDPanel>();
-    }
-
     private void Start()
     {
+        hudPanel = PanelManager.Instance.GetPanel<HUDPanel>();
+
         AddListener();
         BeginFightCountdown();
 
@@ -94,18 +90,19 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
         //remove player from alive players and see if there's only a single player left
         AlivePlayers.Remove(ServerManager.Instance.GetPlayer(victim).PlayerID);
-        if (AlivePlayers.Count <= 1)
+        if (SteamMatchMakingManager.Instance.IsHost && AlivePlayers.Count <= 1)
         {
-            FightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerController);
+            NetworkManager.Instance.RoomPlayer.CmdFightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerID);
         }
     }
 
-    public void FightOver(PlayerController winner)
+    public void FightOver(int winnerPlayerID)
     {
         if (fightOver)
             return;
 
         fightOver = true;
+        PlayerController winner = ServerManager.Instance.GetPlayer(winnerPlayerID).PlayerController;
 
         winner.DisableInput();
         MatchManager.Instance.AddWin(winner);
