@@ -20,6 +20,16 @@ public class PrivateLobbyPanel : Panel
 
     [Space()]
     [SerializeField]
+    private GameObject searchingObj;
+
+    [SerializeField]
+    private GameObject cancelButton;
+
+    [SerializeField]
+    private TMP_Text playersFoundText;
+
+    [Space()]
+    [SerializeField]
     private ConnectPlayerCell[] connectedPlayerCells;
 
     protected override void OnShow()
@@ -32,6 +42,8 @@ public class PrivateLobbyPanel : Panel
         {
             button.interactable = SteamLobbyManager.Instance.PrivateHost;
         }
+
+        cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
 
         UpdatePlayerCells();
     }
@@ -74,14 +86,34 @@ public class PrivateLobbyPanel : Panel
             Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
             connectedPlayerCells[i].Configure(friend.Name);
         }
+
+        if (SteamLobbyManager.Instance.PublicLobby != null)
+            playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
     }
 
-    private void OnChatMessageReceived(Lobby lobby, Friend friend, string message)
+    private void OnBeganSearch()
     {
-        if (message == SteamLobbyManager.PrivateLobbyStatedKey)
+        foreach(var button in playButtons)
         {
-            //SceneLoader.Instance.LoadScene("Lobby");
+            button.interactable = false;
         }
+
+        searchingObj.SetActive(true);
+    }
+
+    private void OnCancelledSearch()
+    {
+        foreach (var button in playButtons)
+        {
+            button.interactable = SteamLobbyManager.Instance.PrivateHost;
+        }
+
+        searchingObj.SetActive(false);
+    }
+
+    public void CancelSearch()
+    {
+        SteamLobbyManager.Instance.CancelSearch();
     }
 
     private void OnLobbyEntered(Lobby obj)
@@ -104,7 +136,9 @@ public class PrivateLobbyPanel : Panel
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
-        SteamMatchmaking.OnChatMessage += OnChatMessageReceived;
+
+        SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
+        SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
     }
 
     private void UnSubToEvents()
@@ -112,6 +146,8 @@ public class PrivateLobbyPanel : Panel
         SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
-        SteamMatchmaking.OnChatMessage -= OnChatMessageReceived;
+
+        SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
+        SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
     }
 }
