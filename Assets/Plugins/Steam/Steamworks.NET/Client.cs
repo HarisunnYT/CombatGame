@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using Steamworks;
+using SteamworksNet;
 using System.Threading.Tasks;
 
 namespace FizzySteam

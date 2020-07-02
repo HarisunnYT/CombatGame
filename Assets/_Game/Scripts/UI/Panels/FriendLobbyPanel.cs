@@ -1,9 +1,11 @@
-﻿using Steamworks;
+﻿using SteamworksNet;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using Steamworks.Data;
+using Steamworks;
 
 public class FriendLobbyPanel : Panel
 {
@@ -39,6 +41,7 @@ public class FriendLobbyPanel : Panel
     public void Search()
     {
         PanelManager.Instance.ShowPanel<MatchMakingSearchPanel>();
+        SteamMatchMakingManager.Instance.SearchForMatch();
     }
 
     public void Private()
@@ -72,7 +75,7 @@ public class FriendLobbyPanel : Panel
         }
     }
 
-    private void OnChatMessageReceived(Steamworks.Data.Lobby lobby, Friend friend, string message)
+    private void OnChatMessageReceived(Lobby lobby, Friend friend, string message)
     {
         if (message == SteamLobbyManager.PrivateLobbyStatedKey)
         {
@@ -80,22 +83,22 @@ public class FriendLobbyPanel : Panel
         }
     }
 
-    private void OnLobbyEntered(Steamworks.Data.Lobby obj)
+    private void OnLobbyEntered(Lobby obj)
     {
         UpdatePlayerCells();
     }
 
-    private void OnLobbyMemberJoined(Steamworks.Data.Lobby arg1, Friend arg2)
+    private void OnLobbyMemberJoined(Lobby arg1, Friend arg2)
     {
         UpdatePlayerCells();
     }
 
-    private void OnLobbyCreated(Result arg1, Steamworks.Data.Lobby arg2)
+    private void OnLobbyCreated(Result arg1, Lobby arg2)
     {
         UpdatePlayerCells();
     }
 
-    private void OnLobbyMemberLeave(Steamworks.Data.Lobby arg1, Friend arg2)
+    private void OnLobbyMemberLeave(Lobby arg1, Friend arg2)
     {
         UpdatePlayerCells();
     }

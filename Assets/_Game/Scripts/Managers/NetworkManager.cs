@@ -1,5 +1,5 @@
 ﻿using Mirror;
-using Steamworks;
+using SteamworksNet;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -85,8 +85,7 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnRoomClientConnect(conn);
 
-        if (!SteamMatchMakingManager.Instance.IsHost)
-            PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
+        PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
     }
 
     public int GetPrefabID(GameObject prefab)

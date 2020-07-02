@@ -90,31 +90,30 @@ public class FizzySteamyMirror : Transport
 
     public override bool Available()
     {
-        throw new NotImplementedException();
+        return true;
     }
 
     public override void ClientConnect(string address)
     {
-        throw new NotImplementedException();
     }
 
     public override bool ClientSend(int channelId, ArraySegment<byte> segment)
     {
-        throw new NotImplementedException();
+        return true;
     }
 
     public override Uri ServerUri()
     {
-        throw new NotImplementedException();
+        return default;
     }
 
     public override bool ServerSend(List<int> connectionIds, int channelId, ArraySegment<byte> segment)
     {
-        throw new NotImplementedException();
+        return true;
     }
 
     public override string ServerGetClientAddress(int connectionId)
     {
-        throw new NotImplementedException();
+        return "";
     }
 }

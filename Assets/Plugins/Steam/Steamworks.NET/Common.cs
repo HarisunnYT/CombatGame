@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using Steamworks;
+using SteamworksNet;
 
 namespace FizzySteam
 {
@@ -102,7 +102,7 @@ namespace FizzySteam
         {
             if (!SteamManager.Initialized)
             {
-                throw new ObjectDisposedException("Steamworks");
+                throw new ObjectDisposedException("SteamworksNet");
             }
             SteamNetworking.SendP2PPacket(host, msgBuffer, (uint)msgBuffer.Length, EP2PSend.k_EP2PSendReliable, (int)SteamChannels.SEND_INTERNAL);
         }
@@ -111,7 +111,7 @@ namespace FizzySteam
         {
             if (!SteamManager.Initialized)
             {
-                throw new ObjectDisposedException("Steamworks");
+                throw new ObjectDisposedException("SteamworksNet");
             }
             return SteamNetworking.ReadP2PPacket(receiveBufferInternal, 1, out readPacketSize, out clientSteamID, (int)SteamChannels.SEND_INTERNAL);
         }
@@ -120,7 +120,7 @@ namespace FizzySteam
         {
             if (!SteamManager.Initialized)
             {
-                throw new ObjectDisposedException("Steamworks");
+                throw new ObjectDisposedException("SteamworksNet");
             }
             SteamNetworking.SendP2PPacket(host, msgBuffer, (uint)msgBuffer.Length, sendType, (int)SteamChannels.SEND_DATA);
         }
@@ -129,7 +129,7 @@ namespace FizzySteam
         {
             if (!SteamManager.Initialized)
             {
-                throw new ObjectDisposedException("Steamworks");
+                throw new ObjectDisposedException("SteamworksNet");
             }
 
             uint packetSize;
@@ -149,7 +149,7 @@ namespace FizzySteam
         {
             if (!SteamManager.Initialized)
             {
-                throw new ObjectDisposedException("Steamworks");
+                throw new ObjectDisposedException("SteamworksNet");
             }
             SteamNetworking.CloseP2PSessionWithUser(clientSteamID);
         }
