@@ -3,10 +3,9 @@ using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NobleConnect.Mirror;
 using MultiplayerBasicExample;
 
-public class CustomNetworkRoomPlayer : NobleRoomPlayer
+public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 {
     public override void OnClientEnterRoom()
     {
@@ -52,7 +51,6 @@ public class CustomNetworkRoomPlayer : NobleRoomPlayer
         ServerManager.Instance.SetCharacterSelected(characterName);
 
         NetworkManager.Instance.roomSlots[playerID].readyToBegin = true;
-        NetworkManager.Instance.ReadyStatusChanged();
     }
 
     public void AddConnectedPlayer(int netID, string steamName)

@@ -19,7 +19,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         }
         else
         {
-            NetworkManager.Instance.StartHostLANOnly();
+            NetworkManager.Instance.StartHost();
         }
     }
 
@@ -31,8 +31,8 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
         SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.GetGameServer(ref ip, ref port, ref serverID);
 
-        NetworkManager.Instance.networkAddress = ip.ToString();
-        NetworkManager.Instance.networkPort = port;
+        //NetworkManager.Instance.networkAddress = ip.ToString();
+        //NetworkManager.Instance.networkPort = port;
 
         NetworkManager.Instance.StartClient();
     }
