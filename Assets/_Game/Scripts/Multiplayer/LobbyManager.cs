@@ -16,8 +16,6 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         {
             if (SteamMatchMakingManager.Instance.IsHost)
             {
-                NetworkManager.Instance.networkAddress = SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Owner.Id.Value.ToString();
-                Debug.Log(NetworkManager.Instance.networkAddress.Length);
                 NetworkManager.Instance.StartHost();
             }
             else
