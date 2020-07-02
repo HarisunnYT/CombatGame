@@ -39,6 +39,13 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
             //we found at least one suitable lobby
             if (retrievingLobbiesTask.Result != null && retrievingLobbiesTask.Result.Length > 0)
             {
+                //just in case a lobby is owned by this player and wasn't terminated correctly
+                foreach(var lobby in retrievingLobbiesTask.Result)
+                {
+                    if (lobby.IsOwnedBy(SteamClient.SteamId))
+                        lobby.Leave();
+                }
+
                 IsHost = false;
                 JoinMatchMakingLobby(retrievingLobbiesTask.Result[0]);
             }

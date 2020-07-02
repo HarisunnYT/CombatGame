@@ -208,7 +208,7 @@ public class MatchManager : Singleton<MatchManager>
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        //SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
+        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
         SteamMatchMakingManager.Instance.DestroyInstance();
 
         if (forced)

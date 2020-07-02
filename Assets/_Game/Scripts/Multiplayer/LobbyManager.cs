@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,11 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         if (ServerManager.Instance.IsOnlineMatch)
         {
             if (SteamMatchMakingManager.Instance.IsHost)
+            {
+                NetworkManager.Instance.networkAddress = SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Owner.Id.Value.ToString();
+                Debug.Log(NetworkManager.Instance.networkAddress.Length);
                 NetworkManager.Instance.StartHost();
+            }
             else
                 CreateClient();
         }
@@ -26,7 +31,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
     private void CreateClient()
     {
-        NetworkManager.Instance.networkAddress = SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Owner.Id.AccountId.ToString();
+        NetworkManager.Instance.networkAddress = SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Owner.Id.Value.ToString();
         NetworkManager.Instance.StartClient();
     }
 
@@ -60,7 +65,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        //SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
+        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
         SteamMatchMakingManager.Instance.DestroyInstance();
 
         if (forced)
