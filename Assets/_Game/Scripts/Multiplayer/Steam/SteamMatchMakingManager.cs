@@ -46,6 +46,7 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
             {
                 IsHost = true;
                 OnLobbyJoined(SteamLobbyManager.Instance.CurrentLobby.Value);
+                SteamLobbyManager.Instance.CurrentLobby.Value.SetPublic();
                 Debug.Log("Lobby Created");
             }
 
@@ -58,11 +59,5 @@ public class SteamMatchMakingManager : PersistentSingleton<SteamMatchMakingManag
             OnLobbyJoined(joiningLobbyTask.Result.Value);
             joiningLobbyTask = null;
         }
-    }
-
-    public void SetGameServer(string hostAddress, ushort hostPort)
-    {
-        CurrentMatchMakingLobby.SetGameServer(hostAddress, hostPort);
-        CurrentMatchMakingLobby.SetPublic();
     }
 }

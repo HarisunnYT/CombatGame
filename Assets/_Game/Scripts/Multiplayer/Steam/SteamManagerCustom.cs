@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class SteamManagerCustom : SteamManager
 {
-    protected override void Awake()
+    private bool initialised = false;
+
+    protected override void Initialize()
     {
-        SteamClient.Init(1359350);
-        base.Awake();
+        base.Initialize();
+        
+        if (!initialised)
+            SteamClient.Init(1359350);
+
+        initialised = true;
     }
 }

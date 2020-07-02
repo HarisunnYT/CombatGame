@@ -14,19 +14,7 @@ using SteamworksNet;
 // It handles the basics of starting up and shutting down the SteamAPI for use.
 //
 [DisallowMultipleComponent]
-public class SteamManager : MonoBehaviour {
-	private static SteamManager s_instance;
-	private static SteamManager Instance {
-		get {
-			if (s_instance == null) {
-				return new GameObject("SteamManager").AddComponent<SteamManager>();
-			}
-			else {
-				return s_instance;
-			}
-		}
-	}
-
+public class SteamManager : PersistentSingleton<SteamManager> {
 	private static bool s_EverInialized;
 
 	private bool m_bInitialized;
@@ -41,25 +29,8 @@ public class SteamManager : MonoBehaviour {
 		Debug.LogWarning(pchDebugText);
 	}
 
-	protected virtual void Awake() {
-		// Only one instance of SteamManager at a time!
-		if (s_instance != null) {
-			Destroy(gameObject);
-			return;
-		}
-		s_instance = this;
-
-		if(s_EverInialized) {
-			// This is almost always an error.
-			// The most common case where this happens is when SteamManager gets destroyed because of Application.Quit(),
-			// and then some SteamworksNet code in some other OnDestroy gets called afterwards, creating a new SteamManager.
-			// You should never call SteamworksNet functions in OnDestroy, always prefer OnDisable if possible.
-			throw new System.Exception("Tried to Initialize the SteamAPI twice in one session!");
-		}
-
-		// We want our SteamManager Instance to persist across scenes.
-		DontDestroyOnLoad(gameObject);
-
+	protected override void Initialize()
+	{
 		if (!Packsize.Test()) {
 			Debug.LogError("[SteamworksNet.NET] Packsize Test returned false, the wrong version of SteamworksNet.NET is being run in this platform.", this);
 		}
@@ -108,10 +79,6 @@ public class SteamManager : MonoBehaviour {
 
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the SteamworksNet Manager yourself.
 	private void OnEnable() {
-		if (s_instance == null) {
-			s_instance = this;
-		}
-
 		if (!m_bInitialized) {
 			return;
 		}
@@ -127,13 +94,7 @@ public class SteamManager : MonoBehaviour {
 	// OnApplicationQuit gets called too early to shutdown the SteamAPI.
 	// Because the SteamManager should be persistent and never disabled or destroyed we can shutdown the SteamAPI here.
 	// Thus it is not recommended to perform any SteamworksNet work in other OnDestroy functions as the order of execution can not be garenteed upon Shutdown. Prefer OnDisable().
-	private void OnDestroy() {
-		if (s_instance != this) {
-			return;
-		}
-
-		s_instance = null;
-
+	protected override void Deinitialize() {
 		if (!m_bInitialized) {
 			return;
 		}

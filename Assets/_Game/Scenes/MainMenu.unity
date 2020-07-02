@@ -5647,6 +5647,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a048300273ea48c4a95a0822390bef9a, type: 3}
+--- !u!1001 &3164540905343369965
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.6477579
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.9650108
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.66064453
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512756, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164540905666512762, guid: c6a45efe81e9db74992df5cb36669f5d,
+        type: 3}
+      propertyPath: m_Name
+      value: SteamManagerCustom
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c6a45efe81e9db74992df5cb36669f5d, type: 3}
 --- !u!1001 &5734279704153864106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5874,7 +5943,7 @@ PrefabInstance:
     - target: {fileID: 2049787571786189957, guid: 11145cf28bc1fdb41924bb6366c9ba2a,
         type: 3}
       propertyPath: m_Name
-      value: SteamManager
+      value: SteamLobbies
       objectReference: {fileID: 0}
     - target: {fileID: 6716981135498504087, guid: 11145cf28bc1fdb41924bb6366c9ba2a,
         type: 3}
