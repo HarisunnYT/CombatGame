@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LobbyManager : PersistentSingleton<LobbyManager>
@@ -25,15 +26,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
     private void CreateClient()
     {
-        //uint ip = 0;
-        //ushort port = 0;
-        //Steamworks.SteamId serverID = new Steamworks.SteamId();
-
-        //SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.GetGameServer(ref ip, ref port, ref serverID);
-
-        //NetworkManager.Instance.networkAddress = ip.ToString();
-        //NetworkManager.Instance.networkPort = port;
-
+        NetworkManager.Instance.networkAddress = SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Owner.Id.AccountId.ToString();
         NetworkManager.Instance.StartClient();
     }
 

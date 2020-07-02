@@ -19,9 +19,9 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
 
     protected override void Initialize()
     {
-        //SteamMatchmaking.OnLobbyInvite += OnLobbyInvite;
-        //SteamMatchmaking.OnLobbyEntered += OnLobbyJoined;
-        //SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
+        SteamMatchmaking.OnLobbyInvite += OnLobbyInvite;
+        SteamMatchmaking.OnLobbyEntered += OnLobbyJoined;
+        SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
     }
 
     protected override void Deinitialize()
@@ -36,7 +36,7 @@ public class SteamLobbyManager : Singleton<SteamLobbyManager>
 
     public void CreateLobby()
     {
-        //creatingLobbyTask = SteamMatchmaking.CreateLobbyAsync(maxLobbyMembers);
+        creatingLobbyTask = SteamMatchmaking.CreateLobbyAsync(maxLobbyMembers);
     }
 
     private void OnLobbyCreated(Lobby? lobby)

@@ -80,6 +80,7 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 540773166623301826, guid: 611dfe9c893a6614ab479c81401d06c3, type: 3}
+  - {fileID: 4634661858584805104, guid: 3d0b2eb3003a603468f49640d3b97739, type: 3}
   HUD: {fileID: 1683995628}
   showRoomGUI: 0
   minPlayers: 1
