@@ -108,6 +108,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (retrievingLobbiesTask != null && retrievingLobbiesTask.IsCompleted)
         {
             retreivedLobbiesCallback?.Invoke(retrievingLobbiesTask.Result);
+            retreivedLobbiesCallback = null;
             retrievingLobbiesTask = null;
         }
 
@@ -276,7 +277,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                     CreatePublicMatchLobby();
                 }
             }
-
             else //no good lobbies, let's create one
             {
                 CreatePublicMatchLobby();
