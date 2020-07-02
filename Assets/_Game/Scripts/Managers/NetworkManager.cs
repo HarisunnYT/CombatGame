@@ -1,5 +1,5 @@
 ﻿using Mirror;
-using Steamworks;
+using SteamworksNet;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class NetworkManager : NobleRoomManager
+public class NetworkManager : NetworkRoomManager
 {
     public static NetworkManager Instance;
 
@@ -65,26 +65,10 @@ public class NetworkManager : NobleRoomManager
         }
     }
 
-    public override void OnServerPrepared(string hostAddress, ushort hostPort)
-    {
-        if (ServerManager.Instance.IsOnlineMatch)
-            SteamMatchMakingManager.Instance.SetGameServer(hostAddress, hostPort);
-
-        PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
-    }
-
     public override void OnServerError(NetworkConnection conn, int errorCode)
     {
         Debug.Log(errorCode);
         base.OnServerError(conn, errorCode);
-    }
-
-    public override void OnFatalError(string error)
-    {
-        base.OnFatalError(error);
-
-        //TODO show readable error to user
-        LobbyManager.Instance.ExitLobby(true);
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
@@ -101,8 +85,7 @@ public class NetworkManager : NobleRoomManager
     {
         base.OnRoomClientConnect(conn);
 
-        if (!SteamMatchMakingManager.Instance.IsHost)
-            PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
+        PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
     }
 
     public int GetPrefabID(GameObject prefab)

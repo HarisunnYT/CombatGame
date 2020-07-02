@@ -1,6 +1,8 @@
 ﻿using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LobbyManager : PersistentSingleton<LobbyManager>
@@ -12,28 +14,20 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
     {
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            if (SteamMatchMakingManager.Instance.IsHost)
+            if (SteamLobbyManager.Instance.PublicHost)
                 NetworkManager.Instance.StartHost();
             else
                 CreateClient();
         }
         else
         {
-            NetworkManager.Instance.StartHostLANOnly();
+            NetworkManager.Instance.StartHost();
         }
     }
 
     private void CreateClient()
     {
-        uint ip = 0;
-        ushort port = 0;
-        Steamworks.SteamId serverID = new Steamworks.SteamId();
-
-        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.GetGameServer(ref ip, ref port, ref serverID);
-
-        NetworkManager.Instance.networkAddress = ip.ToString();
-        NetworkManager.Instance.networkPort = port;
-
+        NetworkManager.Instance.networkAddress = SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id.Value.ToString();
         NetworkManager.Instance.StartClient();
     }
 
@@ -60,15 +54,15 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
     /// </summary>
     public void ExitLobby(bool forced)
     {
-        if (!ServerManager.Instance.IsOnlineMatch || SteamMatchMakingManager.Instance.IsHost)
+        if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PrivateHost)
             NetworkManager.Instance.StopHost();
 
         ServerManager.Instance.DestroyInstance();
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
-        SteamMatchMakingManager.Instance.DestroyInstance();
+        SteamLobbyManager.Instance.LeaveAllLobbies();
+        SteamLobbyManager.Instance.DestroyInstance();
 
         if (forced)
             ErrorManager.Instance.DisconnectedError();

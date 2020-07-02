@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 using System.ComponentModel.Design;
-using Steamworks;
+using SteamworksNet;
 using MultiplayerBasicExample;
 
 public class ServerManager : PersistentSingleton<ServerManager>

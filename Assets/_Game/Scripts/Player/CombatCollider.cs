@@ -17,7 +17,7 @@ public class CombatCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (SteamMatchMakingManager.Instance.IsHost || !ServerManager.Instance.IsOnlineMatch)
+        if (SteamLobbyManager.Instance.PublicHost || !ServerManager.Instance.IsOnlineMatch)
         {
             IDamagable damagable = other.GetComponent<IDamagable>();
             if (damagable != null)

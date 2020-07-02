@@ -1,5 +1,4 @@
 ﻿using Mirror;
-using NobleConnect.Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -201,7 +200,7 @@ public class MatchManager : Singleton<MatchManager>
     /// </summary>
     public void ExitMatch(bool forced)
     {
-        if (!ServerManager.Instance.IsOnlineMatch || SteamMatchMakingManager.Instance.IsHost)
+        if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
 
         LobbyManager.Instance.DestroyInstance();
@@ -209,8 +208,8 @@ public class MatchManager : Singleton<MatchManager>
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
-        SteamMatchMakingManager.Instance.DestroyInstance();
+        SteamLobbyManager.Instance.LeaveAllLobbies();
+        SteamLobbyManager.Instance.DestroyInstance();
 
         if (forced)
             ErrorManager.Instance.DisconnectedError();

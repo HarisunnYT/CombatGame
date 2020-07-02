@@ -8,7 +8,7 @@ public class PlayPanel : Panel
 {
     public void Online()
     {
-        PanelManager.Instance.ShowPanel<FriendLobbyPanel>();
+        SteamLobbyManager.Instance.CreatePrivateLobby();
         ServerManager.Instance.IsOnlineMatch = true;
     }
 

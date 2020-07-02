@@ -6,7 +6,7 @@ public class MatchMakingSearchPanel : Panel
 {
     protected override void OnShow()
     {
-        SteamMatchMakingManager.Instance.SearchForMatch();
+        //SteamMatchMakingManager.Instance.SearchForMatch();
     }
 
     public void Cancel()

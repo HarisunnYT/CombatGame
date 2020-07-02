@@ -1,6 +1,6 @@
 ﻿using InControl;
 using Mirror;
-using Steamworks;
+using SteamworksNet;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +36,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
-        ServerManager.Instance.AddConnectedPlayer(playerIndex, SteamClient.Name).ControllerGUID = controllerID;
+        //ServerManager.Instance.AddConnectedPlayer(playerIndex, SteamClient.Name).ControllerGUID = controllerID;
 
         OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
         LocalPlayersCount++;
