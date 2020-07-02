@@ -48,8 +48,7 @@ public class PrivateLobbyPanel : Panel
 
     public void Private()
     {
-        SteamLobbyManager.Instance.PrivateLobby.Value.SendChatString(SteamLobbyManager.PrivateLobbyStatedKey);
-        SceneLoader.Instance.LoadScene("Lobby");
+        SteamLobbyManager.Instance.PlayPrivateMatch();
     }
 
     public void LobbyPrivacyChanged(bool isOn)

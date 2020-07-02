@@ -13,11 +13,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 {
     #region EXTENSIONS
 
-    class LobbyData
-    {
-        public Lobby Lobby;
-    }
-
     #endregion
 
     #region CONST_VARIABLES
@@ -94,7 +89,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     protected override void Initialize()
     {
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
-        SteamMatchmaking.OnChatMessage += OnChatMessageReceived;
+        SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
     }
 
     protected override void Deinitialize()
@@ -157,31 +152,42 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
-    public void LeaveAllLobbies()
+    public void PlayPrivateMatch()
     {
-        LeavePrivateLobby();
-        LeavePublicLobby();
+        PublicLobby = PrivateLobby;
+        PrivateLobby.Value.SetData("private match", "true");
+
+        SceneLoader.Instance.LoadScene("Lobby");
     }
 
     #region MESSAGES
 
-    private void OnChatMessageReceived(Lobby lobby, Friend user, string message)
+    private void OnLobbyDataChanged(Lobby obj)
     {
-        if (PrivateLobby != null && lobby.Id == PrivateLobby.Value.Id.Value) //private lobby message received
+        foreach (var data in obj.Data)
         {
-            LobbyData data = JsonUtility.FromJson<LobbyData>(message);
-            if (data != null) //if this isn't null, the message was a host created public match message
-                HostCreatedPublicMatch(data);
-        }
-        else if (PublicLobby != null && lobby.Id == PublicLobby.Value.Id.Value) //public lobby message received
-        {
+            if (PrivateLobby != null && obj.Id == PrivateLobby.Value.Id.Value) //private lobby message received
+            {
+                Lobby? publicLobby = JsonUtility.FromJson<Lobby?>(data.Value);
+                if (publicLobby != null) //if this isn't null, the message was a host created public match message
+                    HostCreatedPublicMatch(publicLobby);
 
+                if (data.Key == "private match")
+                {
+                    //TODO move this
+                    SceneLoader.Instance.LoadScene("Lobby");
+                }
+            }
+            else if (PublicLobby != null && obj.Id == PublicLobby.Value.Id.Value) //public lobby message received
+            {
+
+            }
         }
     }
 
-    private void HostCreatedPublicMatch(LobbyData data)
+    private void HostCreatedPublicMatch(Lobby? lobby)
     {
-        data.Lobby.Join();
+        lobby.Value.Join();
     }
 
     #endregion
@@ -194,12 +200,16 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             return;
 
         creatingPrivateLobbyTask = SteamMatchmaking.CreateLobbyAsync(maxLobbyMembers);
+        Debug.Log("Created private lobby");
     }
 
     private void JoinedPrivateLobby(Lobby? lobby)
     {
         PrivateLobby = lobby;
+        //PrivateLobby.Value.SetFriendsOnly(); TODO UNCOMMENT
+
         PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+
         Debug.Log("Joined private lobby");
     }
 
@@ -259,10 +269,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void CreatedPublicMatch(Lobby? lobby)
     {
         PublicLobby = lobby;
+        PublicLobby.Value.SetPublic();
 
         //send a message to all members in the private lobby to join the public lobby that has been created
-        LobbyData publicLobbyData = new LobbyData() { Lobby = PublicLobby.Value };
-        PrivateLobby.Value.SendChatString(JsonUtility.ToJson(publicLobbyData));
+        PrivateLobby.Value.SetData("public match", JsonUtility.ToJson(lobby));
 
         Debug.Log("Created public match lobby");
     }
@@ -276,7 +286,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         Debug.Log("Joined public match");
 
         //TODO put this somewhere else
-        SceneLoader.Instance.LoadScene("Lobby");
+        //SceneLoader.Instance.LoadScene("Lobby");
     }
 
     public void LeavePublicLobby()
@@ -286,6 +296,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     }
 
     #endregion
+
+    public void LeaveAllLobbies()
+    {
+        LeavePrivateLobby();
+        LeavePublicLobby();
+    }
 
     private void OnApplicationQuit()
     {
