@@ -14,7 +14,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (isLocalPlayer)
         {
             NetworkManager.Instance.RoomPlayer = this;
-            AddConnectedPlayer(index, SteamClient.Name);
+            //AddConnectedPlayer(index, SteamClient.Name);
         }
     }
 

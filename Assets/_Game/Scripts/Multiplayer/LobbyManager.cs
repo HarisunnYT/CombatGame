@@ -25,11 +25,11 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
     private void CreateClient()
     {
-        uint ip = 0;
-        ushort port = 0;
-        Steamworks.SteamId serverID = new Steamworks.SteamId();
+        //uint ip = 0;
+        //ushort port = 0;
+        //Steamworks.SteamId serverID = new Steamworks.SteamId();
 
-        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.GetGameServer(ref ip, ref port, ref serverID);
+        //SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.GetGameServer(ref ip, ref port, ref serverID);
 
         //NetworkManager.Instance.networkAddress = ip.ToString();
         //NetworkManager.Instance.networkPort = port;
@@ -67,7 +67,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
+        //SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
         SteamMatchMakingManager.Instance.DestroyInstance();
 
         if (forced)

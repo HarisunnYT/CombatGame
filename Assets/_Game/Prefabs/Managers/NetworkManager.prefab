@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1683995628}
   - component: {fileID: 3393538192905813644}
   - component: {fileID: 3648054332713307026}
-  - component: {fileID: 8813695515119508002}
+  - component: {fileID: 8333156935376959544}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -68,7 +68,7 @@ MonoBehaviour:
   serverTickRate: 60
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 8813695515119508002}
+  transport: {fileID: 8333156935376959544}
   networkAddress: localhost
   maxConnections: 4
   disconnectInactiveConnections: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   position: {x: 533.51, y: 307.5}
   fontSize: 24
   textColor: {r: 0, g: 0, b: 0, a: 0.7490196}
---- !u!114 &8813695515119508002
+--- !u!114 &8333156935376959544
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4421913961904659212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a83a1bcb9935744486279e92420d987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClientConnected:
@@ -141,9 +141,3 @@ MonoBehaviour:
   OnServerDisconnected:
     m_PersistentCalls:
       m_Calls: []
-  port: 7777
-  NoDelay: 1
-  serverMaxMessageSize: 16384
-  serverMaxReceivesPerTick: 10000
-  clientMaxMessageSize: 16384
-  clientMaxReceivesPerTick: 1000

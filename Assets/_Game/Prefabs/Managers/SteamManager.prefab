@@ -9,9 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6716981135498504087}
-  - component: {fileID: 4496934671677048494}
-  - component: {fileID: 6406981777775376546}
-  - component: {fileID: 1468008675718938444}
   m_Layer: 0
   m_Name: SteamManager
   m_TagString: Untagged
@@ -33,39 +30,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4496934671677048494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049787571786189957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3387a4d139120ef41b8b3e40190139a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6406981777775376546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049787571786189957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a6c199c881b5647bd97f179d951109, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1468008675718938444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049787571786189957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3246121836c79c54dad9f566d4889113, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
