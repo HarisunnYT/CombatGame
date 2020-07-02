@@ -64,7 +64,7 @@ public class Cursor : MonoBehaviour
             foreach (RaycastResult result in results)
             {
                 Button button = result.gameObject.GetComponentInParent<Button>();
-                if (button)
+                if (button && button.interactable)
                 {
                     button.Select();
                     previousHighlightedButton = button;

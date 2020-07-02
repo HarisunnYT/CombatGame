@@ -92,7 +92,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         AlivePlayers.Remove(ServerManager.Instance.GetPlayer(victim).PlayerID);
         if (AlivePlayers.Count <= 1)
         {
-            if (SteamMatchMakingManager.Instance.IsHost)
+            if (SteamLobbyManager.Instance.PublicHost)
                 NetworkManager.Instance.RoomPlayer.CmdFightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerID);
             else if (!ServerManager.Instance.IsOnlineMatch)
                 FightOver(ServerManager.Instance.GetPlayer(AlivePlayers[0]).PlayerID);

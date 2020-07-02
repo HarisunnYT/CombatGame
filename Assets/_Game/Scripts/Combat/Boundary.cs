@@ -6,7 +6,7 @@ public class Boundary : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (SteamMatchMakingManager.Instance.IsHost || !ServerManager.Instance.IsOnlineMatch)
+        if (SteamLobbyManager.Instance.PublicHost || !ServerManager.Instance.IsOnlineMatch)
         {
             IDamagable damagable = collision.GetComponent<IDamagable>();
             if (damagable != null)

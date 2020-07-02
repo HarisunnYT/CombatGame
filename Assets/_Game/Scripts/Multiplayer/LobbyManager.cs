@@ -14,10 +14,8 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
     {
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            if (SteamMatchMakingManager.Instance.IsHost)
-            {
+            if (SteamLobbyManager.Instance.PublicHost)
                 NetworkManager.Instance.StartHost();
-            }
             else
                 CreateClient();
         }
@@ -29,7 +27,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
     private void CreateClient()
     {
-        NetworkManager.Instance.networkAddress = SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Owner.Id.Value.ToString();
+        NetworkManager.Instance.networkAddress = SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id.Value.ToString();
         NetworkManager.Instance.StartClient();
     }
 
@@ -56,15 +54,15 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
     /// </summary>
     public void ExitLobby(bool forced)
     {
-        if (!ServerManager.Instance.IsOnlineMatch || SteamMatchMakingManager.Instance.IsHost)
+        if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PrivateHost)
             NetworkManager.Instance.StopHost();
 
         ServerManager.Instance.DestroyInstance();
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        SteamMatchMakingManager.Instance.CurrentMatchMakingLobby.Leave();
-        SteamMatchMakingManager.Instance.DestroyInstance();
+        SteamLobbyManager.Instance.LeaveAllLobbies();
+        SteamLobbyManager.Instance.DestroyInstance();
 
         if (forced)
             ErrorManager.Instance.DisconnectedError();

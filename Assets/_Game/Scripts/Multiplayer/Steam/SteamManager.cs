@@ -49,7 +49,9 @@ public class SteamManager : MonoBehaviour {
 		}
 		s_instance = this;
 
-		if(s_EverInialized) {
+		Steamworks.SteamClient.Init(1359350);
+
+		if (s_EverInialized) {
 			// This is almost always an error.
 			// The most common case where this happens is when SteamManager gets destroyed because of Application.Quit(),
 			// and then some Steamworks code in some other OnDestroy gets called afterwards, creating a new SteamManager.
