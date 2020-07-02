@@ -3,17 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SteamManagerCustom : SteamManager
+public class SteamManagerCustom : PersistentSingleton<SteamManagerCustom>
 {
-    private bool initialised = false;
 
     protected override void Initialize()
     {
-        base.Initialize();
-        
-        if (!initialised)
-            SteamClient.Init(1359350);
-
-        initialised = true;
+        SteamClient.Init(1359350);
     }
 }

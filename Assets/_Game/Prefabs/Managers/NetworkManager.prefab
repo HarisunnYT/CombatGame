@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1683995628}
   - component: {fileID: 3393538192905813644}
   - component: {fileID: 3648054332713307026}
-  - component: {fileID: 8333156935376959544}
+  - component: {fileID: 6182882013283168133}
+  - component: {fileID: 8925771522110571659}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -68,7 +69,7 @@ MonoBehaviour:
   serverTickRate: 60
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 8333156935376959544}
+  transport: {fileID: 8925771522110571659}
   networkAddress: localhost
   maxConnections: 4
   disconnectInactiveConnections: 0
@@ -106,7 +107,7 @@ MonoBehaviour:
   position: {x: 533.51, y: 307.5}
   fontSize: 24
   textColor: {r: 0, g: 0, b: 0, a: 0.7490196}
---- !u!114 &8333156935376959544
+--- !u!114 &6182882013283168133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +116,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4421913961904659212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a83a1bcb9935744486279e92420d987, type: 3}
+  m_Script: {fileID: 11500000, guid: ebfe62abeecf3554da90189a2809b154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8925771522110571659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4421913961904659212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d026e4dc850d6248a5255f56cd4de1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClientConnected:
@@ -142,3 +155,8 @@ MonoBehaviour:
   OnServerDisconnected:
     m_PersistentCalls:
       m_Calls: []
+  Channels: 02000000
+  Timeout: 25
+  SteamAppID: 1359350
+  AllowSteamRelay: 1
+  SteamUserID: 0

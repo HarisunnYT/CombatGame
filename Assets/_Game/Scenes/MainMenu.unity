@@ -2991,6 +2991,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 806499725143333770, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
+    - {fileID: 8333156935376959544, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c, type: 3}
 --- !u!1 &1360326234
 GameObject:
@@ -4837,6 +4838,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860485459}
   m_CullTransparentMesh: 0
+--- !u!1 &1868117433 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4421913961904659212, guid: 68abd6ee064c9b741a2d0f9b6dee5c8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1341809852}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1868117434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868117433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClientConnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientDataReceived:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientError:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientDisconnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerConnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerDataReceived:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerError:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerDisconnected:
+    m_PersistentCalls:
+      m_Calls: []
+  port: 7777
+  NoDelay: 1
+  serverMaxMessageSize: 16384
+  serverMaxReceivesPerTick: 10000
+  clientMaxMessageSize: 16384
+  clientMaxReceivesPerTick: 1000
 --- !u!1 &1878958910
 GameObject:
   m_ObjectHideFlags: 0
