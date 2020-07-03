@@ -19,7 +19,8 @@ public class DebugPanel : Panel
 
     protected override void OnClose()
     {
-        CursorManager.Instance.HideAllCursors();
+        if (CursorManager.Instance)
+            CursorManager.Instance.HideAllCursors();
     }
 
     public void AutoWin()

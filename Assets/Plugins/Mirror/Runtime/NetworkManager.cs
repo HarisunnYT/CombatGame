@@ -277,6 +277,7 @@ namespace Mirror
             //    NetworkClient wouldn't receive the last Disconnect event, result in all kinds of issues
             NetworkServer.Update();
             NetworkClient.Update();
+
             UpdateScene();
         }
 
@@ -827,13 +828,18 @@ namespace Mirror
             // It will be re-enabled in FinishScene.
             Transport.activeTransport.enabled = false;
 
-            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+            ChangeScene(newSceneName);
 
             // notify all clients about the new scene
             NetworkServer.SendToAll(new SceneMessage { sceneName = newSceneName });
 
             startPositionIndex = 0;
             startPositions.Clear();
+        }
+
+        public virtual void ChangeScene(string sceneName) 
+        {
+            loadingSceneAsync = SceneManager.LoadSceneAsync(sceneName);
         }
 
         // This is only set in ClientChangeScene below...never on server.
@@ -903,6 +909,9 @@ namespace Mirror
                     break;
             }
 
+            if (loadingSceneAsync != null)
+                loadingSceneAsync.allowSceneActivation = false;
+
             // don't change the client's current networkSceneName when loading additive scene content
             if (sceneOperation == SceneOperation.Normal)
                 networkSceneName = newSceneName;
@@ -935,7 +944,7 @@ namespace Mirror
             }
         }
 
-        static void UpdateScene()
+        public static void UpdateScene()
         {
             if (singleton != null && loadingSceneAsync != null && loadingSceneAsync.isDone)
             {

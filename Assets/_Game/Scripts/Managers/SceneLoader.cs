@@ -5,8 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : PersistentSingleton<SceneLoader>
 {
-    public void LoadScene(string sceneName)
+    public void LoadScene(string sceneName, System.Action onSceneLoaded = null)
     {
-        SceneManager.LoadScene(sceneName);
+        TransitionManager.Instance.ShowTransition(() =>
+        {
+            StartCoroutine(LoadSceneAsync(sceneName, () =>
+            {
+                TransitionManager.Instance.HideTransition(onSceneLoaded);
+            }));
+        });
+    }
+
+    private IEnumerator LoadSceneAsync(string sceneName, System.Action onSceneLoaded)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        onSceneLoaded.Invoke();
     }
 }

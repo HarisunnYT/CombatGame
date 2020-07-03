@@ -48,6 +48,11 @@ public class PrivateLobbyPanel : Panel
         UpdatePlayerCells();
     }
 
+    private void OnDestroy()
+    {
+        UnSubToEvents();
+    }
+
     protected override void OnClose()
     {
         UnSubToEvents();
@@ -147,7 +152,10 @@ public class PrivateLobbyPanel : Panel
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
 
-        SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
-        SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
+        if (SteamLobbyManager.Instance)
+        {
+            SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
+            SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
+        }
     }
 }

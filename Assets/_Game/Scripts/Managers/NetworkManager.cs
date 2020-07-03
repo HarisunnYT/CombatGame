@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : NetworkRoomManager
 {
@@ -29,7 +30,10 @@ public class NetworkManager : NetworkRoomManager
 
         if (sceneName.Contains("Game.unity"))
         {
-            MatchManager.Instance.BeginMatch();
+            TransitionManager.Instance.HideTransition(() =>
+            {
+                MatchManager.Instance.BeginMatch();
+            });
         }
     }
 
@@ -107,5 +111,13 @@ public class NetworkManager : NetworkRoomManager
             return spawnPrefabs[id];
         else
             throw new System.Exception("Object not added to network spawnables list");
+    }
+
+    public override void ChangeScene(string sceneName)
+    {
+        TransitionManager.Instance.ShowTransition(() =>
+        {
+            base.ChangeScene(sceneName);
+        });
     }
 }

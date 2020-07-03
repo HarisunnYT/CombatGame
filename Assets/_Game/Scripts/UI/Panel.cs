@@ -39,9 +39,9 @@ public class Panel : MonoBehaviour, IAnimationHandler
     {
         PanelManager.Instance.PanelClosed(this);
 
-        if (animator)
+        if (animator && gameObject.activeSelf)
         {
-            PanelManager.Instance.StartCoroutine(AnimatorBoolFrameDelay("Close"));
+            StartCoroutine(AnimatorBoolFrameDelay("Close"));
         }
         else
         {
@@ -100,7 +100,7 @@ public class Panel : MonoBehaviour, IAnimationHandler
     {
         animator.SetBool(boolName, true);
 
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSecondsRealtime(0.1f);
 
         animator.SetBool(boolName, false);
     }

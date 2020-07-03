@@ -49,15 +49,8 @@ public class SteamManager : MonoBehaviour {
 		}
 		s_instance = this;
 
-		Steamworks.SteamClient.Init(1359350);
-
-		if (s_EverInialized) {
-			// This is almost always an error.
-			// The most common case where this happens is when SteamManager gets destroyed because of Application.Quit(),
-			// and then some Steamworks code in some other OnDestroy gets called afterwards, creating a new SteamManager.
-			// You should never call Steamworks functions in OnDestroy, always prefer OnDisable if possible.
-			throw new System.Exception("Tried to Initialize the SteamAPI twice in one session!");
-		}
+		if (!Steamworks.SteamClient.IsValid)
+			Steamworks.SteamClient.Init(1359350);
 
 		// We want our SteamManager Instance to persist across scenes.
 		DontDestroyOnLoad(gameObject);
@@ -98,12 +91,9 @@ public class SteamManager : MonoBehaviour {
 		// [*] Your App ID is not completely set up, i.e. in [code-inline]Release State: Unavailable[/code-inline], or it's missing default packages.
 		// Valve's documentation for this is located here:
 		// https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
-		m_bInitialized = SteamAPI.Init();
-		if (!m_bInitialized) {
-			Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);
 
-			return;
-		}
+		if (!s_EverInialized)
+			m_bInitialized = SteamAPI.Init();
 
 		s_EverInialized = true;
 	}
