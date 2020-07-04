@@ -61,11 +61,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
+    public bool Searching { get; private set; } = false;
+
     #endregion
 
     #region RUNTIME_VARIABLES
-
-    private bool searching = false;
 
     #endregion
 
@@ -159,7 +159,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         //if the message is false it means the host cancelled the search
         if (message == "false")
         {
-            searching = false;
+            Searching = false;
 
             PublicLobby.Value.Leave();
             PublicLobby = null;
@@ -168,7 +168,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
         else //otherwise it'll be the lobby id to join
         {
-            searching = true;
+            Searching = true;
 
             LobbyQuery lobbyQuery = SteamMatchmaking.LobbyList.WithSlotsAvailable(MaxLobbyMembers - PrivateLobby.Value.Members.Count()); //we can assign rules to this query
             retrievingLobbiesTask = lobbyQuery.RequestAsync();
@@ -249,6 +249,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PublicLobby = PrivateLobby;
         PrivateLobby.Value.SetData(privateLobbyStartedKey, "true");
 
+        ServerManager.Instance.IsOnlineMatch = true;
+
         SceneLoader.Instance.LoadScene("Lobby");
     }
 
@@ -258,7 +260,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void SearchForMatch()
     {
-        searching = true;
+        Searching = true;
         PrivateLobby.Value.SetJoinable(false);
 
         OnBeganSearch?.Invoke();
@@ -305,7 +307,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void CancelSearch()
     {
-        searching = false;
+        Searching = false;
         PrivateLobby.Value.SetJoinable(true);
 
         OnCancelledSearch?.Invoke();
@@ -358,6 +360,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             PublicLobby.Value.Leave();
     }
 
+    public bool AllPrivateMembersConnectedToPublic()
+    {
+        return PublicLobby.Value.MemberCount >= PrivateLobby.Value.MemberCount;
+    }
+
     #endregion
 
     #region CALLBACKS
@@ -380,7 +387,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void UpdateLobby(Lobby lobby)
     {
         //if we aren't searching and the lobby has updated, it must be a private lobby
-        if (searching)
+        if (Searching)
             PublicLobby = lobby;
         else
             PrivateLobby = lobby;

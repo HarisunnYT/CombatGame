@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using Steamworks.Data;
 using Steamworks;
+using JetBrains.Annotations;
 
 public class PrivateLobbyPanel : Panel
 {
@@ -85,14 +86,23 @@ public class PrivateLobbyPanel : Panel
             playerCell.gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
+        //configure client cell
+        connectedPlayerCells[0].Configure(SteamClient.Name);
+
+        if (SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count() > 1)
         {
-            Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
-            connectedPlayerCells[i].Configure(friend.Name);
+            for (int i = 1; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
+            {
+                Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
+                connectedPlayerCells[i].Configure(friend.Name);
+            }
         }
 
         if (SteamLobbyManager.Instance.PublicLobby != null)
             playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
+
+        if (SteamLobbyManager.Instance.Searching && SteamLobbyManager.Instance.AllPrivateMembersConnectedToPublic())
+            cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
     }
 
     private void OnBeganSearch()
@@ -122,6 +132,7 @@ public class PrivateLobbyPanel : Panel
 
     public void CancelSearch()
     {
+        cancelButton.SetActive(false);
         SteamLobbyManager.Instance.CancelSearch();
     }
 
@@ -148,7 +159,6 @@ public class PrivateLobbyPanel : Panel
 
         SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
         SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
-        SteamLobbyManager.Instance.OnPublicMatchCreated += ShowCancelButton;
     }
 
     private void UnSubToEvents()
@@ -161,7 +171,6 @@ public class PrivateLobbyPanel : Panel
         {
             SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
             SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
-            SteamLobbyManager.Instance.OnPublicMatchCreated -= ShowCancelButton;
         }
     }
 }
