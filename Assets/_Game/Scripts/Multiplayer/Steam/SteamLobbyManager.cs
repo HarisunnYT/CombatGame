@@ -140,21 +140,14 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         {
             foreach (var data in obj.Data)
             {
-                if (PrivateLobby != null && obj.Id == PrivateLobby.Value.Id.Value) //private lobby message received
+                if (data.Key == privateLobbyStartedKey)
                 {
-                    if (data.Key == privateLobbyStartedKey)
-                    {
-                        //TODO move this
-                        SceneLoader.Instance.LoadScene("Lobby");
-                    }
-                    else if (data.Key == publicSearchKey)
-                    {
-                        HostCreatedPublicMatch(ulong.Parse(data.Value), data.Value);
-                    }
+                    //TODO move this
+                    SceneLoader.Instance.LoadScene("Lobby");
                 }
-                else if (PublicLobby != null && obj.Id == PublicLobby.Value.Id.Value) //public lobby message received
+                else if (data.Key == publicSearchKey)
                 {
-
+                    HostCreatedPublicMatch(ulong.Parse(data.Value), data.Value);
                 }
             }
         }
