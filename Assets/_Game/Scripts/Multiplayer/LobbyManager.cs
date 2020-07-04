@@ -61,8 +61,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
 
-        SteamLobbyManager.Instance.LeaveAllLobbies();
-        SteamLobbyManager.Instance.DestroyInstance();
+        SteamLobbyManager.Instance.LeavePublicLobby();
 
         if (forced)
             ErrorManager.Instance.DisconnectedError();
