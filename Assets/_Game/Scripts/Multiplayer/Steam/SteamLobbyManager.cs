@@ -161,7 +161,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         {
             searching = false;
 
+            PublicLobby.Value.Leave();
             PublicLobby = null;
+
             OnCancelledSearch?.Invoke();
         }
         else //otherwise it'll be the lobby id to join
