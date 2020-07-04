@@ -879,7 +879,7 @@ namespace Mirror
             switch (sceneOperation)
             {
                 case SceneOperation.Normal:
-                    loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+                    ChangeScene(newSceneName);
                     break;
                 case SceneOperation.LoadAdditive:
                     // Ensure additive scene is not already loaded on client by name or path
@@ -909,8 +909,8 @@ namespace Mirror
                     break;
             }
 
-            if (loadingSceneAsync != null)
-                loadingSceneAsync.allowSceneActivation = false;
+            //if (loadingSceneAsync != null)
+            //    loadingSceneAsync.allowSceneActivation = false;
 
             // don't change the client's current networkSceneName when loading additive scene content
             if (sceneOperation == SceneOperation.Normal)

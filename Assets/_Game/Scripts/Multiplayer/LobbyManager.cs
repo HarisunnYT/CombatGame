@@ -54,7 +54,7 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
     /// </summary>
     public void ExitLobby(bool forced)
     {
-        if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PrivateHost)
+        if ((!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PrivateHost) && NetworkManager.Instance)
             NetworkManager.Instance.StopHost();
 
         ServerManager.Instance.DestroyInstance();

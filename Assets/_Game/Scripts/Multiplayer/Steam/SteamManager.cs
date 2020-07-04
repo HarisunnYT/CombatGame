@@ -49,7 +49,9 @@ public class SteamManager : MonoBehaviour {
 		}
 		s_instance = this;
 
-		Steamworks.SteamClient.Init(1359350);
+		if (!SteamClient.IsValid)
+			SteamClient.Init(1359350);
+
 		m_bInitialized = true;
 
 		// We want our SteamManager Instance to persist across scenes.

@@ -27,13 +27,24 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnServerSceneChanged(sceneName);
 
-        if (sceneName.Contains("Game.unity"))
+        if (sceneName.Contains("Game"))
+            FinishedLoadingScene();
+    }
+
+    public override void OnClientSceneChanged(NetworkConnection conn)
+    {
+        base.OnClientSceneChanged(conn);
+
+        if (SceneManager.GetActiveScene().name == "Game")
+            FinishedLoadingScene();
+    }
+
+    private void FinishedLoadingScene()
+    {
+        TransitionManager.Instance.HideTransition(() =>
         {
-            TransitionManager.Instance.HideTransition(() =>
-            {
-                MatchManager.Instance.BeginMatch();
-            });
-        }
+            MatchManager.Instance.BeginMatch();
+        });
     }
 
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
