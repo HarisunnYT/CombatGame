@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6716981135498504087}
   - component: {fileID: 1440430003487618218}
   - component: {fileID: 2501660753651285458}
+  - component: {fileID: 5369747346881600001}
   m_Layer: 0
   m_Name: SteamManagers
   m_TagString: Untagged
@@ -56,3 +57,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebfe62abeecf3554da90189a2809b154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5369747346881600001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049787571786189957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d026e4dc850d6248a5255f56cd4de1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClientConnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientDataReceived:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientError:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientDisconnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerConnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerDataReceived:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerError:
+    m_PersistentCalls:
+      m_Calls: []
+  OnServerDisconnected:
+    m_PersistentCalls:
+      m_Calls: []
+  Channels: 02000000
+  Timeout: 25
+  SteamAppID: 480
+  AllowSteamRelay: 1
+  SteamUserID: 0

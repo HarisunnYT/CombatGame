@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using Mirror.FizzySteam;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ public class NetworkManager : NetworkRoomManager
     {
         base.Awake();
 
+        transport = FizzySteamworks.Instance;
         Instance = this;
     }
 

@@ -10,6 +10,8 @@ namespace Mirror.FizzySteam
     [HelpURL("https://github.com/Chykary/FizzySteamworks")]
     public class FizzySteamworks : Transport
     {
+        public static FizzySteamworks Instance;
+
         private const string STEAM_SCHEME = "steam";
 
         private Client client;
@@ -33,6 +35,8 @@ namespace Mirror.FizzySteam
 
         private void Awake()
         {
+            Instance = this;
+
             const string fileName = "steam_appid.txt";
             if (File.Exists(fileName))
             {
