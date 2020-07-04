@@ -41,7 +41,7 @@ public class Panel : MonoBehaviour, IAnimationHandler
 
         if (animator && gameObject.activeSelf)
         {
-            StartCoroutine(AnimatorBoolFrameDelay("Close"));
+            animator.SetTrigger("Close");
         }
         else
         {
@@ -66,7 +66,7 @@ public class Panel : MonoBehaviour, IAnimationHandler
     {
         if (animator && gameObject.activeSelf)
         {
-            PanelManager.Instance.StartCoroutine(AnimatorBoolFrameDelay("Open"));
+            animator.SetTrigger("Open");
         }
 
         gameObject.SetActive(true);
@@ -94,14 +94,5 @@ public class Panel : MonoBehaviour, IAnimationHandler
     public void OnAnimationComplete()
     {
         ObjectDisabled();
-    }
-
-    private IEnumerator AnimatorBoolFrameDelay(string boolName)
-    {
-        animator.SetBool(boolName, true);
-
-        yield return new WaitForSecondsRealtime(0.1f);
-
-        animator.SetBool(boolName, false);
     }
 }
