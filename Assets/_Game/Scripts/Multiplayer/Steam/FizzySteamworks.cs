@@ -7,7 +7,6 @@ using Steamworks.Data;
 
 namespace Mirror.FizzySteam
 {
-    [RequireComponent(typeof(SteamManager))]
     [HelpURL("https://github.com/Chykary/FizzySteamworks")]
     public class FizzySteamworks : Transport
     {

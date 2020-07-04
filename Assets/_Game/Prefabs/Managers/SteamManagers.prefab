@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6716981135498504087}
   - component: {fileID: 1440430003487618218}
+  - component: {fileID: 2501660753651285458}
   m_Layer: 0
-  m_Name: SteamManager
+  m_Name: SteamManagers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,5 +42,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3246121836c79c54dad9f566d4889113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2501660753651285458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049787571786189957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebfe62abeecf3554da90189a2809b154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
