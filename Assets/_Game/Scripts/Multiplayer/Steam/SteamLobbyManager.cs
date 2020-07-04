@@ -193,7 +193,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void JoinedPrivateLobby(Lobby? lobby)
     {
         PrivateLobby = lobby;
+        PrivateLobby.Value.Join();
+
         PrivateLobby.Value.SetFriendsOnly();
+        PrivateLobby.Value.SetJoinable(true);
 
         PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
 
