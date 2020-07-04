@@ -155,11 +155,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                     HostPulledPartyFromMatch();
                 }
             }
-
-            if (PrivateLobby != null)
-            {
-                ClearPrivateLobbyData();
-            }
         }
     }
 
@@ -170,8 +165,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         {
             Searching = false;
 
-            PublicLobby.Value.Leave();
-            PublicLobby = null;
+            LeavePublicLobby();
 
             OnCancelledSearch?.Invoke();
         }
@@ -199,6 +193,15 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             };
 
             OnBeganSearch?.Invoke();
+        }
+    }
+
+    private void SendPrivateMessage(string key, string message)
+    {
+        if (PrivateLobby != null)
+        {
+            ClearPrivateLobbyData();
+            PrivateLobby.Value.SetData(key, message);
         }
     }
 
@@ -261,7 +264,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PublicLobby = PrivateLobby;
 
         if (PublicHost)
-            PrivateLobby.Value.SetData(privateLobbyStartedKey, "true");
+            SendPrivateMessage(privateLobbyStartedKey, "true");
 
         ServerManager.Instance.IsOnlineMatch = true;
         SceneLoader.Instance.LoadScene("Lobby");
@@ -338,10 +341,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PrivateLobby.Value.SetJoinable(true);
 
         OnCancelledSearch?.Invoke();
-        PrivateLobby.Value.SetData(publicSearchKey, "false");
+        SendPrivateMessage(publicSearchKey, "false");
 
-        PublicLobby.Value.Leave();
-        PublicLobby = null;
+        LeavePublicLobby();
 
         Debug.Log("send cancel");
     }
@@ -360,7 +362,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PublicLobby.Value.SetPublic();
 
         //send a message to all members in the private lobby to join the public lobby that has been created
-        PrivateLobby.Value.SetData(publicSearchKey, lobby.Value.Id.Value.ToString());
+        SendPrivateMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
 
         OnPublicMatchCreated?.Invoke();
 
@@ -373,7 +375,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PublicLobby.Value.Join();
 
         //send a message to all members in the private lobby to join the public lobby that has been created
-        PrivateLobby.Value.SetData(publicSearchKey, lobby.Value.Id.Value.ToString());
+        SendPrivateMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
 
         Debug.Log("Joined public match");
 
@@ -383,9 +385,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void LeavePublicLobby()
     {
-        if (PublicLobby != null && (PrivateLobby == null || PublicLobby.Value.Id != PrivateLobby.Value.Id))
+        if (PublicLobby != null)
         {
-            PublicLobby.Value.Leave();
+            if (PrivateLobby == null || PublicLobby.Value.Id != PrivateLobby.Value.Id)
+                PublicLobby.Value.Leave();
+
             PublicLobby = null;
         }
     }
@@ -398,7 +402,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void ExitMatchWithParty()
     {
         if (PrivateHost)
-            PrivateLobby.Value.SetData(leaveMatchWithPartyKey, "true");
+            SendPrivateMessage(leaveMatchWithPartyKey, "true");
     }
 
     #endregion
@@ -426,7 +430,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (Searching)
             PublicLobby = lobby;
         else
-            PrivateLobby.Value.Refresh();
+            PrivateLobby = lobby;
     }
 
     public void LeaveAllLobbies()
