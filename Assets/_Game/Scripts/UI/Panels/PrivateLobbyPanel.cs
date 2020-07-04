@@ -89,11 +89,11 @@ public class PrivateLobbyPanel : Panel
         //configure client cell
         connectedPlayerCells[0].Configure(SteamClient.Name);
 
-        if (SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count() > 1)
+        for (int i = 0; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
         {
-            for (int i = 1; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
+            Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
+            if (friend.Id != SteamClient.SteamId)
             {
-                Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
                 connectedPlayerCells[i].Configure(friend.Name);
             }
         }
