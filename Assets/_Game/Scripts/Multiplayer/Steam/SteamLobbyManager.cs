@@ -280,6 +280,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void HostPulledPartyFromMatch()
     {
+        UpdateLobby(PrivateLobby.Value);
         MatchManager.Instance.ExitMatchWithParty();
     }
 
@@ -429,7 +430,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (Searching)
             PublicLobby = lobby;
         else
-            PrivateLobby.Value.Refresh();
+            PrivateLobby = lobby;
     }
 
     public void LeaveAllLobbies()
