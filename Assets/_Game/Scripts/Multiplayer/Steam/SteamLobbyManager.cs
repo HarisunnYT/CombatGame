@@ -143,8 +143,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             {
                 if (data.Key == privateLobbyStartedKey)
                 {
-                    //TODO move this
-                    SceneLoader.Instance.LoadScene("Lobby");
+                    PlayPrivateMatch();
                 }
                 else if (data.Key == publicSearchKey)
                 {
@@ -247,10 +246,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void PlayPrivateMatch()
     {
         PublicLobby = PrivateLobby;
-        PrivateLobby.Value.SetData(privateLobbyStartedKey, "true");
+
+        if (PublicHost)
+            PrivateLobby.Value.SetData(privateLobbyStartedKey, "true");
 
         ServerManager.Instance.IsOnlineMatch = true;
-
         SceneLoader.Instance.LoadScene("Lobby");
     }
 
