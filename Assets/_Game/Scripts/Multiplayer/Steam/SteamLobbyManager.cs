@@ -144,6 +144,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 if (data.Key == privateLobbyStartedKey)
                 {
                     PlayPrivateMatch();
+                    return;
                 }
                 else if (data.Key == publicSearchKey)
                 {
