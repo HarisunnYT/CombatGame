@@ -114,8 +114,6 @@ public class SteamManager : MonoBehaviour {
 			return;
 		}
 
-#if !UNITY_EDITOR
-		SteamAPI.Shutdown();
-#endif
+		SteamClient.Shutdown();
 	}
 }
