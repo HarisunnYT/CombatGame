@@ -11,7 +11,8 @@ public class SceneLoader : PersistentSingleton<SceneLoader>
         {
             StartCoroutine(LoadSceneAsync(sceneName, () =>
             {
-                TransitionManager.Instance.HideTransition(onSceneLoaded);
+                onSceneLoaded?.Invoke();
+                TransitionManager.Instance.HideTransition();
             }));
         });
     }

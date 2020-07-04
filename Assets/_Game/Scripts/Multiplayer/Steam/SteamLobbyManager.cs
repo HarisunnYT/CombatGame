@@ -20,6 +20,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
+    private const string leaveMatchWithPartyKey = "leave_match_with_party";
 
     #endregion
 
@@ -93,7 +94,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
         SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
-
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
@@ -102,7 +102,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     protected override void Deinitialize()
     {
         SteamFriends.OnGameLobbyJoinRequested -= OnGameLobbyJoinRequested;
-
+        SteamMatchmaking.OnLobbyDataChanged -= OnLobbyDataChanged;
         SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
@@ -149,6 +149,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 else if (data.Key == publicSearchKey)
                 {
                     HostCreatedPublicMatch(data.Value);
+                }
+                else if (data.Key == leaveMatchWithPartyKey)
+                {
+                    HostPulledPartyFromMatch();
                 }
             }
         }
@@ -253,6 +257,19 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         ServerManager.Instance.IsOnlineMatch = true;
         SceneLoader.Instance.LoadScene("Lobby");
+    }
+
+    public void ClearPrivateLobbyData()
+    {
+        for (int i = 0; i < PrivateLobby.Value.Data.Count(); i++)
+        {
+            PrivateLobby.Value.DeleteData(PrivateLobby.Value.Data.ElementAt(i).Key);
+        }
+    }
+
+    private void HostPulledPartyFromMatch()
+    {
+        MatchManager.Instance.ExitMatchWithParty();
     }
 
     #endregion
@@ -366,6 +383,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         return PublicLobby.Value.MemberCount >= PrivateLobby.Value.MemberCount;
     }
 
+    public void ExitMatchWithParty()
+    {
+        if (PrivateHost)
+            PrivateLobby.Value.SetData(leaveMatchWithPartyKey, "true");
+    }
+
     #endregion
 
     #region CALLBACKS
@@ -391,7 +414,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (Searching)
             PublicLobby = lobby;
         else
-            PrivateLobby = lobby;
+            PrivateLobby.Value.Refresh();
     }
 
     public void LeaveAllLobbies()

@@ -41,7 +41,12 @@ public class PausePanel : Panel
         PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, () =>
         {
             Time.timeScale = 1;
-            MatchManager.Instance.ExitMatch(false);
+
+            //TODO ask user if they want to pull the party or leave by themselves
+            if (SteamLobbyManager.Instance.PrivateHost)
+                MatchManager.Instance.ExitMatchWithParty();
+            else
+                MatchManager.Instance.ExitMatch(false);
         });
     }
 

@@ -23,6 +23,8 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         {
             NetworkManager.Instance.StartHost();
         }
+
+        SteamLobbyManager.Instance.ClearPrivateLobbyData();
     }
 
     private void CreateClient()
