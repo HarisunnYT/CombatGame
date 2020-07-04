@@ -217,12 +217,6 @@ public class MatchManager : Singleton<MatchManager>
         StartCoroutine(DelayedRemovalOfInstances());
     }
 
-    public void ExitMatchWithParty()
-    {
-        ExitMatch(false);
-        SteamLobbyManager.Instance.ExitMatchWithParty();
-    }
-
     private IEnumerator DelayedRemovalOfInstances()
     {
         yield return new WaitForEndOfFrame();
@@ -236,6 +230,12 @@ public class MatchManager : Singleton<MatchManager>
         {
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
         });
+    }
+
+    public void ExitMatchWithParty()
+    {
+        ExitMatch(false);
+        SteamLobbyManager.Instance.ExitMatchWithParty();
     }
 
     #region PLAYER_ASSIGNMENTS

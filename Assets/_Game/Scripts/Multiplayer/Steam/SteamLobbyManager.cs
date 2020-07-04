@@ -245,7 +245,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void LeavePrivateLobby()
     {
         if (PrivateLobby != null)
+        {
             PrivateLobby.Value.Leave();
+            PrivateLobby = null;
+        }
     }
 
     public void PlayPrivateMatch()
@@ -269,6 +272,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void HostPulledPartyFromMatch()
     {
+        UpdateLobby(PrivateLobby.Value);
         MatchManager.Instance.ExitMatchWithParty();
     }
 
@@ -375,7 +379,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void LeavePublicLobby()
     {
         if (PublicLobby != null)
+        {
             PublicLobby.Value.Leave();
+            PublicLobby = null;
+        }
     }
 
     public bool AllPrivateMembersConnectedToPublic()
@@ -387,6 +394,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PrivateHost)
             PrivateLobby.Value.SetData(leaveMatchWithPartyKey, "true");
+
+        PrivateLobby.Value.Join();
     }
 
     #endregion
