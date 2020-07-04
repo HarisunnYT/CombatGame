@@ -442,6 +442,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void OnApplicationQuit()
     {
         LeaveAllLobbies();
+        SteamClient.Shutdown();
     }
 
     #endregion

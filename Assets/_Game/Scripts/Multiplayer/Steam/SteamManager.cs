@@ -113,7 +113,5 @@ public class SteamManager : MonoBehaviour {
 		if (!m_bInitialized) {
 			return;
 		}
-
-		SteamClient.Shutdown();
 	}
 }
