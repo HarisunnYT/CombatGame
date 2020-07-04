@@ -85,6 +85,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public delegate void LobbyEvent();
     public event LobbyEvent OnBeganSearch;
     public event LobbyEvent OnCancelledSearch;
+    public event LobbyEvent OnPublicMatchCreated;
 
     #endregion
 
@@ -307,6 +308,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         OnCancelledSearch?.Invoke();
         PrivateLobby.Value.SetData(publicSearchKey, "false");
+
+        PublicLobby.Value.Leave();
+        PublicLobby = null;
+
+        Debug.Log("send cancel");
     }
 
     private void CreatePublicMatchLobby()
@@ -325,14 +331,18 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         //send a message to all members in the private lobby to join the public lobby that has been created
         PrivateLobby.Value.SetData(publicSearchKey, lobby.Value.Id.Value.ToString());
 
+        OnPublicMatchCreated?.Invoke();
+
         Debug.Log("Created public match lobby");
     }
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
-        searching = false;
         PublicLobby = lobby;
         PublicLobby.Value.Join();
+
+        //send a message to all members in the private lobby to join the public lobby that has been created
+        PrivateLobby.Value.SetData(publicSearchKey, lobby.Value.Id.Value.ToString());
 
         Debug.Log("Joined public match");
 

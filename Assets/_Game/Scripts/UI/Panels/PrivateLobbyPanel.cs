@@ -42,7 +42,7 @@ public class PrivateLobbyPanel : Panel
             button.interactable = SteamLobbyManager.Instance.PrivateHost;
         }
 
-        cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
+        cancelButton.SetActive(false);
 
         UpdatePlayerCells();
     }
@@ -115,6 +115,11 @@ public class PrivateLobbyPanel : Panel
         searchingObj.SetActive(false);
     }
 
+    private void ShowCancelButton()
+    {
+        cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
+    }
+
     public void CancelSearch()
     {
         SteamLobbyManager.Instance.CancelSearch();
@@ -143,6 +148,7 @@ public class PrivateLobbyPanel : Panel
 
         SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
         SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
+        SteamLobbyManager.Instance.OnPublicMatchCreated += ShowCancelButton;
     }
 
     private void UnSubToEvents()
@@ -155,6 +161,7 @@ public class PrivateLobbyPanel : Panel
         {
             SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
             SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
+            SteamLobbyManager.Instance.OnPublicMatchCreated -= ShowCancelButton;
         }
     }
 }
