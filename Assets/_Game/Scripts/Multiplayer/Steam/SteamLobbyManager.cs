@@ -155,6 +155,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                     HostPulledPartyFromMatch();
                 }
             }
+
+            if (PrivateLobby != null)
+            {
+                ClearPrivateLobbyData();
+            }
         }
     }
 
@@ -378,7 +383,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void LeavePublicLobby()
     {
-        if (PublicLobby != null)
+        if (PublicLobby != null && (PrivateLobby == null || PublicLobby.Value.Id != PrivateLobby.Value.Id))
         {
             PublicLobby.Value.Leave();
             PublicLobby = null;
@@ -394,8 +399,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PrivateHost)
             PrivateLobby.Value.SetData(leaveMatchWithPartyKey, "true");
-
-        PrivateLobby.Value.Join();
     }
 
     #endregion
