@@ -147,32 +147,38 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 }
                 else if (data.Key == publicSearchKey)
                 {
-                    HostCreatedPublicMatch(ulong.Parse(data.Value), data.Value);
+                    HostCreatedPublicMatch(data.Value);
                 }
             }
         }
     }
 
-    private void HostCreatedPublicMatch(ulong lobbyID, string message)
+    private void HostCreatedPublicMatch(string message)
     {
         //if the message is false it means the host cancelled the search
         if (message == "false")
         {
+            searching = false;
+
             PublicLobby = null;
             OnCancelledSearch?.Invoke();
         }
         else //otherwise it'll be the lobby id to join
-        { 
+        {
+            searching = true;
+
             LobbyQuery lobbyQuery = SteamMatchmaking.LobbyList.WithSlotsAvailable(MaxLobbyMembers - PrivateLobby.Value.Members.Count()); //we can assign rules to this query
             retrievingLobbiesTask = lobbyQuery.RequestAsync();
             retreivedLobbiesCallback = (Lobby[] lobbies) =>
             {
+                ulong lobbyID = ulong.Parse(message);
                 if (lobbies != null)
                 {
                     foreach (var lobby in lobbies)
                     {
                         if (lobby.Id.Value == lobbyID)
                         {
+                            UpdateLobby(lobby);
                             lobby.Join();
                             break;
                         }
@@ -362,10 +368,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void UpdateLobby(Lobby lobby)
     {
         //if we aren't searching and the lobby has updated, it must be a private lobby
-        if (!searching)
-        {
+        if (searching)
+            PublicLobby = lobby;
+        else
             PrivateLobby = lobby;
-        }
     }
 
     public void LeaveAllLobbies()
