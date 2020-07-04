@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Steamworks.Data;
@@ -7,8 +7,6 @@ using System;
 using UnityEngine.SceneManagement;
 using Steamworks;
 using System.Linq;
-using UnityEngine.Assertions.Must;
-using UnityScript.Steps;
 
 public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 {
@@ -195,7 +193,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void JoinedPrivateLobby(Lobby? lobby)
     {
         PrivateLobby = lobby;
-        //PrivateLobby.Value.SetFriendsOnly(); TODO UNCOMMENT
+        PrivateLobby.Value.SetFriendsOnly();
 
         PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
 
