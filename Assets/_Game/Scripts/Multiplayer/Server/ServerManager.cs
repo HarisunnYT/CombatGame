@@ -1,11 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Mirror;
-using System.ComponentModel.Design;
-using SteamworksNet;
-using MultiplayerBasicExample;
 
 public class ServerManager : PersistentSingleton<ServerManager>
 {

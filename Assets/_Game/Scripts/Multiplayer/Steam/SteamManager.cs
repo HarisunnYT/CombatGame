@@ -7,7 +7,8 @@
 
 using UnityEngine;
 using System.Collections;
-using SteamworksNet;
+using Steamworks;
+using Steamworks.Data;
 
 //
 // The SteamManager provides a base implementation of Steamworks.NET on which you can build upon.
@@ -36,7 +37,6 @@ public class SteamManager : MonoBehaviour {
 		}
 	}
 
-	private SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 	private static void SteamAPIDebugTextHook(int nSeverity, System.Text.StringBuilder pchDebugText) {
 		Debug.LogWarning(pchDebugText);
 	}
@@ -49,19 +49,11 @@ public class SteamManager : MonoBehaviour {
 		}
 		s_instance = this;
 
-		if (!Steamworks.SteamClient.IsValid)
-			Steamworks.SteamClient.Init(1359350);
+		Steamworks.SteamClient.Init(1359350);
+		m_bInitialized = true;
 
 		// We want our SteamManager Instance to persist across scenes.
 		DontDestroyOnLoad(gameObject);
-
-		if (!Packsize.Test()) {
-			Debug.LogError("[Steamworks.NET] Packsize Test returned false, the wrong version of Steamworks.NET is being run in this platform.", this);
-		}
-
-		if (!DllCheck.Test()) {
-			Debug.LogError("[Steamworks.NET] DllCheck Test returned false, One or more of the Steamworks binaries seems to be the wrong version.", this);
-		}
 
 		try {
 			// If Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the
@@ -70,7 +62,7 @@ public class SteamManager : MonoBehaviour {
 			// Once you get a Steam AppID assigned by Valve, you need to replace AppId_t.Invalid with it and
 			// remove steam_appid.txt from the game depot. eg: "(AppId_t)480" or "new AppId_t(480)".
 			// See the Valve documentation for more information: https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
-			if (SteamAPI.RestartAppIfNecessary(AppId_t.Invalid)) {
+			if (SteamClient.RestartAppIfNecessary(SteamClient.AppId)) {
 				Application.Quit();
 				return;
 			}
@@ -92,9 +84,6 @@ public class SteamManager : MonoBehaviour {
 		// Valve's documentation for this is located here:
 		// https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
 
-		if (!s_EverInialized)
-			m_bInitialized = SteamAPI.Init();
-
 		s_EverInialized = true;
 	}
 
@@ -106,13 +95,6 @@ public class SteamManager : MonoBehaviour {
 
 		if (!m_bInitialized) {
 			return;
-		}
-
-		if (m_SteamAPIWarningMessageHook == null) {
-			// Set up our callback to recieve warning messages from Steam.
-			// You must launch with "-debug_steamapi" in the launch args to recieve warnings.
-			m_SteamAPIWarningMessageHook = new SteamAPIWarningMessageHook_t(SteamAPIDebugTextHook);
-			SteamClient.SetWarningMessageHook(m_SteamAPIWarningMessageHook);
 		}
 	}
 
@@ -133,14 +115,5 @@ public class SteamManager : MonoBehaviour {
 #if !UNITY_EDITOR
 		SteamAPI.Shutdown();
 #endif
-	}
-
-	private void Update() {
-		if (!m_bInitialized) {
-			return;
-		}
-
-		// Run Steam client callbacks
-		SteamAPI.RunCallbacks();
 	}
 }

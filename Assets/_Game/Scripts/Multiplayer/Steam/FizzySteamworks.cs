@@ -1,8 +1,9 @@
-using SteamworksNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Steamworks;
+using Steamworks.Data;
 
 namespace Mirror.FizzySteam
 {
@@ -18,7 +19,7 @@ namespace Mirror.FizzySteam
         private Common activeNode;
 
         [SerializeField]
-        public EP2PSend[] Channels = new EP2PSend[1] { EP2PSend.k_EP2PSendReliable };
+        public P2PSend[] Channels = new P2PSend[1] { P2PSend.Reliable };
 
         [Tooltip("Timeout for connecting in seconds.")]
         public int Timeout = 25;
@@ -148,8 +149,8 @@ namespace Mirror.FizzySteam
             var steamBuilder = new UriBuilder
             {
                 Scheme = STEAM_SCHEME,
-                Host = SteamUser.GetSteamID().m_SteamID.ToString()
-            };
+                Host = SteamClient.SteamId.Value.ToString()
+        };
 
             return steamBuilder.Uri;
         }
@@ -190,11 +191,11 @@ namespace Mirror.FizzySteam
         {
             switch (Channels[channelId])
             {
-                case EP2PSend.k_EP2PSendUnreliable:
-                case EP2PSend.k_EP2PSendUnreliableNoDelay:
+                case P2PSend.Unreliable:
+                case P2PSend.UnreliableNoDelay:
                     return 1200;
-                case EP2PSend.k_EP2PSendReliable:
-                case EP2PSend.k_EP2PSendReliableWithBuffering:
+                case P2PSend.Reliable:
+                case P2PSend.ReliableWithBuffering:
                     return 1048576;
                 default:
                     throw new NotSupportedException();
@@ -217,7 +218,7 @@ namespace Mirror.FizzySteam
         {
             if (SteamManager.Initialized)
             {
-                SteamUserID = SteamUser.GetSteamID().m_SteamID;
+                SteamUserID = SteamClient.SteamId.Value;
             }
         }
 

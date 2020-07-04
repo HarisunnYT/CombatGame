@@ -1,4 +1,5 @@
-﻿using SteamworksNet;
+﻿using Steamworks;
+using Steamworks.Data;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Mirror.FizzySteam
 {
     public abstract class Common
     {
-        private EP2PSend[] channels;
+        private P2PSend[] channels;
         private int internal_ch => channels.Length;
 
         protected enum InternalMessages : byte
@@ -17,44 +18,32 @@ namespace Mirror.FizzySteam
             DISCONNECT
         }
 
-        private Callback<P2PSessionRequest_t> callback_OnNewConnection = null;
-        private Callback<P2PSessionConnectFail_t> callback_OnConnectFail = null;
-
         protected readonly FizzySteamworks transport;
 
         protected Common(FizzySteamworks transport)
         {
             channels = transport.Channels;
 
-            callback_OnNewConnection = Callback<P2PSessionRequest_t>.Create(OnNewConnection);
-            callback_OnConnectFail = Callback<P2PSessionConnectFail_t>.Create(OnConnectFail);
+            SteamNetworking.OnP2PConnectionFailed = OnConnectFail;
+            SteamNetworking.OnP2PSessionRequest = OnNewConnection;
 
             this.transport = transport;
         }
 
         protected void Dispose()
         {
-            if (callback_OnNewConnection != null)
-            {
-                callback_OnNewConnection.Dispose();
-                callback_OnNewConnection = null;
-            }
-
-            if (callback_OnConnectFail != null)
-            {
-                callback_OnConnectFail.Dispose();
-                callback_OnConnectFail = null;
-            }
+            SteamNetworking.OnP2PConnectionFailed = null;
+            SteamNetworking.OnP2PSessionRequest = null;
         }
 
-        protected abstract void OnNewConnection(P2PSessionRequest_t result);
+        protected abstract void OnNewConnection(SteamId steamId);
 
-        private void OnConnectFail(P2PSessionConnectFail_t result)
+        private void OnConnectFail(SteamId id, P2PSessionError error)
         {
-            OnConnectionFailed(result.m_steamIDRemote);
-            CloseP2PSessionWithUser(result.m_steamIDRemote);
+            OnConnectionFailed(id);
+            CloseP2PSessionWithUser(id);
 
-            switch (result.m_eP2PSessionError)
+            switch ((int)error)
             {
                 case 1:
                     throw new Exception("Connection failed: The target user is not running the same game.");
@@ -69,28 +58,35 @@ namespace Mirror.FizzySteam
             }
         }
 
-        protected void SendInternal(CSteamID target, InternalMessages type) => SteamNetworking.SendP2PPacket(target, new byte[] { (byte)type }, 1, EP2PSend.k_EP2PSendReliable, internal_ch);
-        protected bool Send(CSteamID host, byte[] msgBuffer, int channel)
+        protected void SendInternal(SteamId target, InternalMessages type) => SteamNetworking.SendP2PPacket(target, new byte[] { (byte)type }, 1, internal_ch, P2PSend.Reliable);
+        protected bool Send(SteamId host, byte[] msgBuffer, int channel)
         {
-            return SteamNetworking.SendP2PPacket(host, msgBuffer, (uint)msgBuffer.Length, channels[channel], channel);
+            return SteamNetworking.SendP2PPacket(host, msgBuffer, msgBuffer.Length, channel, channels[channel]);
         }
-        private bool Receive(out CSteamID clientSteamID, out byte[] receiveBuffer, int channel)
+        private bool Receive(out SteamId clientSteamID, out byte[] receiveBuffer, int channel)
         {
-            if (SteamNetworking.IsP2PPacketAvailable(out uint packetSize, channel))
+            if (SteamNetworking.IsP2PPacketAvailable(channel))
             {
-                receiveBuffer = new byte[packetSize];
-                return SteamNetworking.ReadP2PPacket(receiveBuffer, packetSize, out _, out clientSteamID, channel);
+                P2Packet? packet = SteamNetworking.ReadP2PPacket(channel);
+
+                if (packet.HasValue)
+                {
+                    receiveBuffer = packet.Value.Data;
+                    clientSteamID = packet.Value.SteamId;
+
+                    return true;
+                }
             }
 
             receiveBuffer = null;
-            clientSteamID = CSteamID.Nil;
+            clientSteamID = new SteamId();
             return false;
         }
 
-        protected void CloseP2PSessionWithUser(CSteamID clientSteamID) => SteamNetworking.CloseP2PSessionWithUser(clientSteamID);
+        protected void CloseP2PSessionWithUser(SteamId clientSteamID) => SteamNetworking.CloseP2PSessionWithUser(clientSteamID);
 
-        protected void WaitForClose(CSteamID cSteamID) => transport.StartCoroutine(DelayedClose(cSteamID));
-        private IEnumerator DelayedClose(CSteamID cSteamID)
+        protected void WaitForClose(SteamId cSteamID) => transport.StartCoroutine(DelayedClose(cSteamID));
+        private IEnumerator DelayedClose(SteamId cSteamID)
         {
             yield return null;
             CloseP2PSessionWithUser(cSteamID);
@@ -100,7 +96,7 @@ namespace Mirror.FizzySteam
         {
             try
             {
-                while (Receive(out CSteamID clientSteamID, out byte[] internalMessage, internal_ch))
+                while (Receive(out SteamId clientSteamID, out byte[] internalMessage, internal_ch))
                 {
                     if (internalMessage.Length == 1)
                     {
@@ -115,7 +111,7 @@ namespace Mirror.FizzySteam
 
                 for (int chNum = 0; chNum < channels.Length; chNum++)
                 {
-                    while (Receive(out CSteamID clientSteamID, out byte[] receiveBuffer, chNum))
+                    while (Receive(out SteamId clientSteamID, out byte[] receiveBuffer, chNum))
                     {
                         OnReceiveData(receiveBuffer, clientSteamID, chNum);
                     }
@@ -128,8 +124,8 @@ namespace Mirror.FizzySteam
             }
         }
 
-        protected abstract void OnReceiveInternalData(InternalMessages type, CSteamID clientSteamID);
-        protected abstract void OnReceiveData(byte[] data, CSteamID clientSteamID, int channel);
-        protected abstract void OnConnectionFailed(CSteamID remoteId);
+        protected abstract void OnReceiveInternalData(InternalMessages type, SteamId clientSteamID);
+        protected abstract void OnReceiveData(byte[] data, SteamId clientSteamID, int channel);
+        protected abstract void OnConnectionFailed(SteamId remoteId);
     }
 }

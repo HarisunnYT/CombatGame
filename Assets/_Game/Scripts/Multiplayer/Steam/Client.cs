@@ -1,4 +1,5 @@
-﻿using SteamworksNet;
+﻿using Steamworks;
+using Steamworks.Data;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Mirror.FizzySteam
 
         private TimeSpan ConnectionTimeout;
 
-        private CSteamID hostSteamID = CSteamID.Nil;
+        private SteamId hostSteamID = new SteamId();
         private TaskCompletionSource<Task> connectedComplete;
         private CancellationTokenSource cancelToken;
 
@@ -41,7 +42,7 @@ namespace Mirror.FizzySteam
             else
             {
                 Debug.LogError("SteamWorks not initialized");
-                c.OnConnectionFailed(CSteamID.Nil);
+                c.OnConnectionFailed(new SteamId());
             }
 
             return c;
@@ -53,7 +54,7 @@ namespace Mirror.FizzySteam
 
             try
             {
-                hostSteamID = new CSteamID(UInt64.Parse(host));
+                hostSteamID = new SteamId() { Value = UInt64.Parse(host) };
                 connectedComplete = new TaskCompletionSource<Task>();
 
                 OnConnected += SetConnectedComplete;
@@ -87,7 +88,7 @@ namespace Mirror.FizzySteam
             {
                 if (Error)
                 {
-                    OnConnectionFailed(CSteamID.Nil);
+                    OnConnectionFailed(new SteamId());
                 }
             }
 
@@ -105,7 +106,7 @@ namespace Mirror.FizzySteam
 
         private void SetConnectedComplete() => connectedComplete.SetResult(connectedComplete.Task);
 
-        protected override void OnReceiveData(byte[] data, CSteamID clientSteamID, int channel)
+        protected override void OnReceiveData(byte[] data, SteamId clientSteamID, int channel)
         {
             if (clientSteamID != hostSteamID)
             {
@@ -116,11 +117,11 @@ namespace Mirror.FizzySteam
             OnReceivedData.Invoke(data, channel);
         }
 
-        protected override void OnNewConnection(P2PSessionRequest_t result)
+        protected override void OnNewConnection(SteamId resultID)
         {
-            if (hostSteamID == result.m_steamIDRemote)
+            if (hostSteamID == resultID)
             {
-                SteamNetworking.AcceptP2PSessionWithUser(result.m_steamIDRemote);
+                SteamNetworking.AcceptP2PSessionWithUser(resultID);
             }
             else
             {
@@ -128,7 +129,7 @@ namespace Mirror.FizzySteam
             }
         }
 
-        protected override void OnReceiveInternalData(InternalMessages type, CSteamID clientSteamID)
+        protected override void OnReceiveInternalData(InternalMessages type, SteamId clientSteamID)
         {
             switch (type)
             {
@@ -150,6 +151,6 @@ namespace Mirror.FizzySteam
 
         public bool Send(byte[] data, int channelId) => Send(hostSteamID, data, channelId);
 
-        protected override void OnConnectionFailed(CSteamID remoteId) => OnDisconnected.Invoke();
+        protected override void OnConnectionFailed(SteamId remoteId) => OnDisconnected.Invoke();
     }
 }
