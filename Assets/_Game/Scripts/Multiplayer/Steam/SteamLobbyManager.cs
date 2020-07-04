@@ -19,8 +19,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public const int MaxLobbyMembers = 4;
 
     private const string privateLobbyStartedKey = "private_lobby_started";
-    private const string publicSearchStartedKey = "public_search_started";
-    private const string publicSearchCancelledKey = "public_search_cancelled";
+    private const string publicSearchKey = "public_search";
 
     #endregion
 
@@ -93,11 +92,20 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
         SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
+
+        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
+        SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
+        SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
     }
 
     protected override void Deinitialize()
     {
         SteamFriends.OnGameLobbyJoinRequested -= OnGameLobbyJoinRequested;
+
+        SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
+        SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
+        SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
+
         base.Deinitialize();
     }
 
@@ -127,54 +135,60 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void OnLobbyDataChanged(Lobby obj)
     {
-        foreach (var data in obj.Data)
+        //the owner sends the messages, they don't need to receive them
+        if (obj.Owner.Id != SteamClient.SteamId)
         {
-            if (PrivateLobby != null && obj.Id == PrivateLobby.Value.Id.Value) //private lobby message received
+            foreach (var data in obj.Data)
             {
-                if (data.Key == privateLobbyStartedKey)
+                if (PrivateLobby != null && obj.Id == PrivateLobby.Value.Id.Value) //private lobby message received
                 {
-                    //TODO move this
-                    SceneLoader.Instance.LoadScene("Lobby");
+                    if (data.Key == privateLobbyStartedKey)
+                    {
+                        //TODO move this
+                        SceneLoader.Instance.LoadScene("Lobby");
+                    }
+                    else if (data.Key == publicSearchKey)
+                    {
+                        HostCreatedPublicMatch(ulong.Parse(data.Value), data.Value);
+                    }
                 }
-                else if (data.Key == publicSearchStartedKey)
+                else if (PublicLobby != null && obj.Id == PublicLobby.Value.Id.Value) //public lobby message received
                 {
-                    HostCreatedPublicMatch(ulong.Parse(data.Value));
-                }
-                else if (data.Key == publicSearchCancelledKey)
-                {
-                    HostCancelledPublicMatch();
-                }
-            }
-            else if (PublicLobby != null && obj.Id == PublicLobby.Value.Id.Value) //public lobby message received
-            {
 
+                }
             }
         }
     }
 
-    private void HostCreatedPublicMatch(ulong lobbyID)
+    private void HostCreatedPublicMatch(ulong lobbyID, string message)
     {
-        LobbyQuery lobbyQuery = SteamMatchmaking.LobbyList.WithSlotsAvailable(MaxLobbyMembers - PrivateLobby.Value.Members.Count()); //we can assign rules to this query
-        retrievingLobbiesTask = lobbyQuery.RequestAsync();
-        retreivedLobbiesCallback = (Lobby[] lobbies) =>
+        //if the message is false it means the host cancelled the search
+        if (message == "false")
         {
-            foreach (var lobby in lobbies)
+            PublicLobby = null;
+            OnCancelledSearch?.Invoke();
+        }
+        else //otherwise it'll be the lobby id to join
+        { 
+            LobbyQuery lobbyQuery = SteamMatchmaking.LobbyList.WithSlotsAvailable(MaxLobbyMembers - PrivateLobby.Value.Members.Count()); //we can assign rules to this query
+            retrievingLobbiesTask = lobbyQuery.RequestAsync();
+            retreivedLobbiesCallback = (Lobby[] lobbies) =>
             {
-                if (lobby.Id.Value == lobbyID)
+                if (lobbies != null)
                 {
-                    lobby.Join();
-                    break;
+                    foreach (var lobby in lobbies)
+                    {
+                        if (lobby.Id.Value == lobbyID)
+                        {
+                            lobby.Join();
+                            break;
+                        }
+                    }
                 }
-            }
-        };
+            };
 
-        OnBeganSearch?.Invoke();
-    }
-
-    private void HostCancelledPublicMatch()
-    {
-        PublicLobby = null;
-        OnCancelledSearch?.Invoke();
+            OnBeganSearch?.Invoke();
+        }
     }
 
     #endregion
@@ -243,6 +257,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void SearchForMatch()
     {
         searching = true;
+        PrivateLobby.Value.SetJoinable(false);
+
         OnBeganSearch?.Invoke();
 
         //first we need to get a list of servers, if any are available
@@ -288,8 +304,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void CancelSearch()
     {
         searching = false;
+        PrivateLobby.Value.SetJoinable(true);
+
         OnCancelledSearch?.Invoke();
-        PrivateLobby.Value.SetData(publicSearchCancelledKey, "true");
+        PrivateLobby.Value.SetData(publicSearchKey, "false");
     }
 
     private void CreatePublicMatchLobby()
@@ -306,7 +324,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PublicLobby.Value.SetPublic();
 
         //send a message to all members in the private lobby to join the public lobby that has been created
-        PrivateLobby.Value.SetData(publicSearchStartedKey, lobby.Value.Id.Value.ToString());
+        PrivateLobby.Value.SetData(publicSearchKey, lobby.Value.Id.Value.ToString());
 
         Debug.Log("Created public match lobby");
     }
@@ -331,6 +349,32 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #endregion
 
+    #region CALLBACKS
+
+    private void OnLobbyMemberLeave(Lobby arg1, Friend arg2)
+    {
+        UpdateLobby(arg1);
+    }
+
+    private void OnLobbyEntered(Lobby obj)
+    {
+        UpdateLobby(obj);
+    }
+
+    private void OnLobbyMemberJoined(Lobby arg1, Friend arg2)
+    {
+        UpdateLobby(arg1);
+    }
+
+    private void UpdateLobby(Lobby lobby)
+    {
+        //if we aren't searching and the lobby has updated, it must be a private lobby
+        if (!searching)
+        {
+            PrivateLobby = lobby;
+        }
+    }
+
     public void LeaveAllLobbies()
     {
         LeavePrivateLobby();
@@ -341,4 +385,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         LeaveAllLobbies();
     }
+
+    #endregion
 }
