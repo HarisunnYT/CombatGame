@@ -54,9 +54,6 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         if (startFightCountdownInProgress)
         {
             int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - Time.time);
-            hudPanel.UpdateCountdownText(roundedTime.ToString());
-
-            //countdown is finished
             if (roundedTime <= 0)
             {
                 CountdownOver();
@@ -68,6 +65,8 @@ public class FightManager : Singleton<FightManager>, IFightEvents
     {
         startFightCountdownInProgress = true;
         startFightCountdownTimer = Time.time + startFightCountDownTimeInSeconds;
+
+        hudPanel.BeginFightCountdown(startFightCountdownTimer);
     }
 
     private void CountdownOver()

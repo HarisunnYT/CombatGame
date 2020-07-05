@@ -33,25 +33,9 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (!Selected)
         {
-            if (ServerManager.Instance.IsOnlineMatch)
-            {
-                NetworkManager.Instance.RoomPlayer.SelectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
-            }
-            else
-            {
-                if (!LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
-                {
-                    string charName = characterName;
-                    if (charName == "random")
-                        charName = ServerManager.Instance.GetRandomUnselectedCharacter();
-
-                    LocalPlayersManager.Instance.LocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
-                    CursorManager.Instance.HideCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
-                    CharacterSelectManager.Instance.CharacterSelected(CursorManager.Instance.GetLastInteractedPlayerIndex(), charName);
-
-                    SetCharacterSelected(true);
-                }
-            }
+            bool selectedCharacter = FighterManager.Instance.LocalPlayerSelectedCharacter(characterName);
+            if (selectedCharacter)
+                SetCharacterSelected(true);
         }
     }
 

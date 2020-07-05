@@ -8,7 +8,7 @@ using UnityEngine;
 public class HUDPanel : Panel
 {
     [SerializeField]
-    private TMP_Text countDownText;
+    private Timer countDownTimer;
 
     [SerializeField]
     private GameObject playerCellsParent;
@@ -24,15 +24,14 @@ public class HUDPanel : Panel
         }
     }
 
-    public void UpdateCountdownText(string text)
+    public void BeginFightCountdown(float targetTime)
     {
-        countDownText.gameObject.SetActive(true);
-        countDownText.text = text;
+        countDownTimer.Configure(targetTime, false, true);
     }
 
     public void HideCountdownText()
     {
-        countDownText.gameObject.SetActive(false);
+        countDownTimer.gameObject.SetActive(false);
     }
 
     public void HidePlayerCells(bool hide)

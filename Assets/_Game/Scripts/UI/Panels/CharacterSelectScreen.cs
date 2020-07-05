@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class CharacterSelectScreen : Panel
 {
     [SerializeField]
-    private TMP_Text countdownText;
+    private Timer countdownTimer;
 
     [SerializeField]
     private Image selectedCharacterImage;
@@ -17,6 +17,7 @@ public class CharacterSelectScreen : Panel
     private CharacterCell[] characterCells;
 
     private float selectCharacterTimer;
+    private bool finished = false;
 
     private void Awake()
     {
@@ -34,12 +35,30 @@ public class CharacterSelectScreen : Panel
     {
         selectCharacterTimer = Time.time + CharacterSelectManager.Instance.CharacterSelectTime;
         selectedCharacterImage.gameObject.SetActive(false);
+        finished = false;
+
+        //no countdown for local player
+        if (ServerManager.Instance.IsOnlineMatch)
+            countdownTimer.Configure(selectCharacterTimer);
+        else
+            countdownTimer.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        int roundedTime = Mathf.Clamp(Mathf.RoundToInt(selectCharacterTimer - Time.time), 0, int.MaxValue);
-        countdownText.text = roundedTime.ToString();
+        //we don't countdown in local
+        if (ServerManager.Instance.IsOnlineMatch)
+        {
+            int roundedTime = Mathf.Clamp(Mathf.RoundToInt(selectCharacterTimer - Time.time), 0, int.MaxValue);
+            if (roundedTime <= 0 && !finished)
+            {
+                //times up, force random character for local player
+                if (!FighterManager.Instance.HasLocalPlayerReadiedUp)
+                    FighterManager.Instance.LocalPlayerSelectedCharacter("random");
+
+                finished = true;
+            }
+        }
     }
 
     private void OnCharacterSelected(int playerID, string characterName)

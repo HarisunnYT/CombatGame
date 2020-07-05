@@ -19,6 +19,7 @@ public class MatchManager : Singleton<MatchManager>
 
     [SerializeField]
     private int buyPhaseTimeInSeconds = 45;
+    public int BuyPhaseTimeInSeconds { get { return buyPhaseTimeInSeconds; } }
 
     [SerializeField]
     private SpawnPosition[] spawnPositions;
@@ -49,9 +50,6 @@ public class MatchManager : Singleton<MatchManager>
     #endregion
 
     #region CALLBACKS
-
-    public delegate void TimeEvent(int time);
-    public event TimeEvent OnBuyPhaseTimePassed;
 
     public delegate void PhaseEvent(RoundPhase phase);
     public event PhaseEvent OnPhaseChanged;
@@ -151,9 +149,6 @@ public class MatchManager : Singleton<MatchManager>
         if (currentPhase == RoundPhase.Buy_Phase)
         {
             int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - Time.time);
-            OnBuyPhaseTimePassed?.Invoke(roundedTime);
-
-            //countdown is finished
             if (roundedTime <= 0)
             {
                 BeginPhase(RoundPhase.Fight_Phase);

@@ -29,7 +29,14 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     public void SelectCharacter(int playerID, string characterName)
     {
         if (isServer)
-            RpcSelectCharacter(playerID, characterName);
+        {
+            //if the server chose random, they can get a random character easily
+            string charName = characterName;
+            if (charName == "random")
+                charName = ServerManager.Instance.GetRandomUnselectedCharacter();
+
+            RpcSelectCharacter(playerID, charName);
+        }
         else
             CmdSelectCharacter(playerID, characterName);
     }
@@ -37,6 +44,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     [Command]
     private void CmdSelectCharacter(int playerID, string characterName)
     {
+        //why do it here you ask? We need to confirm that a client has already selected it
         string charName = characterName;
         if (charName == "random")
             charName = ServerManager.Instance.GetRandomUnselectedCharacter();
@@ -55,6 +63,9 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         ServerManager.Instance.SetCharacterSelected(characterName);
 
         NetworkManager.Instance.roomSlots[playerID].readyToBegin = true;
+
+        if (playerID == ServerManager.Instance.GetPlayerLocal().PlayerID)
+            FighterManager.Instance.SetLocalPlayerReady();
     }
 
     public void AddConnectedPlayer(int netID, string steamName)

@@ -11,7 +11,7 @@ public class CharacterPurchasePanel : Panel
     private int playerIndex = -1;
 
     [SerializeField]
-    private TMP_Text countdownTimer;
+    private Timer timer;
 
     [Space()]
     [SerializeField]
@@ -24,6 +24,17 @@ public class CharacterPurchasePanel : Panel
     private GameObject fullDarkness;
 
     public PurchasableMoveCell CurrentPurchasingMove { get; private set; }
+
+    public override void Initialise()
+    {
+        MatchManager.Instance.OnPhaseChanged += OnPhaseChanged;
+    }
+
+    private void OnDestroy()
+    {
+        if (MatchManager.Instance)
+            MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
+    }
 
     private void Awake()
     {
@@ -50,17 +61,14 @@ public class CharacterPurchasePanel : Panel
     {
         SetDarkness(false);
         CursorManager.Instance.ShowAllCursors();
-        MatchManager.Instance.OnBuyPhaseTimePassed += UpdateCountdownTimer;
     }
 
-    protected override void OnClose()
+    private void OnPhaseChanged(MatchManager.RoundPhase phase)
     {
-        MatchManager.Instance.OnBuyPhaseTimePassed -= UpdateCountdownTimer;
-    }
-
-    public void UpdateCountdownTimer(int time)
-    {
-        countdownTimer.text = time.ToString();
+        if (phase == MatchManager.RoundPhase.Buy_Phase)
+        {
+            timer.Configure(Time.time + MatchManager.Instance.BuyPhaseTimeInSeconds);
+        }
     }
 
     public void PurchasingMove(PurchasableMoveCell move)

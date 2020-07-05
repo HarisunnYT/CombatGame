@@ -9,7 +9,7 @@ public class LevelEditorPanel : Panel
     private PurchasableLevelObjectCell levelObjectCellPrefab;
 
     [SerializeField]
-    private TMP_Text countdownTimer;
+    private Timer countdownTimer;
 
     [SerializeField]
     private Transform levelObjectsContent;
@@ -22,6 +22,13 @@ public class LevelEditorPanel : Panel
     public override void Initialise()
     {
         levelEditorCamera = GetComponentInParent<LevelEditorCamera>();
+        MatchManager.Instance.OnPhaseChanged += OnPhaseChanged;
+    }
+
+    private void OnDestroy()
+    {
+        if (MatchManager.Instance)
+            MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
     }
 
     private void Awake()
@@ -42,17 +49,14 @@ public class LevelEditorPanel : Panel
 
         ShowPurchasableBar(true);
 
-        MatchManager.Instance.OnBuyPhaseTimePassed += UpdateCountdownTimer;
     }
 
-    protected override void OnClose()
+    private void OnPhaseChanged(MatchManager.RoundPhase phase)
     {
-        MatchManager.Instance.OnBuyPhaseTimePassed -= UpdateCountdownTimer;
-    }
-
-    public void UpdateCountdownTimer(int time)
-    {
-        countdownTimer.text = time.ToString();
+        if (phase == MatchManager.RoundPhase.Buy_Phase)
+        {
+            countdownTimer.Configure(Time.time + MatchManager.Instance.BuyPhaseTimeInSeconds);
+        }
     }
 
     public void OpenCharacterPanel()

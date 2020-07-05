@@ -336,6 +336,7 @@ GameObject:
   - component: {fileID: 7815052496873472604}
   - component: {fileID: 7815052496873472602}
   - component: {fileID: 7815052496873472603}
+  - component: {fileID: 732718172446363683}
   m_Layer: 5
   m_Name: Timer text
   m_TagString: Untagged
@@ -481,6 +482,18 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &732718172446363683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7815052496873472605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055786e067c985d42a1e73b03b443999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7815052497105633571
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +957,7 @@ MonoBehaviour:
   pauseTime: 0
   levelObjectCellPrefab: {fileID: 6993160276753653772, guid: d34e2f52660115c40b3ec2e65d55e061,
     type: 3}
-  countdownTimer: {fileID: 7815052496873472603}
+  countdownTimer: {fileID: 732718172446363683}
   levelObjectsContent: {fileID: 7815052497985441337}
   purchasableBar: {fileID: 7815052497669351737}
 --- !u!1 &7815052497852884948

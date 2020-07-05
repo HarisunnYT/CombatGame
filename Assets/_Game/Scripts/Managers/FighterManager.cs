@@ -14,6 +14,8 @@ public class FighterManager : PersistentSingleton<FighterManager>
     public delegate void MoveEvent(MoveData move);
     public event MoveEvent OnEquipedMove;
 
+    public bool HasLocalPlayerReadiedUp { get; private set; }
+
     public FighterData GetFighterForPlayer(int playerID)
     {
         string fighterName = GetFighterNameFromPlayerID(playerID);
@@ -45,6 +47,38 @@ public class FighterManager : PersistentSingleton<FighterManager>
         }
 
         return null;
+    }
+
+    public bool LocalPlayerSelectedCharacter(string characterName)
+    {
+        if (ServerManager.Instance.IsOnlineMatch)
+        {
+            NetworkManager.Instance.RoomPlayer.SelectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
+        }
+        else
+        {
+            if (!LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
+            {
+                string charName = characterName;
+                if (charName == "random")
+                    charName = ServerManager.Instance.GetRandomUnselectedCharacter();
+
+                LocalPlayersManager.Instance.LocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
+                CursorManager.Instance.HideCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
+                CharacterSelectManager.Instance.CharacterSelected(CursorManager.Instance.GetLastInteractedPlayerIndex(), charName);
+
+                SetLocalPlayerReady();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void SetLocalPlayerReady()
+    {
+        HasLocalPlayerReadiedUp = true;
     }
 
     /// <param name="position">1, 2 or 3</param>

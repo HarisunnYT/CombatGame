@@ -2204,7 +2204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelType: 0
   pauseTime: 0
-  countdownText: {fileID: 1766858526}
+  countdownTimer: {fileID: 1766858528}
   selectedCharacterImage: {fileID: 1923426527}
   characterCells:
   - {fileID: 188673702}
@@ -2853,6 +2853,7 @@ GameObject:
   - component: {fileID: 1766858525}
   - component: {fileID: 1766858527}
   - component: {fileID: 1766858526}
+  - component: {fileID: 1766858528}
   m_Layer: 5
   m_Name: Timer text
   m_TagString: Untagged
@@ -2998,6 +2999,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1766858524}
   m_CullTransparentMesh: 0
+--- !u!114 &1766858528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766858524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055786e067c985d42a1e73b03b443999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1786492497
 GameObject:
   m_ObjectHideFlags: 0
