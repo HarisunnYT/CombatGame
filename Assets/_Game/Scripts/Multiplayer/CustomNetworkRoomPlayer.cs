@@ -37,17 +37,21 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     [Command]
     private void CmdSelectCharacter(int playerID, string characterName)
     {
-        if (!ServerManager.Instance.IsCharacterSelected(characterName))
+        string charName = characterName;
+        if (charName == "random")
+            charName = ServerManager.Instance.GetRandomUnselectedCharacter();
+
+        if (!ServerManager.Instance.IsCharacterSelected(charName))
         {
-            SelectCharacter(playerID, characterName);
-            RpcSelectCharacter(playerID, characterName);
+            SelectCharacter(playerID, charName);
+            RpcSelectCharacter(playerID, charName);
         }
     }
     
     [ClientRpc]
     private void RpcSelectCharacter(int playerID, string characterName)
     {
-        LobbyManager.Instance.CharacterSelected(playerID, characterName);
+        CharacterSelectManager.Instance.CharacterSelected(playerID, characterName);
         ServerManager.Instance.SetCharacterSelected(characterName);
 
         NetworkManager.Instance.roomSlots[playerID].readyToBegin = true;

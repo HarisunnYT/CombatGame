@@ -1,14 +1,21 @@
 ﻿using Mirror;
 using Steamworks;
+using Steamworks.Data;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LobbyManager : PersistentSingleton<LobbyManager>
+public class CharacterSelectManager : Singleton<CharacterSelectManager>
 {
+    [SerializeField]
+    private int characterSelectTime = 20;
+    public int CharacterSelectTime { get { return characterSelectTime; } }
+
     public delegate void CharacterEvent(int playerID, string characterName);
     public event CharacterEvent OnCharacterSelected;
+
+    private bool matchLoaded = false;
 
     private void Start()
     {
@@ -23,8 +30,15 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
         {
             NetworkManager.Instance.StartHost();
         }
+    }
 
-        SteamLobbyManager.Instance.ClearPrivateLobbyData();
+    private void Update()
+    {
+        if (!matchLoaded && (!ServerManager.Instance.IsOnlineMatch || ServerManager.Instance.Players.Count >= SteamLobbyManager.Instance.PublicLobby.Value.MemberCount))
+        {
+            PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
+            matchLoaded = true;
+        }
     }
 
     private void CreateClient()
@@ -81,7 +95,8 @@ public class LobbyManager : PersistentSingleton<LobbyManager>
 
         yield return new WaitForEndOfFrame();
 
-        DestroyInstance();
+        CharacterSelectManager.Instance = null;
+        Destroy(gameObject);
 
         SceneLoader.Instance.LoadScene("MainMenu");
     }

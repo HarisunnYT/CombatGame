@@ -204,7 +204,6 @@ public class MatchManager : Singleton<MatchManager>
         if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
 
-        LobbyManager.Instance.DestroyInstance();
         ServerManager.Instance.DestroyInstance();
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();

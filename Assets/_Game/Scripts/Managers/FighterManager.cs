@@ -34,6 +34,19 @@ public class FighterManager : PersistentSingleton<FighterManager>
         return ServerManager.Instance.GetPlayer(playerID).Figher;
     }
 
+    public FighterData GetFighter(string fighterName)
+    {
+        foreach (var fighter in fighters)
+        {
+            if (fighter.name == fighterName)
+            {
+                return fighter;
+            }
+        }
+
+        return null;
+    }
+
     /// <param name="position">1, 2 or 3</param>
     public void EquipedMove(MoveData moveData, int position)
     {
@@ -50,5 +63,10 @@ public class FighterManager : PersistentSingleton<FighterManager>
     public bool IsMoveEquiped(MoveData move)
     {
         return AttackOne == move || AttackTwo == move || AttackThree == move;
+    }
+
+    public FighterData GetRandomFighter()
+    {
+        return fighters[Random.Range(0, fighters.Length)];
     }
 }

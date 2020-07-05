@@ -6,6 +6,6 @@ public class WaitingPanel : Panel
 {
     public void Cancel()
     {
-        LobbyManager.Instance.ExitLobby(false);
+        CharacterSelectManager.Instance.ExitLobby(false);
     }
 }

@@ -170,6 +170,18 @@ public class ServerManager : PersistentSingleton<ServerManager>
         return SelectedCharacters.Contains(characterName);
     }
 
+    public string GetRandomUnselectedCharacter()
+    {
+        while (true)
+        {
+            FighterData fighter = FighterManager.Instance.GetRandomFighter();
+            if (!IsCharacterSelected(fighter.name))
+            {
+                return fighter.name;
+            }
+        }
+    }
+
     public int GetTick()
     {
         return Time.frameCount; 

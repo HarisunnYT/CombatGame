@@ -41,9 +41,13 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             {
                 if (!LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
                 {
+                    string charName = characterName;
+                    if (charName == "random")
+                        charName = ServerManager.Instance.GetRandomUnselectedCharacter();
+
                     LocalPlayersManager.Instance.LocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
                     CursorManager.Instance.HideCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
-                    LobbyManager.Instance.CharacterSelected(CursorManager.Instance.GetLastInteractedPlayerIndex(), characterName);
+                    CharacterSelectManager.Instance.CharacterSelected(CursorManager.Instance.GetLastInteractedPlayerIndex(), charName);
 
                     SetCharacterSelected(true);
                 }
@@ -53,8 +57,11 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void SetCharacterSelected(bool selected)
     {
-        selectedIcon.SetActive(selected);
-        Selected = selected;
+        if (characterName != "random")
+        {
+            selectedIcon.SetActive(selected);
+            Selected = selected;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

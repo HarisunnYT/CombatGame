@@ -102,14 +102,7 @@ public class NetworkManager : NetworkRoomManager
         if (MatchManager.Instance)
             MatchManager.Instance.ExitMatch(true);
         else
-            LobbyManager.Instance.ExitLobby(true);
-    }
-
-    public override void OnRoomClientConnect(NetworkConnection conn)
-    {
-        base.OnRoomClientConnect(conn);
-
-        PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
+            CharacterSelectManager.Instance.ExitLobby(true);
     }
 
     public int GetPrefabID(GameObject prefab)

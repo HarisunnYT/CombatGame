@@ -242,7 +242,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (currentSceneName == "Game")
             MatchManager.Instance.ExitMatch(false);
         else if (currentSceneName == "Lobby")
-            LobbyManager.Instance.ExitLobby(false);
+            CharacterSelectManager.Instance.ExitLobby(false);
 
         if (currentSceneName != "MainMenu")
             SceneLoader.Instance.LoadScene("MainMenu");
