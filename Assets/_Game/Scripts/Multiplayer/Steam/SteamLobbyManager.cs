@@ -295,33 +295,36 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         OnBeganSearch?.Invoke();
 
+        LookForAvailablePublicMatch(MaxLobbyMembers - PrivateLobby.Value.Members.Count());
+    }
+
+    private void LookForAvailablePublicMatch(int slotsAvailable)
+    {
         //first we need to get a list of servers, if any are available
-        LobbyQuery lobbyQuery = SteamMatchmaking.LobbyList.WithSlotsAvailable(MaxLobbyMembers - PrivateLobby.Value.Members.Count()); //we can assign rules to this query
+        LobbyQuery lobbyQuery = SteamMatchmaking.LobbyList.WithSlotsAvailable(slotsAvailable); //we can assign rules to this query
         retrievingLobbiesTask = lobbyQuery.RequestAsync();
         retreivedLobbiesCallback = (Lobby[] lobbies) =>
         {
             if (lobbies != null && lobbies.Length > 0)
             {
-                List<Lobby> availableLobbies = lobbies.ToList();
-
-                //just in case a lobby is owned by this player and wasn't terminated correctly
-                for (int i = 0; i < availableLobbies.Count; i++)
+                if (lobbies.Length > 0)
                 {
-                    Lobby lobby = availableLobbies[i];
-                    if (lobby.IsOwnedBy(SteamClient.SteamId))
+                    List<Lobby> availableLobbies = lobbies.ToList();
+                    for (int i = 0; i < availableLobbies.Count; i++)
                     {
-                        if (lobby.Id != PrivateLobby.Value.Id)
-                            lobby.Leave();
-
-                        availableLobbies.RemoveAt(i);
+                        if (PublicLobby != null && availableLobbies[i].Id.Value == PublicLobby.Value.Id.Value)
+                        {
+                            availableLobbies.RemoveAt(i);
+                            break;
+                        }
                     }
-                }
 
-                if (availableLobbies.Count > 0)
-                {
                     //found the correct lobby
                     //TODO sort by skill, location, ping etc
-                    JoinedPublicLobby(availableLobbies[0]);
+                    if (availableLobbies.Count > 0)
+                        JoinedPublicLobby(availableLobbies[0]);
+                    else
+                        CreatePublicMatchLobby();
                 }
                 else
                 {
@@ -351,7 +354,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void CreatePublicMatchLobby()
     {
         if (PublicLobby != null)
+        {
+            LookForAvailablePublicMatch(MaxLobbyMembers - PublicLobby.Value.Members.Count());
             return;
+        }
 
         creatingPublicLobbyTask = SteamMatchmaking.CreateLobbyAsync(MaxLobbyMembers);
     }
@@ -366,11 +372,19 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         OnPublicMatchCreated?.Invoke();
 
+        if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
+            TryStartPublicMatch();
+        else
+            LookForAvailablePublicMatch(MaxLobbyMembers - PrivateLobby.Value.Members.Count());
+
         Debug.Log("Created public match lobby");
     }
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
+        if (PublicLobby != null)
+            PublicLobby.Value.Leave();
+
         PublicLobby = lobby;
         PublicLobby.Value.Join();
 
@@ -378,9 +392,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         SendPrivateMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
 
         Debug.Log("Joined public match");
-
-        //TODO put this somewhere else
-        TryStartPublicMatch();
     }
 
     public void LeavePublicLobby()
