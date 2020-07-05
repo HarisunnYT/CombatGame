@@ -61,10 +61,7 @@ public class MatchManager : Singleton<MatchManager>
     private void Start()
     {
         purchasePanel = PanelManager.Instance.GetPanel<CharacterPurchasePanel>();
-    }
 
-    public void BeginMatch()
-    {
         if (!ServerManager.Instance.IsOnlineMatch)
         {
             //we start at 1 as the main player has already spawned
@@ -73,7 +70,10 @@ public class MatchManager : Singleton<MatchManager>
                 NetworkManager.Instance.OnServerAddPlayer(NetworkClient.connection);
             }
         }
+    }
 
+    public void BeginMatch()
+    {
         BeginPhase(RoundPhase.Fight_Phase);
     }
 

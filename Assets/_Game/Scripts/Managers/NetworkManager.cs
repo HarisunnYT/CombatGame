@@ -45,7 +45,7 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnClientSceneChanged(conn);
 
-        if (SceneManager.GetActiveScene().name == "Game")
+        if (!ClientScene.localPlayer.isServer && SceneManager.GetActiveScene().name == "Game")
             FinishedLoadingScene();
     }
 
