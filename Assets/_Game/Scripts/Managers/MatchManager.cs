@@ -91,6 +91,7 @@ public class MatchManager : Singleton<MatchManager>
     private void BeginFightPhase()
     {
         CameraManager.Instance.CameraFollow.ResetCamera();
+        LevelEditorManager.Instance.RevealRecentObjects();
 
         if (ServerManager.Instance.IsOnlineMatch)
             purchasePanel.Close();

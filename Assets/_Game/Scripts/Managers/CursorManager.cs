@@ -9,6 +9,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
     private Cursor cursorPrefab;
 
     private List<Cursor> cursors = new List<Cursor>();
+    private Dictionary<Cursor, int> showCursors = new Dictionary<Cursor, int>(); //index to show and hide cursors (value stacks when shown)
 
     private int lastInteractedPlayerIndex = 0;
 
@@ -46,17 +47,20 @@ public class CursorManager : PersistentSingleton<CursorManager>
     {
         Cursor cursor = Instantiate(cursorPrefab, transform);
         cursor.AssignDevice(playerIndex, controllerID);
-
         cursors.Add(cursor);
+
+        ShowCursor(cursor);
     }
 
     public void HideCursor(Cursor cursor)
     {
-        foreach (var c in cursors)
+        if (showCursors.ContainsKey(cursor))
         {
-            if (c == cursor)
+            showCursors[cursor]--;
+            if (showCursors[cursor] <= 0)
             {
-                c.gameObject.SetActive(false);
+                showCursors.Remove(cursor);
+                cursor.gameObject.SetActive(false);
             }
         }
     }
@@ -67,7 +71,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
         {
             if (c.PlayerIndex == playerIndex)
             {
-                c.gameObject.SetActive(false);
+                HideCursor(c);
             }
         }
     }
@@ -78,7 +82,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
         {
             if (c.ControllerID == controllerGUID)
             {
-                c.gameObject.SetActive(false);
+                HideCursor(c);
             }
         }
     }
@@ -87,7 +91,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
     {
         foreach(var cursor in cursors)
         {
-            cursor.gameObject.SetActive(false);
+            HideCursor(cursor);
         }
     }
 
@@ -95,7 +99,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
     {
         foreach(var cursor in cursors)
         {
-            cursor.gameObject.SetActive(true);
+            ShowCursor(cursor);
         }
     }
 
@@ -105,8 +109,19 @@ public class CursorManager : PersistentSingleton<CursorManager>
         {
             if (cursor.ControllerID == controllerGUID)
             {
-                cursor.gameObject.SetActive(true);
+                ShowCursor(cursor);
             }
+        }
+    }
+
+    public void ShowCursor(Cursor cursor)
+    {
+        if (showCursors.ContainsKey(cursor))
+            showCursors[cursor]++;
+        else
+        {
+            showCursors.Add(cursor, 1);
+            cursor.gameObject.SetActive(true);
         }
     }
 

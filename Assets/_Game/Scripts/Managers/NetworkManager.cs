@@ -21,8 +21,16 @@ public class NetworkManager : NetworkRoomManager
     {
         base.Awake();
 
-        transport = FizzySteamworks.Instance;
         Instance = this;
+    }
+
+    private void Update()
+    {
+        if (transport == null)
+        {
+            transport = FizzySteamworks.Instance;
+            Transport.activeTransport = transport;
+        }
     }
 
     public override void OnServerSceneChanged(string sceneName)

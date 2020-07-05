@@ -35,8 +35,6 @@ namespace Mirror.FizzySteam
 
         private void Awake()
         {
-            Instance = this;
-
             const string fileName = "steam_appid.txt";
             if (File.Exists(fileName))
             {
@@ -58,7 +56,13 @@ namespace Mirror.FizzySteam
             Invoke(nameof(FetchSteamID), 1f);
         }
 
-        private void LateUpdate() => activeNode?.ReceiveData(); 
+        private void LateUpdate()
+        {
+            if (Instance == null)
+                Instance = this;
+
+            activeNode?.ReceiveData();
+        }
 
         public override bool ClientConnected() => ClientActive() && client.Connected;
         public override void ClientConnect(string address)

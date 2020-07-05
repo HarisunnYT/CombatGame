@@ -70,7 +70,7 @@ public class LevelObject : NetworkBehaviour
             target.x = Mathf.Round(target.x / roundedSize) * roundedSize;
             target.y = Mathf.Round(target.y / roundedSize) * roundedSize;
 
-            Vector3 result = new Vector3(target.x + offset.x, target.y + offset.y, target.z + 1);
+            Vector3 result = new Vector3(target.x + offset.x, target.y + offset.y, transform.position.z);
             transform.position = result;
 
             if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
@@ -109,9 +109,10 @@ public class LevelObject : NetworkBehaviour
     private void PlaceObject(Vector3 position)
     {
         transform.position = position;
-
         collider.isTrigger = isTrigger;
         placed = true;
+
+        LevelEditorManager.Instance.AddLevelObject(this);
     }
 
     private void OnPhaseChanged(MatchManager.RoundPhase phase)

@@ -7813,7 +7813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ea097bd53dfc6f41a735ece160faa45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelType: 0
+  panelType: 1
   pauseTime: 0
 --- !u!4 &2056475148 stripped
 Transform:

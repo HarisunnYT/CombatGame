@@ -45,3 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roundedGridSize: 1
   levelObjectsList: {fileID: 11400000, guid: a4063ce57c9485749b606825323be708, type: 2}
+  spawnParticle: {fileID: 6055202956748964948, guid: 9a55937aec4387940a8e40b9d43f7ab8,
+    type: 3}
