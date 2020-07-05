@@ -16,7 +16,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region CONST_VARIABLES
 
-    public const int MaxLobbyMembers = 4;
+    public const int MaxLobbyMembers = 2; //TODO SET TO 2
 
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
@@ -380,7 +380,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         Debug.Log("Joined public match");
 
         //TODO put this somewhere else
-        //SceneLoader.Instance.LoadScene("Lobby");
+        if (lobby.Value.MemberCount >= MaxLobbyMembers)
+            SceneLoader.Instance.LoadScene("Lobby");
     }
 
     public void LeavePublicLobby()
