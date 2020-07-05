@@ -380,8 +380,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         Debug.Log("Joined public match");
 
         //TODO put this somewhere else
-        if (lobby.Value.MemberCount >= MaxLobbyMembers)
-            SceneLoader.Instance.LoadScene("Lobby");
+        TryStartPublicMatch();
     }
 
     public void LeavePublicLobby()
@@ -397,13 +396,19 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public bool AllPrivateMembersConnectedToPublic()
     {
-        return PublicLobby.Value.MemberCount >= PrivateLobby.Value.MemberCount;
+        return PrivateLobby == null || PublicLobby == null || PublicLobby.Value.MemberCount >= PrivateLobby.Value.MemberCount;
     }
 
     public void ExitMatchWithParty()
     {
         if (PrivateHost)
             SendPrivateMessage(leaveMatchWithPartyKey, "true");
+    }
+
+    private void TryStartPublicMatch()
+    {
+        if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
+            SceneLoader.Instance.LoadScene("Lobby");
     }
 
     #endregion
@@ -429,7 +434,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         //if we aren't searching and the lobby has updated, it must be a private lobby
         if (Searching)
+        {
             PublicLobby = lobby;
+            TryStartPublicMatch();
+        }
         else
             PrivateLobby = lobby;
     }
