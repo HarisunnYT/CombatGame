@@ -51,7 +51,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 
         if (!ServerManager.Instance.IsCharacterSelected(charName))
         {
-            SelectCharacter(playerID, charName);
+            //SelectCharacter(playerID, charName);
             RpcSelectCharacter(playerID, charName);
         }
     }
@@ -65,7 +65,34 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         NetworkManager.Instance.roomSlots[playerID].readyToBegin = true;
 
         if (playerID == ServerManager.Instance.GetPlayerLocal().PlayerID)
-            FighterManager.Instance.SetLocalPlayerReady();
+            FighterManager.Instance.SetLocalPlayerReady(true);
+    }
+
+    public void UnselectCharacter(int playerID, string characterName)
+    {
+        if (isServer)
+            RpcUnselectCharacter(playerID, characterName);
+        else
+            CmdUnselectCharacter(playerID, characterName);
+    }
+
+    [Command]
+    private void CmdUnselectCharacter(int playerID, string characterName)
+    {
+        //UnselectCharacter(playerID, characterName);
+        RpcUnselectCharacter(playerID, characterName);
+    }
+
+    [ClientRpc]
+    private void RpcUnselectCharacter(int playerID, string characterName)
+    {
+        CharacterSelectManager.Instance.CharacterUnselected(playerID, characterName);
+        ServerManager.Instance.SetCharacterUnselected(characterName);
+
+        NetworkManager.Instance.roomSlots[playerID].readyToBegin = false;
+
+        if (playerID == ServerManager.Instance.GetPlayerLocal().PlayerID)
+            FighterManager.Instance.SetLocalPlayerReady(false);
     }
 
     public void AddConnectedPlayer(int netID, string steamName)
@@ -82,7 +109,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         ServerManager.Instance.AddConnectedPlayer(netID, steamName);
         foreach (var connectPlayer in ServerManager.Instance.Players)
         {
-            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.SteamName);
+            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name);
         }
     }
 

@@ -8,15 +8,15 @@ public class ServerManager : PersistentSingleton<ServerManager>
     {
         public int PlayerID;
         public int NetID;
-        public string SteamName;
+        public string Name;
         public string Figher;
         public PlayerController PlayerController;
         public System.Guid ControllerGUID;
 
-        public ConnectedPlayer(int playerID, string steamName)
+        public ConnectedPlayer(int playerID, string name)
         {
             PlayerID = playerID;
-            SteamName = steamName;
+            Name = name;
 
             Figher = "";
             PlayerController = null;
@@ -32,12 +32,12 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public event PlayerEvent OnPlayerAdded;
     public event PlayerEvent OnPlayerRemoved;
 
-    public ConnectedPlayer AddConnectedPlayer(int id, string steamName)
+    public ConnectedPlayer AddConnectedPlayer(int id, string playerName)
     {
         if (GetPlayer(id) != null)
             return GetPlayer(id);
 
-        ConnectedPlayer player = new ConnectedPlayer(id, steamName);
+        ConnectedPlayer player = new ConnectedPlayer(id, playerName);
         Players.Add(player);
 
         OnPlayerAdded?.Invoke(player);
@@ -152,7 +152,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
 
     public string GetPlayerName(int id)
     {
-        return GetPlayer(id).SteamName;
+        return GetPlayer(id).Name;
     }
 
     public void SetCharacterSelected(string characterName)

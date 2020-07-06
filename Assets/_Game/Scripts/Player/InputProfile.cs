@@ -20,6 +20,7 @@ public class InputProfile : PlayerActionSet
 
     public PlayerAction Select;
     public PlayerAction Menu;
+    public PlayerAction Back;
 
     public PlayerAction CommunicationWheelOpen;
     public PlayerAction CommunicationWheelUp;
@@ -41,13 +42,15 @@ public class InputProfile : PlayerActionSet
         Down = CreatePlayerAction("Down");
 
         Jump = CreatePlayerAction("Jump");
-        Select = CreatePlayerAction("Select");
 
         Attack1 = CreatePlayerAction("Attack1");
         Attack2 = CreatePlayerAction("Attack2");
         Attack3 = CreatePlayerAction("Attack3");
 
         Menu = CreatePlayerAction("Menu");
+        Select = CreatePlayerAction("Select");
+        Back = CreatePlayerAction("Back");
+
         CommunicationWheelOpen = CreatePlayerAction("CommunicationWheelOpen");
         CommunicationWheelUp = CreatePlayerAction("CommunicationWheelUp");
         CommunicationWheelDown = CreatePlayerAction("CommunicationWheelDown");
@@ -95,13 +98,14 @@ public class InputProfile : PlayerActionSet
         Down.AddDefaultBinding(Key.S);
 
         Jump.AddDefaultBinding(Key.Space);
-        Select.AddDefaultBinding(Mouse.LeftButton);
 
         Attack1.AddDefaultBinding(Mouse.LeftButton);
         Attack2.AddDefaultBinding(Mouse.MiddleButton);
         Attack3.AddDefaultBinding(Mouse.RightButton);
 
         Menu.AddDefaultBinding(Key.Escape);
+        Select.AddDefaultBinding(Mouse.LeftButton);
+        Back.AddDefaultBinding(Key.Escape);
 
         //for some reason it doesn't work if you add multiple keys in the same binding, weird
         CommunicationWheelOpen.AddDefaultBinding(Key.Key1);
@@ -123,13 +127,15 @@ public class InputProfile : PlayerActionSet
         Down.AddDefaultBinding(InputControlType.LeftStickDown);
 
         Jump.AddDefaultBinding(InputControlType.Action1);
-        Select.AddDefaultBinding(InputControlType.Action1);
 
         Attack1.AddDefaultBinding(InputControlType.Action3);
         Attack2.AddDefaultBinding(InputControlType.Action4);
         Attack3.AddDefaultBinding(InputControlType.Action2);
 
         Menu.AddDefaultBinding(InputControlType.Menu);
+        Select.AddDefaultBinding(InputControlType.Action1);
+        Back.AddDefaultBinding(InputControlType.Action2);
+
         CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadUp, InputControlType.DPadRight, InputControlType.DPadDown, InputControlType.DPadLeft);
         CommunicationWheelUp.AddDefaultBinding(InputControlType.DPadUp);
         CommunicationWheelRight.AddDefaultBinding(InputControlType.DPadRight);

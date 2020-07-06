@@ -44,7 +44,7 @@ public class Cursor : MonoBehaviour
         }
         else
         {
-            transform.position += new Vector3(InputProfile.Move.X * cursorMoveSpeed, InputProfile.Move.Y * cursorMoveSpeed, 0) * Time.fixedDeltaTime;
+            transform.position += new Vector3(InputProfile.Move.X * cursorMoveSpeed, InputProfile.Move.Y * cursorMoveSpeed, 0) * Time.deltaTime;
         }
 
         if (previousCursorPosition != transform.position || InputProfile.Select.WasPressed)

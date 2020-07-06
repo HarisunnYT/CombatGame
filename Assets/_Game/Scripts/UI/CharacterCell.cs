@@ -13,24 +13,29 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public string CharacterName { get { return characterName; } }
 
     [SerializeField]
-    private GameObject selectedIcon;
+    private InputBasedButton inputBasedButton;
 
     public bool Selected { get; private set; } = false;
 
     private bool cursorOverButton = false;
 
     private Button button;
+    private Image[] images;
+
+    private Cursor lastInteractedCursor;
 
     private void Awake()
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(CharacterSelected);
 
-        selectedIcon.SetActive(false);
+        images = GetComponentsInChildren<Image>();
     }
 
     public void CharacterSelected()
     {
+        lastInteractedCursor = CursorManager.Instance.GetLastInteractedCursor();
+
         if (!Selected)
         {
             bool selectedCharacter = FighterManager.Instance.LocalPlayerSelectedCharacter(characterName);
@@ -39,11 +44,32 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
+    private void Update()
+    {
+        if (lastInteractedCursor != null && lastInteractedCursor.InputProfile.Back.WasPressed)
+        {
+            FighterManager.Instance.LocalPlayerUnselectedCharacter(characterName);
+            SetCharacterSelected(false);
+        }
+    }
+
     public void SetCharacterSelected(bool selected)
     {
         if (characterName != "random")
         {
-            selectedIcon.SetActive(selected);
+            foreach(var img in images)
+                img.color = selected ? Color.gray : Color.white;
+
+            if (selected)
+            {
+                inputBasedButton.Configure(lastInteractedCursor.InputProfile);
+            }
+            else
+            {
+                inputBasedButton.Hide();
+                lastInteractedCursor = null;
+            }
+
             Selected = selected;
         }
     }

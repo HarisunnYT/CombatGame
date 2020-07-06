@@ -15,10 +15,25 @@ public class InputBasedButton : MonoBehaviour
     private void Awake()
     {
         PlayerController playerController = GetComponentInParent<PlayerController>();
-        playerController.OnInputProfileSet += () =>
+        if (playerController)
         {
-            keyText.gameObject.SetActive(playerController.InputProfile.GUID == default);
-            buttonImage.gameObject.SetActive(playerController.InputProfile.GUID != default);
-        };
+            playerController.OnInputProfileSet += () =>
+            {
+                Configure(playerController.InputProfile);
+            };
+        }
+    }
+
+    public void Configure(InputProfile inputProfile)
+    {
+        keyText.gameObject.SetActive(inputProfile.GUID == default);
+        buttonImage.gameObject.SetActive(inputProfile.GUID != default);
+
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }
