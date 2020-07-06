@@ -35,7 +35,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
-        ServerManager.Instance.AddConnectedPlayer(playerIndex, "").ControllerGUID = controllerID;
+        ServerManager.Instance.AddConnectedPlayer(playerIndex, "Player " + (playerIndex + 1)).ControllerGUID = controllerID;
 
         OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
         LocalPlayersCount++;
@@ -80,6 +80,22 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
     public void LocalPlayerReadiedUp(System.Guid controllerID)
     {
         LocalPlayerReadiedUp(GetPlayerIndexFromController(controllerID));
+    }
+
+    public void LocalPlayerUnreadiedUp(int playerIndex)
+    {
+        if (playerIndex == -1)
+            return;
+
+        if (localPlayersReady.Contains(playerIndex))
+        {
+            localPlayersReady.Remove(playerIndex);
+        }
+    }
+
+    public void LocalPlayerUnreadiedUp(System.Guid controllerID)
+    {
+        LocalPlayerUnreadiedUp(GetPlayerIndexFromController(controllerID));
     }
 
     public bool HasLocalPlayerReadiedUp(int playerIndex)

@@ -14,6 +14,7 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
 
     public delegate void CharacterEvent(int playerID, string characterName);
     public event CharacterEvent OnCharacterSelected;
+    public event CharacterEvent OnCharacterUnselected;
 
     private bool matchLoaded = false;
 
@@ -63,6 +64,15 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
 
         ServerManager.Instance.GetPlayer(playerID).Figher = characterName;
         OnCharacterSelected?.Invoke(playerID, characterName);
+    }
+
+    public void CharacterUnselected(int playerID, string characterName)
+    {
+        if (ServerManager.Instance.IsOnlineMatch && playerID == NetworkManager.Instance.RoomPlayer.index)
+            NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(false);
+
+        ServerManager.Instance.GetPlayer(playerID).Figher = "";
+        OnCharacterUnselected?.Invoke(playerID, characterName);
     }
 
     /// <summary>

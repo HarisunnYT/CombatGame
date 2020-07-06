@@ -11,10 +11,10 @@ public class CharacterSelectScreen : Panel
     private Timer countdownTimer;
 
     [SerializeField]
-    private Image selectedCharacterImage;
+    private CharacterCell[] characterCells;
 
     [SerializeField]
-    private CharacterCell[] characterCells;
+    private SelectedCharacterCell[] selectedCharacterCells;
 
     private float selectCharacterTimer;
     private bool finished = false;
@@ -22,19 +22,24 @@ public class CharacterSelectScreen : Panel
     private void Awake()
     {
         if (CharacterSelectManager.Instance)
+        {
             CharacterSelectManager.Instance.OnCharacterSelected += OnCharacterSelected;
+            CharacterSelectManager.Instance.OnCharacterUnselected += OnCharacterUnselected;
+        }
     }
 
     private void OnDestroy()
     {
         if (CharacterSelectManager.Instance)
+        {
             CharacterSelectManager.Instance.OnCharacterSelected -= OnCharacterSelected;
+            CharacterSelectManager.Instance.OnCharacterUnselected -= OnCharacterUnselected;
+        }
     }
 
     protected override void OnShow()
     {
         selectCharacterTimer = Time.time + CharacterSelectManager.Instance.CharacterSelectTime;
-        selectedCharacterImage.gameObject.SetActive(false);
         finished = false;
 
         //no countdown for local player
@@ -42,12 +47,17 @@ public class CharacterSelectScreen : Panel
             countdownTimer.Configure(selectCharacterTimer);
         else
             countdownTimer.gameObject.SetActive(false);
+
+        foreach(var selectedCharacter in selectedCharacterCells)
+        {
+            selectedCharacter.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
     {
         //we don't countdown in local
-        if (ServerManager.Instance.IsOnlineMatch)
+        if (ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
         {
             int roundedTime = Mathf.Clamp(Mathf.RoundToInt(selectCharacterTimer - Time.time), 0, int.MaxValue);
             if (roundedTime <= 0 && !finished)
@@ -63,14 +73,41 @@ public class CharacterSelectScreen : Panel
 
     private void OnCharacterSelected(int playerID, string characterName)
     {
-        selectedCharacterImage.sprite = FighterManager.Instance.GetFighter(characterName).FigherIcon;
-        selectedCharacterImage.gameObject.SetActive(true);
+        foreach(var selectedCharacter in selectedCharacterCells)
+        {
+            if (!selectedCharacter.Occuipied)
+            {
+                selectedCharacter.Configure(ServerManager.Instance.GetPlayer(playerID), FighterManager.Instance.GetFighter(characterName));
+                break;
+            }
+        }
 
         foreach (var characterCell in characterCells)
         {
             if (characterCell.CharacterName == characterName)
             {
                 characterCell.SetCharacterSelected(true);
+                break;
+            }
+        }
+    }
+
+    private void OnCharacterUnselected(int playerID, string characterName)
+    {
+        foreach (var selectedCharacter in selectedCharacterCells)
+        {
+            if (selectedCharacter.Occuipied && selectedCharacter.ConnectedPlayer.PlayerID == playerID)
+            {
+                selectedCharacter.Unconfigure();
+                break;
+            }
+        }
+
+        foreach (var characterCell in characterCells)
+        {
+            if (characterCell.CharacterName == characterName)
+            {
+                characterCell.SetCharacterSelected(false);
                 break;
             }
         }

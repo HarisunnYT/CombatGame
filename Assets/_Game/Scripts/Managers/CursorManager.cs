@@ -114,6 +114,17 @@ public class CursorManager : PersistentSingleton<CursorManager>
         }
     }
 
+    public void ShowCursor(int playerIndex)
+    {
+        foreach (var cursor in cursors)
+        {
+            if (cursor.PlayerIndex == playerIndex)
+            {
+                ShowCursor(cursor);
+            }
+        }
+    }
+
     public void ShowCursor(Cursor cursor)
     {
         if (showCursors.ContainsKey(cursor))

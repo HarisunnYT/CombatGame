@@ -67,7 +67,7 @@ public class FighterManager : PersistentSingleton<FighterManager>
                 CursorManager.Instance.HideCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
                 CharacterSelectManager.Instance.CharacterSelected(CursorManager.Instance.GetLastInteractedPlayerIndex(), charName);
 
-                SetLocalPlayerReady();
+                SetLocalPlayerReady(true);
 
                 return true;
             }
@@ -76,9 +76,28 @@ public class FighterManager : PersistentSingleton<FighterManager>
         return false;
     }
 
-    public void SetLocalPlayerReady()
+    public void LocalPlayerUnselectedCharacter(string characterName)
     {
-        HasLocalPlayerReadiedUp = true;
+        if (ServerManager.Instance.IsOnlineMatch)
+        {
+            NetworkManager.Instance.RoomPlayer.UnselectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
+        }
+        else
+        {
+            if (LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
+            {
+                LocalPlayersManager.Instance.LocalPlayerUnreadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
+                CursorManager.Instance.ShowCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
+                CharacterSelectManager.Instance.CharacterUnselected(CursorManager.Instance.GetLastInteractedPlayerIndex(), characterName);
+
+                SetLocalPlayerReady(false);
+            }
+        }
+    }
+
+    public void SetLocalPlayerReady(bool ready)
+    {
+        HasLocalPlayerReadiedUp = ready;
     }
 
     /// <param name="position">1, 2 or 3</param>
