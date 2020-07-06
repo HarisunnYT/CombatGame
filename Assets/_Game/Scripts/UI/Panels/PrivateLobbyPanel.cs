@@ -26,6 +26,9 @@ public class PrivateLobbyPanel : Panel
     private GameObject cancelButton;
 
     [SerializeField]
+    private TMP_Text cancelButtonText;
+
+    [SerializeField]
     private TMP_Text playersFoundText;
 
     [Space()]
@@ -135,6 +138,15 @@ public class PrivateLobbyPanel : Panel
     {
         cancelButton.SetActive(false);
         SteamLobbyManager.Instance.CancelSearch();
+    }
+
+    public void LeaveLobby()
+    {
+        PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, () =>
+        {
+            PanelManager.Instance.ShowPanel<PlayPanel>();
+            SteamLobbyManager.Instance.PrivateLobby.Value.Leave();
+        });
     }
 
     private void OnLobbyEntered(Lobby obj)
