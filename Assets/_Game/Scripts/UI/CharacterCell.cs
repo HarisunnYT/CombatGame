@@ -62,7 +62,8 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
             if (selected)
             {
-                inputBasedButton.Configure(lastInteractedCursor.InputProfile);
+                if (lastInteractedCursor != null)
+                    inputBasedButton.Configure(lastInteractedCursor.InputProfile);
             }
             else
             {
