@@ -114,7 +114,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     protected virtual void Update()
     {
-        Grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), Vector2.down, 0.5f, invertedCharacterMask);
+        Grounded = Physics2D.Raycast(transform.position, Vector2.down, 1.75f, invertedCharacterMask);
     }
 
     protected virtual void OnDeath(int playerID)
@@ -153,8 +153,8 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     private void SetDirectionClient(int direction)
     {
-        spriteRenderer.flipX = direction == 1 ? false : true;
-        scaleFlipper.transform.localScale = new Vector3(direction, 1, 1);
+        spriteRenderer.flipX = direction == -1 ? false : true;
+        scaleFlipper.transform.localScale = new Vector3(-direction, 1, 1);
 
         Direction = direction;
     }

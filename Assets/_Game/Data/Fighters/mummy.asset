@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FighterName: Mummy
   FigherIcon: {fileID: 21300000, guid: be87cc4e743240a4ab25aea8a8c40eb1, type: 3}
+  PlayerControllerPrefab: {fileID: 8938859172034660496, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
+    type: 3}
+  Moves: []

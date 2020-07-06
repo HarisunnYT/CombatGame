@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be5d8bb0c5a766f4d92863206afc384f, type: 3}
+  m_Name: necromancer
+  m_EditorClassIdentifier: 
+  FighterName: Necromancer
+  FigherIcon: {fileID: 21300000, guid: ae3108e62460e124bbe37268c03c1606, type: 3}
+  PlayerControllerPrefab: {fileID: 766466403269027578, guid: bc3893ce675951546af27d2e26620ae8,
+    type: 3}
+  Moves: []

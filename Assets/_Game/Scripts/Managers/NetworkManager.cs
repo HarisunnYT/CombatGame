@@ -59,7 +59,9 @@ public class NetworkManager : NetworkRoomManager
 
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
-        PlayerController player = Instantiate(playerPrefab).GetComponent<PlayerController>();
+        FighterData fighter = FighterManager.Instance.GetFighterForPlayer(roomPlayer.GetComponent<CustomNetworkRoomPlayer>().index);
+        PlayerController player = Instantiate(fighter.PlayerControllerPrefab).GetComponent<PlayerController>();
+
         return player.gameObject;
     }
 

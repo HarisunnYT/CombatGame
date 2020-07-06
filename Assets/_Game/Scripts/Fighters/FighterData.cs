@@ -8,5 +8,7 @@ public class FighterData : ScriptableObject
     public string FighterName;
     public Sprite FigherIcon;
 
+    [Space()]
+    public PlayerController PlayerControllerPrefab;
     public MoveData[] Moves;
 }
