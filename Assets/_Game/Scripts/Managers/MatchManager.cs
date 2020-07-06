@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MatchManager : Singleton<MatchManager>
+public class MatchManager : NetworkBehaviour
 {
     #region EXTENSIONS
     public enum RoundPhase
@@ -32,11 +32,17 @@ public class MatchManager : Singleton<MatchManager>
 
     #region RUNTIME_VARIABLES
 
+    public static MatchManager Instance;
+
     public int WinsRequired { get; private set; } = 5;
 
     //int being the amount of wins the player has
     private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
     public Dictionary<PlayerController, int> MatchResults { get { return wins; } }
+
+    [SyncVar]
+    private float time;
+    public float Time { get { return time; } }
 
     private FightManager currentFight;
     private RoundPhase currentPhase;
@@ -55,6 +61,11 @@ public class MatchManager : Singleton<MatchManager>
     public event PhaseEvent OnPhaseChanged;
 
     #endregion
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -110,7 +121,7 @@ public class MatchManager : Singleton<MatchManager>
             player.PlayerController.ResetCharacter();
         }
 
-        buyPhaseCountdownTimer = Time.time + buyPhaseTimeInSeconds;
+        buyPhaseCountdownTimer = time + buyPhaseTimeInSeconds;
 
         if (ServerManager.Instance.IsOnlineMatch)
             purchasePanel.ShowPanel();
@@ -148,7 +159,7 @@ public class MatchManager : Singleton<MatchManager>
     {
         if (currentPhase == RoundPhase.Buy_Phase)
         {
-            int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - Time.time);
+            int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - time);
             if (roundedTime <= 0)
             {
                 BeginPhase(RoundPhase.Fight_Phase);
@@ -191,6 +202,11 @@ public class MatchManager : Singleton<MatchManager>
         return false;
     }
 
+    private void FixedUpdate()
+    {
+        time += UnityEngine.Time.fixedDeltaTime;
+    }
+
     /// <summary>
     /// this is for exiting match, exiting lobby is on the LobbyManager
     /// </summary>
@@ -198,6 +214,8 @@ public class MatchManager : Singleton<MatchManager>
     {
         if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
+
+        bool wasOnlineMatch = ServerManager.Instance.IsOnlineMatch;
 
         ServerManager.Instance.DestroyInstance();
         CursorManager.Instance.DestroyInstance();
@@ -209,10 +227,10 @@ public class MatchManager : Singleton<MatchManager>
             ErrorManager.Instance.DisconnectedError();
 
         NetworkManager.Instance.StopClient();
-        StartCoroutine(DelayedRemovalOfInstances());
+        StartCoroutine(DelayedRemovalOfInstances(wasOnlineMatch));
     }
 
-    private IEnumerator DelayedRemovalOfInstances()
+    private IEnumerator DelayedRemovalOfInstances(bool wasOnlineMatch)
     {
         yield return new WaitForEndOfFrame();
 
@@ -223,7 +241,8 @@ public class MatchManager : Singleton<MatchManager>
 
         SceneLoader.Instance.LoadScene("MainMenu", () =>
         {
-            PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+            if (wasOnlineMatch)
+                PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
         });
     }
 

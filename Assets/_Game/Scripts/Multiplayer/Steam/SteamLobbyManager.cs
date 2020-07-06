@@ -36,7 +36,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         get
         {
             if (PrivateLobby == null)
-                return false;
+                return true;
             else
             {
                 return PrivateLobby.Value.Owner.Id == SteamClient.SteamId;

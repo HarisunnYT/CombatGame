@@ -57,12 +57,28 @@ public class NetworkManager : NetworkRoomManager
         });
     }
 
+    int indexAssigning = 0;
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
-        FighterData fighter = FighterManager.Instance.GetFighterForPlayer(roomPlayer.GetComponent<CustomNetworkRoomPlayer>().index);
+        int playerID = ServerManager.Instance.IsOnlineMatch ? roomPlayer.GetComponent<CustomNetworkRoomPlayer>().index : indexAssigning++;
+        FighterData fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
         PlayerController player = Instantiate(fighter.PlayerControllerPrefab).GetComponent<PlayerController>();
 
         return player.gameObject;
+    }
+
+    public override GameObject OnRoomServerAddPlayer(NetworkConnection conn)
+    {
+        if (!ServerManager.Instance.IsOnlineMatch)
+        {
+            FighterData fighter = FighterManager.Instance.GetFighterForPlayer(indexAssigning++);
+            PlayerController player = Instantiate(fighter.PlayerControllerPrefab).GetComponent<PlayerController>();
+
+            NetworkServer.AddPlayerForConnection(conn, player.gameObject);
+
+            return player.gameObject;
+        }
+        return base.OnRoomServerAddPlayer(conn);
     }
 
     public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)

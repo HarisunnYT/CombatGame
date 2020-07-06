@@ -2130,7 +2130,6 @@ GameObject:
   m_Component:
   - component: {fileID: 558486351}
   - component: {fileID: 558486352}
-  - component: {fileID: 558486355}
   - component: {fileID: 558486353}
   m_Layer: 0
   m_Name: LocalUICam (2)
@@ -2209,14 +2208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc75fd95b6a218d439faa83562f10bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!81 &558486355
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 558486350}
-  m_Enabled: 1
 --- !u!1001 &729181821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7096,7 +7087,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1799364617}
   - component: {fileID: 1799364618}
-  - component: {fileID: 1799364621}
   - component: {fileID: 1799364619}
   m_Layer: 0
   m_Name: LocalUICam (3)
@@ -7175,14 +7165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc75fd95b6a218d439faa83562f10bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!81 &1799364621
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1799364616}
-  m_Enabled: 1
 --- !u!1 &1813578548
 GameObject:
   m_ObjectHideFlags: 0
@@ -7690,7 +7672,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2006332524}
   - component: {fileID: 2006332525}
-  - component: {fileID: 2006332528}
   - component: {fileID: 2006332526}
   m_Layer: 0
   m_Name: LocalUICam (1)
@@ -7769,14 +7750,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc75fd95b6a218d439faa83562f10bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!81 &2006332528
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006332523}
-  m_Enabled: 1
 --- !u!1 &2036159139
 GameObject:
   m_ObjectHideFlags: 0
@@ -7844,7 +7817,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2084208982}
   - component: {fileID: 2084208983}
-  - component: {fileID: 2084208986}
   - component: {fileID: 2084208984}
   m_Layer: 0
   m_Name: LocalUICam
@@ -7923,14 +7895,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc75fd95b6a218d439faa83562f10bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!81 &2084208986
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2084208981}
-  m_Enabled: 1
 --- !u!1 &2138624659
 GameObject:
   m_ObjectHideFlags: 0

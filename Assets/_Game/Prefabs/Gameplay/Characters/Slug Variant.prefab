@@ -32,27 +32,27 @@ PrefabInstance:
     - target: {fileID: 8938859172034660462, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Name
-      value: Slug
+      value: Slug Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Offset.y
-      value: -0.25875175
+      value: 0.72626007
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Size.y
-      value: 1.2759322
+      value: 1.3278619
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Offset.x
-      value: 0.63195974
+      value: -0.030636227
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Size.x
-      value: 2.3464053
+      value: 2.4781818
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}

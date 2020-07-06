@@ -33,7 +33,8 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        int roundedTime = Mathf.Clamp(Mathf.RoundToInt(targetTime - Time.time), 0, int.MaxValue);
+        float time = MatchManager.Instance ? MatchManager.Instance.Time : Time.time;
+        int roundedTime = Mathf.Clamp(Mathf.RoundToInt(targetTime - time), 0, int.MaxValue);
         if (roundedTime != previousRoundedTime)
         {
             UpdateText(roundedTime.ToString());

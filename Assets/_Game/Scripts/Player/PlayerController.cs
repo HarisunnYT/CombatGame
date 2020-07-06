@@ -124,7 +124,7 @@ public class PlayerController : Character
 
     protected override void Update()
     {
-        if (!isLocalPlayer && ServerManager.Instance.IsOnlineMatch)
+        if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
         if (!InputEnabled)
@@ -173,7 +173,7 @@ public class PlayerController : Character
 
     private void FixedUpdate()
     {
-        if (!isLocalPlayer && ServerManager.Instance.IsOnlineMatch)
+        if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
         if (!InputEnabled)

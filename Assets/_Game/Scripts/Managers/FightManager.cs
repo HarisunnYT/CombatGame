@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class FightManager : Singleton<FightManager>, IFightEvents
 {
-    [SerializeField]
-    private int startFightCountDownTimeInSeconds = 3;
+    private const float startFightCountDownTimeInSeconds = 3.5f;
 
     //int == player id
     public List<int> AlivePlayers { get; private set; } = new List<int>();
@@ -53,7 +52,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
     {
         if (startFightCountdownInProgress)
         {
-            int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - Time.time);
+            int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - MatchManager.Instance.Time);
             if (roundedTime <= 0)
             {
                 CountdownOver();
@@ -64,7 +63,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
     private void BeginFightCountdown()
     {
         startFightCountdownInProgress = true;
-        startFightCountdownTimer = Time.time + startFightCountDownTimeInSeconds;
+        startFightCountdownTimer = MatchManager.Instance.Time + startFightCountDownTimeInSeconds;
 
         hudPanel.BeginFightCountdown(startFightCountdownTimer);
     }

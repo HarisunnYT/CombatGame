@@ -43,7 +43,7 @@ public class PausePanel : Panel
             Time.timeScale = 1;
 
             //TODO ask user if they want to pull the party or leave by themselves
-            if (SteamLobbyManager.Instance.PrivateHost)
+            if (SteamLobbyManager.Instance.PrivateHost && ServerManager.Instance.IsOnlineMatch)
                 MatchManager.Instance.ExitMatchWithParty();
             else
                 MatchManager.Instance.ExitMatch(false);

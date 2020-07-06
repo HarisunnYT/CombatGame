@@ -43,7 +43,7 @@ public class CommunicationController : NetworkBehaviour
 
     private void Update()
     {
-        if (!isLocalPlayer && ServerManager.Instance.IsOnlineMatch)
+        if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
         //we use this to make sure the user doesn't open the comm wheel and send message in the same few frames

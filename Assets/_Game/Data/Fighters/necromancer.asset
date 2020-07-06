@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FighterName: Necromancer
   FigherIcon: {fileID: 21300000, guid: ae3108e62460e124bbe37268c03c1606, type: 3}
-  PlayerControllerPrefab: {fileID: 766466403269027578, guid: bc3893ce675951546af27d2e26620ae8,
+  PlayerControllerPrefab: {fileID: 8551838904469254074, guid: bc3893ce675951546af27d2e26620ae8,
     type: 3}
   Moves: []
