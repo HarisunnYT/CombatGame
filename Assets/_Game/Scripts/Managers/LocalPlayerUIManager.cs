@@ -14,6 +14,14 @@ public class LocalPlayerUIManager : Singleton<LocalPlayerUIManager>
     [SerializeField]
     private GraphicRaycaster[] raycasters;
 
+    protected override void Initialize()
+    {
+        foreach(var panel in GetComponentsInChildren<Panel>(true))
+        {
+            panel.Initialise();
+        }
+    }
+
     public void DisplayLocalScreens(bool showScreens)
     {
         CameraManager.Instance.gameObject.SetActive(!showScreens);
