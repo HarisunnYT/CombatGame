@@ -26,14 +26,11 @@ public class PrivateLobbyPanel : Panel
     private GameObject cancelButton;
 
     [SerializeField]
-    private TMP_Text cancelButtonText;
-
-    [SerializeField]
     private TMP_Text playersFoundText;
 
     [Space()]
     [SerializeField]
-    private ConnectPlayerCell[] connectedPlayerCells;
+    private SelectedCharacterCell[] connectedPlayerCells;
 
     protected override void OnShow()
     {
@@ -86,22 +83,31 @@ public class PrivateLobbyPanel : Panel
         //disable all the cells first, makes it easier
         foreach (var playerCell in connectedPlayerCells)
         {
-            playerCell.gameObject.SetActive(false);
+            playerCell.Unconfigure(false);
         }
 
         //configure client cell
-        connectedPlayerCells[0].Configure(SteamClient.Name);
+        connectedPlayerCells[0].Configure(SteamClient.Name, FighterManager.Instance.GetRandomFighter()); //TODO SET FIGHTER THAT THE PLAYER USES MOST (SET THROUGH DATA)
+        connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
         if (SteamLobbyManager.Instance.PrivateLobby != null)
         {
-            int cellIndex = 1;
             for (int i = 0; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
             {
                 Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
-                if (friend.Id != 0 && friend.Id != SteamClient.SteamId)
+                if (friend.Id != 0 && friend.Id != SteamClient.SteamId && !connectedPlayerCells[i].Occuipied)
                 {
-                    connectedPlayerCells[cellIndex++].Configure(friend.Name);
+                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetRandomFighter()); //TODO SAME AS ABOVE
+                    connectedPlayerCells[i].GetComponent<Animator>().SetBool("Connected", true);
                 }
+            }
+        }
+
+        foreach (var playerCell in connectedPlayerCells)
+        {
+            if (!playerCell.Occuipied)
+            {
+                playerCell.GetComponent<Animator>().SetBool("Connected", false);
             }
         }
 

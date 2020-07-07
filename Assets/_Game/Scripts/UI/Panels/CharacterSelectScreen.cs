@@ -98,7 +98,7 @@ public class CharacterSelectScreen : Panel
         {
             if (selectedCharacter.Occuipied && selectedCharacter.ConnectedPlayer.PlayerID == playerID)
             {
-                selectedCharacter.Unconfigure();
+                selectedCharacter.Unconfigure(true);
                 break;
             }
         }
