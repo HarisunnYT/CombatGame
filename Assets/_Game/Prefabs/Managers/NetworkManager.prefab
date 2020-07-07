@@ -81,7 +81,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 540773166623301826, guid: 611dfe9c893a6614ab479c81401d06c3, type: 3}
   - {fileID: 4634661858584805104, guid: 3d0b2eb3003a603468f49640d3b97739, type: 3}
-  - {fileID: 8551838904469254015, guid: bc3893ce675951546af27d2e26620ae8, type: 3}
+  - {fileID: 834259690430394565, guid: bc3893ce675951546af27d2e26620ae8, type: 3}
   - {fileID: 2941347313848459604, guid: bb559177a9dec3640ad690e58f32b5d0, type: 3}
   HUD: {fileID: 1683995628}
   showRoomGUI: 0

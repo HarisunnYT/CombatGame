@@ -10,7 +10,7 @@ public class SelectedCharacterCell : MonoBehaviour
     private TMP_Text playerNameText;
 
     [SerializeField]
-    private Image characterIcon;
+    private Animator characterIcon;
 
     public ServerManager.ConnectedPlayer ConnectedPlayer { get; private set; }
     public bool Occuipied { get; private set; } = false;
@@ -20,7 +20,7 @@ public class SelectedCharacterCell : MonoBehaviour
         ConnectedPlayer = connectedPlayer;
 
         playerNameText.text = connectedPlayer.Name;
-        characterIcon.sprite = fighter.FigherIcon;
+        characterIcon.runtimeAnimatorController = fighter.UIAnimatorController;
 
         Occuipied = true;
         gameObject.SetActive(true);

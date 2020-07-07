@@ -4357,6 +4357,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2057755687}
     m_Modifications:
+    - target: {fileID: 260493125221611130, guid: b9459b64f392af84cbc40886204caaba,
+        type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 260493125221611131, guid: b9459b64f392af84cbc40886204caaba,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 260493125221611131, guid: b9459b64f392af84cbc40886204caaba,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 260493125221611131, guid: b9459b64f392af84cbc40886204caaba,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 260493125221611131, guid: b9459b64f392af84cbc40886204caaba,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 735915875584653513, guid: b9459b64f392af84cbc40886204caaba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4500,13 +4525,19 @@ PrefabInstance:
     - target: {fileID: 2969732813213188969, guid: b9459b64f392af84cbc40886204caaba,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -13.8
+      value: -13.799988
       objectReference: {fileID: 0}
     - target: {fileID: 2969732813213188969, guid: b9459b64f392af84cbc40886204caaba,
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 86.199585
       objectReference: {fileID: 0}
+    - target: {fileID: 3899514843794777387, guid: b9459b64f392af84cbc40886204caaba,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: f608e11676497e146a17a21fdf5d21a8,
+        type: 2}
     - target: {fileID: 4080727942021592445, guid: b9459b64f392af84cbc40886204caaba,
         type: 3}
       propertyPath: m_Color.r

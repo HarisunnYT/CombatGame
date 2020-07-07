@@ -16,6 +16,8 @@ MonoBehaviour:
   FigherIcon: {fileID: 21300000, guid: cdd6b44454c855746ba07c9712fdf41b, type: 3}
   PlayerControllerPrefab: {fileID: 8938859172034660496, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
     type: 3}
+  UIAnimatorController: {fileID: 9100000, guid: 65f050eeec2a2704c8b1dd8401311156,
+    type: 2}
   Moves:
   - {fileID: 11400000, guid: cdfe0920c2a84d9469cb5d30589728d7, type: 2}
   - {fileID: 11400000, guid: 1e381f7b6d890484a93a893153b84999, type: 2}

@@ -1,17 +1,12 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &8551838904469253738
+--- !u!1001 &8619564000437975211
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6569219094629305948, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6569219094629305948, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Offset.x
@@ -37,22 +32,22 @@ PrefabInstance:
     - target: {fileID: 8938859172034660462, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Name
-      value: Necromancer Variant
+      value: Necromancer
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Offset.x
-      value: -0.68
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Offset.y
-      value: -0.52
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660499, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.033
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660499, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
