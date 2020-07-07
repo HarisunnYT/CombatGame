@@ -49,7 +49,7 @@ public class LevelObject : NetworkBehaviour
         placeTimer = Time.time + placeDelay;
         MatchManager.Instance.OnPhaseChanged += OnPhaseChanged;
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
 
         collider.isTrigger = hasAuthority;

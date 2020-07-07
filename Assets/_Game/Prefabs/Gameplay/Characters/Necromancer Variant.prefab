@@ -32,7 +32,7 @@ PrefabInstance:
     - target: {fileID: 8938859172034660462, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Name
-      value: Necromancer
+      value: Necromancer Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660498, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
@@ -57,7 +57,7 @@ PrefabInstance:
     - target: {fileID: 8938859172034660499, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660499, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
