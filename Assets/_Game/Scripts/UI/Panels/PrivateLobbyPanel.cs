@@ -87,15 +87,15 @@ public class PrivateLobbyPanel : Panel
         }
 
         //configure client cell
-        connectedPlayerCells[0].Configure(SteamClient.Name, FighterManager.Instance.GetRandomFighter()); //TODO SET FIGHTER THAT THE PLAYER USES MOST (SET THROUGH DATA)
+        connectedPlayerCells[0].Configure(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name, FighterManager.Instance.GetRandomFighter()); //TODO SET FIGHTER THAT THE PLAYER USES MOST (SET THROUGH DATA)
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
         if (SteamLobbyManager.Instance.PrivateLobby != null)
         {
-            for (int i = 0; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
+            for (int i = 1; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
             {
                 Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
-                if (friend.Id != 0 && friend.Id != SteamClient.SteamId && !connectedPlayerCells[i].Occuipied)
+                if (friend.Id != 0 && friend.Id.Value != SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id.Value)
                 {
                     connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetRandomFighter()); //TODO SAME AS ABOVE
                     connectedPlayerCells[i].GetComponent<Animator>().SetBool("Connected", true);

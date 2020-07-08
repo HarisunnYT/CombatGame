@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41c09e52b66a32e4db64a7d73dece60f, type: 3}
-  m_Name: msg_thumbs_down
+  m_Name: msg_laughing
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: 176520d5a801d8a4caf9d6aaf61cf450, type: 3}
+  Icon: {fileID: 21300000, guid: 50de09b1782283a48ac0cce6fe4d0cb8, type: 3}

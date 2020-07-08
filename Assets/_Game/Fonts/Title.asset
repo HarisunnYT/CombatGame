@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: 04B_30__ SDF
+  m_Name: Title
   m_EditorClassIdentifier: 
-  hashCode: 1448835371
+  hashCode: 98732960
   material: {fileID: 2456506666464585195}
   materialHashCode: -616267782
   m_Version: 1.1.0
@@ -546,7 +546,7 @@ Material:
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FaceColor: {r: 0.9882353, g: 0.96862745, b: 0.64705884, a: 1}
     - _GlowColor: {r: 1, g: 0.8235295, b: 0.427451, a: 1}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 1, g: 0.8235295, b: 0.427451, a: 1}

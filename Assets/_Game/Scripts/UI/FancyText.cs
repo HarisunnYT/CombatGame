@@ -7,6 +7,18 @@ using CharTween;
 
 public class FancyText : MonoBehaviour
 {
+    [System.Serializable]
+    enum TextType
+    {
+        BounceIn
+    }
+
+    [SerializeField]
+    private TextType textType;
+
+    [SerializeField]
+    private bool loop = false;
+
     private TMP_Text text;
 
     private Sequence textSequence;
@@ -18,7 +30,8 @@ public class FancyText : MonoBehaviour
 
     private void OnEnable()
     {
-        Tween3();
+        if (textType == TextType.BounceIn)
+            Tween3();
     }
 
     private void OnDisable()
@@ -36,8 +49,6 @@ public class FancyText : MonoBehaviour
 
         textSequence = DOTween.Sequence();
 
-        var sequence = DOTween.Sequence();
-
         for (var i = start; i <= end; ++i)
         {
             var timeOffset = Mathf.Lerp(0, 1, (i - start) / (float)(end - start + 1));
@@ -46,7 +57,10 @@ public class FancyText : MonoBehaviour
                 .Join(tweener.DOFade(i, 0, 0.5f).From())
                 .Join(tweener.DOScale(i, 0, 0.5f).From().SetEase(Ease.OutBack, 5))
                 .Append(tweener.DOLocalMoveY(i, 0, 0.5f).SetEase(Ease.OutBounce));
-            sequence.Insert(timeOffset, charSequence);
+            textSequence.Insert(timeOffset, charSequence);
         }
+
+        if (loop)
+            textSequence.SetLoops(-1, LoopType.Yoyo);
     }
 }

@@ -289,8 +289,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5099945, y: -0.7200012}
-  m_SizeDelta: {x: -14.227997, y: -7.119774}
+  m_AnchoredPosition: {x: 1.7, y: -0.7200012}
+  m_SizeDelta: {x: 436.11627, y: -7.119774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8495589055986394876
 CanvasRenderer:
@@ -320,8 +320,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: youtube/Harisunn
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f8dc12a89edcbfa4e85b9bdf2a4d1493, type: 2}
-  m_sharedMaterial: {fileID: 3051973656356007821, guid: f8dc12a89edcbfa4e85b9bdf2a4d1493,
+  m_fontAsset: {fileID: 11400000, guid: 3642379f26baad249bbcaf0f70a636a0, type: 2}
+  m_sharedMaterial: {fileID: -3598049315286096327, guid: 3642379f26baad249bbcaf0f70a636a0,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -347,7 +347,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 70.25
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
