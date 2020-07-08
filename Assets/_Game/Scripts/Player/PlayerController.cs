@@ -308,10 +308,7 @@ public class PlayerController : Character
 
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            if (isServer)
-                RpcOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
-            else
-                CmdOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
+            CmdOnDeath(killedFromPlayerID, MatchManager.Instance.GetPlayerID(this));
         }
         else
         {
