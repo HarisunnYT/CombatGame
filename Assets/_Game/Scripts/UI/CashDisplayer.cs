@@ -6,25 +6,33 @@ using UnityEngine;
 public class CashDisplayer : MonoBehaviour
 {
     private TMP_Text cashText;
+    private PlayerRoundInformation playerRoundInformation;
 
     private void Awake()
     {
-        cashText = GetComponent<TMP_Text>();
+        if (ServerManager.Instance.IsOnlineMatch)
+            playerRoundInformation = ServerManager.Instance.GetPlayerLocal().PlayerController.PlayerRoundInfo;
+        else
+        {
+            LevelEditorCamera cam = GetComponentInParent<LevelEditorCamera>();
+            if (cam)
+            playerRoundInformation = ServerManager.Instance.GetPlayer(cam.LocalPlayerIndex).PlayerController.PlayerRoundInfo;
+        }
 
-        PlayerRoundInformation.Instance.OnCashUpdated += OnCashUpdated;
+        cashText = GetComponent<TMP_Text>();
+        playerRoundInformation.OnCashUpdated += OnCashUpdated;
     }
 
     private void OnEnable()
     {
-        OnCashUpdated(PlayerRoundInformation.Instance.Cash);
+        if (playerRoundInformation)
+            OnCashUpdated(playerRoundInformation.Cash);
     }
 
     private void OnDestroy()
     {
-        if (PlayerRoundInformation.Instance)
-        {
-            PlayerRoundInformation.Instance.OnCashUpdated -= OnCashUpdated;
-        }
+        if (playerRoundInformation)
+            playerRoundInformation.OnCashUpdated -= OnCashUpdated;
     }
 
     private void OnCashUpdated(int newAmount)

@@ -39,6 +39,7 @@ public class PlayerController : Character
     public CharacterData CurrentMovementData { get; private set; }
     public MovementType CurrentMovementType { get; private set; } = MovementType.Normal;
     public InputProfile InputProfile { get; private set; }
+    public PlayerRoundInformation PlayerRoundInfo { get; private set; }
 
     private BaseMovement baseMovement;
     private Animator animator;
@@ -90,6 +91,7 @@ public class PlayerController : Character
         animator = GetComponent<Animator>();
         communicationController = GetComponent<CommunicationController>();
         collider = GetComponent<Collider2D>();
+        PlayerRoundInfo = GetComponent<PlayerRoundInformation>();
 
         originalScale = transform.localScale;
 

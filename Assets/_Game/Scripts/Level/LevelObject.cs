@@ -18,6 +18,8 @@ public class LevelObject : NetworkBehaviour
     private LevelEditorPanel editorPanel;
     private Cursor cursor;
 
+    private PlayerController playerController;
+
     private SpriteRenderer spriteRenderer;
     private Collider2D collider;
 
@@ -52,6 +54,7 @@ public class LevelObject : NetworkBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
 
+        playerController = ServerManager.Instance.GetPlayer(cursor.ControllerID).PlayerController;
         collider.isTrigger = hasAuthority;
     }
 
@@ -75,7 +78,7 @@ public class LevelObject : NetworkBehaviour
 
             if (cursor.InputProfile.Select && Time.time > placeTimer && insideObjectsCount <= 0)
             {
-                if (!placed && PlayerRoundInformation.Instance.Purchase(levelObject.Price))
+                if (!placed && playerController.PlayerRoundInfo.Purchase(levelObject.Price))
                 {
                     Purchased();
                 }

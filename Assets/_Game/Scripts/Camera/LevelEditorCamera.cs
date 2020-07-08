@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class LevelEditorCamera : MonoBehaviour
 {
+    [SerializeField]
+    private int localPlayerIndex = 0;
+    public int LocalPlayerIndex { get { return localPlayerIndex; } }
+
     public void SetCameraToMainPosition()
     {
         transform.position = CameraManager.Instance.transform.position;

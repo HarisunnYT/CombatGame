@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightEvents
+public class PlayerRoundInformation : MonoBehaviour, IFightEvents
 {
     public int Cash { get; private set; }
     public int Wins { get; private set; }
@@ -12,12 +12,12 @@ public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightE
     public delegate void CashEvent(int newAmount);
     public event CashEvent OnCashUpdated;
 
-    protected override void Initialize()
+    private void Awake()
     {
         AddListener();
     }
 
-    protected override void Deinitialize()
+    private void OnDestroy()
     {
         RemoveListener();
     }
@@ -27,7 +27,6 @@ public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightE
         Cash += amount;
         OnCashUpdated?.Invoke(Cash);
     }
-
 
     public void RemoveCash(int amount)
     {
@@ -83,7 +82,7 @@ public class PlayerRoundInformation : Singleton<PlayerRoundInformation>, IFightE
 
     public void OnPlayerDied(PlayerController killer, PlayerController victim)
     {
-        if (killer.isLocalPlayer && killer != victim)
+        if (killer.PlayerRoundInfo == this)
         {
             AddCash((int)GameManager.Instance.GameData.GetValue(DataKeys.VariableKeys.CashPerKill));
         }

@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 8938859172034660496}
   - component: {fileID: 1835729230993174615}
   - component: {fileID: 1268306791404120107}
+  - component: {fileID: 7320131908986894954}
   - component: {fileID: 8938859172034660460}
   - component: {fileID: 8938859172034660461}
   - component: {fileID: 8938859172034660498}
@@ -242,6 +243,18 @@ MonoBehaviour:
   speechBubblePrefab: {fileID: 8535068654217636038, guid: 9d2cc48b3e886554eb8c5e9ee70c8229,
     type: 3}
   speechBubbleOffset: {x: -0.2, y: 2, z: 0}
+--- !u!114 &7320131908986894954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8938859172034660462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa01a269b406e84fa6978e730cf4a19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &8938859172034660460
 SpriteRenderer:
   m_ObjectHideFlags: 0

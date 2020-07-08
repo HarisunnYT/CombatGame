@@ -31,7 +31,8 @@ public class DebugPanel : Panel
 
     public void AddCash(int amount)
     {
-        PlayerRoundInformation.Instance.AddCash(amount);
+        foreach(var player in ServerManager.Instance.Players)
+            player.PlayerController.PlayerRoundInfo.AddCash(amount);
     }
 
     public void InstantHost()

@@ -15,9 +15,20 @@ public class PurchasableMoveCell : MoveCell
 
     public bool Equiped { get; private set; }
 
+    private PlayerRoundInformation playerRoundInfo;
+
     public override void Configure(MoveData moveData)
     {
         base.Configure(moveData);
+
+        if (ServerManager.Instance.IsOnlineMatch)
+            playerRoundInfo = ServerManager.Instance.GetPlayerLocal().PlayerController.PlayerRoundInfo;
+        else
+        {
+            LevelEditorCamera cam = GetComponentInParent<LevelEditorCamera>();
+            if (cam)
+                playerRoundInfo = ServerManager.Instance.GetPlayer(cam.LocalPlayerIndex).PlayerController.PlayerRoundInfo;
+        }
 
         priceText.text = Util.FormatToCurrency(moveData.Price);
         FighterManager.Instance.OnEquipedMove += OnEquipedMove;
@@ -32,7 +43,7 @@ public class PurchasableMoveCell : MoveCell
 
     public void OnPressed()
     {
-        if (PlayerRoundInformation.Instance.CanPurchase(MoveData.Price))
+        if (playerRoundInfo.CanPurchase(MoveData.Price))
         {
             purchasePanel.PurchasingMove(this);
         }

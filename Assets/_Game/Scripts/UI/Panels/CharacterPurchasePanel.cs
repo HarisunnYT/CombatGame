@@ -6,10 +6,6 @@ using System.Linq;
 
 public class CharacterPurchasePanel : Panel
 {
-    //this is used for local player only
-    [SerializeField]
-    private int playerIndex = -1;
-
     [SerializeField]
     private Timer timer;
 
@@ -25,8 +21,17 @@ public class CharacterPurchasePanel : Panel
 
     public PurchasableMoveCell CurrentPurchasingMove { get; private set; }
 
+    private int playerIndex = -1;
+
     public override void Initialise()
     {
+        if (!ServerManager.Instance.IsOnlineMatch)
+        {
+            LevelEditorCamera cam = GetComponentInParent<LevelEditorCamera>();
+            if (cam)
+                playerIndex = cam.LocalPlayerIndex;
+        }
+
         MatchManager.Instance.OnPhaseChanged += OnPhaseChanged;
     }
 
@@ -38,11 +43,11 @@ public class CharacterPurchasePanel : Panel
 
     private void Awake()
     {
-        MoveData[] moves;
+        MoveData[] moves = new MoveData[0];
 
         if (ServerManager.Instance.IsOnlineMatch)
             moves = MatchManager.Instance.GetClientPlayer().Fighter.Moves;
-        else
+        else if (playerIndex != -1)
             moves = MatchManager.Instance.GetPlayer(playerIndex).Fighter.Moves;
 
         foreach (var move in moves.OrderBy(x => x.Price)) //sort by lowest price first
@@ -84,7 +89,7 @@ public class CharacterPurchasePanel : Panel
 
     public void PurchasedMove(MoveData move, int position)
     {
-        PlayerRoundInformation.Instance.Purchase(move.Price);
+        ServerManager.Instance.GetPlayer(playerIndex).PlayerController.PlayerRoundInfo.Purchase(move.Price);
 
         CurrentPurchasingMove = null;
         SetDarkness(false);

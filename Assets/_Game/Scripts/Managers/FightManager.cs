@@ -131,9 +131,9 @@ public class FightManager : Singleton<FightManager>, IFightEvents
     private void DetermineCashForPlayer(PlayerController player, int placement)
     {
         //each client will do this, we only need to determine that cash for this client
-        if (player.isLocalPlayer)
+        if (player.isLocalPlayer || !ServerManager.Instance.IsOnlineMatch)
         {
-            PlayerRoundInformation.Instance.AddPlacementCash(placement);
+            player.PlayerRoundInfo.AddPlacementCash(placement);
         }
     }
 
