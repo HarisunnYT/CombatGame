@@ -1659,6 +1659,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2057755687}
     m_Modifications:
+    - target: {fileID: 260493125221611130, guid: b9459b64f392af84cbc40886204caaba,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 25beca84b9d29a2429f4f3a1920705f2,
+        type: 3}
     - target: {fileID: 735915875584653513, guid: b9459b64f392af84cbc40886204caaba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2558,7 +2564,7 @@ PrefabInstance:
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterName
-      value: medusa
+      value: reaper
       objectReference: {fileID: 0}
     - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -2709,7 +2715,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: cb0260f320cabbb458a09bb0f763fc50,
+      objectReference: {fileID: 21300000, guid: 25beca84b9d29a2429f4f3a1920705f2,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f9a842881374ad4289a5ee7adacf676, type: 3}
@@ -3870,11 +3876,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2057755687}
     m_Modifications:
-    - target: {fileID: 260493125221611130, guid: b9459b64f392af84cbc40886204caaba,
-        type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 260493125221611131, guid: b9459b64f392af84cbc40886204caaba,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4054,7 +4055,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: f608e11676497e146a17a21fdf5d21a8,
+      objectReference: {fileID: 22100000, guid: 2c4ea2fab90a9fd46a47feabbd5b2f24,
         type: 2}
     - target: {fileID: 4080727942021592445, guid: b9459b64f392af84cbc40886204caaba,
         type: 3}

@@ -46,7 +46,7 @@ public class CharacterSelectScreen : Panel
         if (ServerManager.Instance.IsOnlineMatch)
             countdownTimer.Configure(selectCharacterTimer);
         else
-            countdownTimer.gameObject.SetActive(false);
+            countdownTimer.transform.parent.gameObject.SetActive(false);
 
         foreach(var selectedCharacter in selectedCharacterCells)
         {
