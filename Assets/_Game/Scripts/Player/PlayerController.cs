@@ -44,6 +44,8 @@ public class PlayerController : Character
     private Animator animator;
     private CommunicationController communicationController;
 
+    private Collider2D collider;
+
     #endregion
 
     #region RUNTIME_VARIABLES
@@ -87,6 +89,7 @@ public class PlayerController : Character
 
         animator = GetComponent<Animator>();
         communicationController = GetComponent<CommunicationController>();
+        collider = GetComponent<Collider2D>();
 
         originalScale = transform.localScale;
 
@@ -208,6 +211,14 @@ public class PlayerController : Character
         OnInputProfileSet?.Invoke();
     }
 
+    public override void ResetCharacter()
+    {
+        base.ResetCharacter();
+
+        animator.SetBool("Dead", false);
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
     #region MOVEMENT
 
     public void SetMovementType(MovementType movementType, bool displayPuffParticle = true)
@@ -310,8 +321,9 @@ public class PlayerController : Character
     {
         CombatInterfaces.OnPlayerDied(MatchManager.Instance.GetPlayer(killerID), MatchManager.Instance.GetPlayer(victimID));
 
-        //TODO death anim and shiz
-        gameObject.SetActive(false);
+        animator.SetBool("Dead", true);
+
+        gameObject.layer = LayerMask.NameToLayer("NonPlayerInteractable");
     }
 
     [Command]

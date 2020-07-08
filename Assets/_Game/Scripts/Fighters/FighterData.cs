@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Fisty Cuffs/Fighter Data")]

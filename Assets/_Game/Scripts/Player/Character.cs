@@ -130,7 +130,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         }
     }
 
-    public void ResetCharacter()
+    public virtual void ResetCharacter()
     {
         Health = startingHealth;
         OnHealthChanged?.Invoke(Health);
