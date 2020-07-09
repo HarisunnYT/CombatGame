@@ -40,6 +40,9 @@ public class FighterManager : PersistentSingleton<FighterManager>
 
     public FighterData GetFighter(string fighterName)
     {
+        if (fighterName == "")
+            return fighters[0];
+
         foreach (var fighter in fighters)
         {
             if (fighter.FighterName == fighterName)

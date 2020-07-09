@@ -175,9 +175,9 @@ public class ServerManager : PersistentSingleton<ServerManager>
         while (true)
         {
             FighterData fighter = FighterManager.Instance.GetRandomFighter();
-            if (!IsCharacterSelected(fighter.name))
+            if (!IsCharacterSelected(fighter.FighterName))
             {
-                return fighter.name;
+                return fighter.FighterName;
             }
         }
     }
