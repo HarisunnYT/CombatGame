@@ -114,5 +114,8 @@ public class FighterManager : PersistentSingleton<FighterManager>
     {
         LastPlayedFighterName = fighterName;
         PlayerPrefs.SetString(LastPlayerFighterKey, fighterName);
+
+        if (SteamLobbyManager.Instance.PrivateLobby.HasValue)
+            SteamLobbyManager.Instance.PrivateLobby.Value.SetMemberData(LastPlayerFighterKey, LastPlayedFighterName);
     }
 }

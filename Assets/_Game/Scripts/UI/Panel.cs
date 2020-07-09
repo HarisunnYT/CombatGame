@@ -33,6 +33,8 @@ public class Panel : MonoBehaviour, IAnimationHandler
         }
     }
 
+    private PanelManager panelManager;
+
     public virtual void Initialise() { }
 
     public void Close()
@@ -71,11 +73,15 @@ public class Panel : MonoBehaviour, IAnimationHandler
 
         gameObject.SetActive(true);
 
-        PanelManager.Instance.PanelShown(this);
+        if (panelManager == null)
+            panelManager = GetComponentInParent<PanelManager>();
 
-        if (panelType != PanelType.Modal)
+        if (panelManager != null)
         {
-            PanelManager.Instance.CloseAllPanels(this);
+            panelManager.PanelShown(this);
+
+            if (panelType != PanelType.Modal)
+                panelManager.CloseAllPanels(this);
         }
 
         if (pauseTime)

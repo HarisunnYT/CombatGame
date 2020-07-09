@@ -215,8 +215,6 @@ public class MatchManager : NetworkBehaviour
         if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
 
-        bool wasOnlineMatch = ServerManager.Instance.IsOnlineMatch;
-
         ServerManager.Instance.DestroyInstance();
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();
@@ -227,10 +225,10 @@ public class MatchManager : NetworkBehaviour
             ErrorManager.Instance.DisconnectedError();
 
         NetworkManager.Instance.StopClient();
-        StartCoroutine(DelayedRemovalOfInstances(wasOnlineMatch));
+        StartCoroutine(DelayedRemovalOfInstances());
     }
 
-    private IEnumerator DelayedRemovalOfInstances(bool wasOnlineMatch)
+    private IEnumerator DelayedRemovalOfInstances()
     {
         yield return new WaitForEndOfFrame();
 
@@ -241,7 +239,7 @@ public class MatchManager : NetworkBehaviour
 
         SceneLoader.Instance.LoadScene("MainMenu", () =>
         {
-            if (wasOnlineMatch)
+            if (SteamLobbyManager.Instance.PrivateLobby.HasValue)
                 PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
         });
     }

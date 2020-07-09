@@ -89,6 +89,8 @@ public class PrivateLobbyPanel : Panel
         }
 
         string fighterName = privateLobby.Value.GetMemberData(privateLobby.Value.Owner, FighterManager.LastPlayerFighterKey);
+        if (fighterName == null)
+            fighterName = "";
 
         //configure client cell
         connectedPlayerCells[0].Configure(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name, FighterManager.Instance.GetFighter(fighterName)); 
@@ -154,7 +156,7 @@ public class PrivateLobbyPanel : Panel
         PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, () =>
         {
             PanelManager.Instance.ShowPanel<PlayPanel>();
-            SteamLobbyManager.Instance.PrivateLobby.Value.Leave();
+            SteamLobbyManager.Instance.LeavePrivateLobby();
         });
     }
 

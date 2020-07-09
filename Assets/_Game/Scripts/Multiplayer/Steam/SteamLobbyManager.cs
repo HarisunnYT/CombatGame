@@ -264,9 +264,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         else if (currentSceneName == "Lobby")
             CharacterSelectManager.Instance.ExitLobby(false);
 
-        if (currentSceneName != "MainMenu")
-            SceneLoader.Instance.LoadScene("MainMenu");
-
         JoinedPrivateLobby(lobby);
     }
 
