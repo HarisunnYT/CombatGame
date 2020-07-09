@@ -221,14 +221,15 @@ public class MatchManager : NetworkBehaviour
 
         SteamLobbyManager.Instance.LeavePublicLobby();
 
-        if (forced)
+        //if the player was forced from the match and isn't apart of a private lobby when not host 
+        if (forced && (!SteamLobbyManager.Instance.PrivateLobby.HasValue || SteamLobbyManager.Instance.PrivateHost))
             ErrorManager.Instance.DisconnectedError();
 
         NetworkManager.Instance.StopClient();
-        StartCoroutine(DelayedRemovalOfInstances());
+        StartCoroutine(DelayedRemovalOfInstances(forced));
     }
 
-    private IEnumerator DelayedRemovalOfInstances()
+    private IEnumerator DelayedRemovalOfInstances(bool forced)
     {
         yield return new WaitForEndOfFrame();
 
