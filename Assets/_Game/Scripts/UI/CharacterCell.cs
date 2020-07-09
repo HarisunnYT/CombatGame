@@ -55,6 +55,9 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void SetCharacterSelected(bool selected)
     {
+        if (lastInteractedCursor == null)
+            lastInteractedCursor = CursorManager.Instance.GetLastInteractedCursor();
+
         if (characterName != "random")
         {
             foreach(var img in images)

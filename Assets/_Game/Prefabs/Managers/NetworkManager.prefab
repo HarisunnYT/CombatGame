@@ -84,6 +84,9 @@ MonoBehaviour:
   - {fileID: 834259690430394565, guid: bc3893ce675951546af27d2e26620ae8, type: 3}
   - {fileID: 2941347313848459604, guid: bb559177a9dec3640ad690e58f32b5d0, type: 3}
   - {fileID: 1392945802628915116, guid: 1d3844564cdf67e4b8fb21e8e73465f1, type: 3}
+  - {fileID: 2642494164833384864, guid: 2f92ca18d279db44a8723c888adc75c8, type: 3}
+  - {fileID: 137491593661284252, guid: 76d816446ce8b0a49b540474939373e7, type: 3}
+  - {fileID: 952261018385834844, guid: ee88b1876601d884a854b6df77d119a4, type: 3}
   HUD: {fileID: 1683995628}
   showRoomGUI: 0
   minPlayers: 1

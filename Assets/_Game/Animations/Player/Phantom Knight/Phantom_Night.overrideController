@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Phantom_Night
+  m_Controller: {fileID: 9100000, guid: c723c6650ec4ba24fae228376c7b56eb, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 2a6c7ac1acef4ff49838b7291f6b8dfe, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 22d7af542de95f243a2e28d12edba919, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ff3b338671b27464e91661e744b7786a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d468512069083714884253dba4557dd2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9d7c2540702001244a88717b4a98797e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4543be47599a1034d94b0be51d3730e8, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 7151e02e0f265014ea1cb4db366c2c53, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 030baa6f0faaeda4a888be58c9f93712, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 977b0251dc20c21448f91ba247a548fc, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2f4d02855c37f584092a49c9f2ae1fbd, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 6086638bd1871844a964956821702ce6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4821a4ae61e037947bb18ffb74a07620, type: 2}

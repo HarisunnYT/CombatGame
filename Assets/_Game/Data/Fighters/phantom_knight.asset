@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be5d8bb0c5a766f4d92863206afc384f, type: 3}
-  m_Name: mummy
+  m_Name: phantom_knight
   m_EditorClassIdentifier: 
-  FighterName: Mummy
-  FigherIcon: {fileID: 21300000, guid: be87cc4e743240a4ab25aea8a8c40eb1, type: 3}
-  PlayerControllerPrefab: {fileID: 8938859172034660496, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
+  FighterName: Phantom Knight
+  FigherIcon: {fileID: 21300000, guid: 633729684aea78e4a81a7c76a5955295, type: 3}
+  PlayerControllerPrefab: {fileID: 137491593661284194, guid: 76d816446ce8b0a49b540474939373e7,
     type: 3}
+  UIAnimatorController: {fileID: 22100000, guid: c0a3474ad44427648a5c519f1b517da9,
+    type: 2}
   Moves: []
