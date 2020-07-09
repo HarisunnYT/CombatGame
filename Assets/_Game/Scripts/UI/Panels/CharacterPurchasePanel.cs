@@ -94,7 +94,7 @@ public class CharacterPurchasePanel : Panel
         CurrentPurchasingMove = null;
         SetDarkness(false);
 
-        FighterManager.Instance.EquipedMove(move, position);
+        ServerManager.Instance.GetPlayer(playerIndex).PlayerController.PlayerRoundInfo.EquipedMove(move, position);
     }
 
     public void OpenLevelEditor()

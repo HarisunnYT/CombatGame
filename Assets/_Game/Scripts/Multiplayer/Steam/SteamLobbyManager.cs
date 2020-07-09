@@ -226,6 +226,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PrivateLobby.Value.SetFriendsOnly();
         PrivateLobby.Value.SetJoinable(true);
 
+        PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
+
         PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
 
         Debug.Log("Joined private lobby");

@@ -136,7 +136,7 @@ PrefabInstance:
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterName
-      value: necromancer
+      value: Necromancer
       objectReference: {fileID: 0}
     - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -271,7 +271,7 @@ PrefabInstance:
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 347.04865
+      value: 747.04865
       objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -398,7 +398,7 @@ PrefabInstance:
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterName
-      value: fire_golem
+      value: Fire Golem
       objectReference: {fileID: 0}
     - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -498,7 +498,7 @@ PrefabInstance:
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 147.04865
+      value: 547.04865
       objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -672,6 +672,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CharacterCell (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -926,7 +931,7 @@ PrefabInstance:
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterName
-      value: slug
+      value: Slug
       objectReference: {fileID: 0}
     - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -1026,7 +1031,7 @@ PrefabInstance:
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 547.04865
+      value: 947.04865
       objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -2160,6 +2165,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterCell (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2564,7 +2574,7 @@ PrefabInstance:
     - target: {fileID: 88187415406900167, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: characterName
-      value: reaper
+      value: Reaper
       objectReference: {fileID: 0}
     - target: {fileID: 908952270699984795, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -2605,6 +2615,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CharacterCell (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -3002,7 +3017,7 @@ PrefabInstance:
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1547.0486
+      value: 1147.0486
       objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}
@@ -3737,6 +3752,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CharacterCell (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897151791450666865, guid: 8f9a842881374ad4289a5ee7adacf676,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7046887249298221638, guid: 8f9a842881374ad4289a5ee7adacf676,
         type: 3}

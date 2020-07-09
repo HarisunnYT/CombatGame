@@ -31,14 +31,14 @@ public class PurchasableMoveCell : MoveCell
         }
 
         priceText.text = Util.FormatToCurrency(moveData.Price);
-        FighterManager.Instance.OnEquipedMove += OnEquipedMove;
+        playerRoundInfo.OnEquipedMove += OnEquipedMove;
     }
 
     private void OnEquipedMove(MoveData move)
     {
         //dont pass through move, we need to check if the move this cell is associated with is equiped, 
         //thus why we pass through MoveData
-        equipedObject.SetActive(FighterManager.Instance.IsMoveEquiped(MoveData));
+        equipedObject.SetActive(playerRoundInfo.IsMoveEquiped(MoveData));
     }
 
     public void OnPressed()

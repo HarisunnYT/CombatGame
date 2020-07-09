@@ -80,6 +80,8 @@ public class PrivateLobbyPanel : Panel
 
     private void UpdatePlayerCells()
     {
+        Lobby? privateLobby = SteamLobbyManager.Instance.PrivateLobby;
+
         //disable all the cells first, makes it easier
         foreach (var playerCell in connectedPlayerCells)
         {
@@ -90,14 +92,15 @@ public class PrivateLobbyPanel : Panel
         connectedPlayerCells[0].Configure(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name, FighterManager.Instance.GetRandomFighter()); //TODO SET FIGHTER THAT THE PLAYER USES MOST (SET THROUGH DATA)
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
-        if (SteamLobbyManager.Instance.PrivateLobby != null)
+        if (privateLobby != null)
         {
-            for (int i = 1; i < SteamLobbyManager.Instance.PrivateLobby.Value.Members.Count(); i++)
+            for (int i = 1; i < privateLobby.Value.Members.Count(); i++)
             {
-                Friend friend = SteamLobbyManager.Instance.PrivateLobby.Value.Members.ElementAt(i);
-                if (friend.Id != 0 && friend.Id.Value != SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id.Value)
+                Friend friend = privateLobby.Value.Members.ElementAt(i);
+                if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
                 {
-                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetRandomFighter()); //TODO SAME AS ABOVE
+                    string fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
+                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName)); //TODO SAME AS ABOVE
                     connectedPlayerCells[i].GetComponent<Animator>().SetBool("Connected", true);
                 }
             }
@@ -116,25 +119,20 @@ public class PrivateLobbyPanel : Panel
 
         if (SteamLobbyManager.Instance.Searching && SteamLobbyManager.Instance.AllPrivateMembersConnectedToPublic())
             cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
+
+        if (!SteamLobbyManager.Instance.Searching)
+            SetPlayButtonsInteractable(true);
     }
 
     private void OnBeganSearch()
     {
-        foreach(var button in playButtons)
-        {
-            button.interactable = false;
-        }
-
+        SetPlayButtonsInteractable(false);
         searchingObj.SetActive(true);
     }
 
     private void OnCancelledSearch()
     {
-        foreach (var button in playButtons)
-        {
-            button.interactable = SteamLobbyManager.Instance.PrivateHost;
-        }
-
+        SetPlayButtonsInteractable(true);
         searchingObj.SetActive(false);
     }
 
@@ -171,6 +169,14 @@ public class PrivateLobbyPanel : Panel
     private void OnLobbyMemberLeave(Lobby arg1, Friend arg2)
     {
         UpdatePlayerCells();
+    }
+    
+    private void SetPlayButtonsInteractable(bool interactable)
+    {
+        foreach (var button in playButtons)
+        {
+            button.interactable = interactable ? SteamLobbyManager.Instance.PrivateHost : false;
+        }
     }
 
     private void SubToEvents()

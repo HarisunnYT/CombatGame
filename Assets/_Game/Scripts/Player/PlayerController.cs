@@ -211,6 +211,10 @@ public class PlayerController : Character
 
         InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
         OnInputProfileSet?.Invoke();
+
+        //set the last player fighter, only if it's an online match or the players index is 0
+        if ((ServerManager.Instance.IsOnlineMatch && isLocalPlayer) || (!ServerManager.Instance.IsOnlineMatch && playerID == 0))
+            FighterManager.Instance.SetLastPlayedFighter(Fighter.FighterName);
     }
 
     public override void ResetCharacter()

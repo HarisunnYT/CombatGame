@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerRoundInformation : MonoBehaviour, IFightEvents
 {
+    public MoveData AttackOne { get; private set; }
+    public MoveData AttackTwo { get; private set; }
+    public MoveData AttackThree { get; private set; }
+
     public int Cash { get; private set; }
     public int Wins { get; private set; }
 
@@ -11,6 +15,9 @@ public class PlayerRoundInformation : MonoBehaviour, IFightEvents
 
     public delegate void CashEvent(int newAmount);
     public event CashEvent OnCashUpdated;
+
+    public delegate void MoveEvent(MoveData move);
+    public event MoveEvent OnEquipedMove;
 
     private void Awake()
     {
@@ -86,6 +93,24 @@ public class PlayerRoundInformation : MonoBehaviour, IFightEvents
         {
             AddCash((int)GameManager.Instance.GameData.GetValue(DataKeys.VariableKeys.CashPerKill));
         }
+    }
+
+    /// <param name="position">1, 2 or 3</param>
+    public void EquipedMove(MoveData moveData, int position)
+    {
+        if (position == 1)
+            AttackOne = moveData;
+        else if (position == 2)
+            AttackTwo = moveData;
+        else if (position == 3)
+            AttackThree = moveData;
+
+        OnEquipedMove?.Invoke(moveData);
+    }
+
+    public bool IsMoveEquiped(MoveData move)
+    {
+        return AttackOne == move || AttackTwo == move || AttackThree == move;
     }
 
     #region LISTENERS
