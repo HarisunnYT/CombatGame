@@ -112,6 +112,7 @@ public class FighterManager : PersistentSingleton<FighterManager>
 
     public void SetLastPlayedFighter(string fighterName)
     {
+        LastPlayedFighterName = fighterName;
         PlayerPrefs.SetString(LastPlayerFighterKey, fighterName);
     }
 }

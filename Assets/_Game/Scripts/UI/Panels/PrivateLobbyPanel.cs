@@ -158,6 +158,39 @@ public class PrivateLobbyPanel : Panel
         });
     }
 
+    private void SetPlayButtonsInteractable(bool interactable)
+    {
+        foreach (var button in playButtons)
+        {
+            button.interactable = interactable ? SteamLobbyManager.Instance.PrivateHost : false;
+        }
+    }
+
+    private void SubToEvents()
+    {
+        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
+        SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
+        SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
+        SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
+
+        SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
+        SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
+    }
+
+    private void UnSubToEvents()
+    {
+        SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
+        SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
+        SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
+        SteamMatchmaking.OnLobbyDataChanged -= OnLobbyDataChanged;
+
+        if (SteamLobbyManager.Instance)
+        {
+            SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
+            SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
+        }
+    }
+
     private void OnLobbyEntered(Lobby obj)
     {
         UpdatePlayerCells();
@@ -172,35 +205,9 @@ public class PrivateLobbyPanel : Panel
     {
         UpdatePlayerCells();
     }
-    
-    private void SetPlayButtonsInteractable(bool interactable)
+
+    private void OnLobbyDataChanged(Lobby obj)
     {
-        foreach (var button in playButtons)
-        {
-            button.interactable = interactable ? SteamLobbyManager.Instance.PrivateHost : false;
-        }
-    }
-
-    private void SubToEvents()
-    {
-        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
-        SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
-        SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
-
-        SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
-        SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
-    }
-
-    private void UnSubToEvents()
-    {
-        SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
-        SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
-        SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
-
-        if (SteamLobbyManager.Instance)
-        {
-            SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
-            SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
-        }
+        UpdatePlayerCells();
     }
 }
