@@ -31,6 +31,9 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
         {
             NetworkManager.Instance.StartHost();
         }
+
+        if (SteamLobbyManager.Instance.PrivateLobby.HasValue)
+            SteamLobbyManager.Instance.ClearPrivateLobbyData();
     }
 
     private void Update()
