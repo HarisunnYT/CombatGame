@@ -48,7 +48,7 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (lastInteractedCursor != null && lastInteractedCursor.InputProfile.Back.WasPressed)
         {
-            FighterManager.Instance.LocalPlayerUnselectedCharacter(characterName, lastInteractedCursor);
+            FighterManager.Instance.LocalPlayerUnselectedCharacter(characterName);
             SetCharacterSelected(false);
         }
     }

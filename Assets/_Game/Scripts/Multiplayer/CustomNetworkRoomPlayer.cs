@@ -65,6 +65,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         ServerManager.Instance.SetCharacterUnselected(characterName);
 
         NetworkManager.Instance.roomSlots[playerID].readyToBegin = false;
+        CursorManager.Instance.ShowCursor(0);
 
         if (playerID == ServerManager.Instance.GetPlayerLocal().PlayerID)
             FighterManager.Instance.SetLocalPlayerReady(false);

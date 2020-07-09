@@ -81,7 +81,7 @@ public class FighterManager : PersistentSingleton<FighterManager>
         return false;
     }
 
-    public void LocalPlayerUnselectedCharacter(string characterName, Cursor cursor)
+    public void LocalPlayerUnselectedCharacter(string characterName)
     {
         if (ServerManager.Instance.IsOnlineMatch)
         {
@@ -92,7 +92,7 @@ public class FighterManager : PersistentSingleton<FighterManager>
             if (LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
             {
                 LocalPlayersManager.Instance.LocalPlayerUnreadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
-                CursorManager.Instance.ShowCursor(cursor);
+                CursorManager.Instance.ShowCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
                 CharacterSelectManager.Instance.CharacterUnselected(CursorManager.Instance.GetLastInteractedPlayerIndex(), characterName);
 
                 SetLocalPlayerReady(false);
