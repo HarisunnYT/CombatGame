@@ -171,7 +171,7 @@ public class PrivateLobbyPanel : Panel
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
-        SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
+        SteamMatchmaking.OnLobbyMemberDataChanged += OnMemberDataChanged;
 
         SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
         SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
@@ -182,7 +182,7 @@ public class PrivateLobbyPanel : Panel
         SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
-        SteamMatchmaking.OnLobbyDataChanged -= OnLobbyDataChanged;
+        SteamMatchmaking.OnLobbyMemberDataChanged -= OnMemberDataChanged;
 
         if (SteamLobbyManager.Instance)
         {
@@ -206,7 +206,7 @@ public class PrivateLobbyPanel : Panel
         UpdatePlayerCells();
     }
 
-    private void OnLobbyDataChanged(Lobby obj)
+    private void OnMemberDataChanged(Lobby obj, Friend friend)
     {
         UpdatePlayerCells();
     }

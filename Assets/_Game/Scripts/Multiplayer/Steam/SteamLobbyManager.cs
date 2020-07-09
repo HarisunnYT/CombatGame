@@ -73,11 +73,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     #region TASKS
 
     private Task<Lobby?> creatingPrivateLobbyTask;
-    private Task<Lobby?> creatingPublicLobbyTask;
+    private Task<RoomEnter> joiningPrivateLobbyTask;
 
+    private Task<Lobby?> creatingPublicLobbyTask;
     private Task<Lobby[]> retrievingLobbiesTask;
 
     private System.Action<Lobby[]> retreivedLobbiesCallback;
+    public System.Action<RoomEnter> joinedLobbyCallback;
 
     #endregion
 
@@ -129,6 +131,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         {
             CreatedPublicMatch(creatingPublicLobbyTask.Result);
             creatingPublicLobbyTask = null;
+        }
+
+        if (joiningPrivateLobbyTask != null && joiningPrivateLobbyTask.IsCompleted)
+        {
+            joinedLobbyCallback?.Invoke(joiningPrivateLobbyTask.Result);
+            joiningPrivateLobbyTask = null;
+            joinedLobbyCallback = null;
         }
     }
 
@@ -221,12 +230,21 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void JoinedPrivateLobby(Lobby? lobby)
     {
         PrivateLobby = lobby;
-        PrivateLobby.Value.Join();
+        joiningPrivateLobbyTask = PrivateLobby.Value.Join();
+        joinedLobbyCallback = (RoomEnter roomEnter) =>
+        {
+            if (roomEnter == RoomEnter.Success) //TODO SHOW ERRORS AND STUFF WHEN TRYING TO JOIN LOBBY
+            {
+                PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
+            }
+        };
 
-        PrivateLobby.Value.SetFriendsOnly();
-        PrivateLobby.Value.SetJoinable(true);
-
-        PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
+        //this means the we created the lobby, call the appropriate functions
+        if (PrivateLobby.Value.Owner.Id.Value == SteamClient.SteamId.Value)
+        {
+            PrivateLobby.Value.SetFriendsOnly();
+            PrivateLobby.Value.SetJoinable(true);
+        }
 
         PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
 
