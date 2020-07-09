@@ -215,6 +215,8 @@ public class MatchManager : NetworkBehaviour
         if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
 
+        Destroy(FightManager.Instance.gameObject);
+
         ServerManager.Instance.DestroyInstance();
         CursorManager.Instance.DestroyInstance();
         LocalPlayersManager.Instance.DestroyInstance();

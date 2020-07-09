@@ -58,6 +58,13 @@ public class FightManager : Singleton<FightManager>, IFightEvents
                 CountdownOver();
             }
         }
+        else
+        {
+            if (!fightOver && ServerManager.Instance.Players.Count <= 1)
+            {
+                GameComplete();
+            }
+        }
     }
 
     private void BeginFightCountdown()

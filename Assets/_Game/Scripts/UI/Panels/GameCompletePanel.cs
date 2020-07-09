@@ -18,12 +18,15 @@ public class GameCompletePanel : Panel
         var result = MatchManager.Instance.MatchResults.OrderByDescending(x => x.Value);
         winnerCell.Configure(ServerManager.Instance.GetPlayer(result.ElementAt(0).Key).PlayerID);
 
-        for (int i = 0; i < runnerUpCells.Length; i++)
+        if (ServerManager.Instance.Players.Count > 1)
         {
-            if (i < result.Count() - 1) //minus 1 as it's an index
+            for (int i = 0; i < runnerUpCells.Length; i++)
             {
-                KeyValuePair<PlayerController, int> player = result.ElementAt(i + 1);
-                runnerUpCells[i].Configure(ServerManager.Instance.GetPlayer(player.Key).PlayerID);
+                if (i < result.Count() - 1) //minus 1 as it's an index
+                {
+                    KeyValuePair<PlayerController, int> player = result.ElementAt(i + 1);
+                    runnerUpCells[i].Configure(ServerManager.Instance.GetPlayer(player.Key).PlayerID);
+                }
             }
         }
 
