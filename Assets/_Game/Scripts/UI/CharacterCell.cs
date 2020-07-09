@@ -53,10 +53,18 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    public void SetCharacterSelected(bool selected)
+    public void SetCharacterSelected(bool selected, int playerId = -1)
     {
-        if (lastInteractedCursor == null)
-            lastInteractedCursor = CursorManager.Instance.GetLastInteractedCursor();
+        if (lastInteractedCursor == null && playerId != -1)
+        {
+            if (ServerManager.Instance.IsOnlineMatch)
+            {
+                if (ServerManager.Instance.GetPlayerLocal().PlayerID == playerId)
+                    lastInteractedCursor = CursorManager.Instance.GetCursor(playerId);
+            }
+            else
+                lastInteractedCursor = CursorManager.Instance.GetCursor(playerId);
+        }
 
         if (characterName != "random")
         {

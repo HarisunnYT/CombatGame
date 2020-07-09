@@ -86,7 +86,7 @@ public class CharacterSelectScreen : Panel
         {
             if (characterCell.CharacterName == characterName)
             {
-                characterCell.SetCharacterSelected(true);
+                characterCell.SetCharacterSelected(true, playerID);
                 break;
             }
         }
@@ -107,7 +107,7 @@ public class CharacterSelectScreen : Panel
         {
             if (characterCell.CharacterName == characterName)
             {
-                characterCell.SetCharacterSelected(false);
+                characterCell.SetCharacterSelected(false, playerID);
                 break;
             }
         }
