@@ -88,8 +88,10 @@ public class PrivateLobbyPanel : Panel
             playerCell.Unconfigure(false);
         }
 
+        string fighterName = privateLobby.Value.GetMemberData(privateLobby.Value.Owner, FighterManager.LastPlayerFighterKey);
+
         //configure client cell
-        connectedPlayerCells[0].Configure(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name, FighterManager.Instance.GetRandomFighter()); //TODO SET FIGHTER THAT THE PLAYER USES MOST (SET THROUGH DATA)
+        connectedPlayerCells[0].Configure(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name, FighterManager.Instance.GetFighter(fighterName)); 
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
         if (privateLobby != null)
@@ -99,8 +101,8 @@ public class PrivateLobbyPanel : Panel
                 Friend friend = privateLobby.Value.Members.ElementAt(i);
                 if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
                 {
-                    string fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
-                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName)); //TODO SAME AS ABOVE
+                    fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
+                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
                     connectedPlayerCells[i].GetComponent<Animator>().SetBool("Connected", true);
                 }
             }
