@@ -48,7 +48,7 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (lastInteractedCursor != null && lastInteractedCursor.InputProfile.Back.WasPressed)
         {
-            FighterManager.Instance.LocalPlayerUnselectedCharacter(characterName);
+            FighterManager.Instance.LocalPlayerUnselectedCharacter(characterName, lastInteractedCursor);
             SetCharacterSelected(false);
         }
     }
@@ -60,7 +60,7 @@ public class CharacterCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             if (ServerManager.Instance.IsOnlineMatch)
             {
                 if (ServerManager.Instance.GetPlayerLocal().PlayerID == playerId)
-                    lastInteractedCursor = CursorManager.Instance.GetCursor(playerId);
+                    lastInteractedCursor = CursorManager.Instance.GetCursor(0);
             }
             else
                 lastInteractedCursor = CursorManager.Instance.GetCursor(playerId);

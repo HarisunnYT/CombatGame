@@ -26,23 +26,8 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         }
     }
 
-    public void SelectCharacter(int playerID, string characterName)
-    {
-        if (isServer)
-        {
-            //if the server chose random, they can get a random character easily
-            string charName = characterName;
-            if (charName == "random")
-                charName = ServerManager.Instance.GetRandomUnselectedCharacter();
-
-            RpcSelectCharacter(playerID, charName);
-        }
-        else
-            CmdSelectCharacter(playerID, characterName);
-    }
-
     [Command]
-    private void CmdSelectCharacter(int playerID, string characterName)
+    public void CmdSelectCharacter(int playerID, string characterName)
     {
         //why do it here you ask? We need to confirm that a client has already selected it
         string charName = characterName;
@@ -51,7 +36,6 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 
         if (!ServerManager.Instance.IsCharacterSelected(charName))
         {
-            //SelectCharacter(playerID, charName);
             RpcSelectCharacter(playerID, charName);
         }
     }
@@ -68,18 +52,9 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             FighterManager.Instance.SetLocalPlayerReady(true);
     }
 
-    public void UnselectCharacter(int playerID, string characterName)
-    {
-        if (isServer)
-            RpcUnselectCharacter(playerID, characterName);
-        else
-            CmdUnselectCharacter(playerID, characterName);
-    }
-
     [Command]
-    private void CmdUnselectCharacter(int playerID, string characterName)
+    public void CmdUnselectCharacter(int playerID, string characterName)
     {
-        //UnselectCharacter(playerID, characterName);
         RpcUnselectCharacter(playerID, characterName);
     }
 

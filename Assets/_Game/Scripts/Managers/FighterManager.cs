@@ -58,7 +58,7 @@ public class FighterManager : PersistentSingleton<FighterManager>
     {
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            NetworkManager.Instance.RoomPlayer.SelectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
+            NetworkManager.Instance.RoomPlayer.CmdSelectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
         }
         else
         {
@@ -81,18 +81,18 @@ public class FighterManager : PersistentSingleton<FighterManager>
         return false;
     }
 
-    public void LocalPlayerUnselectedCharacter(string characterName)
+    public void LocalPlayerUnselectedCharacter(string characterName, Cursor cursor)
     {
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            NetworkManager.Instance.RoomPlayer.UnselectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
+            NetworkManager.Instance.RoomPlayer.CmdUnselectCharacter(NetworkManager.Instance.RoomPlayer.index, characterName);
         }
         else
         {
             if (LocalPlayersManager.Instance.HasLocalPlayerReadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex()))
             {
                 LocalPlayersManager.Instance.LocalPlayerUnreadiedUp(CursorManager.Instance.GetLastInteractedPlayerIndex());
-                CursorManager.Instance.ShowCursor(CursorManager.Instance.GetLastInteractedPlayerIndex());
+                CursorManager.Instance.ShowCursor(cursor);
                 CharacterSelectManager.Instance.CharacterUnselected(CursorManager.Instance.GetLastInteractedPlayerIndex(), characterName);
 
                 SetLocalPlayerReady(false);
