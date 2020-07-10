@@ -443,9 +443,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void TryStartPublicMatch()
     {
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
+        {
             SceneLoader.Instance.LoadScene("Lobby");
-
-        Searching = false;
+            Searching = false;
+        }
     }
 
     #endregion
