@@ -44,6 +44,7 @@ public class PlayerController : Character
     private BaseMovement baseMovement;
     private Animator animator;
     private CommunicationController communicationController;
+    private CombatCollider combatCollider;
 
     private Collider2D collider;
 
@@ -92,8 +93,10 @@ public class PlayerController : Character
         communicationController = GetComponent<CommunicationController>();
         collider = GetComponent<Collider2D>();
         PlayerRoundInfo = GetComponent<PlayerRoundInformation>();
+        combatCollider = GetComponentInChildren<CombatCollider>(true);
 
         originalScale = transform.localScale;
+        combatCollider.Collider.enabled = false;
 
         SetMovementType(MovementType.Normal, false);
     }
@@ -209,8 +212,18 @@ public class PlayerController : Character
         Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
         MatchManager.Instance.AddPlayer(this, playerID);
 
-        InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch);
+        InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch || playerID == 0);
         OnInputProfileSet?.Invoke();
+
+        //remove already used controllers
+        if (playerID == 0 && !ServerManager.Instance.IsOnlineMatch)
+        {
+            foreach(var player in ServerManager.Instance.Players)
+            {
+                if (player.PlayerID != 0)
+                    InputProfile.RemoveController(player.ControllerGUID);
+            }
+        }
 
         //set the last player fighter, only if it's an online match or the players index is 0
         if ((ServerManager.Instance.IsOnlineMatch && isLocalPlayer) || (!ServerManager.Instance.IsOnlineMatch && playerID == 0))

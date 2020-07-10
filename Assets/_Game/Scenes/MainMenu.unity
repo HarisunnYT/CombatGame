@@ -992,7 +992,6 @@ GameObject:
   - component: {fileID: 311008670}
   - component: {fileID: 311008669}
   - component: {fileID: 311008668}
-  - component: {fileID: 311008667}
   m_Layer: 0
   m_Name: InControl
   m_TagString: Untagged
@@ -1000,27 +999,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &311008667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 311008666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b24994c7bab8d436a8b302ce62dfa856, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  submitButton: 19
-  cancelButton: 20
-  analogMoveThreshold: 0.5
-  moveRepeatFirstDuration: 0.8
-  moveRepeatDelayDuration: 0.1
-  forceModuleActive: 0
-  allowMouseInput: 0
-  focusOnMouseHover: 0
-  allowTouchInput: 1
 --- !u!114 &311008668
 MonoBehaviour:
   m_ObjectHideFlags: 0

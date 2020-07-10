@@ -63,4 +63,12 @@ public static class Util
         }
         return visibleCorners;
     }
+
+    public static void ResetCamera(this List<Cursor> cursors)
+    {
+        foreach (var cursor in cursors)
+        {
+            cursor.ResetCamera();
+        }
+    }
 }

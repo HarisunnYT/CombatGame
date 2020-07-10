@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CursorManager : PersistentSingleton<CursorManager>
@@ -13,6 +14,8 @@ public class CursorManager : PersistentSingleton<CursorManager>
     private Color[] cursorColors;
 
     private List<Cursor> cursors = new List<Cursor>();
+    public List<Cursor> Cursors { get { return cursors; } }
+
     private Dictionary<Cursor, int> showCursors = new Dictionary<Cursor, int>(); //index to show and hide cursors (value stacks when shown)
 
     private int lastInteractedPlayerIndex = 0;
@@ -22,7 +25,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
         base.Initialize();
 
         //create cursor for player
-        CreateCursor(0, default);
+        CreateCursor(0, default).EnableAllControllerInput();
 
         UnityEngine.Cursor.visible = false;
     }
@@ -47,7 +50,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
         return lastInteractedPlayerIndex;
     }
 
-    private void CreateCursor(int playerIndex, System.Guid controllerID)
+    private Cursor CreateCursor(int playerIndex, System.Guid controllerID)
     {
         Cursor cursor = Instantiate(cursorPrefab, transform);
         cursor.AssignDevice(playerIndex, controllerID, cursorColors[cursors.Count]);
@@ -56,6 +59,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
         cursor.transform.position = new Vector2(Random.Range(Screen.width / 3, Screen.width - Screen.width / 3), Screen.height / 2);
 
         ShowCursor(cursor);
+        return cursor;
     }
 
     public void HideCursor(Cursor cursor)
@@ -147,6 +151,19 @@ public class CursorManager : PersistentSingleton<CursorManager>
         foreach (var cursor in cursors)
         {
             if (cursor.PlayerIndex == playerIndex)
+            {
+                return cursor;
+            }
+        }
+
+        return null;
+    }
+
+    public Cursor GetCursor(System.Guid guid)
+    {
+        foreach (var cursor in cursors)
+        {
+            if (cursor.ControllerID == guid)
             {
                 return cursor;
             }

@@ -65,7 +65,6 @@ public class CharacterPurchasePanel : Panel
     protected override void OnShow()
     {
         SetDarkness(false);
-        CursorManager.Instance.ShowAllCursors();
     }
 
     private void OnPhaseChanged(MatchManager.RoundPhase phase)

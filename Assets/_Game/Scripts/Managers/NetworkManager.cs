@@ -33,36 +33,18 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
-    public override void OnServerSceneChanged(string sceneName)
-    {
-        base.OnServerSceneChanged(sceneName);
-
-        if (sceneName.Contains("Game"))
-            FinishedLoadingScene();
-    }
-
-    public override void OnClientSceneChanged(NetworkConnection conn)
-    {
-        base.OnClientSceneChanged(conn);
-
-        if (!ClientScene.localPlayer.isServer && SceneManager.GetActiveScene().name == "Game")
-            FinishedLoadingScene();
-    }
-
-    private void FinishedLoadingScene()
-    {
-        TransitionManager.Instance.HideTransition(() =>
-        {
-            MatchManager.Instance.BeginMatch();
-        });
-    }
-
     int indexAssigning = 0;
+    int playersCreated = 0;
+
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
         int playerID = ServerManager.Instance.IsOnlineMatch ? roomPlayer.GetComponent<CustomNetworkRoomPlayer>().index : indexAssigning++;
         FighterData fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
         PlayerController player = Instantiate(fighter.PlayerControllerPrefab).GetComponent<PlayerController>();
+        playersCreated++;
+
+        if (!ServerManager.Instance.IsOnlineMatch || playersCreated >= SteamLobbyManager.Instance.PublicLobby.Value.MemberCount)
+            SceneLoadedAndPlayersConnected();
 
         return player.gameObject;
     }
@@ -78,7 +60,19 @@ public class NetworkManager : NetworkRoomManager
 
             return player.gameObject;
         }
+
+        if (!ServerManager.Instance.IsOnlineMatch || playersCreated >= SteamLobbyManager.Instance.PublicLobby.Value.MemberCount)
+            SceneLoadedAndPlayersConnected();
+
         return base.OnRoomServerAddPlayer(conn);
+    }
+
+    private void SceneLoadedAndPlayersConnected()
+    {
+        TransitionManager.Instance.HideTransition(() =>
+        {
+            MatchManager.Instance.BeginMatch();
+        });
     }
 
     public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)

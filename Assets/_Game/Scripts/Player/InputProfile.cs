@@ -61,33 +61,49 @@ public class InputProfile : PlayerActionSet
 
         if (controllerGUID == default)
             AddKeyboardBindings();
-        else
+        
+        if (controllerGUID != default || allowAllControllers)
             AddControllerBindings();
 
-        if (!allowAllControllers)
+        //assign device
+        for (int i = 0; i < InControl.InputManager.Devices.Count; i++)
         {
-            //assign device
-            for (int i = 0; i < InControl.InputManager.Devices.Count; i++)
+            if (allowAllControllers || InControl.InputManager.Devices[i].GUID == controllerGUID)
             {
-                if (InControl.InputManager.Devices[i].GUID == controllerGUID)
-                {
-                    device = InControl.InputManager.Devices[i];
+                device = InControl.InputManager.Devices[i];
 
-                    if (!IncludeDevices.Contains(device))
-                        IncludeDevices.Add(device);
+                if (!IncludeDevices.Contains(device))
+                    IncludeDevices.Add(device);
 
+                if (!allowAllControllers)
                     break;
-                }
             }
-        }
-        else
-        {
-            //auto add controller bindings all controllers allowed
-            AddControllerBindings();
         }
 
         GUID = controllerGUID;
+
+        //check if input profile is already created for this guid
+        foreach (var profile in InputProfiles)
+        {
+            if (profile.GUID == controllerGUID)
+            {
+                return;
+            }
+        }
+
         InputProfiles.Add(this);
+    }
+
+    public void RemoveController(System.Guid controllerGUID)
+    {
+        for (int i = 0; i < InputManager.Devices.Count; i++)
+        {
+            if (InputManager.Devices[i].GUID == controllerGUID)
+            {
+                IncludeDevices.Remove(InputManager.Devices[i]);
+                break;
+            }
+        }
     }
 
     private void AddKeyboardBindings()
@@ -132,9 +148,9 @@ public class InputProfile : PlayerActionSet
         Attack2.AddDefaultBinding(InputControlType.Action4);
         Attack3.AddDefaultBinding(InputControlType.Action2);
 
-        Menu.AddDefaultBinding(InputControlType.Menu);
         Select.AddDefaultBinding(InputControlType.Action1);
         Back.AddDefaultBinding(InputControlType.Action2);
+        Menu.AddDefaultBinding(InputControlType.Command);
 
         CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadUp, InputControlType.DPadRight, InputControlType.DPadDown, InputControlType.DPadLeft);
         CommunicationWheelUp.AddDefaultBinding(InputControlType.DPadUp);

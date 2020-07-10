@@ -42,7 +42,6 @@ public class LevelEditorPanel : Panel
     protected override void OnShow()
     {
         CameraManager.Instance.CameraFollow.ResetCamera();
-        CursorManager.Instance.ShowAllCursors();
 
         if (levelEditorCamera)
             levelEditorCamera.SetCameraToMainPosition();

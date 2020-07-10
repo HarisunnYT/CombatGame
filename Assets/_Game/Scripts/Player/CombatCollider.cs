@@ -8,7 +8,13 @@ public class CombatCollider : MonoBehaviour
     public int Damage;
     public float Knockback = 5;
 
+    [Space()]
+    [SerializeField]
+    private Collider2D collider;
+
     private PlayerController playerController;
+
+    public Collider2D Collider { get { return collider; } }
 
     private void Awake()
     {

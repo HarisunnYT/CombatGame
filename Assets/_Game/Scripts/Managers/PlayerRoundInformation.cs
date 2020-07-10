@@ -89,7 +89,7 @@ public class PlayerRoundInformation : MonoBehaviour, IFightEvents
 
     public void OnPlayerDied(PlayerController killer, PlayerController victim)
     {
-        if (killer.PlayerRoundInfo == this)
+        if (killer != victim && killer.PlayerRoundInfo == this)
         {
             AddCash((int)GameManager.Instance.GameData.GetValue(DataKeys.VariableKeys.CashPerKill));
         }

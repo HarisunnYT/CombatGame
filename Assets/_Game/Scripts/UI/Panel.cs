@@ -41,13 +41,12 @@ public class Panel : MonoBehaviour, IAnimationHandler
     {
         PanelManager.Instance.PanelClosed(this);
 
-        if (animator && gameObject.activeSelf)
+        if (gameObject.activeSelf)
         {
-            animator.SetTrigger("Close");
-        }
-        else
-        {
-            ObjectDisabled();
+            if (animator)
+                animator.SetTrigger("Close");
+            else
+                ObjectDisabled();
         }
     }
 

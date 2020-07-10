@@ -25,6 +25,7 @@ public class Cursor : MonoBehaviour
     public InputProfile InputProfile { get; private set; }
 
     private Vector3 previousCursorPosition;
+    private Vector3 previousMousePosition;
 
     private GraphicRaycaster assignedRaycaster;
     private Button previousHighlightedButton;
@@ -52,13 +53,14 @@ public class Cursor : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerIndex == 0) //0 means it's the person on the PC
+        if (PlayerIndex == 0 && previousMousePosition != Input.mousePosition) //0 means it's the person on the PC
         {
             transform.position = Input.mousePosition;
+            previousMousePosition = Input.mousePosition;
         }
         else
         {
-            transform.position += new Vector3(InputProfile.Move.X * cursorMoveSpeed, InputProfile.Move.Y * cursorMoveSpeed, 0) * Time.deltaTime;
+            transform.position += new Vector3(InputProfile.Move.X * cursorMoveSpeed, InputProfile.Move.Y * cursorMoveSpeed, 0) * Time.unscaledDeltaTime;
         }
 
         if (previousCursorPosition != transform.position || InputProfile.Select.WasPressed)
@@ -123,6 +125,11 @@ public class Cursor : MonoBehaviour
         transform.position = AssignedCamera.ViewportToScreenPoint(pos);
 
         previousCursorPosition = transform.position;
+    }
+
+    public void EnableAllControllerInput()
+    {
+        InputProfile = new InputProfile(default, true);
     }
 
     public void AssignRaycaster(GraphicRaycaster assignedRaycaster)

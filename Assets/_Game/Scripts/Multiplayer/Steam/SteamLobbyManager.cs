@@ -257,9 +257,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     //this is when the user accepts an invite or clicks 'join game' in steam UI
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId friendID)
     {
-        //this callback could happen at any point so we need to account for anything
-        //TODO probably need to do this a bit better to account for scene loading times
-
         string currentSceneName = SceneManager.GetActiveScene().name;
 
         if (ExitManager.Instance)

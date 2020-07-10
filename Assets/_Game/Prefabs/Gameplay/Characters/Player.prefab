@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 10
   Knockback: 5
+  collider: {fileID: 6569219094629305948}
 --- !u!1 &1559206525632463343
 GameObject:
   m_ObjectHideFlags: 0

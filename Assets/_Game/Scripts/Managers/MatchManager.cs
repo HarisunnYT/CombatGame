@@ -104,14 +104,14 @@ public class MatchManager : NetworkBehaviour
     private void BeginFightPhase()
     {
         CameraManager.Instance.CameraFollow.ResetCamera();
+        CursorManager.Instance.Cursors.ResetCamera();
+
         LevelEditorManager.Instance.RevealRecentObjects();
 
         if (ServerManager.Instance.IsOnlineMatch)
             purchasePanel.Close();
         else
             LocalPlayerUIManager.Instance.DisplayLocalScreens(false);
-
-        CursorManager.Instance.HideAllCursors();
 
         spawnIndex = 0;
 
@@ -132,6 +132,7 @@ public class MatchManager : NetworkBehaviour
         else
             LocalPlayerUIManager.Instance.DisplayLocalScreens(true);
 
+        CursorManager.Instance.ShowAllCursors();
         currentFight.AlivePlayers.Clear();
 
         Destroy(currentFight.gameObject);
@@ -140,6 +141,12 @@ public class MatchManager : NetworkBehaviour
         FightStarted = false;
 
         StartCoroutine(DisablePlayerObjects());
+    }
+
+    private void BuyPhaseFinished()
+    {
+        CursorManager.Instance.HideAllCursors();
+        BeginPhase(RoundPhase.Fight_Phase);
     }
 
     private IEnumerator DisablePlayerObjects()
@@ -168,7 +175,7 @@ public class MatchManager : NetworkBehaviour
             int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - time);
             if (roundedTime <= 0)
             {
-                BeginPhase(RoundPhase.Fight_Phase);
+                BuyPhaseFinished();
             }
         }
     }

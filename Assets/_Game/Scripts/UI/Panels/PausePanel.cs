@@ -31,7 +31,10 @@ public class PausePanel : Panel
     protected override void OnClose()
     {
         if (CursorManager.Instance && interactingProfile != null)
+        {
             CursorManager.Instance.HideCursor(interactingProfile.GUID);
+            ServerManager.Instance.GetPlayer(interactingProfile.GUID).PlayerController.EnableInput();
+        }
 
         Time.timeScale = 1;
     }

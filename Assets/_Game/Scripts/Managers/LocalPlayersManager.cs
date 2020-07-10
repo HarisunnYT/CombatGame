@@ -36,6 +36,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
         ServerManager.Instance.AddConnectedPlayer(playerIndex, "Player " + (playerIndex + 1)).ControllerGUID = controllerID;
+        CursorManager.Instance.GetCursor(0).InputProfile.RemoveController(controllerID); //remove this controller from player 1s controllers list
 
         OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
         LocalPlayersCount++;
