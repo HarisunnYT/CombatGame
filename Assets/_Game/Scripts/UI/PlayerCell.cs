@@ -24,6 +24,9 @@ public class PlayerCell : MonoBehaviour
 
     private void TryAssignPlayerController()
     {
+        if (ServerManager.Instance == null)
+            return;
+
         if (playerController == null && ServerManager.Instance.GetPlayer(playerID).PlayerController != null)
             OnPlayerCreated(playerID, ServerManager.Instance.GetPlayer(playerID).PlayerController);
         else

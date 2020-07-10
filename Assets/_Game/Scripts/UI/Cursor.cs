@@ -52,8 +52,6 @@ public class Cursor : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(Screen.width / Screen.height);
-
         if (PlayerIndex == 0) //0 means it's the person on the PC
         {
             transform.position = Input.mousePosition;

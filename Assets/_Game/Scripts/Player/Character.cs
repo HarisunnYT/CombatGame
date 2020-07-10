@@ -46,6 +46,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     public void OnDamaged(int amount, PlayerController player)
     {
+        if (!MatchManager.Instance.MatchStarted)
+            return;
+
         if (ServerManager.Instance.IsOnlineMatch)
             RpcOnDamaged(amount, MatchManager.Instance.GetPlayerID(player));
         else

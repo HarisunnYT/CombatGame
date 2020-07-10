@@ -26,6 +26,12 @@ public class ExitManager : PersistentSingleton<ExitManager>
             exitMatchCoroutine = StartCoroutine(ExitMatchIE());
     }
 
+    public void ExitMatchWithParty()
+    {
+        ExitMatch(ExitType.HostLeftWithParty);
+        SteamLobbyManager.Instance.ExitMatchWithParty();
+    }
+
     private IEnumerator ExitMatchIE()
     {
         TransitionManager.Instance.ShowTransition();
@@ -35,10 +41,13 @@ public class ExitManager : PersistentSingleton<ExitManager>
         if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
 
+        NetworkManager.Instance.StopClient();
+
         DestroySingletons();
 
         SteamLobbyManager.Instance.LeavePublicLobby();
-        NetworkManager.Instance.StopClient();
+        if (ExitType != ExitType.HostLeftWithParty)
+            SteamLobbyManager.Instance.LeavePrivateLobby();
 
         yield return StartCoroutine(DelayedRemoval());
 

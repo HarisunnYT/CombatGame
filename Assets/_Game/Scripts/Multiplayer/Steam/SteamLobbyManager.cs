@@ -62,6 +62,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
+    public bool IsPrivateMatch { get; private set; }
+
     public bool Searching { get; private set; } = false;
 
     #endregion
@@ -230,6 +232,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void JoinedPrivateLobby(Lobby? lobby)
     {
         PrivateLobby = lobby;
+
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();
         joinedLobbyCallback = (RoomEnter roomEnter) =>
         {
@@ -278,11 +281,15 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         PublicLobby = PrivateLobby;
 
+        IsPrivateMatch = true;
+
         if (PublicHost)
             SendPrivateMessage(privateLobbyStartedKey, "true");
 
         ServerManager.Instance.IsOnlineMatch = true;
         SceneLoader.Instance.LoadScene("Lobby");
+
+        Searching = false;
     }
 
     public void ClearPrivateLobbyData()
@@ -296,7 +303,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void HostPulledPartyFromMatch()
     {
         UpdateLobby(PrivateLobby.Value);
-        MatchManager.Instance.ExitMatchWithParty();
+        ExitManager.Instance.ExitMatchWithParty();
     }
 
     #endregion
@@ -397,6 +404,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
+        IsPrivateMatch = false;
+
         if (PublicLobby != null)
             PublicLobby.Value.Leave();
 
@@ -435,6 +444,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
             SceneLoader.Instance.LoadScene("Lobby");
+
+        Searching = false;
     }
 
     #endregion
@@ -465,7 +476,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             TryStartPublicMatch();
         }
         else
-            PrivateLobby = lobby;
+        {
+            if (lobby.Id != PrivateLobby.Value.Id)
+                lobby.Leave();
+            else
+                PrivateLobby = lobby;
+        }
     }
 
     public void LeaveAllLobbies()

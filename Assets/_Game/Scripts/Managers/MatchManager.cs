@@ -36,6 +36,9 @@ public class MatchManager : NetworkBehaviour
 
     public int WinsRequired { get; private set; } = 5;
 
+    public bool MatchStarted { get; private set; } = false;
+    public bool FightStarted { get; private set; } = false;
+
     //int being the amount of wins the player has
     private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
     public Dictionary<PlayerController, int> MatchResults { get { return wins; } }
@@ -84,6 +87,7 @@ public class MatchManager : NetworkBehaviour
     public void BeginMatch()
     {
         BeginPhase(RoundPhase.Fight_Phase);
+        MatchStarted = true;
     }
 
     public void BeginPhase(RoundPhase phase)
@@ -132,6 +136,8 @@ public class MatchManager : NetworkBehaviour
 
         Destroy(currentFight.gameObject);
         currentFight = null;
+
+        FightStarted = false;
 
         StartCoroutine(DisablePlayerObjects());
     }
@@ -207,10 +213,9 @@ public class MatchManager : NetworkBehaviour
         time += UnityEngine.Time.fixedDeltaTime;
     }
 
-    public void ExitMatchWithParty()
+    public void OnFightStarted()
     {
-        ExitManager.Instance.ExitMatch(ExitType.HostLeftWithParty);
-        SteamLobbyManager.Instance.ExitMatchWithParty();
+        FightStarted = true;
     }
 
     #region PLAYER_ASSIGNMENTS

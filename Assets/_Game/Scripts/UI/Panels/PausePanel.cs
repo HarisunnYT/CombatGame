@@ -38,16 +38,29 @@ public class PausePanel : Panel
 
     public void Quit()
     {
-        PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, () =>
+        //show the leave with party panel if it's the party host, there's more than just them in the private lobby and it isn't a private match
+        if (SteamLobbyManager.Instance.PrivateLobby.HasValue && SteamLobbyManager.Instance.PrivateHost && 
+            !SteamLobbyManager.Instance.IsPrivateMatch && SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount > 1)
         {
-            Time.timeScale = 1;
+            PanelManager.Instance.ShowPanel<LeaveWithPartyPanel>();
+        }
+        else
+        {
+            PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, () =>
+            {
+                Time.timeScale = 1;
 
-            //TODO ask user if they want to pull the party or leave by themselves
-            if (SteamLobbyManager.Instance.PrivateLobby.HasValue)
-                ExitManager.Instance.ExitMatch(ExitType.HostLeftWithParty);
-            else
-                ExitManager.Instance.ExitMatch(ExitType.LeftLocal);
-        });
+                ExitType exitType;
+                if (SteamLobbyManager.Instance.IsPrivateMatch)
+                    exitType = ExitType.HostLeftWithParty;
+                else if (!SteamLobbyManager.Instance.PrivateLobby.HasValue)
+                    exitType = ExitType.LeftLocal;
+                else
+                    exitType = ExitType.Leave;
+
+                ExitManager.Instance.ExitMatch(exitType);
+            });
+        }
     }
 
     private void Update()

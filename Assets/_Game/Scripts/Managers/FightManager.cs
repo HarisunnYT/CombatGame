@@ -80,6 +80,8 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         startFightCountdownInProgress = false;
         hudPanel.HideCountdownText();
 
+        MatchManager.Instance.OnFightStarted();
+
         foreach(var player in AlivePlayers)
         {
             if (ServerManager.Instance)
