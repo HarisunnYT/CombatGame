@@ -107,20 +107,11 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
-    public override void OnServerError(NetworkConnection conn, int errorCode)
-    {
-        Debug.Log(errorCode);
-        base.OnServerError(conn, errorCode);
-    }
-
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);
 
-        if (MatchManager.Instance)
-            MatchManager.Instance.ExitMatch(true);
-        else
-            CharacterSelectManager.Instance.ExitLobby(true);
+        ExitManager.Instance.ExitMatch(Application.internetReachability == NetworkReachability.NotReachable ? ExitType.ClientDisconnected : ExitType.HostDisconnected);
     }
 
     public int GetPrefabID(GameObject prefab)

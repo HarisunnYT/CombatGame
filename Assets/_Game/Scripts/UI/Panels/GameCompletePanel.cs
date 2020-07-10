@@ -38,6 +38,6 @@ public class GameCompletePanel : Panel
     {
         yield return new WaitForSecondsRealtime(5);
 
-        MatchManager.Instance.ExitMatch(false);
+        ExitManager.Instance.ExitMatch(ExitType.Leave);
     }
 }

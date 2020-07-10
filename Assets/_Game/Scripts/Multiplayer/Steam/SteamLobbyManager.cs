@@ -16,7 +16,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region CONST_VARIABLES
 
-    public const int MaxLobbyMembers = 3; //TODO SET TO 4
+    public const int MaxLobbyMembers = 2; //TODO SET TO 4
 
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
@@ -259,10 +259,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         string currentSceneName = SceneManager.GetActiveScene().name;
 
-        if (currentSceneName == "Game")
-            MatchManager.Instance.ExitMatch(false);
-        else if (currentSceneName == "Lobby")
-            CharacterSelectManager.Instance.ExitLobby(false);
+        if (ExitManager.Instance)
+            ExitManager.Instance.ExitMatch(ExitType.Leave);
 
         JoinedPrivateLobby(lobby);
     }

@@ -115,6 +115,6 @@ public class CharacterSelectScreen : Panel
 
     public void Cancel()
     {
-        CharacterSelectManager.Instance.ExitLobby(false);
+        ExitManager.Instance.ExitMatch(ExitType.Leave);
     }
 }

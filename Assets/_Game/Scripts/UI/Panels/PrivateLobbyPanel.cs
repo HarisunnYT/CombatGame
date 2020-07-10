@@ -153,11 +153,16 @@ public class PrivateLobbyPanel : Panel
 
     public void LeaveLobby()
     {
-        PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, () =>
+        System.Action leaveAction = () =>
         {
             PanelManager.Instance.ShowPanel<PlayPanel>();
             SteamLobbyManager.Instance.LeavePrivateLobby();
-        });
+        };
+
+        if (SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount > 1)
+            PanelManager.Instance.GetPanel<AreYouSurePanel>().Configure(this, leaveAction);
+        else
+            leaveAction.Invoke();
     }
 
     private void SetPlayButtonsInteractable(bool interactable)

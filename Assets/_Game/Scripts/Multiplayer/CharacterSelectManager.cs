@@ -77,48 +77,4 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
         ServerManager.Instance.GetPlayer(playerID).Figher = "";
         OnCharacterUnselected?.Invoke(playerID, characterName);
     }
-
-    /// <summary>
-    /// this is for exiting lobby, exiting match is on the MatchManager
-    /// </summary>
-    public void ExitLobby(bool forced)
-    {
-        if ((!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PrivateHost) && NetworkManager.Instance)
-            NetworkManager.Instance.StopHost();
-
-        ServerManager.Instance.DestroyInstance();
-        CursorManager.Instance.DestroyInstance();
-        LocalPlayersManager.Instance.DestroyInstance();
-
-        SteamLobbyManager.Instance.LeavePublicLobby();
-
-        if (forced)
-            ErrorManager.Instance.DisconnectedError();
-
-        NetworkManager.Instance.StopClient();
-        StartCoroutine(DelayedRemovalOfInstances());
-    }
-
-    private IEnumerator DelayedRemovalOfInstances()
-    {
-        yield return new WaitForEndOfFrame();
-
-        Destroy(NetworkManager.Instance.gameObject);
-        NetworkManager.Instance = null;
-
-        yield return new WaitForEndOfFrame();
-
-        CharacterSelectManager.Instance = null;
-        Destroy(gameObject);
-
-        SceneLoader.Instance.LoadScene("MainMenu");
-    }
-
-    private void OnApplicationQuit()
-    {
-        if (MatchManager.Instance)
-            MatchManager.Instance.ExitMatch(false);
-        else
-            ExitLobby(false);
-    }
 }

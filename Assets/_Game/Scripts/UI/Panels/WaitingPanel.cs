@@ -14,12 +14,12 @@ public class WaitingPanel : Panel
 
     public void Cancel()
     {
-        CharacterSelectManager.Instance.ExitLobby(false);
+        ExitManager.Instance.ExitMatch(ExitType.Leave);
     }
 
     private void Update()
     {
         if (targetTime != -1 && Time.time > targetTime)
-            CharacterSelectManager.Instance.ExitLobby(true);
+            ExitManager.Instance.ExitMatch(ExitType.Leave);
     }
 }

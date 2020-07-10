@@ -207,49 +207,9 @@ public class MatchManager : NetworkBehaviour
         time += UnityEngine.Time.fixedDeltaTime;
     }
 
-    /// <summary>
-    /// this is for exiting match, exiting lobby is on the LobbyManager
-    /// </summary>
-    public void ExitMatch(bool forced)
-    {
-        if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
-            NetworkManager.Instance.StopHost();
-
-        Destroy(FightManager.Instance.gameObject);
-
-        ServerManager.Instance.DestroyInstance();
-        CursorManager.Instance.DestroyInstance();
-        LocalPlayersManager.Instance.DestroyInstance();
-
-        SteamLobbyManager.Instance.LeavePublicLobby();
-
-        //if the player was forced from the match and isn't apart of a private lobby when not host 
-        if (forced && (!SteamLobbyManager.Instance.PrivateLobby.HasValue || SteamLobbyManager.Instance.PrivateHost))
-            ErrorManager.Instance.DisconnectedError();
-
-        NetworkManager.Instance.StopClient();
-        StartCoroutine(DelayedRemovalOfInstances(forced));
-    }
-
-    private IEnumerator DelayedRemovalOfInstances(bool forced)
-    {
-        yield return new WaitForEndOfFrame();
-
-        Destroy(NetworkManager.Instance.gameObject);
-        NetworkManager.Instance = null;
-
-        yield return new WaitForEndOfFrame();
-
-        SceneLoader.Instance.LoadScene("MainMenu", () =>
-        {
-            if (SteamLobbyManager.Instance.PrivateLobby.HasValue)
-                PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
-        });
-    }
-
     public void ExitMatchWithParty()
     {
-        ExitMatch(false);
+        ExitManager.Instance.ExitMatch(ExitType.HostLeftWithParty);
         SteamLobbyManager.Instance.ExitMatchWithParty();
     }
 

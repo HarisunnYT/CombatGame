@@ -60,7 +60,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         }
         else
         {
-            if (!fightOver && ServerManager.Instance.Players.Count <= 1)
+            if (!fightOver && ServerManager.Instance.Players.Count <= 1 && ExitManager.Instance.ExitType == ExitType.None)
             {
                 GameComplete();
             }
