@@ -9,6 +9,11 @@ public class BetterButton : Button
 {
     private Animator animator;
 
+    [Multiline]
+    [SerializeField]
+    private string nonInteractableMessage;
+    public string NonInteractableMessage { get { return nonInteractableMessage; } }
+
     [SerializeField]
     private UnityEvent onSelected;
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,12 @@ public class Cursor : MonoBehaviour
 {
     [SerializeField]
     private float cursorMoveSpeed = 10;
+
+    [SerializeField]
+    private RectTransform messageBox;
+
+    [SerializeField]
+    private TMP_Text messageText;
 
     public int PlayerIndex { get; private set; }
     public System.Guid ControllerID { get; private set; }
@@ -20,6 +27,8 @@ public class Cursor : MonoBehaviour
     private Button previousHighlightedButton;
 
     private EventSystem eventSystem;
+
+    private bool messageBoxFacingRight = true;
 
     private void Awake()
     {
@@ -38,6 +47,8 @@ public class Cursor : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(Screen.width / Screen.height);
+
         if (PlayerIndex == 0) //0 means it's the person on the PC
         {
             transform.position = Input.mousePosition;
@@ -60,15 +71,23 @@ public class Cursor : MonoBehaviour
                 PanelManager.Instance.Raycaster.Raycast(pointerEventData, results);
 
             eventSystem.SetSelectedGameObject(null);
+            HideMessage();
 
             foreach (RaycastResult result in results)
             {
-                Button button = result.gameObject.GetComponentInParent<Button>();
-                if (button && button.interactable)
+                BetterButton button = result.gameObject.GetComponentInParent<BetterButton>();
+                if (button)
                 {
-                    button.Select();
-                    previousHighlightedButton = button;
-                    break;
+                    if (button.interactable)
+                    {
+                        button.Select();
+                        previousHighlightedButton = button;
+                        break;
+                    }
+                    else
+                    {
+                        ShowMessage(button.NonInteractableMessage);
+                    }
                 }
             }
 
@@ -90,6 +109,9 @@ public class Cursor : MonoBehaviour
 
         if (AssignedCamera == null)
             ResetCamera();
+
+        if (messageBox.gameObject.activeSelf)
+            SetMessageBoxSide();
 
         //clamp cursor to camera bounds
         Vector3 pos = AssignedCamera.ScreenToViewportPoint(transform.position);
@@ -123,5 +145,29 @@ public class Cursor : MonoBehaviour
     public void SetScale(Vector3 scale)
     {
         transform.localScale = scale;
+    }
+
+    private void SetMessageBoxSide()
+    {
+        bool isFullyVisible = messageBox.IsFullyVisibleFrom();
+        if (isFullyVisible)
+            return;
+
+        bool right = !messageBoxFacingRight;
+        messageBoxFacingRight = right;
+
+        messageBox.pivot = right ? Vector2.zero : new Vector2(1, 0);
+        messageBox.anchoredPosition = right ? new Vector2(0, messageBox.anchoredPosition.y) : new Vector2(-100, messageBox.anchoredPosition.y);
+    }
+
+    private void ShowMessage(string text)
+    {
+        messageText.text = text;
+        messageBox.gameObject.SetActive(true);
+    }
+
+    private void HideMessage()
+    {
+        messageBox.gameObject.SetActive(false);
     }
 }
