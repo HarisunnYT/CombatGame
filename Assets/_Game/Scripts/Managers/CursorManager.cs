@@ -8,6 +8,10 @@ public class CursorManager : PersistentSingleton<CursorManager>
     [SerializeField]
     private Cursor cursorPrefab;
 
+    [Space()]
+    [SerializeField]
+    private Color[] cursorColors;
+
     private List<Cursor> cursors = new List<Cursor>();
     private Dictionary<Cursor, int> showCursors = new Dictionary<Cursor, int>(); //index to show and hide cursors (value stacks when shown)
 
@@ -46,8 +50,10 @@ public class CursorManager : PersistentSingleton<CursorManager>
     private void CreateCursor(int playerIndex, System.Guid controllerID)
     {
         Cursor cursor = Instantiate(cursorPrefab, transform);
-        cursor.AssignDevice(playerIndex, controllerID);
+        cursor.AssignDevice(playerIndex, controllerID, cursorColors[cursors.Count]);
         cursors.Add(cursor);
+
+        cursor.transform.position = new Vector2(Random.Range(Screen.width / 3, Screen.width - Screen.width / 3), Screen.height / 2);
 
         ShowCursor(cursor);
     }

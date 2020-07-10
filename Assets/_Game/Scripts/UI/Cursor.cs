@@ -11,6 +11,9 @@ public class Cursor : MonoBehaviour
     private float cursorMoveSpeed = 10;
 
     [SerializeField]
+    private Image cursorIcon;
+
+    [SerializeField]
     private RectTransform messageBox;
 
     [SerializeField]
@@ -36,10 +39,12 @@ public class Cursor : MonoBehaviour
         ResetCamera();
     }
 
-    public void AssignDevice(int playerIndex, System.Guid controllerID)
+    public void AssignDevice(int playerIndex, System.Guid controllerID, Color cursorColor = default)
     {
         ControllerID = controllerID;
         PlayerIndex = playerIndex;
+
+        cursorIcon.color = cursorColor == default ? Color.white : cursorColor;
 
         InputProfile = new InputProfile(controllerID);
         gameObject.SetActive(true);

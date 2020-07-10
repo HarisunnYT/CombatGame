@@ -51,6 +51,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursorPrefab: {fileID: 1885511121434342956, guid: 587453767b6b8a4488cad65d1a89cf76,
     type: 3}
+  cursorColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.31997654, g: 0.7075472, b: 0.29036137, a: 1}
+  - {r: 0.34117648, g: 0.4, b: 0.8117647, a: 1}
+  - {r: 0.8962264, g: 0.34129453, b: 0.28324133, a: 1}
 --- !u!223 &6580177531826210040
 Canvas:
   m_ObjectHideFlags: 0

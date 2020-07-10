@@ -322,6 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorMoveSpeed: 300
+  cursorIcon: {fileID: 8453873904757086900}
   messageBox: {fileID: 6481409569394574269}
   messageText: {fileID: 2447818597758591316}
 --- !u!1 &7786856949568334614
