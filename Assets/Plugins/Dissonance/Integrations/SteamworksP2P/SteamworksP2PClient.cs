@@ -44,7 +44,6 @@ namespace Dissonance.Integrations.SteamworksP2P
 
         protected override void ReadMessages()
         {
-            uint packetSize;
             SteamId sender;
             P2Packet? packet;
 

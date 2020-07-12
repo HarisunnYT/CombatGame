@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Dissonance.Integrations.SteamworksP2P;
+using Steamworks;
 
 public class VoiceCommsManager : Singleton<VoiceCommsManager>
 {
@@ -10,16 +11,20 @@ public class VoiceCommsManager : Singleton<VoiceCommsManager>
 
     protected override void Initialize()
     {
-        foreach(var member in SteamLobbyManager.Instance.PublicLobby.Value.Members)
-        {
-            commsNetwork.PeerConnected(member.Id);
-        }
-
         if (SteamLobbyManager.Instance.PublicHost)
+        {
+            foreach (var member in SteamLobbyManager.Instance.PublicLobby.Value.Members)
+            {
+                if (member.Id != SteamClient.SteamId)
+                {
+                    commsNetwork.PeerConnected(member.Id);
+                }
+            }
+
             commsNetwork.InitializeAsServer();
+        }
         else
             commsNetwork.InitializeAsClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id);
 
-        commsNetwork.gameObject.SetActive(true);
     }
 }
