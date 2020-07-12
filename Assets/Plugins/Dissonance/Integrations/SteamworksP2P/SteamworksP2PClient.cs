@@ -45,7 +45,6 @@ namespace Dissonance.Integrations.SteamworksP2P
         protected override void ReadMessages()
         {
             SteamId sender = new SteamId();
-            byte[] _receiveBuffer = new byte[0];
             uint size = 0;
 
             while (SteamNetworking.ReadP2PPacket(_receiveBuffer, ref size, ref sender, _network.P2PPacketChannelToServer))
