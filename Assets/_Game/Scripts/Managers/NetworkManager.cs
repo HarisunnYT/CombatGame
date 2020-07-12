@@ -33,6 +33,16 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
+    public override void OnClientSceneChanged(NetworkConnection conn)
+    {
+        base.OnClientSceneChanged(conn);
+
+        if (SceneManager.GetActiveScene().name == "Game" && !SteamLobbyManager.Instance.PublicHost)
+        {
+            SceneLoadedAndPlayersConnected();
+        }
+    }
+
     int indexAssigning = 0;
     int playersCreated = 0;
 
