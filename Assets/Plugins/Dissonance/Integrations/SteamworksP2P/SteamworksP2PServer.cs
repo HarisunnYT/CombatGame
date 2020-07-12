@@ -22,13 +22,18 @@ namespace Dissonance.Integrations.SteamworksP2P
             SteamId sender;
             P2Packet? packet;
 
-            while ((packet = SteamNetworking.ReadP2PPacket(_network.P2PPacketChannelToServer)).HasValue);
+            do
             {
+                packet = SteamNetworking.ReadP2PPacket(_network.P2PPacketChannelToServer);
+                if (packet == null)
+                    return;
+
                 _receiveBuffer = packet.Value.Data;
                 sender = packet.Value.SteamId;
 
                 NetworkReceivedPacket(sender, new ArraySegment<byte>(_receiveBuffer, 0, _receiveBuffer.Length));
             }
+            while (packet != null);
         }
 
         internal void PeerDisconnected(SteamId conn)

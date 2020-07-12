@@ -48,8 +48,12 @@ namespace Dissonance.Integrations.SteamworksP2P
             SteamId sender;
             P2Packet? packet;
 
-            while ((packet = SteamNetworking.ReadP2PPacket(_network.P2PPacketChannelToServer)).HasValue) ;
+            do
             {
+                packet = SteamNetworking.ReadP2PPacket(_network.P2PPacketChannelToServer);
+                if (packet == null)
+                    return;
+
                 byte[] _receiveBuffer = packet.Value.Data;
                 sender = packet.Value.SteamId;
 
@@ -57,6 +61,7 @@ namespace Dissonance.Integrations.SteamworksP2P
                 if (id.HasValue)
                     ReceiveHandshakeP2P(id.Value, sender);
             }
+            while (packet != null);
         }
 
         protected override void SendReliable(ArraySegment<byte> packet)
