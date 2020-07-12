@@ -49,7 +49,7 @@ namespace Dissonance.Integrations.SteamworksP2P
 
             while (SteamNetworking.ReadP2PPacket(_receiveBuffer, ref size, ref sender, _network.P2PPacketChannelToServer))
             {
-                var id = NetworkReceivedPacket(new ArraySegment<byte>(_receiveBuffer, 0, _receiveBuffer.Length));
+                var id = NetworkReceivedPacket(new ArraySegment<byte>(_receiveBuffer, 0, (int)size));
                 if (id.HasValue)
                     ReceiveHandshakeP2P(id.Value, sender);
             }

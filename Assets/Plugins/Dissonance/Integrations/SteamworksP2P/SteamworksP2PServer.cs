@@ -24,7 +24,7 @@ namespace Dissonance.Integrations.SteamworksP2P
 
             while (SteamNetworking.ReadP2PPacket(_receiveBuffer, ref size, ref sender, _network.P2PPacketChannelToServer))
             {
-                NetworkReceivedPacket(sender, new ArraySegment<byte>(_receiveBuffer, 0, _receiveBuffer.Length));
+                NetworkReceivedPacket(sender, new ArraySegment<byte>(_receiveBuffer, 0, (int)size));
             }
         }
 
