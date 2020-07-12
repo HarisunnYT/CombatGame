@@ -19,7 +19,7 @@ namespace Dissonance.Editor
         where TComms : BaseCommsNetwork<TServer, TClient, TPeer, TClientParam, TServerParam>
         where TServer : BaseServer<TServer, TClient, TPeer>
         where TClient : BaseClient<TServer, TClient, TPeer>
-        where TPeer : struct, IEquatable<TPeer>
+        where TPeer : struct
     {
         private Texture2D _logo;
         protected GUIStyle ContentOutline { get; private set; }

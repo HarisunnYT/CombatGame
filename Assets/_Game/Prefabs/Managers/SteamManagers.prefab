@@ -93,7 +93,7 @@ MonoBehaviour:
   OnServerDisconnected:
     m_PersistentCalls:
       m_Calls: []
-  Channels: 02000000
+  Channels: 02000000000000000100000003000000
   Timeout: 25
   SteamAppID: 480
   AllowSteamRelay: 1

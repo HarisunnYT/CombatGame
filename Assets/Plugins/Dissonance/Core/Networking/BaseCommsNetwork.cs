@@ -12,7 +12,7 @@ namespace Dissonance.Networking
 {
     public abstract class BaseCommsNetwork<TServer, TClient, TPeer, TClientParam, TServerParam>
         : MonoBehaviour, ICommsNetwork, ICommsNetworkState
-        where TPeer: struct, IEquatable<TPeer>
+        where TPeer: struct
         where TServer: BaseServer<TServer, TClient, TPeer>
         where TClient: BaseClient<TServer, TClient, TPeer>
     {
