@@ -19,21 +19,14 @@ namespace Dissonance.Integrations.SteamworksP2P
 
         protected override void ReadMessages()
         {
-            SteamId sender;
-            P2Packet? packet;
+            SteamId sender = new SteamId();
+            byte[] _receiveBuffer = new byte[0];
+            uint size = 0;
 
-            do
+            while (SteamNetworking.ReadP2PPacket(_receiveBuffer, ref size, ref sender, _network.P2PPacketChannelToServer))
             {
-                packet = SteamNetworking.ReadP2PPacket(_network.P2PPacketChannelToServer);
-                if (packet == null)
-                    return;
-
-                _receiveBuffer = packet.Value.Data;
-                sender = packet.Value.SteamId;
-
                 NetworkReceivedPacket(sender, new ArraySegment<byte>(_receiveBuffer, 0, _receiveBuffer.Length));
             }
-            while (packet != null);
         }
 
         internal void PeerDisconnected(SteamId conn)

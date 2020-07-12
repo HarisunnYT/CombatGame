@@ -44,23 +44,16 @@ namespace Dissonance.Integrations.SteamworksP2P
 
         protected override void ReadMessages()
         {
-            SteamId sender;
-            P2Packet? packet;
+            SteamId sender = new SteamId();
+            byte[] _receiveBuffer = new byte[0];
+            uint size = 0;
 
-            do
+            while (SteamNetworking.ReadP2PPacket(_receiveBuffer, ref size, ref sender, _network.P2PPacketChannelToServer))
             {
-                packet = SteamNetworking.ReadP2PPacket(_network.P2PPacketChannelToServer);
-                if (packet == null)
-                    return;
-
-                byte[] _receiveBuffer = packet.Value.Data;
-                sender = packet.Value.SteamId;
-
                 var id = NetworkReceivedPacket(new ArraySegment<byte>(_receiveBuffer, 0, _receiveBuffer.Length));
                 if (id.HasValue)
                     ReceiveHandshakeP2P(id.Value, sender);
             }
-            while (packet != null);
         }
 
         protected override void SendReliable(ArraySegment<byte> packet)

@@ -2902,7 +2902,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tokens:
-    _tokens: []
+    _tokens:
+    - New Token
   _channelTypeExpanded: 0
   _metadataExpanded: 0
   _activationModeExpanded: 0
