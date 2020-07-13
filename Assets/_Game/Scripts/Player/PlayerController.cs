@@ -221,7 +221,12 @@ public class PlayerController : Character
             foreach(var player in ServerManager.Instance.Players)
             {
                 if (player.PlayerID != 0)
-                    InputProfile.RemoveController(player.ControllerGUID);
+                {
+                    if (InputProfile.IncludeDevices.Count == 1)
+                        InputProfile = new InputProfile(default);
+                    else
+                        InputProfile.RemoveController(player.ControllerGUID);
+                }
             }
         }
 

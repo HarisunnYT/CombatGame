@@ -113,14 +113,14 @@ public class MatchManager : NetworkBehaviour
         else
             LocalPlayerUIManager.Instance.DisplayLocalScreens(false);
 
-        spawnIndex = 0;
-
         CreateFightManager();
     }
 
     private void BeginBuyPhase()
     {
-        foreach(var player in ServerManager.Instance.Players)
+        spawnIndex = 0;
+
+        foreach (var player in ServerManager.Instance.Players)
         {
             player.PlayerController.ResetCharacter();
         }
@@ -198,8 +198,7 @@ public class MatchManager : NetworkBehaviour
 
     public void SetPlayerSpawn(PlayerController player)
     {
-        spawnPositions[spawnIndex].SetPlayerSpawn(player);
-        spawnIndex++;
+        spawnPositions[spawnIndex++].SetPlayerSpawn(player);
     }
 
     public bool HasPlayerWon()

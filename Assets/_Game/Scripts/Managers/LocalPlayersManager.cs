@@ -37,6 +37,8 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
     {
         ServerManager.Instance.AddConnectedPlayer(playerIndex, "Player " + (playerIndex + 1)).ControllerGUID = controllerID;
         CursorManager.Instance.GetCursor(0).InputProfile.RemoveController(controllerID); //remove this controller from player 1s controllers list
+        if (CursorManager.Instance.GetCursor(0).InputProfile.IncludeDevices.Count == 0)
+            CursorManager.Instance.GetCursor(0).AssignDevice(0, default); //reset device so it resets bindings
 
         OnLocalPlayerConnected?.Invoke(playerIndex, controllerID);
         LocalPlayersCount++;

@@ -101,6 +101,7 @@ public class InputProfile : PlayerActionSet
             if (InputManager.Devices[i].GUID == controllerGUID)
             {
                 IncludeDevices.Remove(InputManager.Devices[i]);
+
                 break;
             }
         }
