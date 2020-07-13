@@ -11,16 +11,13 @@ public class VoiceCommsManager : Singleton<VoiceCommsManager>
 
     protected override void Initialize()
     {
+        foreach (var member in SteamLobbyManager.Instance.PublicLobby.Value.Members)
+        {
+            commsNetwork.PeerConnected(member.Id);
+        }
+
         if (SteamLobbyManager.Instance.PublicHost)
         {
-            foreach (var member in SteamLobbyManager.Instance.PublicLobby.Value.Members)
-            {
-                if (member.Id != SteamClient.SteamId)
-                {
-                    commsNetwork.PeerConnected(member.Id);
-                }
-            }
-
             commsNetwork.InitializeAsServer();
         }
         else
