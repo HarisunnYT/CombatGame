@@ -48,7 +48,15 @@ public class Cursor : MonoBehaviour
         cursorIcon.color = cursorColor == default ? Color.white : cursorColor;
 
         InputProfile = new InputProfile(controllerID);
+        InputProfile.OnInputChanged += OnInputChanged;
+
         gameObject.SetActive(true);
+    }
+
+    private void OnInputChanged(InControl.InputDevice previousDevice, InControl.InputDevice newDevice)
+    {
+        if (previousDevice.GUID == ControllerID)
+            ControllerID = newDevice.GUID;
     }
 
     private void Update()

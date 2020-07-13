@@ -27,11 +27,14 @@ public class InputProfile : PlayerActionSet
     public PlayerAction CommunicationWheelRight;
     public PlayerAction CommunicationWheelLeft;
 
-    public InputDevice device = null;
-
     public System.Guid GUID;
+    private UnityInputDevice device;
 
     public static List<InputProfile> InputProfiles = new List<InputProfile>();
+
+    public delegate void InputChangedEvent(InputDevice previousDevice, InputDevice newDevice);
+    public event InputChangedEvent OnInputChanged;
+
 
     public InputProfile(System.Guid controllerGUID, bool allowAllControllers = false)
     {
@@ -69,28 +72,41 @@ public class InputProfile : PlayerActionSet
         {
             if (allowAllControllers || InControl.InputManager.Devices[i].GUID == controllerGUID)
             {
-                device = InControl.InputManager.Devices[i];
+                if (InControl.InputManager.Devices[i] is UnityInputDevice)
+                {
+                    device = InControl.InputManager.Devices[i] as UnityInputDevice;
 
-                if (!IncludeDevices.Contains(device))
-                    IncludeDevices.Add(device);
+                    if (!IncludeDevices.Contains(device))
+                        IncludeDevices.Add(device);
 
-                if (!allowAllControllers)
-                    break;
+                    if (!allowAllControllers)
+                        break;
+                }
             }
         }
 
         GUID = controllerGUID;
 
-        //check if input profile is already created for this guid
-        foreach (var profile in InputProfiles)
-        {
-            if (profile.GUID == controllerGUID)
-            {
-                return;
-            }
-        }
-
         InputProfiles.Add(this);
+
+        InputManager.OnDeviceAttached += OnDeviceAttached;
+    }
+
+    private void OnDeviceAttached(InputDevice obj)
+    {
+        if (device != null && device.JoystickId == ((UnityInputDevice)obj).JoystickId)
+        {
+            OnInputChanged?.Invoke(device, obj);
+            IncludeDevices.Remove(device);
+
+            InputProfiles.Remove(this);
+
+            device = obj as UnityInputDevice;
+            GUID = obj.GUID;
+
+            IncludeDevices.Add(device);
+            InputProfiles.Add(this);
+        }
     }
 
     public void RemoveController(System.Guid controllerGUID)
@@ -152,7 +168,11 @@ public class InputProfile : PlayerActionSet
         Back.AddDefaultBinding(InputControlType.Action2);
         Menu.AddDefaultBinding(InputControlType.Command);
 
-        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadUp, InputControlType.DPadRight, InputControlType.DPadDown, InputControlType.DPadLeft);
+        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadUp);
+        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadRight);
+        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadDown);
+        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadLeft);
+
         CommunicationWheelUp.AddDefaultBinding(InputControlType.DPadUp);
         CommunicationWheelRight.AddDefaultBinding(InputControlType.DPadRight);
         CommunicationWheelDown.AddDefaultBinding(InputControlType.DPadDown);

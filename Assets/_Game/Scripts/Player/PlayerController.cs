@@ -213,6 +213,7 @@ public class PlayerController : Character
         MatchManager.Instance.AddPlayer(this, playerID);
 
         InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch || playerID == 0);
+        InputProfile.OnInputChanged += OnInputChanged;
         OnInputProfileSet?.Invoke();
 
         //remove already used controllers
@@ -223,7 +224,10 @@ public class PlayerController : Character
                 if (player.PlayerID != 0)
                 {
                     if (InputProfile.IncludeDevices.Count == 1)
+                    {
                         InputProfile = new InputProfile(default);
+                        InputProfile.OnInputChanged += OnInputChanged;
+                    }
                     else
                         InputProfile.RemoveController(player.ControllerGUID);
                 }
@@ -233,6 +237,12 @@ public class PlayerController : Character
         //set the last player fighter, only if it's an online match or the players index is 0
         if ((ServerManager.Instance.IsOnlineMatch && isLocalPlayer) || (!ServerManager.Instance.IsOnlineMatch && playerID == 0))
             FighterManager.Instance.SetLastPlayedFighter(Fighter.FighterName);
+    }
+
+    private void OnInputChanged(InControl.InputDevice previousDevice, InControl.InputDevice newDevice)
+    {
+        if (previousDevice.GUID == ServerManager.Instance.GetPlayer(this).ControllerGUID)
+            ServerManager.Instance.GetPlayer(this).ControllerGUID = newDevice.GUID;
     }
 
     public override void ResetCharacter()

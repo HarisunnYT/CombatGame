@@ -1,5 +1,4 @@
-﻿using InControl.NativeProfile;
-using Mirror;
+﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
