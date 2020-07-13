@@ -9,7 +9,8 @@ public enum ExitType
     HostDisconnected,
     ClientDisconnected,
     HostLeftWithParty,
-    LeftLocal
+    LeftLocal,
+    LeftToJoinLobby
 }
 
 public class ExitManager : PersistentSingleton<ExitManager>
@@ -46,7 +47,7 @@ public class ExitManager : PersistentSingleton<ExitManager>
         DestroySingletons();
 
         SteamLobbyManager.Instance.LeavePublicLobby();
-        if (ExitType != ExitType.HostLeftWithParty)
+        if (ExitType != ExitType.HostLeftWithParty && ExitType != ExitType.LeftToJoinLobby)
             SteamLobbyManager.Instance.LeavePrivateLobby();
 
         yield return StartCoroutine(DelayedRemoval());
@@ -56,7 +57,7 @@ public class ExitManager : PersistentSingleton<ExitManager>
 
         SceneLoader.Instance.LoadScene("MainMenu", () =>
         {
-            if (ExitType == ExitType.HostLeftWithParty)
+            if (ExitType == ExitType.HostLeftWithParty || ExitType == ExitType.LeftToJoinLobby)
                 PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
 
             Destroy(gameObject);

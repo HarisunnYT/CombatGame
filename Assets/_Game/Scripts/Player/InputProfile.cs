@@ -11,7 +11,6 @@ public class InputProfile : PlayerActionSet
     public PlayerAction Down;
 
     public PlayerTwoAxisAction Move;
-
     public PlayerAction Jump;
 
     public PlayerAction Attack1;

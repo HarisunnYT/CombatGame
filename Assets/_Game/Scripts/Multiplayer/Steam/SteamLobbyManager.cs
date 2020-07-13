@@ -101,6 +101,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
+        SteamMatchmaking.OnLobbyInvite += OnLobbyInvite;
     }
 
     protected override void Deinitialize()
@@ -110,6 +111,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
+        SteamMatchmaking.OnLobbyInvite -= OnLobbyInvite;
 
         base.Deinitialize();
     }
@@ -249,7 +251,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             PrivateLobby.Value.SetJoinable(true);
         }
 
-        PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+        if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
+            PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
 
         Debug.Log("Joined private lobby");
     }
@@ -265,7 +268,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         string currentSceneName = SceneManager.GetActiveScene().name;
 
         if (ExitManager.Instance)
-            ExitManager.Instance.ExitMatch(ExitType.Leave);
+            ExitManager.Instance.ExitMatch(ExitType.LeftToJoinLobby);
 
         JoinedPrivateLobby(lobby);
     }
@@ -471,6 +474,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void OnLobbyMemberJoined(Lobby arg1, Friend arg2)
     {
         UpdateLobby(arg1);
+    }
+
+    private void OnLobbyInvite(Friend arg1, Lobby arg2)
+    {
+        PanelManager.Instance.GetPanel<FriendInvitePanel>().ShowPanel(arg1, arg2);
     }
 
     private void UpdateLobby(Lobby lobby)
