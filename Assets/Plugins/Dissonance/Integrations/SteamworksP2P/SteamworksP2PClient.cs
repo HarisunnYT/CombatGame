@@ -47,7 +47,7 @@ namespace Dissonance.Integrations.SteamworksP2P
             SteamId sender = new SteamId();
             uint size = 0;
 
-            while (SteamNetworking.ReadP2PPacket(_receiveBuffer, ref size, ref sender, _network.P2PPacketChannelToServer))
+            while (SteamNetworking.ReadP2PPacket(_receiveBuffer, ref size, ref sender, _network.P2PPacketChannelToClient))
             {
                 var id = NetworkReceivedPacket(new ArraySegment<byte>(_receiveBuffer, 0, (int)size));
                 if (id.HasValue)
