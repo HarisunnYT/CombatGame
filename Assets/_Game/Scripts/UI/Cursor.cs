@@ -85,6 +85,9 @@ public class Cursor : MonoBehaviour
                 {
                     if (button.interactable)
                     {
+                        if (!string.IsNullOrEmpty(button.InteractableMessage))
+                            ShowMessage(button.InteractableMessage);
+
                         button.Select();
                         previousHighlightedButton = button;
                         break;

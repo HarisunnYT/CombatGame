@@ -68,6 +68,11 @@ public class PrivateLobbyPanel : Panel
         SteamLobbyManager.Instance.PlayPrivateMatch();
     }
 
+    public void ShowFriendsList()
+    {
+        PanelManager.Instance.ShowPanel<FriendsListPanel>();
+    }
+
     public void LobbyPrivacyChanged(bool isOn)
     {
         if (isOn)

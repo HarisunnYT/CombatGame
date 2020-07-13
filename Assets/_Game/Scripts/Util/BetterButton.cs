@@ -11,6 +11,11 @@ public class BetterButton : Button
 
     [Multiline]
     [SerializeField]
+    private string interactableMessage;
+    public string InteractableMessage { get { return interactableMessage; } }
+
+    [Multiline]
+    [SerializeField]
     private string nonInteractableMessage;
     public string NonInteractableMessage { get { return nonInteractableMessage; } }
 
