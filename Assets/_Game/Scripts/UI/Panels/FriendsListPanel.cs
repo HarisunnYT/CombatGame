@@ -21,9 +21,7 @@ public class FriendsListPanel : Panel
             if (friend.IsOnline)
             {
                 FriendCell cell = FriendCellCreated(friend);
-                if (cell)
-                    cell.UpdateCell();
-                else
+                if (!cell)
                     ConfigureFriendCell(friend);
             }
         }
@@ -34,9 +32,7 @@ public class FriendsListPanel : Panel
             if (!friend.IsOnline)
             {
                 FriendCell cell = FriendCellCreated(friend);
-                if (cell)
-                    cell.UpdateCell();
-                else
+                if (!cell)
                     ConfigureFriendCell(friend);
             }
         }
