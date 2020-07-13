@@ -282,6 +282,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void PlayPrivateMatch()
     {
         PublicLobby = PrivateLobby;
+        PrivateLobby.Value.SetJoinable(false);
 
         IsPrivateMatch = true;
 
@@ -390,6 +391,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         PublicLobby = lobby;
         PublicLobby.Value.SetPublic();
+
+        PrivateLobby.Value.SetJoinable(false);
 
         //send a message to all members in the private lobby to join the public lobby that has been created
         SendPrivateMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
