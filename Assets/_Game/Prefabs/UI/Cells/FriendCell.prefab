@@ -623,6 +623,9 @@ MonoBehaviour:
   nameText: {fileID: 5847299375971719034}
   profileImage: {fileID: 1464085426227940354}
   joinButton: {fileID: 5028040878025289229}
+  inviteButton: {fileID: 3370731117077443746}
+  background: {fileID: 2028320499270398015}
+  offlineColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
 --- !u!1 &6736022437501056218
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +829,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1c1146b576c1f9d4e86f1f67527d0222, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 18ab8eeb4d9c52741b9b9283f8e3cdf7, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -13,15 +13,32 @@ public class FriendsListPanel : Panel
 
     private List<FriendCell> friends = new List<FriendCell>();
 
-    private void OnEnable()
+    protected override void OnShow()
     {
-        foreach(var friend in SteamFriends.GetFriends())
+        //show online friends first
+        foreach (var friend in SteamFriends.GetFriends())
         {
-            FriendCell cell = FriendCellCreated(friend);
-            if (cell)
-                cell.UpdateCell();
-            else
-                ConfigureFriendCell(friend);
+            if (friend.IsOnline)
+            {
+                FriendCell cell = FriendCellCreated(friend);
+                if (cell)
+                    cell.UpdateCell();
+                else
+                    ConfigureFriendCell(friend);
+            }
+        }
+
+        //show offline friends
+        foreach (var friend in SteamFriends.GetFriends())
+        {
+            if (!friend.IsOnline)
+            {
+                FriendCell cell = FriendCellCreated(friend);
+                if (cell)
+                    cell.UpdateCell();
+                else
+                    ConfigureFriendCell(friend);
+            }
         }
     }
 
@@ -29,6 +46,8 @@ public class FriendsListPanel : Panel
     {
         FriendCell cell = Instantiate(friendCellPrefab, content);
         cell.Configure(friend);
+
+        friends.Add(cell);
     }
 
     private FriendCell FriendCellCreated(Friend friend)

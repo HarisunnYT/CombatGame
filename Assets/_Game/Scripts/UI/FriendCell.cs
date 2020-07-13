@@ -17,22 +17,27 @@ public class FriendCell : MonoBehaviour
     [SerializeField]
     private BetterButton joinButton;
 
+    [SerializeField]
+    private BetterButton inviteButton;
+
+    [Space()]
+    [SerializeField]
+    private Image background;
+
+    [SerializeField]
+    private Color offlineColor;
+
     public Friend Friend { get; private set; }
 
     private Task<Steamworks.Data.Image?> profilePictureTask;
 
     public void Configure(Friend friend)
     {
-        this.Friend = friend;
+        Friend = friend;
+        UpdateCell();
 
         nameText.text = friend.Name;
-
         profilePictureTask = friend.GetMediumAvatarAsync();
-    }
-
-    private void OnEnable()
-    {
-        UpdateCell();
     }
 
     private void Update()
@@ -59,16 +64,21 @@ public class FriendCell : MonoBehaviour
 
     public void UpdateCell()
     {
+        background.color = Friend.IsOnline ? Color.white : offlineColor;
+
+        joinButton.gameObject.SetActive(Friend.IsOnline);
+        inviteButton.gameObject.SetActive(Friend.IsOnline);
+
         joinButton.interactable = Friend.GameInfo.HasValue && Friend.GameInfo.Value.Lobby.HasValue;
     }
 
     public void JoinFriend()
     {
-
+        SteamLobbyManager.Instance.JoinFriendLobby(Friend.GameInfo.Value.Lobby.Value);
     }
 
     public void InviteFriend()
     {
-
+        Friend.InviteToGame("");
     }
 }

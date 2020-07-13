@@ -257,6 +257,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     //this is when the user accepts an invite or clicks 'join game' in steam UI
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId friendID)
     {
+        JoinFriendLobby(lobby);
+    }
+
+    public void JoinFriendLobby(Lobby lobby)
+    {
         string currentSceneName = SceneManager.GetActiveScene().name;
 
         if (ExitManager.Instance)
