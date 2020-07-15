@@ -15,6 +15,7 @@ public class TransitionPanel : Panel
     protected override void OnShow()
     {
         PlayLoadingTween();
+        Time.timeScale = 1;
     }
 
     protected override void OnClose()

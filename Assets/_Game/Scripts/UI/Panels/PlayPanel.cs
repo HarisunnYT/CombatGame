@@ -33,7 +33,7 @@ public class PlayPanel : Panel
 
     public void Online()
     {
-        NetworkManager.Instance.RoomScene = "Assets/_Game/Scenes/MainMenu.unity";
+        NetworkManager.Instance.RoomScene = SteamLobbyManager.Instance.MainMenuScene;
 
         SteamLobbyManager.Instance.CreatePrivateLobby();
         ServerManager.Instance.IsOnlineMatch = true;
@@ -41,7 +41,7 @@ public class PlayPanel : Panel
 
     public void Local()
     {
-        NetworkManager.Instance.RoomScene = "Assets/_Game/Scenes/Lobby.unity";
+        NetworkManager.Instance.RoomScene = SteamLobbyManager.Instance.LobbyScene;
 
         ServerManager.Instance.IsOnlineMatch = false;
         SceneLoader.Instance.LoadScene("Lobby");

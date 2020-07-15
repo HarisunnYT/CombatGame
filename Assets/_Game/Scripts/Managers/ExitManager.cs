@@ -20,26 +20,29 @@ public class ExitManager : PersistentSingleton<ExitManager>
 
     private Coroutine exitMatchCoroutine;
 
-    public void ExitMatch(ExitType exitType)
+    public void ExitMatch(ExitType exitType, System.Action onLoadedMainMenu = null)
     {
         if (ExitType < ExitType.HostLeftWithParty) //anything after host left with party is special and isn't a disconnect
             ExitType = exitType;
 
         if (exitMatchCoroutine == null)
-            exitMatchCoroutine = StartCoroutine(ExitMatchIE());
+            exitMatchCoroutine = StartCoroutine(ExitMatchIE(onLoadedMainMenu));
     }
 
     public void ExitMatchWithParty()
     {
         SteamLobbyManager.Instance.ExitMatchWithParty();
-        ExitMatch(ExitType.HostLeftWithParty);
+        ExitMatch(ExitType.HostLeftWithParty, () =>
+        {
+            PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+        });
     }
 
-    private IEnumerator ExitMatchIE()
+    private IEnumerator ExitMatchIE(System.Action onLoadedMainMenu = null)
     {
         TransitionManager.Instance.ShowTransition();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
         if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
@@ -59,9 +62,7 @@ public class ExitManager : PersistentSingleton<ExitManager>
 
         SceneLoader.Instance.LoadScene("MainMenu", () =>
         {
-            if (ExitType == ExitType.HostLeftWithParty || ExitType == ExitType.LeftToJoinLobby)
-                PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
-
+            onLoadedMainMenu?.Invoke();
             Destroy(gameObject);
         });
     }

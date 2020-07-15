@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Steamworks;
 using System.Linq;
 using Mirror.FizzySteam;
+using Mirror;
 
 public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 {
@@ -22,6 +23,25 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
     private const string leaveMatchWithPartyKey = "leave_match_with_party";
+
+    #endregion
+
+    #region EXPOSED_VARIABLES
+
+    [SerializeField]
+    [Scene]
+    private string mainMenuScene;
+    public string MainMenuScene { get { return mainMenuScene; } }
+
+    [SerializeField]
+    [Scene]
+    private string lobbyScene;
+    public string LobbyScene { get { return lobbyScene; } }
+
+    [SerializeField]
+    [Scene]
+    private string gameScene;
+    public string GameScene { get { return gameScene; } }
 
     #endregion
 
@@ -148,7 +168,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
-    private void CreateServer()
+    public void CreateServer()
     {
         StartCoroutine(CreateServerIE());
     }
@@ -156,7 +176,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private IEnumerator CreateServerIE()
     {
         if (FizzySteamworks.Instance.ServerActive())
-            yield break;
+        {
+            NetworkManager.Instance.StopServer();
+        }
 
         yield return new WaitForEndOfFrame();
 
@@ -311,12 +333,20 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void JoinFriendLobby(Lobby lobby)
     {
-        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (FizzySteamworks.Instance.ClientActive())
+            NetworkManager.Instance.StopClient();
+
+        if (FizzySteamworks.Instance.ServerActive())
+            NetworkManager.Instance.StopServer();
 
         if (ExitManager.Instance)
-            ExitManager.Instance.ExitMatch(ExitType.LeftToJoinLobby);
-
-        JoinedPrivateLobby(lobby);
+        {
+            ExitManager.Instance.ExitMatch(ExitType.LeftToJoinLobby, () =>
+            {
+                JoinedPrivateLobby(lobby);
+                PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+            });
+        }
     }
 
     public void LeavePrivateLobby()
@@ -329,7 +359,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 NetworkManager.Instance.StopClient();
 
             PrivateLobby.Value.Leave();
-            //VoiceCommsManager.Instance.Stop();
 
             PrivateLobby = null;
         }
@@ -337,6 +366,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void PlayPrivateMatch()
     {
+        NetworkManager.Instance.RoomScene = LobbyScene;
+
         PublicLobby = PrivateLobby;
         PrivateLobby.Value.SetJoinable(false);
 
@@ -446,6 +477,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void CreatedPublicMatch(Lobby? lobby)
     {
+        NetworkManager.Instance.RoomScene = LobbyScene;
+
+        if (FizzySteamworks.Instance.ServerActive())
+            NetworkManager.Instance.StopServer();
+
         PublicLobby = lobby;
         PublicLobby.Value.SetPublic();
 
@@ -466,6 +502,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
+        NetworkManager.Instance.RoomScene = LobbyScene;
+
         if (FizzySteamworks.Instance.ServerActive())
             NetworkManager.Instance.StopServer();
 
@@ -489,7 +527,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             if (PrivateLobby == null || PublicLobby.Value.Id != PrivateLobby.Value.Id)
             {
                 PublicLobby.Value.Leave();
-                //VoiceCommsManager.Instance.Stop();
             }
 
             PublicLobby = null;

@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3246121836c79c54dad9f566d4889113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenuScene: Assets/_Game/Scenes/MainMenu.unity
+  lobbyScene: Assets/_Game/Scenes/Lobby.unity
+  gameScene: Assets/_Game/Scenes/Game.unity
 --- !u!114 &2501660753651285458
 MonoBehaviour:
   m_ObjectHideFlags: 0

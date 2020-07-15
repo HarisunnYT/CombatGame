@@ -25,6 +25,8 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
         {
             if (!SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost)
                 SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id.Value.ToString());
+            else if (SteamLobbyManager.Instance.PublicHost)
+                SteamLobbyManager.Instance.CreateServer();
         }
         else
         {
