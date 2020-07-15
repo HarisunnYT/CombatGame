@@ -52,7 +52,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
     {
         if (startFightCountdownInProgress)
         {
-            int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - MatchManager.Instance.Time);
+            int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - (float)NetworkTime.time);
             if (roundedTime <= 0)
             {
                 CountdownOver();
@@ -70,7 +70,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
     private void BeginFightCountdown()
     {
         startFightCountdownInProgress = true;
-        startFightCountdownTimer = MatchManager.Instance.Time + startFightCountDownTimeInSeconds;
+        startFightCountdownTimer = (float)NetworkTime.time + startFightCountDownTimeInSeconds;
 
         hudPanel.BeginFightCountdown(startFightCountdownTimer);
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -54,7 +55,7 @@ public class LevelEditorPanel : Panel
     {
         if (phase == MatchManager.RoundPhase.Buy_Phase)
         {
-            countdownTimer.Configure(MatchManager.Instance.Time + MatchManager.Instance.BuyPhaseTimeInSeconds);
+            countdownTimer.Configure((float)NetworkTime.time + MatchManager.Instance.BuyPhaseTimeInSeconds);
         }
     }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MatchManager : NetworkBehaviour
+public class MatchManager : Singleton<MatchManager>
 {
     #region EXTENSIONS
     public enum RoundPhase
@@ -32,8 +32,6 @@ public class MatchManager : NetworkBehaviour
 
     #region RUNTIME_VARIABLES
 
-    public static MatchManager Instance;
-
     public int WinsRequired { get; private set; } = 5;
 
     public bool MatchStarted { get; private set; } = false;
@@ -42,10 +40,6 @@ public class MatchManager : NetworkBehaviour
     //int being the amount of wins the player has
     private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
     public Dictionary<PlayerController, int> MatchResults { get { return wins; } }
-
-    [SyncVar]
-    private float time;
-    public float Time { get { return time; } }
 
     private FightManager currentFight;
     private RoundPhase currentPhase;
@@ -64,11 +58,6 @@ public class MatchManager : NetworkBehaviour
     public event PhaseEvent OnPhaseChanged;
 
     #endregion
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     private void Start()
     {
@@ -125,7 +114,7 @@ public class MatchManager : NetworkBehaviour
             player.PlayerController.ResetCharacter();
         }
 
-        buyPhaseCountdownTimer = time + buyPhaseTimeInSeconds;
+        buyPhaseCountdownTimer = (float)NetworkTime.time + buyPhaseTimeInSeconds;
 
         if (ServerManager.Instance.IsOnlineMatch)
             purchasePanel.ShowPanel();
@@ -172,7 +161,7 @@ public class MatchManager : NetworkBehaviour
     {
         if (currentPhase == RoundPhase.Buy_Phase)
         {
-            int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - time);
+            int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - (float)NetworkTime.time);
             if (roundedTime <= 0)
             {
                 BuyPhaseFinished();
@@ -212,11 +201,6 @@ public class MatchManager : NetworkBehaviour
         }
 
         return false;
-    }
-
-    private void FixedUpdate()
-    {
-        time += UnityEngine.Time.fixedDeltaTime;
     }
 
     public void OnFightStarted()

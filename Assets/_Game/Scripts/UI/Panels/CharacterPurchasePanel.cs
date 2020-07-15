@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System.Linq;
+using Mirror;
 
 public class CharacterPurchasePanel : Panel
 {
@@ -71,7 +72,7 @@ public class CharacterPurchasePanel : Panel
     {
         if (phase == MatchManager.RoundPhase.Buy_Phase)
         {
-            timer.Configure(MatchManager.Instance.Time + MatchManager.Instance.BuyPhaseTimeInSeconds);
+            timer.Configure((float)NetworkTime.time + MatchManager.Instance.BuyPhaseTimeInSeconds);
         }
     }
 

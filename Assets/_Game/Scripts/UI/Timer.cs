@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using Mirror;
+using UnityEngine.Networking;
+using Mirror.FizzySteam;
 
 public class Timer : NetworkBehaviour
 {
@@ -39,7 +41,7 @@ public class Timer : NetworkBehaviour
 
     private void Update()
     {
-        float time = MatchManager.Instance ? MatchManager.Instance.Time : Time.time;
+        float time = (float)NetworkTime.time;
         int roundedTime = Mathf.Clamp(Mathf.RoundToInt(targetTime - time), 0, int.MaxValue);
         if (roundedTime != previousRoundedTime)
         {
