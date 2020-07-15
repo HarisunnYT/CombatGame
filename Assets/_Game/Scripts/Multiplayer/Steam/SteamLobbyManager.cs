@@ -148,6 +148,40 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
+    private void CreateServer()
+    {
+        StartCoroutine(CreateServerIE());
+    }
+
+    private IEnumerator CreateServerIE()
+    {
+        NetworkManager.Instance.StopHost();
+        VoiceCommsManager.Instance.Stop();
+
+        yield return new WaitForEndOfFrame();
+
+        NetworkManager.Instance.StartHost();
+        VoiceCommsManager.Instance.StartServer();
+    }
+
+    public void CreateClient(string networkAddress)
+    {
+        NetworkManager.Instance.StartClient();
+        VoiceCommsManager.Instance.StartClient();
+    }
+
+    private IEnumerator CreateClientIE(string networkAddress)
+    {
+        NetworkManager.Instance.StopClient();
+        VoiceCommsManager.Instance.Stop();
+
+        yield return new WaitForEndOfFrame();
+
+        NetworkManager.Instance.networkAddress = networkAddress;
+        NetworkManager.Instance.StartClient();
+        VoiceCommsManager.Instance.StartClient();
+    }
+
     #region MESSAGES
 
     private void OnLobbyDataChanged(Lobby obj)
@@ -229,8 +263,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (!FizzySteamworks.Instance.ServerActive())
         {
-            NetworkManager.Instance.StartHost();
-            VoiceCommsManager.Instance.StartServer();
+            CreateServer();
         }
 
         if (PrivateLobby != null)
@@ -244,18 +277,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         creatingPrivateLobbyTask = SteamMatchmaking.CreateLobbyAsync(MaxLobbyMembers);
         Debug.Log("Created private lobby");
-    }
-
-    public void ConnectToHost()
-    {
-        if (FizzySteamworks.Instance.ClientActive())
-        {
-            NetworkManager.Instance.StopClient();
-        }
-
-        NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
-        NetworkManager.Instance.StartClient();
-        VoiceCommsManager.Instance.StartClient();
     }
 
     private void JoinedPrivateLobby(Lobby? lobby)
@@ -272,7 +293,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 if (PrivateHost)
                     CreatePrivateLobby();
                 else
-                    ConnectToHost();
+                    CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
             }
 
             joinedLobbyCallback = null;

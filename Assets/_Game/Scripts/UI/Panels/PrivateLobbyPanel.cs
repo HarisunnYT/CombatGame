@@ -40,7 +40,7 @@ public class PrivateLobbyPanel : Panel
             if (SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
                 SteamLobbyManager.Instance.CreatePrivateLobby();
             else if (!SteamLobbyManager.Instance.PrivateHost)
-                SteamLobbyManager.Instance.ConnectToHost();
+                SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id.Value.ToString());
         }
 
         SubToEvents();
