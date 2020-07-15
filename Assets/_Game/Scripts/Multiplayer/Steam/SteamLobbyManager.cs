@@ -355,10 +355,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PrivateLobby != null)
         {
-            for (int i = 0; i < PrivateLobby.Value.Data.Count(); i++)
-            {
-                PrivateLobby.Value.DeleteData(PrivateLobby.Value.Data.ElementAt(i).Key);
-            }
+            foreach(var data in PrivateLobby.Value.Data)
+                PrivateLobby.Value.DeleteData(data.Key);
         }
     }
 
