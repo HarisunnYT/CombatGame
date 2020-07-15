@@ -347,6 +347,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
             });
         }
+        else
+            JoinedPrivateLobby(lobby);
     }
 
     public void LeavePrivateLobby()

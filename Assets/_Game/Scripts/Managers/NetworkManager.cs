@@ -123,7 +123,8 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnClientDisconnect(conn);
 
-        ExitManager.Instance.ExitMatch(Application.internetReachability == NetworkReachability.NotReachable ? ExitType.ClientDisconnected : ExitType.HostDisconnected);
+        if (ExitManager.Instance)
+            ExitManager.Instance.ExitMatch(Application.internetReachability == NetworkReachability.NotReachable ? ExitType.ClientDisconnected : ExitType.HostDisconnected);
     }
 
     public int GetPrefabID(GameObject prefab)

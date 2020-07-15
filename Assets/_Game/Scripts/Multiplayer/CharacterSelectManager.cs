@@ -23,10 +23,13 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
     {
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            if (!SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost)
-                SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id.Value.ToString());
-            else if (SteamLobbyManager.Instance.PublicHost)
-                SteamLobbyManager.Instance.CreateServer();
+            if (!SteamLobbyManager.Instance.IsPrivateMatch)
+            {
+                if (!SteamLobbyManager.Instance.PublicHost)
+                    SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id.Value.ToString());
+                else if (SteamLobbyManager.Instance.PublicHost)
+                    SteamLobbyManager.Instance.CreateServer();
+            }
         }
         else
         {
