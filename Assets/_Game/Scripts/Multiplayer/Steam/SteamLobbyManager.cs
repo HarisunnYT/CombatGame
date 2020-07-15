@@ -248,6 +248,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void ConnectToHost()
     {
+        if (FizzySteamworks.Instance.ClientActive())
+        {
+            NetworkManager.Instance.StopClient();
+        }
+
         NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
         NetworkManager.Instance.StartClient();
         //VoiceCommsManager.Instance.StartClient();
