@@ -155,8 +155,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private IEnumerator CreateServerIE()
     {
-        NetworkManager.Instance.StopHost();
-        VoiceCommsManager.Instance.Stop();
+        if (FizzySteamworks.Instance.ServerActive())
+            yield break;
 
         yield return new WaitForEndOfFrame();
 
@@ -171,8 +171,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private IEnumerator CreateClientIE(string networkAddress)
     {
-        NetworkManager.Instance.StopClient();
-        VoiceCommsManager.Instance.Stop();
+        if (FizzySteamworks.Instance.ClientActive())
+            yield break;
 
         yield return new WaitForEndOfFrame();
 
@@ -312,6 +312,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void JoinFriendLobby(Lobby lobby)
     {
+        if (FizzySteamworks.Instance.ClientActive())
+        {
+            NetworkManager.Instance.StopClient();
+            VoiceCommsManager.Instance.Stop();
+        }
+
         string currentSceneName = SceneManager.GetActiveScene().name;
 
         if (ExitManager.Instance)
