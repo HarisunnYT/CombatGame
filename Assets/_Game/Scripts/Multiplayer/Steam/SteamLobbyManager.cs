@@ -478,13 +478,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PublicLobby = lobby;
         PublicLobby.Value.Join();
 
-        VoiceCommsManager.Instance.Stop();
-
-        if (PublicHost)
-            VoiceCommsManager.Instance.StartServer();
-        else
-            VoiceCommsManager.Instance.StartClient();
-
         //send a message to all members in the private lobby to join the public lobby that has been created
         SendPrivateMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
 
