@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MatchManager : Singleton<MatchManager>
+public class MatchManager : NetworkBehaviour
 {
     #region EXTENSIONS
     public enum RoundPhase
@@ -31,6 +31,8 @@ public class MatchManager : Singleton<MatchManager>
     #endregion
 
     #region RUNTIME_VARIABLES
+
+    public static MatchManager Instance;
 
     public int WinsRequired { get; private set; } = 5;
 
@@ -59,6 +61,11 @@ public class MatchManager : Singleton<MatchManager>
 
     #endregion
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         purchasePanel = PanelManager.Instance.GetPanel<CharacterPurchasePanel>();
@@ -80,6 +87,20 @@ public class MatchManager : Singleton<MatchManager>
     }
 
     public void BeginPhase(RoundPhase phase)
+    {
+        if (SteamLobbyManager.Instance.PublicHost)
+        {
+            RpcBeginPhase((int)phase);
+        }
+    }
+
+    [ClientRpc] 
+    private void RpcBeginPhase(int phase)
+    {
+        BeginPhaseClient((RoundPhase)phase);
+    }
+
+    private void BeginPhaseClient(RoundPhase phase)
     {
         if (phase == RoundPhase.Fight_Phase)
             BeginFightPhase();
@@ -155,6 +176,12 @@ public class MatchManager : Singleton<MatchManager>
             GameObject manager = new GameObject("Fight Manager");
             currentFight = manager.AddComponent<FightManager>();
         }
+    }
+
+    [ClientRpc]
+    public void RpcCountdownOver()
+    {
+        FightManager.Instance.CountdownOver();
     }
 
     private void Update()

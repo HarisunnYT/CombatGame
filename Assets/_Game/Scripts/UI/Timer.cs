@@ -28,7 +28,7 @@ public class Timer : NetworkBehaviour
 
         gameObject.SetActive(true);
 
-        if (!ServerManager.Instance.IsOnlineMatch || isServer)
+        if (SteamLobbyManager.Instance.PublicHost)
         {
             this.targetTime = targetTime;
             RpcSetTargetTime(targetTime);

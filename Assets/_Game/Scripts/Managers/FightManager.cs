@@ -50,12 +50,12 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     private void Update()
     {
-        if (startFightCountdownInProgress)
+        if (startFightCountdownInProgress && SteamLobbyManager.Instance.PublicHost)
         {
             int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - (float)NetworkTime.time);
             if (roundedTime <= 0)
             {
-                CountdownOver();
+                MatchManager.Instance.RpcCountdownOver();
             }
         }
         else
@@ -75,14 +75,14 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         hudPanel.BeginFightCountdown(startFightCountdownTimer);
     }
 
-    private void CountdownOver()
+    public void CountdownOver()
     {
         startFightCountdownInProgress = false;
         hudPanel.HideCountdownText();
 
         MatchManager.Instance.OnFightStarted();
 
-        foreach(var player in AlivePlayers)
+        foreach (var player in AlivePlayers)
         {
             if (ServerManager.Instance)
             {

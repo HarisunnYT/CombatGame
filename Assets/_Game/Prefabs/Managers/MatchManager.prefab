@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8161266529612594656}
   - component: {fileID: 4667480736418163740}
+  - component: {fileID: 9142477527610657080}
   m_Layer: 0
   m_Name: MatchManager
   m_TagString: Untagged
@@ -43,5 +44,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc60ad0b05221624bae7f7bdd89a822c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   buyPhaseTimeInSeconds: 30
   spawnPositions: []
+--- !u!114 &9142477527610657080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047677016419678059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
