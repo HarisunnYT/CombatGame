@@ -35,8 +35,13 @@ public class PrivateLobbyPanel : Panel
 
     protected override void OnShow()
     {
-        if (SteamLobbyManager.Instance.PrivateLobby != null && SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
-            SteamLobbyManager.Instance.CreatePrivateLobby();
+        if (SteamLobbyManager.Instance.PrivateLobby != null)
+        {
+            if (SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
+                SteamLobbyManager.Instance.CreatePrivateLobby();
+            else
+                SteamLobbyManager.Instance.ConnectToHost();
+        }
 
         SubToEvents();
 

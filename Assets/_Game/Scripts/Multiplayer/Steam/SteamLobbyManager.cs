@@ -246,6 +246,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         Debug.Log("Created private lobby");
     }
 
+    public void ConnectToHost()
+    {
+        NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
+        NetworkManager.Instance.StartClient();
+        VoiceCommsManager.Instance.StartClient();
+    }
+
     private void JoinedPrivateLobby(Lobby? lobby)
     {
         PrivateLobby = lobby;
@@ -258,20 +265,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
 
                 if (PrivateHost)
-                {
                     CreatePrivateLobby();
-                }
                 else
-                {
-                    NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
-                    NetworkManager.Instance.StartClient();
-                }
+                    ConnectToHost();
             }
 
             joinedLobbyCallback = null;
         };
-
-        VoiceCommsManager.Instance.Stop();
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
