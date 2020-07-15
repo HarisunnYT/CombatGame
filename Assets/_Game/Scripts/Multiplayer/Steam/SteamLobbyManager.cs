@@ -178,7 +178,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         NetworkManager.Instance.networkAddress = networkAddress;
         NetworkManager.Instance.StartClient();
-        VoiceCommsManager.Instance.StartClient();
     }
 
     #region MESSAGES
@@ -312,12 +311,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void JoinFriendLobby(Lobby lobby)
     {
-        if (FizzySteamworks.Instance.ClientActive())
-        {
-            NetworkManager.Instance.StopClient();
-            VoiceCommsManager.Instance.Stop();
-        }
-
         string currentSceneName = SceneManager.GetActiveScene().name;
 
         if (ExitManager.Instance)

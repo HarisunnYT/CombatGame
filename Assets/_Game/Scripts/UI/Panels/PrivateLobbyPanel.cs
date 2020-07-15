@@ -51,6 +51,17 @@ public class PrivateLobbyPanel : Panel
         UpdatePlayerCells();
     }
 
+    private void DelayedInit()
+    {
+        if (SteamLobbyManager.Instance.PrivateLobby != null)
+        {
+            if (SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
+                SteamLobbyManager.Instance.CreatePrivateLobby();
+            else if (!SteamLobbyManager.Instance.PrivateHost)
+                SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id.Value.ToString());
+        }
+    }
+
     private void OnDestroy()
     {
         UnSubToEvents();
