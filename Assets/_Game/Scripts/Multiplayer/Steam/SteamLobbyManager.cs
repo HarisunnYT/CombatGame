@@ -255,7 +255,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
         NetworkManager.Instance.StartClient();
-        VoiceCommsManager.Instance.StartClient();
+        //VoiceCommsManager.Instance.StartClient();
     }
 
     private void JoinedPrivateLobby(Lobby? lobby)
