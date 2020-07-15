@@ -7,7 +7,6 @@ using Mirror;
 
 public class Timer : NetworkBehaviour
 {
-    [SyncVar]
     private float targetTime;
     private int previousRoundedTime;
 
@@ -28,7 +27,10 @@ public class Timer : NetworkBehaviour
         gameObject.SetActive(true);
 
         if (isServer)
-            CmdSetTargetTime(targetTime);
+        {
+            this.targetTime = targetTime;
+            RpcSetTargetTime(targetTime);
+        }
 
         this.flashRedNearFinish = flashRedNearFinish;
         this.pulseNearFinish = pulseNearFinish;
@@ -61,8 +63,8 @@ public class Timer : NetworkBehaviour
         text.text = str;
     }
 
-    [Command]
-    private void CmdSetTargetTime(float time)
+    [ClientRpc]
+    private void RpcSetTargetTime(float time)
     {
         targetTime = time;
     }
