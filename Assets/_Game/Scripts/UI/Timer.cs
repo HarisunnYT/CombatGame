@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using Mirror;
 
 public class Timer : MonoBehaviour
 {
-    private int previousRoundedTime;
+    [SyncVar]
     private float targetTime;
+    private int previousRoundedTime;
 
     private TMP_Text text;
     private Color originalColor;
@@ -25,7 +27,9 @@ public class Timer : MonoBehaviour
 
         gameObject.SetActive(true);
 
-        this.targetTime = targetTime;
+        if (SteamLobbyManager.Instance.PublicHost)
+            this.targetTime = targetTime;
+
         this.flashRedNearFinish = flashRedNearFinish;
         this.pulseNearFinish = pulseNearFinish;
         text.color = originalColor;
