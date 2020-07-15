@@ -39,7 +39,7 @@ public class CharacterSelectScreen : Panel
 
     protected override void OnShow()
     {
-        selectCharacterTimer = Time.time + CharacterSelectManager.Instance.CharacterSelectTime;
+        selectCharacterTimer = (float)NetworkTime.time + CharacterSelectManager.Instance.CharacterSelectTime;
         finished = false;
 
         //no countdown for local player
