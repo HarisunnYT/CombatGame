@@ -1035,6 +1035,7 @@ MonoBehaviour:
   useFixedUpdate: 0
   dontDestroyOnLoad: 1
   suspendInBackground: 0
+  updateMode: 0
   enableICade: 0
   enableXInput: 0
   xInputOverrideUpdateRate: 0
@@ -1043,10 +1044,10 @@ MonoBehaviour:
   xInputBufferSize: 0
   enableNativeInput: 0
   nativeInputEnableXInput: 1
+  nativeInputEnableMFi: 0
   nativeInputPreventSleep: 0
   nativeInputOverrideUpdateRate: 0
   nativeInputUpdateRate: 0
-  customProfiles: []
 --- !u!4 &311008670
 Transform:
   m_ObjectHideFlags: 0
@@ -4062,6 +4063,75 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000061035156, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1209139574
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5810841983830056748, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_Name
+      value: VoiceCommsManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814404939008381216, guid: 20f2aa1c8e4458842bac12628ba697a1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 20f2aa1c8e4458842bac12628ba697a1, type: 3}
 --- !u!1 &1304921642
 GameObject:
   m_ObjectHideFlags: 0

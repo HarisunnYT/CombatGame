@@ -4,25 +4,40 @@ using UnityEngine;
 using Dissonance.Integrations.SteamworksP2P;
 using Steamworks;
 
-public class VoiceCommsManager : Singleton<VoiceCommsManager>
+public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 {
-    [SerializeField]
-    private SteamworksP2PCommsNetwork commsNetwork; //TODO move this as it won't work in lobby 
+    private SteamworksP2PCommsNetwork commsNetwork;
 
     protected override void Initialize()
     {
-        if (SteamLobbyManager.Instance.PublicLobby.HasValue)
-        {
-            foreach (var member in SteamLobbyManager.Instance.PublicLobby.Value.Members)
-            {
-                commsNetwork.PeerConnected(member.Id);
-            }
+        commsNetwork = GetComponent<SteamworksP2PCommsNetwork>();
 
-            if (SteamLobbyManager.Instance.PublicHost)
-                commsNetwork.InitializeAsServer();
-            else
-                commsNetwork.InitializeAsClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id);
-        }
+        SteamMatchmaking.OnLobbyMemberJoined += PeerConnected;
+        SteamMatchmaking.OnLobbyMemberDisconnected += PeerDisconnected;
+    }
 
+    public void StartServer()
+    {
+        commsNetwork.InitializeAsServer();
+    }
+
+    public void StartClient()
+    {
+        commsNetwork.InitializeAsClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id);
+    }
+
+    public void Stop()
+    {
+        commsNetwork.Stop();
+    }
+
+    private void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)
+    {
+        commsNetwork.PeerConnected(friend.Id);
+    }
+
+    private void PeerDisconnected(Steamworks.Data.Lobby arg1, Friend friend)
+    {
+        commsNetwork.PeerDisconnected(friend.Id);
     }
 }
