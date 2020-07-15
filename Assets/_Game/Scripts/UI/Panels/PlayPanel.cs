@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class PlayPanel : Panel
 {
@@ -32,12 +33,16 @@ public class PlayPanel : Panel
 
     public void Online()
     {
+        NetworkManager.Instance.RoomScene = "Assets/_Game/Scenes/MainMenu.unity";
+
         SteamLobbyManager.Instance.CreatePrivateLobby();
         ServerManager.Instance.IsOnlineMatch = true;
     }
 
     public void Local()
     {
+        NetworkManager.Instance.RoomScene = "Assets/_Game/Scenes/Lobby.unity";
+
         ServerManager.Instance.IsOnlineMatch = false;
         SceneLoader.Instance.LoadScene("Lobby");
     }
