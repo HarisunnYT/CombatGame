@@ -241,7 +241,15 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             if (roomEnter == RoomEnter.Success) //TODO SHOW ERRORS AND STUFF WHEN TRYING TO JOIN LOBBY
             {
                 PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
+
+                if (!PrivateHost)
+                {
+                    NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
+                    NetworkManager.Instance.StartClient();
+                }
             }
+
+            joinedLobbyCallback = null;
         };
 
         VoiceCommsManager.Instance.Stop();
@@ -255,13 +263,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             PrivateLobby.Value.SetJoinable(true);
 
             VoiceCommsManager.Instance.StartServer();
-        }
-        else
-        {
-            NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
-            NetworkManager.Instance.StartClient();
-
-            VoiceCommsManager.Instance.StartClient();
         }
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())

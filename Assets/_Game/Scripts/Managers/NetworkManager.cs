@@ -111,6 +111,14 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
+    public override void OnClientConnect(NetworkConnection conn)
+    {
+        base.OnClientConnect(conn);
+
+        if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
+            VoiceCommsManager.Instance.StartClient();
+    }
+
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);

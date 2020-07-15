@@ -18,7 +18,7 @@ public class FriendsListPanel : Panel
         //show online friends first
         foreach (var friend in SteamFriends.GetFriends())
         {
-            if (friend.IsOnline)
+            if (friend.IsOnline && friend.IsPlayingThisGame)
             {
                 FriendCell cell = FriendCellCreated(friend);
                 if (!cell)

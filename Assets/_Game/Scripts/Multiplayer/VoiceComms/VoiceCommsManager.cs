@@ -23,7 +23,7 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     public void StartClient()
     {
-        commsNetwork.InitializeAsClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id);
+        commsNetwork.InitializeAsClient(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id);
     }
 
     public void Stop()
