@@ -244,9 +244,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             }
         };
 
+        VoiceCommsManager.Instance.Stop();
+
         //this means the we created the lobby, call the appropriate functions
         if (PrivateLobby.Value.Owner.Id.Value == SteamClient.SteamId.Value)
         {
+            NetworkManager.Instance.StartHost();
+
             PrivateLobby.Value.SetFriendsOnly();
             PrivateLobby.Value.SetJoinable(true);
 
@@ -254,6 +258,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
         else
         {
+            NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
+            NetworkManager.Instance.StartClient();
+
             VoiceCommsManager.Instance.StartClient();
         }
 
@@ -283,6 +290,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PrivateLobby != null)
         {
+            if (PrivateHost)
+                NetworkManager.Instance.StopHost();
+            else
+                NetworkManager.Instance.StopClient();
+
             PrivateLobby.Value.Leave();
             //VoiceCommsManager.Instance.Stop();
 

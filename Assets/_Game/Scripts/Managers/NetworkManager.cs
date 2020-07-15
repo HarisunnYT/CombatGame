@@ -53,7 +53,7 @@ public class NetworkManager : NetworkRoomManager
         PlayerController player = Instantiate(fighter.PlayerControllerPrefab).GetComponent<PlayerController>();
         playersCreated++;
 
-        if (!ServerManager.Instance.IsOnlineMatch || playersCreated >= SteamLobbyManager.Instance.PublicLobby.Value.MemberCount)
+        if (!ServerManager.Instance.IsOnlineMatch || (SteamLobbyManager.Instance.PublicLobby != null && playersCreated >= SteamLobbyManager.Instance.PublicLobby.Value.MemberCount))
             SceneLoadedAndPlayersConnected();
 
         return player.gameObject;
@@ -71,7 +71,7 @@ public class NetworkManager : NetworkRoomManager
             return player.gameObject;
         }
 
-        if (!ServerManager.Instance.IsOnlineMatch || playersCreated >= SteamLobbyManager.Instance.PublicLobby.Value.MemberCount)
+        if (!ServerManager.Instance.IsOnlineMatch || (SteamLobbyManager.Instance.PublicLobby != null && playersCreated >= SteamLobbyManager.Instance.PublicLobby.Value.MemberCount))
             SceneLoadedAndPlayersConnected();
 
         return base.OnRoomServerAddPlayer(conn);

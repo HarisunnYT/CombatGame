@@ -59,7 +59,7 @@ public class CharacterSelectScreen : Panel
         //we don't countdown in local
         if (ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
         {
-            int roundedTime = Mathf.Clamp(Mathf.RoundToInt(selectCharacterTimer - Time.time), 0, int.MaxValue);
+            int roundedTime = Mathf.Clamp(Mathf.RoundToInt(selectCharacterTimer - (float)NetworkTime.time), 0, int.MaxValue);
             if (roundedTime <= 0 && !finished)
             {
                 //times up, force random character for local player
