@@ -28,7 +28,7 @@ public class Timer : NetworkBehaviour
 
         gameObject.SetActive(true);
 
-        if (isServer)
+        if (!ServerManager.Instance.IsOnlineMatch || isServer)
         {
             this.targetTime = targetTime;
             RpcSetTargetTime(targetTime);

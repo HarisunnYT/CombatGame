@@ -490,6 +490,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelEditorPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 8560048764772879956, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
+        type: 3}
+      propertyPath: sceneId
+      value: 2045359877
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa5b3d224e43d1a47b142be7a14fbd0c, type: 3}
 --- !u!224 &104269857 stripped
@@ -1975,6 +1980,7 @@ GameObject:
   - component: {fileID: 542712651}
   - component: {fileID: 542712650}
   - component: {fileID: 542712652}
+  - component: {fileID: 542712653}
   m_Layer: 5
   m_Name: CountdownText
   m_TagString: Untagged
@@ -2132,6 +2138,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055786e067c985d42a1e73b03b443999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &542712653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542712648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 317571281
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &545355959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,6 +2673,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LevelEditorPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560048764772879956, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
+        type: 3}
+      propertyPath: sceneId
+      value: 1082792910
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa5b3d224e43d1a47b142be7a14fbd0c, type: 3}
@@ -4001,6 +4030,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelEditorPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 8560048764772879956, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
+        type: 3}
+      propertyPath: sceneId
+      value: 1462102722
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa5b3d224e43d1a47b142be7a14fbd0c, type: 3}
 --- !u!224 &970095901 stripped
@@ -4371,6 +4405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921309819686306454, guid: 5aba894fe11745047bfd45d961ed5772,
+        type: 3}
+      propertyPath: sceneId
+      value: 187038456
       objectReference: {fileID: 0}
     - target: {fileID: 4822482393732823258, guid: 5aba894fe11745047bfd45d961ed5772,
         type: 3}
@@ -5405,6 +5444,11 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1921309819686306454, guid: 5aba894fe11745047bfd45d961ed5772,
+        type: 3}
+      propertyPath: sceneId
+      value: 2038353194
+      objectReference: {fileID: 0}
     - target: {fileID: 4822482393732823258, guid: 5aba894fe11745047bfd45d961ed5772,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -5839,6 +5883,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921309819686306454, guid: 5aba894fe11745047bfd45d961ed5772,
+        type: 3}
+      propertyPath: sceneId
+      value: 1338405572
       objectReference: {fileID: 0}
     - target: {fileID: 4822482393732823258, guid: 5aba894fe11745047bfd45d961ed5772,
         type: 3}
@@ -6392,6 +6441,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921309819686306454, guid: 5aba894fe11745047bfd45d961ed5772,
+        type: 3}
+      propertyPath: sceneId
+      value: 2065528149
       objectReference: {fileID: 0}
     - target: {fileID: 4822482393732823258, guid: 5aba894fe11745047bfd45d961ed5772,
         type: 3}
@@ -9628,6 +9682,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelEditorPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 8560048764772879956, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
+        type: 3}
+      propertyPath: sceneId
+      value: 699106345
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa5b3d224e43d1a47b142be7a14fbd0c, type: 3}
 --- !u!224 &2140646406 stripped
@@ -10517,6 +10576,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -156.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921309819686306454, guid: 5aba894fe11745047bfd45d961ed5772,
+        type: 3}
+      propertyPath: sceneId
+      value: 3422849261
       objectReference: {fileID: 0}
     - target: {fileID: 5110882162576234458, guid: 5aba894fe11745047bfd45d961ed5772,
         type: 3}
@@ -11541,6 +11605,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 5110882164136808946}
+    - target: {fileID: 8560048764772879956, guid: aa5b3d224e43d1a47b142be7a14fbd0c,
+        type: 3}
+      propertyPath: sceneId
+      value: 245050397
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa5b3d224e43d1a47b142be7a14fbd0c, type: 3}
 --- !u!1 &8188172968025775418

@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 7815052496873472602}
   - component: {fileID: 7815052496873472603}
   - component: {fileID: 732718172446363683}
+  - component: {fileID: 8560048764772879956}
   m_Layer: 5
   m_Name: Timer text
   m_TagString: Untagged
@@ -494,6 +495,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055786e067c985d42a1e73b03b443999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &8560048764772879956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7815052496873472605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &7815052497105633571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,6 +1124,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  interactableMessage: 
+  nonInteractableMessage: 
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnselected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7815052497985441338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1471,3 +1498,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  interactableMessage: 
+  nonInteractableMessage: 
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnselected:
+    m_PersistentCalls:
+      m_Calls: []
