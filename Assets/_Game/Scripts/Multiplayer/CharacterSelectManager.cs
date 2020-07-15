@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using Mirror.FizzySteam;
 using Steamworks;
 using Steamworks.Data;
 using System.Collections;
@@ -23,7 +24,7 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
         if (ServerManager.Instance.IsOnlineMatch)
         {
             if (!SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost)
-                CreateClient();
+                SteamLobbyManager.Instance.ConnectToHost();
         }
         else
         {
@@ -41,12 +42,6 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
             PanelManager.Instance.ShowPanel<CharacterSelectScreen>();
             matchLoaded = true;
         }
-    }
-
-    private void CreateClient()
-    {
-        NetworkManager.Instance.networkAddress = SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id.Value.ToString();
-        NetworkManager.Instance.StartClient();
     }
 
     public void CharacterSelected(int playerID, string characterName)
