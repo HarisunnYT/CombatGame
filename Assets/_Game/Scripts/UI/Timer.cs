@@ -5,7 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using Mirror;
 
-public class Timer : MonoBehaviour
+public class Timer : NetworkBehaviour
 {
     [SyncVar]
     private float targetTime;
@@ -27,8 +27,8 @@ public class Timer : MonoBehaviour
 
         gameObject.SetActive(true);
 
-        if (SteamLobbyManager.Instance.PublicHost)
-            this.targetTime = targetTime;
+        if (isServer)
+            CmdSetTargetTime(targetTime);
 
         this.flashRedNearFinish = flashRedNearFinish;
         this.pulseNearFinish = pulseNearFinish;
@@ -59,5 +59,11 @@ public class Timer : MonoBehaviour
     private void UpdateText(string str)
     {
         text.text = str;
+    }
+
+    [Command]
+    private void CmdSetTargetTime(float time)
+    {
+        targetTime = time;
     }
 }
