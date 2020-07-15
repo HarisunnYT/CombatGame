@@ -166,8 +166,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void CreateClient(string networkAddress)
     {
-        NetworkManager.Instance.StartClient();
-        VoiceCommsManager.Instance.StartClient();
+        StartCoroutine(CreateClientIE(networkAddress));
     }
 
     private IEnumerator CreateClientIE(string networkAddress)
