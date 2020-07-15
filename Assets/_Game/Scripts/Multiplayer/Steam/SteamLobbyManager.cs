@@ -7,6 +7,7 @@ using System;
 using UnityEngine.SceneManagement;
 using Steamworks;
 using System.Linq;
+using Mirror.FizzySteam;
 
 public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 {
@@ -226,7 +227,19 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void CreatePrivateLobby()
     {
-        if (creatingPrivateLobbyTask != null)
+        if (!FizzySteamworks.Instance.ServerActive())
+        {
+            NetworkManager.Instance.StartHost();
+            VoiceCommsManager.Instance.StartServer();
+        }
+
+        if (PrivateLobby != null)
+        {
+            PrivateLobby.Value.SetFriendsOnly();
+            PrivateLobby.Value.SetJoinable(true);
+        }
+
+        if (creatingPrivateLobbyTask != null || PrivateLobby != null)
             return;
 
         creatingPrivateLobbyTask = SteamMatchmaking.CreateLobbyAsync(MaxLobbyMembers);
@@ -244,7 +257,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             {
                 PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
 
-                if (!PrivateHost)
+                if (PrivateHost)
+                {
+                    CreatePrivateLobby();
+                }
+                else
                 {
                     NetworkManager.Instance.networkAddress = PrivateLobby.Value.Owner.Id.Value.ToString();
                     NetworkManager.Instance.StartClient();
@@ -255,17 +272,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         };
 
         VoiceCommsManager.Instance.Stop();
-
-        //this means the we created the lobby, call the appropriate functions
-        if (PrivateLobby.Value.Owner.Id.Value == SteamClient.SteamId.Value)
-        {
-            NetworkManager.Instance.StartHost();
-
-            PrivateLobby.Value.SetFriendsOnly();
-            PrivateLobby.Value.SetJoinable(true);
-
-            VoiceCommsManager.Instance.StartServer();
-        }
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
@@ -323,9 +329,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void ClearPrivateLobbyData()
     {
-        for (int i = 0; i < PrivateLobby.Value.Data.Count(); i++)
+        if (PrivateLobby != null)
         {
-            PrivateLobby.Value.DeleteData(PrivateLobby.Value.Data.ElementAt(i).Key);
+            for (int i = 0; i < PrivateLobby.Value.Data.Count(); i++)
+            {
+                PrivateLobby.Value.DeleteData(PrivateLobby.Value.Data.ElementAt(i).Key);
+            }
         }
     }
 
@@ -539,6 +548,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void OnApplicationQuit()
     {
         LeaveAllLobbies();
+        VoiceCommsManager.Instance.Stop();
+
         SteamClient.Shutdown();
     }
 

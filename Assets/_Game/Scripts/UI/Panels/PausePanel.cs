@@ -61,7 +61,10 @@ public class PausePanel : Panel
                 else
                     exitType = ExitType.Leave;
 
-                ExitManager.Instance.ExitMatch(exitType);
+                if (exitType == ExitType.HostLeftWithParty)
+                    ExitManager.Instance.ExitMatchWithParty();
+                else
+                    ExitManager.Instance.ExitMatch(exitType);
             });
         }
     }

@@ -29,8 +29,8 @@ public class ExitManager : PersistentSingleton<ExitManager>
 
     public void ExitMatchWithParty()
     {
-        ExitMatch(ExitType.HostLeftWithParty);
         SteamLobbyManager.Instance.ExitMatchWithParty();
+        ExitMatch(ExitType.HostLeftWithParty);
     }
 
     private IEnumerator ExitMatchIE()

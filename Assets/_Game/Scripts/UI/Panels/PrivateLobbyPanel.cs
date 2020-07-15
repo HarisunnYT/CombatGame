@@ -6,6 +6,7 @@ using UnityEngine;
 using Steamworks.Data;
 using Steamworks;
 using JetBrains.Annotations;
+using Mirror.FizzySteam;
 
 public class PrivateLobbyPanel : Panel
 {
@@ -34,7 +35,7 @@ public class PrivateLobbyPanel : Panel
 
     protected override void OnShow()
     {
-        if (SteamLobbyManager.Instance.PrivateHost)
+        if (SteamLobbyManager.Instance.PrivateLobby != null && SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
             SteamLobbyManager.Instance.CreatePrivateLobby();
 
         SubToEvents();
