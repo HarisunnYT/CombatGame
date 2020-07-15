@@ -35,7 +35,7 @@ public class PrivateLobbyPanel : Panel
 
     protected override void OnShow()
     {
-        Invoke("T", 1);
+        Invoke("DelayedInit", 1);
 
         SubToEvents();
 
@@ -49,17 +49,6 @@ public class PrivateLobbyPanel : Panel
         cancelButton.SetActive(false);
 
         UpdatePlayerCells();
-    }
-
-    private void T()
-    {
-        if (SteamLobbyManager.Instance.PrivateLobby != null)
-        {
-            if (SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
-                SteamLobbyManager.Instance.CreatePrivateLobby();
-            else if (!SteamLobbyManager.Instance.PrivateHost)
-                SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id.Value.ToString());
-        }
     }
 
     private void OnDestroy()
