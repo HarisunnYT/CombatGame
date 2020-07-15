@@ -124,7 +124,9 @@ public class PlayerController : Character
     private void OnDestroy()
     {
         OnPlayerDisconnected?.Invoke();
-        InputProfile.Deinitialise();
+
+        if (InputProfile != null)
+            InputProfile.Deinitialise();
 
         if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(playerID);
