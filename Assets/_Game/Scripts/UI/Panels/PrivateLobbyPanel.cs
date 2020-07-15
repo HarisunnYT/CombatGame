@@ -34,6 +34,9 @@ public class PrivateLobbyPanel : Panel
 
     protected override void OnShow()
     {
+        if (SteamLobbyManager.Instance.PrivateHost)
+            SteamLobbyManager.Instance.CreatePrivateLobby();
+
         SubToEvents();
 
         //disable / enable all buttons based on if they're host or not
