@@ -22,7 +22,7 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
     {
         if (ServerManager.Instance.IsOnlineMatch)
         {
-            if (!SteamLobbyManager.Instance.PublicHost)
+            if (!SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost)
                 CreateClient();
         }
         else

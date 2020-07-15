@@ -66,6 +66,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public bool Searching { get; private set; } = false;
 
+    public bool InSoloLobby { get { return PrivateLobby == null || PrivateLobby.Value.MemberCount <= 1; } }
+
     #endregion
 
     #region RUNTIME_VARIABLES
