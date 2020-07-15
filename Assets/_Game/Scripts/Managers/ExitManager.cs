@@ -8,7 +8,8 @@ public enum ExitType
     Leave,
     HostDisconnected,
     ClientDisconnected,
-    HostLeftWithParty,
+
+    HostLeftWithParty = 10,
     LeftLocal,
     LeftToJoinLobby
 }
@@ -21,7 +22,8 @@ public class ExitManager : PersistentSingleton<ExitManager>
 
     public void ExitMatch(ExitType exitType)
     {
-        ExitType = exitType;
+        if (ExitType < ExitType.HostLeftWithParty) //anything after host left with party is special and isn't a disconnect
+            ExitType = exitType;
 
         if (exitMatchCoroutine == null)
             exitMatchCoroutine = StartCoroutine(ExitMatchIE());
