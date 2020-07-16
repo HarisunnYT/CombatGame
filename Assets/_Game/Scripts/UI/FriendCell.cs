@@ -69,7 +69,7 @@ public class FriendCell : MonoBehaviour
 
     public void UpdateCell()
     {
-        background.color = Friend.IsOnline ? Color.white : offlineColor;
+        background.color = Friend.IsOnline && Friend.IsPlayingThisGame ? Color.white : offlineColor;
 
         joinButton.gameObject.SetActive(Friend.IsOnline);
         inviteButton.gameObject.SetActive(Friend.IsOnline);
