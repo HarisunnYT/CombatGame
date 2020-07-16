@@ -12,18 +12,18 @@ public class BetterButton : Button
     [Multiline]
     [SerializeField]
     private string interactableMessage;
-    public string InteractableMessage { get { return interactableMessage; } }
 
     [Multiline]
     [SerializeField]
-    private string nonInteractableMessage;
-    public string NonInteractableMessage { get { return nonInteractableMessage; } }
+    private string[] nonInteractableMessage;
 
     [SerializeField]
     private UnityEvent onSelected;
 
     [SerializeField]
     private UnityEvent onUnselected;
+
+    private int nonInteractableIndex = 0;
 
     protected override void Awake()
     {
@@ -60,5 +60,21 @@ public class BetterButton : Button
             animator?.SetBool("Selected", false);
 
         onUnselected?.Invoke();
+    }
+
+    public string GetInteractableMessage()
+    {
+        return interactableMessage;
+    }
+
+    public string GetNonInteractableMessage()
+    {
+        return nonInteractableMessage[nonInteractableIndex];
+    }
+
+    public void SetInteractable(bool interactable, int nonInteractableIndex = 0)
+    {
+        this.nonInteractableIndex = nonInteractableIndex;
+        this.interactable = interactable;
     }
 }

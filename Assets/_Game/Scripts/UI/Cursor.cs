@@ -74,54 +74,7 @@ public class Cursor : MonoBehaviour
 
         if (previousCursorPosition != transform.position || InputProfile.Select.WasPressed)
         {
-            PointerEventData pointerEventData = new PointerEventData(eventSystem);
-            pointerEventData.position = transform.position;
-
-            List<RaycastResult> results = new List<RaycastResult>();
-
-            if (assignedRaycaster)
-                assignedRaycaster.Raycast(pointerEventData, results);
-            else
-                PanelManager.Instance.Raycaster.Raycast(pointerEventData, results);
-
-            eventSystem.SetSelectedGameObject(null);
-            HideMessage();
-
-            foreach (RaycastResult result in results)
-            {
-                BetterButton button = result.gameObject.GetComponentInParent<BetterButton>();
-                if (button)
-                {
-                    if (button.interactable)
-                    {
-                        if (!string.IsNullOrEmpty(button.InteractableMessage))
-                            ShowMessage(button.InteractableMessage);
-
-                        button.Select();
-                        previousHighlightedButton = button;
-                        break;
-                    }
-                    else
-                    {
-                        ShowMessage(button.NonInteractableMessage);
-                    }
-                }
-            }
-
-            //clicked pressed from either mouse or controller
-            if (InputProfile.Select.WasPressed)
-            {
-                CursorManager.Instance.SetLastInteractedPlayer(PlayerIndex);
-
-                foreach (RaycastResult result in results)
-                {
-                    ISubmitHandler submitHandler = result.gameObject.GetComponentInParent<ISubmitHandler>();
-                    submitHandler?.OnSubmit(null);
-
-                    if (submitHandler != null) //we don't want to click more than one button at a time
-                        break;
-                }
-            }
+            UpdateSelectedButton();
         }
 
         if (AssignedCamera == null)
@@ -137,6 +90,63 @@ public class Cursor : MonoBehaviour
         transform.position = AssignedCamera.ViewportToScreenPoint(pos);
 
         previousCursorPosition = transform.position;
+    }
+
+    private void UpdateSelectedButton()
+    {
+        PointerEventData pointerEventData = new PointerEventData(eventSystem);
+        pointerEventData.position = transform.position;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+
+        if (assignedRaycaster)
+            assignedRaycaster.Raycast(pointerEventData, results);
+        else
+            PanelManager.Instance.Raycaster.Raycast(pointerEventData, results);
+
+        eventSystem.SetSelectedGameObject(null);
+        HideMessage();
+
+        foreach (RaycastResult result in results)
+        {
+            BetterButton button = result.gameObject.GetComponentInParent<BetterButton>();
+            if (button)
+            {
+                if (button.interactable)
+                {
+                    if (!string.IsNullOrEmpty(button.GetInteractableMessage()))
+                        ShowMessage(button.GetInteractableMessage());
+
+                    button.Select();
+                    previousHighlightedButton = button;
+                    break;
+                }
+                else
+                {
+                    ShowMessage(button.GetNonInteractableMessage());
+                }
+            }
+        }
+
+        //clicked pressed from either mouse or controller
+        if (InputProfile.Select.WasPressed)
+        {
+            CursorManager.Instance.SetLastInteractedPlayer(PlayerIndex);
+
+            foreach (RaycastResult result in results)
+            {
+                ISubmitHandler submitHandler = result.gameObject.GetComponentInParent<ISubmitHandler>();
+                submitHandler?.OnSubmit(null);
+
+                if (submitHandler != null) //we don't want to click more than one button at a time
+                    break;
+            }
+        }
+    }
+
+    public void ForceUpdate()
+    {
+        UpdateSelectedButton();
     }
 
     public void EnableAllControllerInput()

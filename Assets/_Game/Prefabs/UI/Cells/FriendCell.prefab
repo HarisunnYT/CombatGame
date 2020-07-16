@@ -491,7 +491,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   interactableMessage: join lobby
-  nonInteractableMessage: not joinable
+  nonInteractableMessage:
+  - not joinable
   onSelected:
     m_PersistentCalls:
       m_Calls: []
@@ -755,8 +756,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  interactableMessage: Invite
-  nonInteractableMessage: 
+  interactableMessage: invite
+  nonInteractableMessage:
+  - not in lobby
+  - invite sent
   onSelected:
     m_PersistentCalls:
       m_Calls: []

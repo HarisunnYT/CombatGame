@@ -31,6 +31,8 @@ public class FriendCell : MonoBehaviour
 
     private Task<Steamworks.Data.Image?> profilePictureTask;
 
+    private bool inviteSent = false;
+
     public void Configure(Friend friend)
     {
         Friend = friend;
@@ -39,6 +41,11 @@ public class FriendCell : MonoBehaviour
         profilePictureTask = friend.GetMediumAvatarAsync();
 
         UpdateCell();
+    }
+
+    private void OnEnable()
+    {
+        inviteSent = false;
     }
 
     private void Update()
@@ -71,6 +78,9 @@ public class FriendCell : MonoBehaviour
 
         joinButton.interactable = false;
 
+        if (!inviteSent)
+            inviteButton.SetInteractable(SteamLobbyManager.Instance.PrivateLobby != null, 0);
+
         if (Friend.IsOnline && Friend.IsPlayingThisGame)
             transform.SetAsFirstSibling();
 
@@ -88,6 +98,9 @@ public class FriendCell : MonoBehaviour
 
     public void InviteFriend()
     {
-        Friend.InviteToGame("");
+        SteamLobbyManager.Instance.PrivateLobby.Value.InviteFriend(Friend.Id);
+        inviteSent = true;
+        inviteButton.SetInteractable(false, 1);
+        CursorManager.Instance.GetLastInteractedCursor().ForceUpdate();
     }
 }
