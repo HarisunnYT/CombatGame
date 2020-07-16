@@ -43,7 +43,7 @@ public class CharacterSelectScreen : Panel
         finished = false;
 
         //no countdown for local player
-        if (ServerManager.Instance.IsOnlineMatch)
+        if (ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch)
             countdownTimer.Configure(selectCharacterTimer);
         else
             countdownTimer.transform.parent.gameObject.SetActive(false);
@@ -57,7 +57,7 @@ public class CharacterSelectScreen : Panel
     private void Update()
     {
         //we don't countdown in local
-        if (ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
+        if (ServerManager.Instance && ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch)
         {
             int roundedTime = Mathf.Clamp(Mathf.RoundToInt(selectCharacterTimer - (float)NetworkTime.time), 0, int.MaxValue);
             if (roundedTime <= 0 && !finished)
