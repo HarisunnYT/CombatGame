@@ -68,6 +68,7 @@ namespace Mirror.FizzySteam
                     Debug.LogError($"Connection to {host} timed out.");
                     OnConnected -= SetConnectedComplete;
                     OnConnectionFailed(hostSteamID);
+                    NetworkManager.singleton.TimedOut();
                 }
 
                 OnConnected -= SetConnectedComplete;
@@ -100,8 +101,6 @@ namespace Mirror.FizzySteam
             SendInternal(hostSteamID, InternalMessages.DISCONNECT);
             Dispose();
             cancelToken?.Cancel();
-
-            NetworkManager.singleton.TimedOut();
 
             WaitForClose(hostSteamID);
         }

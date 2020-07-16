@@ -100,6 +100,8 @@ public class PrivateLobbyPanel : Panel
     private void UpdatePlayerCells()
     {
         Lobby? privateLobby = SteamLobbyManager.Instance.PrivateLobby;
+        if (privateLobby == null)
+            return;
 
         //disable all the cells first, makes it easier
         foreach (var playerCell in connectedPlayerCells)

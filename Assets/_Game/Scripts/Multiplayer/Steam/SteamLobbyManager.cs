@@ -319,8 +319,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             joinedLobbyCallback = null;
         };
 
-
-
         Debug.Log("Joined private lobby");
     }
 
@@ -366,8 +364,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             else
                 StopClient();
 
-            PrivateLobby.Value.Leave();
-            PrivateLobby = null;
+            if (PrivateLobby != null)
+            {
+                PrivateLobby.Value.Leave();
+                PrivateLobby = null;
+            }
         }
     }
 

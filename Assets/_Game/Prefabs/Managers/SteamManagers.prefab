@@ -45,9 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3246121836c79c54dad9f566d4889113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuScene: Assets/_Game/Scenes/MainMenu.unity
-  lobbyScene: Assets/_Game/Scenes/Lobby.unity
-  gameScene: Assets/_Game/Scenes/Game.unity
 --- !u!114 &2501660753651285458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +94,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Channels: 02000000000000000100000003000000
-  Timeout: 25
+  Timeout: 10
   SteamAppID: 480
   AllowSteamRelay: 1
   SteamUserID: 0
