@@ -78,8 +78,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region RUNTIME_VARIABLES
 
-    private Lobby? pendingPrivateLobby;
-
     #endregion
 
     #region TASKS
@@ -301,23 +299,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPrivateLobby(Lobby? lobby)
     {
-        pendingPrivateLobby = lobby.Value;
-
-        if (lobby.Value.Owner.Id == SteamClient.SteamId)
-        {
-            CreatePrivateLobby();
-            ConnectedToPrivateLobbyAndServer();
-        }
-        else
-            CreateClient(pendingPrivateLobby.Value.Owner.Id.Value.ToString());
-    }
-
-    public void ConnectedToPrivateLobbyAndServer()
-    {
-        if (pendingPrivateLobby == null)
-            return;
-
-        PrivateLobby = pendingPrivateLobby;
+        PrivateLobby = lobby;
 
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();
         joinedLobbyCallback = (RoomEnter roomEnter) =>
@@ -325,19 +307,29 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             if (roomEnter == RoomEnter.Success) //TODO SHOW ERRORS AND STUFF WHEN TRYING TO JOIN LOBBY
             {
                 PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
+                if (PrivateHost)
+                {
+                    ConnectedToPrivateLobbyServer();
+                    CreatePrivateLobby();
+                }
+                else
+                    CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
             }
 
             joinedLobbyCallback = null;
         };
 
+
+
+        Debug.Log("Joined private lobby");
+    }
+
+    public void ConnectedToPrivateLobbyServer()
+    {
         PanelManager.Instance.ClosePanel<JoiningFriendPanel>();
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
-
-        pendingPrivateLobby = null;
-
-        Debug.Log("Joined private lobby");
     }
 
     //this is when the user accepts an invite or clicks 'join game' in steam UI
@@ -375,7 +367,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 StopClient();
 
             PrivateLobby.Value.Leave();
-
             PrivateLobby = null;
         }
     }

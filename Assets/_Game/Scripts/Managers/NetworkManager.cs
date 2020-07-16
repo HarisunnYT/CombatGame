@@ -117,10 +117,10 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnClientConnect(conn);
 
-        SteamLobbyManager.Instance.ConnectedToPrivateLobbyAndServer();
+        SteamLobbyManager.Instance.ConnectedToPrivateLobbyServer();
 
         //if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
-            //VoiceCommsManager.Instance.StartClient();
+        //VoiceCommsManager.Instance.StartClient();
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
@@ -129,6 +129,12 @@ public class NetworkManager : NetworkRoomManager
 
         if (ExitManager.Instance)
             ExitManager.Instance.ExitMatch(Application.internetReachability == NetworkReachability.NotReachable ? ExitType.ClientDisconnected : ExitType.HostDisconnected);
+    }
+
+    public override void TimedOut()
+    {
+        SteamLobbyManager.Instance.LeavePrivateLobby();
+        PanelManager.Instance.ShowPanel<MainMenuPanel>();
     }
 
     public int GetPrefabID(GameObject prefab)

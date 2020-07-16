@@ -30,6 +30,8 @@ public class FancyText : MonoBehaviour
 
     private void OnEnable()
     {
+        textSequence.Kill();
+
         if (textType == TextType.BounceIn)
             Tween3();
     }

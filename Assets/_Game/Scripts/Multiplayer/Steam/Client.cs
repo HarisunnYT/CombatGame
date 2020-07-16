@@ -101,6 +101,8 @@ namespace Mirror.FizzySteam
             Dispose();
             cancelToken?.Cancel();
 
+            NetworkManager.singleton.TimedOut();
+
             WaitForClose(hostSteamID);
         }
 

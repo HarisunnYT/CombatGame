@@ -1169,6 +1169,8 @@ namespace Mirror
             OnServerConnect(conn);
         }
 
+        public virtual void TimedOut() { }
+
         void OnServerDisconnectInternal(NetworkConnection conn, DisconnectMessage msg)
         {
             logger.Log("NetworkManager.OnServerDisconnectInternal");

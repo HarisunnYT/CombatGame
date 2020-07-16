@@ -117,7 +117,7 @@ public class PrivateLobbyPanel : Panel
 
         if (privateLobby != null)
         {
-            for (int i = 1; i < privateLobby.Value.Members.Count(); i++)
+            for (int i = 1; i < ServerManager.Instance.Players.Count; i++)
             {
                 Friend friend = privateLobby.Value.Members.ElementAt(i);
                 if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
@@ -194,7 +194,7 @@ public class PrivateLobbyPanel : Panel
 
     private void SubToEvents()
     {
-        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
+        ServerManager.Instance.OnPlayerAdded += OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyMemberDataChanged += OnMemberDataChanged;
@@ -205,7 +205,7 @@ public class PrivateLobbyPanel : Panel
 
     private void UnSubToEvents()
     {
-        SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
+        ServerManager.Instance.OnPlayerAdded -= OnLobbyMemberJoined;
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyMemberDataChanged -= OnMemberDataChanged;
@@ -222,7 +222,7 @@ public class PrivateLobbyPanel : Panel
         UpdatePlayerCells();
     }
 
-    private void OnLobbyMemberJoined(Lobby arg1, Friend arg2)
+    private void OnLobbyMemberJoined(ServerManager.ConnectedPlayer player)
     {
         UpdatePlayerCells();
     }
