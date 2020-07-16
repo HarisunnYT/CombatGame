@@ -71,7 +71,7 @@ public class FriendCell : MonoBehaviour
     {
         background.color = Friend.IsOnline && Friend.IsPlayingThisGame ? Color.white : offlineColor;
 
-        joinButton.gameObject.SetActive(Friend.IsOnline);
+        joinButton.gameObject.SetActive(Friend.IsOnline && Friend.IsPlayingThisGame);
         inviteButton.gameObject.SetActive(Friend.IsOnline);
 
         if (Friend.IsOnline != wasOnline)
