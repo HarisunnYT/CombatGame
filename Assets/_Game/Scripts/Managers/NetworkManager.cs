@@ -1,5 +1,6 @@
 ﻿using Mirror;
 using Mirror.FizzySteam;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,6 +13,8 @@ using UnityEngine.SceneManagement;
 public class NetworkManager : NetworkRoomManager
 {
     public static NetworkManager Instance;
+
+    private const int maxTimeouts = 3; //amount of times it retries to connect until giving up
 
     public CustomNetworkRoomPlayer RoomPlayer { get; set; }
 
@@ -122,6 +125,8 @@ public class NetworkManager : NetworkRoomManager
 
         if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
             VoiceCommsManager.Instance.StartClient();
+
+        timedOutCount = 0;
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
@@ -132,10 +137,23 @@ public class NetworkManager : NetworkRoomManager
             ExitManager.Instance.ExitMatch(Application.internetReachability == NetworkReachability.NotReachable ? ExitType.ClientDisconnected : ExitType.HostDisconnected);
     }
 
+    int timedOutCount = 0;
     public override void TimedOut()
     {
-        SteamLobbyManager.Instance.LeavePrivateLobby();
-        PanelManager.Instance.ShowPanel<MainMenuPanel>();
+        if (timedOutCount < maxTimeouts)
+        {
+            timedOutCount++;
+            SteamId friendID = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id : 
+                                                                                SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
+            SteamLobbyManager.Instance.CreateClient(friendID.Value.ToString());
+        }
+        else
+        {
+            SteamLobbyManager.Instance.LeavePrivateLobby();
+            PanelManager.Instance.ShowPanel<MainMenuPanel>();
+
+            timedOutCount = 0;
+        }
     }
 
     public int GetPrefabID(GameObject prefab)
