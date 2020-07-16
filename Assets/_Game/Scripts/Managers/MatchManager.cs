@@ -46,8 +46,6 @@ public class MatchManager : NetworkBehaviour
     private FightManager currentFight;
     private RoundPhase currentPhase;
 
-    private CharacterPurchasePanel purchasePanel;
-
     private float buyPhaseCountdownTimer = 0;
 
     private int spawnIndex = 0;
@@ -68,8 +66,6 @@ public class MatchManager : NetworkBehaviour
 
     private void Start()
     {
-        purchasePanel = PanelManager.Instance.GetPanel<CharacterPurchasePanel>();
-
         if (!ServerManager.Instance.IsOnlineMatch)
         {
             //we start at 1 as the main player has already spawned
@@ -119,7 +115,7 @@ public class MatchManager : NetworkBehaviour
         LevelEditorManager.Instance.RevealRecentObjects();
 
         if (ServerManager.Instance.IsOnlineMatch)
-            purchasePanel.Close();
+            PanelManager.Instance.ClosePanel<CharacterPurchasePanel>();
         else
             LocalPlayerUIManager.Instance.DisplayLocalScreens(false);
 
@@ -138,7 +134,7 @@ public class MatchManager : NetworkBehaviour
         buyPhaseCountdownTimer = (float)NetworkTime.time + buyPhaseTimeInSeconds;
 
         if (ServerManager.Instance.IsOnlineMatch)
-            purchasePanel.ShowPanel();
+            PanelManager.Instance.ShowPanel<CharacterPurchasePanel>();
         else
             LocalPlayerUIManager.Instance.DisplayLocalScreens(true);
 

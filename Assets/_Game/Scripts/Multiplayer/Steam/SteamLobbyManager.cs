@@ -78,6 +78,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region RUNTIME_VARIABLES
 
+    private Lobby? pendingPrivateLobby;
+
     #endregion
 
     #region TASKS
@@ -153,6 +155,20 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
+    #region CLIENT_SERVER
+
+    private void StopServer()
+    {
+        if (FizzySteamworks.Instance.ServerActive())
+            NetworkManager.Instance.StopServer();
+    }
+
+    public void StopClient()
+    {
+        if (FizzySteamworks.Instance.ClientActive())
+            NetworkManager.Instance.StopClient();
+    }
+
     public void CreateServer()
     {
         StartCoroutine(CreateServerIE());
@@ -160,10 +176,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private IEnumerator CreateServerIE()
     {
-        if (FizzySteamworks.Instance.ServerActive())
-        {
-            NetworkManager.Instance.StopServer();
-        }
+        StopServer();
 
         yield return new WaitForEndOfFrame();
 
@@ -186,6 +199,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         NetworkManager.Instance.networkAddress = networkAddress;
         NetworkManager.Instance.StartClient();
     }
+
+    #endregion
 
     #region MESSAGES
 
@@ -286,7 +301,23 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPrivateLobby(Lobby? lobby)
     {
-        PrivateLobby = lobby;
+        pendingPrivateLobby = lobby.Value;
+
+        if (lobby.Value.Owner.Id == SteamClient.SteamId)
+        {
+            CreatePrivateLobby();
+            ConnectedToPrivateLobbyAndServer();
+        }
+        else
+            CreateClient(pendingPrivateLobby.Value.Owner.Id.Value.ToString());
+    }
+
+    public void ConnectedToPrivateLobbyAndServer()
+    {
+        if (pendingPrivateLobby == null)
+            return;
+
+        PrivateLobby = pendingPrivateLobby;
 
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();
         joinedLobbyCallback = (RoomEnter roomEnter) =>
@@ -294,18 +325,17 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             if (roomEnter == RoomEnter.Success) //TODO SHOW ERRORS AND STUFF WHEN TRYING TO JOIN LOBBY
             {
                 PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
-
-                if (PrivateHost)
-                    CreatePrivateLobby();
-                else
-                    CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
             }
 
             joinedLobbyCallback = null;
         };
 
+        PanelManager.Instance.ClosePanel<JoiningFriendPanel>();
+
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+
+        pendingPrivateLobby = null;
 
         Debug.Log("Joined private lobby");
     }
@@ -318,11 +348,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void JoinFriendLobby(Lobby lobby)
     {
-        if (FizzySteamworks.Instance.ClientActive())
-            NetworkManager.Instance.StopClient();
+        PanelManager.Instance.ShowPanel<JoiningFriendPanel>();
 
-        if (FizzySteamworks.Instance.ServerActive())
-            NetworkManager.Instance.StopServer();
+        StopClient(); 
+        StopServer();
 
         if (ExitManager.Instance)
         {
@@ -341,9 +370,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (PrivateLobby != null)
         {
             if (PrivateHost)
-                NetworkManager.Instance.StopHost();
+                StopServer();
             else
-                NetworkManager.Instance.StopClient();
+                StopClient();
 
             PrivateLobby.Value.Leave();
 
@@ -359,11 +388,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         IsPrivateMatch = true;
 
         if (PublicHost)
-        {
             SendPrivateMessage(privateLobbyStartedKey, "true");
-            NetworkManager.Instance.ChangeScene("Lobby");
-        }
 
+        SceneLoader.Instance.LoadScene("Lobby");
         ServerManager.Instance.IsOnlineMatch = true;
 
         Searching = false;
@@ -412,7 +439,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                     List<Lobby> availableLobbies = lobbies.ToList();
                     for (int i = 0; i < availableLobbies.Count; i++)
                     {
-                        if (PublicLobby != null && availableLobbies[i].Id.Value == PublicLobby.Value.Id.Value)
+                        if (PublicLobby != null && availableLobbies[i].Id.Value == PublicLobby.Value.Id.Value ||
+                            (PrivateLobby != null && availableLobbies[i].Id.Value == PrivateLobby.Value.Id.Value))
                         {
                             availableLobbies.RemoveAt(i);
                             break;
@@ -464,8 +492,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void CreatedPublicMatch(Lobby? lobby)
     {
-        if (FizzySteamworks.Instance.ServerActive())
-            NetworkManager.Instance.StopServer();
+        StopServer();
 
         PublicLobby = lobby;
         PublicLobby.Value.SetPublic();
@@ -487,8 +514,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
-        if (FizzySteamworks.Instance.ServerActive())
-            NetworkManager.Instance.StopServer();
+        StopServer();
 
         IsPrivateMatch = false;
 

@@ -117,6 +117,8 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnClientConnect(conn);
 
+        SteamLobbyManager.Instance.ConnectedToPrivateLobbyAndServer();
+
         //if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
             //VoiceCommsManager.Instance.StartClient();
     }

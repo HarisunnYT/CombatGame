@@ -47,7 +47,7 @@ public class ExitManager : PersistentSingleton<ExitManager>
         if (!ServerManager.Instance.IsOnlineMatch || SteamLobbyManager.Instance.PublicHost)
             NetworkManager.Instance.StopHost();
 
-        NetworkManager.Instance.StopClient();
+        SteamLobbyManager.Instance.StopClient();
 
         DestroySingletons();
 
