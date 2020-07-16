@@ -120,8 +120,8 @@ public class NetworkManager : NetworkRoomManager
         if (SteamLobbyManager.Instance.PublicLobby == null)
             SteamLobbyManager.Instance.ConnectedToPrivateLobbyServer();
 
-        //if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
-        //VoiceCommsManager.Instance.StartClient();
+        if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
+            VoiceCommsManager.Instance.StartClient();
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)

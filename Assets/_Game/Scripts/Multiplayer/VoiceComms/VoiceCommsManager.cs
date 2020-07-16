@@ -23,7 +23,9 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     public void StartClient()
     {
-        commsNetwork.InitializeAsClient(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id);
+        SteamId hostId = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
+                                                                          SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
+        commsNetwork.InitializeAsClient(hostId);
     }
 
     public void Stop()
