@@ -31,8 +31,6 @@ public class FriendCell : MonoBehaviour
 
     private Task<Steamworks.Data.Image?> profilePictureTask;
 
-    private bool wasOnline = false;
-
     public void Configure(Friend friend)
     {
         Friend = friend;
@@ -40,7 +38,7 @@ public class FriendCell : MonoBehaviour
         nameText.text = friend.Name;
         profilePictureTask = friend.GetMediumAvatarAsync();
 
-        wasOnline = friend.IsOnline;
+        UpdateCell();
     }
 
     private void Update()
@@ -71,15 +69,10 @@ public class FriendCell : MonoBehaviour
     {
         background.color = Friend.IsOnline && Friend.IsPlayingThisGame ? Color.white : offlineColor;
 
-        joinButton.gameObject.SetActive(Friend.IsOnline && Friend.IsPlayingThisGame);
-        inviteButton.gameObject.SetActive(Friend.IsOnline);
+        joinButton.interactable = false;
 
-        if (Friend.IsOnline != wasOnline)
-        {
-            wasOnline = Friend.IsOnline;
-            if (wasOnline)
-                transform.SetAsFirstSibling();
-        }
+        if (Friend.IsOnline && Friend.IsPlayingThisGame)
+            transform.SetAsFirstSibling();
 
         try
         {

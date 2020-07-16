@@ -31,6 +31,7 @@ public class FriendsListPanel : Panel
     {
         FriendCell cell = Instantiate(friendCellPrefab, content);
         cell.Configure(friend);
+        cell.transform.SetAsLastSibling();
 
         friends.Add(cell);
     }
