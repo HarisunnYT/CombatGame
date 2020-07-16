@@ -33,16 +33,12 @@ public class PlayPanel : Panel
 
     public void Online()
     {
-        NetworkManager.Instance.RoomScene = SteamLobbyManager.Instance.MainMenuScene;
-
         SteamLobbyManager.Instance.CreatePrivateLobby();
         ServerManager.Instance.IsOnlineMatch = true;
     }
 
     public void Local()
     {
-        NetworkManager.Instance.RoomScene = SteamLobbyManager.Instance.LobbyScene;
-
         ServerManager.Instance.IsOnlineMatch = false;
         SceneLoader.Instance.LoadScene("Lobby");
     }

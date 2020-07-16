@@ -41,6 +41,8 @@ public class NetworkManager : NetworkRoomManager
         {
             SceneLoadedAndPlayersConnected();
         }
+        else
+            TransitionManager.Instance.HideTransition();
     }
 
     int indexAssigning = 0;

@@ -28,21 +28,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region EXPOSED_VARIABLES
 
-    [SerializeField]
-    [Scene]
-    private string mainMenuScene;
-    public string MainMenuScene { get { return mainMenuScene; } }
-
-    [SerializeField]
-    [Scene]
-    private string lobbyScene;
-    public string LobbyScene { get { return lobbyScene; } }
-
-    [SerializeField]
-    [Scene]
-    private string gameScene;
-    public string GameScene { get { return gameScene; } }
-
     #endregion
 
     #region PROPERTIES
@@ -368,18 +353,18 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void PlayPrivateMatch()
     {
-        NetworkManager.Instance.RoomScene = LobbyScene;
-
         PublicLobby = PrivateLobby;
         PrivateLobby.Value.SetJoinable(false);
 
         IsPrivateMatch = true;
 
         if (PublicHost)
+        {
             SendPrivateMessage(privateLobbyStartedKey, "true");
+            NetworkManager.Instance.ChangeScene("Lobby");
+        }
 
         ServerManager.Instance.IsOnlineMatch = true;
-        SceneLoader.Instance.LoadScene("Lobby");
 
         Searching = false;
     }
@@ -479,8 +464,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void CreatedPublicMatch(Lobby? lobby)
     {
-        NetworkManager.Instance.RoomScene = LobbyScene;
-
         if (FizzySteamworks.Instance.ServerActive())
             NetworkManager.Instance.StopServer();
 
@@ -504,8 +487,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
-        NetworkManager.Instance.RoomScene = LobbyScene;
-
         if (FizzySteamworks.Instance.ServerActive())
             NetworkManager.Instance.StopServer();
 

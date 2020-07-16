@@ -257,13 +257,6 @@ namespace Mirror
                 return;
             }
 
-            // cannot join game in progress
-            if (!IsSceneActive(RoomScene))
-            {
-                conn.Disconnect();
-                return;
-            }
-
             base.OnServerConnect(conn);
             OnRoomServerConnect(conn);
         }
@@ -312,7 +305,9 @@ namespace Mirror
         /// <param name="conn">Connection from client.</param>
         public override GameObject OnServerAddPlayer(NetworkConnection conn)
         {
-            if (IsSceneActive(RoomScene))
+            if (IsSceneActive(GameplayScene))
+                return OnRoomServerAddPlayer(conn);
+            else
             {
                 if (roomSlots.Count == maxConnections)
                     return null;
@@ -331,8 +326,6 @@ namespace Mirror
 
                 return newRoomGameObject;
             }
-            else
-                return OnRoomServerAddPlayer(conn);
         }
 
         public void RecalculateRoomPlayerIndices()
