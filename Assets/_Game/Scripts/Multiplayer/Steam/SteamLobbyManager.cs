@@ -324,7 +324,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void ConnectedToPrivateLobbyServer()
     {
-        PanelManager.Instance.ClosePanel<JoiningFriendPanel>();
+        if (PanelManager.Instance.GetPanel<JoiningFriendPanel>())
+            PanelManager.Instance.ClosePanel<JoiningFriendPanel>();
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();

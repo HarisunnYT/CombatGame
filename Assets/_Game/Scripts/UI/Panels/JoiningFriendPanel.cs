@@ -9,4 +9,12 @@ public class JoiningFriendPanel : Panel
         SteamLobbyManager.Instance.LeavePrivateLobby();
         PanelManager.Instance.ShowPanel<MainMenuPanel>();
     }
+
+    private void Update()
+    {
+        if (SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount != 0 && ServerManager.Instance.Players.Count >= SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount)
+        {
+            Close();
+        }
+    }
 }

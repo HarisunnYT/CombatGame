@@ -138,6 +138,8 @@ public class Cursor : MonoBehaviour
                 ISubmitHandler submitHandler = result.gameObject.GetComponentInParent<ISubmitHandler>();
                 submitHandler?.OnSubmit(null);
 
+                HideMessage();
+
                 if (submitHandler != null) //we don't want to click more than one button at a time
                     break;
             }

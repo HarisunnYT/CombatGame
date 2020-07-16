@@ -143,9 +143,7 @@ public class NetworkManager : NetworkRoomManager
         if (timedOutCount < maxTimeouts)
         {
             timedOutCount++;
-            SteamId friendID = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id : 
-                                                                                SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
-            SteamLobbyManager.Instance.CreateClient(friendID.Value.ToString());
+            StartCoroutine(DelayedReconnect());
         }
         else
         {
@@ -154,6 +152,15 @@ public class NetworkManager : NetworkRoomManager
 
             timedOutCount = 0;
         }
+    }
+
+    private IEnumerator DelayedReconnect()
+    {
+        yield return new WaitForSecondsRealtime(1);
+
+        SteamId friendID = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
+                                                                    SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
+        SteamLobbyManager.Instance.CreateClient(friendID.Value.ToString());
     }
 
     public int GetPrefabID(GameObject prefab)

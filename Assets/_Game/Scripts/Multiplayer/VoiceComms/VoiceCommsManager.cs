@@ -18,19 +18,19 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     public void StartServer()
     {
-        commsNetwork.InitializeAsServer();
+        //commsNetwork.InitializeAsServer();
     }
 
     public void StartClient()
     {
-        SteamId hostId = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
-                                                                          SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
-        commsNetwork.InitializeAsClient(hostId);
+        //SteamId hostId = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
+                                                                          //SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
+        //commsNetwork.InitializeAsClient(hostId);
     }
 
     public void Stop()
     {
-        commsNetwork.Stop();
+        //commsNetwork.Stop();
     }
 
     private void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)
