@@ -35,7 +35,11 @@ public class PrivateLobbyPanel : Panel
 
     protected override void OnShow()
     {
-        Invoke("DelayedInit", 0.5f); //this is a must to stop fizzy steamworks errors
+        if (SteamLobbyManager.Instance.PrivateLobby != null)
+        {
+            PanelManager.Instance.ShowPanel<JoiningFriendPanel>();
+            Invoke("DelayedInit", 0.5f); //this is a must to stop fizzy steamworks errors
+        }
 
         SubToEvents();
 
@@ -53,15 +57,10 @@ public class PrivateLobbyPanel : Panel
 
     private void DelayedInit()
     {
-        if (SteamLobbyManager.Instance.PrivateLobby != null)
-        {
-            if (SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
-                SteamLobbyManager.Instance.CreatePrivateLobby();
-            else if (!SteamLobbyManager.Instance.PrivateHost)
-                SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id.Value.ToString());
-
-            PanelManager.Instance.ShowPanel<JoiningFriendPanel>();
-        }
+        if (SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
+            SteamLobbyManager.Instance.CreatePrivateLobby();
+        else if (!SteamLobbyManager.Instance.PrivateHost)
+            SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id.Value.ToString());
     }
 
     private void OnDestroy()
