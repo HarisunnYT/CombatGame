@@ -67,7 +67,7 @@ public class PrivateLobbyPanel : Panel
         UnSubToEvents();
     }
 
-    protected override void OnClose()
+    private void OnDisable()
     {
         UnSubToEvents();
     }
