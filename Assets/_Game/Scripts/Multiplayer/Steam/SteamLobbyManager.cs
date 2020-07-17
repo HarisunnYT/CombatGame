@@ -74,6 +74,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public bool InSoloLobby { get { return PrivateLobby == null || PrivateLobby.Value.MemberCount <= 1; } }
 
+    public bool PrivateHostIsPublicHost { get { return PrivateLobby.Value.Owner.Id == PublicLobby.Value.Owner.Id; } }
+
     #endregion
 
     #region RUNTIME_VARIABLES
@@ -298,6 +300,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPrivateLobby(Lobby? lobby)
     {
+        ServerManager.Instance.IsOnlineMatch = true;
         PrivateLobby = lobby;
 
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();
@@ -383,7 +386,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             SendPrivateMessage(privateLobbyStartedKey, "true");
 
         SceneLoader.Instance.LoadScene("Lobby");
-        ServerManager.Instance.IsOnlineMatch = true;
 
         Searching = false;
     }
@@ -484,8 +486,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void CreatedPublicMatch(Lobby? lobby)
     {
-        StopServer();
-
         PublicLobby = lobby;
         PublicLobby.Value.SetPublic();
 
@@ -549,7 +549,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
         {
-            SceneLoader.Instance.LoadScene("Lobby");
+            if (PublicHost)
+                NetworkManager.Instance.ServerChangeScene("Lobby");
+            //SceneLoader.Instance.LoadScene("Lobby");
             Searching = false;
         }
     }

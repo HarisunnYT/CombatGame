@@ -28,7 +28,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(index);
 
-        if (isLocalPlayer)
+        if (isLocalPlayer && VoiceCommsManager.Instance)
             VoiceCommsManager.Instance.Stop();
     }
 
