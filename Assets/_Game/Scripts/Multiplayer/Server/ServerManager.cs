@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Steamworks;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,11 +13,13 @@ public class ServerManager : PersistentSingleton<ServerManager>
         public string Figher;
         public PlayerController PlayerController;
         public System.Guid ControllerGUID;
+        public string SteamId;
 
-        public ConnectedPlayer(int playerID, string name)
+        public ConnectedPlayer(int playerID, string name, string steamId)
         {
             PlayerID = playerID;
             Name = name;
+            SteamId = steamId;
 
             Figher = "";
             PlayerController = null;
@@ -32,12 +35,12 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public event PlayerEvent OnPlayerAdded;
     public event PlayerEvent OnPlayerRemoved;
 
-    public ConnectedPlayer AddConnectedPlayer(int id, string playerName)
+    public ConnectedPlayer AddConnectedPlayer(int id, string playerName, string steamId)
     {
         if (GetPlayer(id) != null)
             return GetPlayer(id);
 
-        ConnectedPlayer player = new ConnectedPlayer(id, playerName);
+        ConnectedPlayer player = new ConnectedPlayer(id, playerName, steamId);
         Players.Add(player);
 
         OnPlayerAdded?.Invoke(player);

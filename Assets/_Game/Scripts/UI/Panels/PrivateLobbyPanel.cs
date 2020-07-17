@@ -221,7 +221,9 @@ public class PrivateLobbyPanel : Panel
 
     private void UnSubToEvents()
     {
-        ServerManager.Instance.OnPlayerAdded -= OnPlayerAddedToPrivateLobby;
+        if (ServerManager.Instance)
+            ServerManager.Instance.OnPlayerAdded -= OnPlayerAddedToPrivateLobby;
+
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyMemberDataChanged -= OnMemberDataChanged;

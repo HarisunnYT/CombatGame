@@ -1,5 +1,6 @@
 ﻿using InControl;
 using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class LocalPlayersManager : PersistentSingleton<LocalPlayersManager>
 
     public void LocalPlayerJoined(int playerIndex, System.Guid controllerID)
     {
-        ServerManager.Instance.AddConnectedPlayer(playerIndex, "Player " + (playerIndex + 1)).ControllerGUID = controllerID;
+        ServerManager.Instance.AddConnectedPlayer(playerIndex, "Player " + (playerIndex + 1), SteamClient.SteamId.Value.ToString()).ControllerGUID = controllerID;
         CursorManager.Instance.GetCursor(0).InputProfile.RemoveController(controllerID); //remove this controller from player 1s controllers list
         if (CursorManager.Instance.GetCursor(0).InputProfile.IncludeDevices.Count == 0)
             CursorManager.Instance.GetCursor(0).AssignDevice(0, default); //reset device so it resets bindings

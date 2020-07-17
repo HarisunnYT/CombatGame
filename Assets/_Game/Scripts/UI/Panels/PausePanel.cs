@@ -9,7 +9,20 @@ public class PausePanel : Panel
     [SerializeField]
     private TMP_Text exitText;
 
+    [SerializeField]
+    private ConnectedPlayerCell[] connectPlayerCells;
+
     private InputProfile interactingProfile;
+
+    public override void Initialise()
+    {
+        base.Initialise();
+
+        for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
+        {
+            connectPlayerCells[i].Configure(ServerManager.Instance.Players[i].PlayerID);
+        }
+    }
 
     public void Show(InputProfile inputProfile)
     {

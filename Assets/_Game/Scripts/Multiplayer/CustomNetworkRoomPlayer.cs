@@ -14,7 +14,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (isLocalPlayer)
         {
             NetworkManager.Instance.RoomPlayer = this;
-            AddConnectedPlayer(index, SteamClient.Name);
+            AddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value.ToString());
 
             if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
                 VoiceCommsManager.Instance.StartClient();
@@ -77,28 +77,28 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             FighterManager.Instance.SetLocalPlayerReady(false);
     }
 
-    public void AddConnectedPlayer(int netID, string steamName)
+    public void AddConnectedPlayer(int netID, string steamName, string steamId)
     {
         if (isServer)
-            RpcAddConnectedPlayer(netID, steamName);
+            RpcAddConnectedPlayer(netID, steamName, steamId);
         else
-            CmdAddConnectedPlayer(netID, steamName);
+            CmdAddConnectedPlayer(netID, steamName, steamId);
     }
 
     [Command]
-    private void CmdAddConnectedPlayer(int netID, string steamName)
+    private void CmdAddConnectedPlayer(int netID, string steamName, string steamId)
     {
-        ServerManager.Instance.AddConnectedPlayer(netID, steamName);
+        ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId);
         foreach (var connectPlayer in ServerManager.Instance.Players)
         {
-            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name);
+            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name, steamId);
         }
     }
 
     [ClientRpc]
-    private void RpcAddConnectedPlayer(int netID, string steamName)
+    private void RpcAddConnectedPlayer(int netID, string steamName, string steamId)
     {
-        ServerManager.Instance.AddConnectedPlayer(netID, steamName);
+        ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId);
     }
 
     public void CmdAssignPlayerID(int[] playerNetID, int[] playerID)
