@@ -13,6 +13,7 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
     protected override void Initialize()
     {
         steamComms = GetComponent<SteamworksP2PCommsNetwork>();
+        comms = GetComponent<DissonanceComms>();
 
         SteamMatchmaking.OnLobbyMemberJoined += PeerConnected;
         SteamMatchmaking.OnLobbyMemberDisconnected += PeerDisconnected;
