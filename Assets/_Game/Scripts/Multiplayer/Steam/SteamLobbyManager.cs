@@ -179,7 +179,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         yield return new WaitForEndOfFrame();
 
         NetworkManager.Instance.StartHost();
-        VoiceCommsManager.Instance.StartServer();
     }
 
     public void CreateClient(string networkAddress)
@@ -605,7 +604,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void OnApplicationQuit()
     {
         LeaveAllLobbies();
-        VoiceCommsManager.Instance.Stop();
 
         SteamClient.Shutdown();
     }

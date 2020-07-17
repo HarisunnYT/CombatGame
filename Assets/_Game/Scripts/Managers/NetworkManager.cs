@@ -123,9 +123,6 @@ public class NetworkManager : NetworkRoomManager
         if (SteamLobbyManager.Instance.PublicLobby == null)
             SteamLobbyManager.Instance.ConnectedToPrivateLobbyServer();
 
-        if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
-            VoiceCommsManager.Instance.StartClient();
-
         timedOutCount = 0;
     }
 

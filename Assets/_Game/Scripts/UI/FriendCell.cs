@@ -76,8 +76,6 @@ public class FriendCell : MonoBehaviour
     {
         background.color = Friend.IsOnline && Friend.IsPlayingThisGame ? Color.white : offlineColor;
 
-        joinButton.interactable = false;
-
         if (!inviteSent)
             inviteButton.SetInteractable(SteamLobbyManager.Instance.PrivateLobby != null, 0);
 
@@ -86,7 +84,8 @@ public class FriendCell : MonoBehaviour
 
         try
         {
-            joinButton.interactable = Friend.GameInfo.Value.Lobby != null;
+            joinButton.interactable = Friend.GameInfo.Value.Lobby != null && (SteamLobbyManager.Instance.PrivateLobby == null ||
+                                                                              SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id != Friend.Id);
         }
         catch { }
     }

@@ -37,7 +37,9 @@ public class PrivateLobbyPanel : Panel
     {
         if (SteamLobbyManager.Instance.PrivateLobby != null)
         {
-            PanelManager.Instance.ShowPanel<JoiningFriendPanel>();
+            if (SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount > 1) //don't worry about showing this panel as the user is by themselves anyway
+                PanelManager.Instance.ShowPanel<JoiningFriendPanel>();
+
             Invoke("DelayedInit", 0.5f); //this is a must to stop fizzy steamworks errors
         }
 
