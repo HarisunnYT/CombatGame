@@ -57,7 +57,7 @@ public class CharacterSelectScreen : Panel
 
     public void ConfigureTimer(float targetTime)
     {
-        countdownTimer.Configure(targetTime);
+        countdownTimer.OverrideTargetTime(targetTime);
     }
 
     private void Update()

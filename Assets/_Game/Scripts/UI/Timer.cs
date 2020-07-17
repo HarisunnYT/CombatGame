@@ -39,6 +39,11 @@ public class Timer : NetworkBehaviour
         text.color = originalColor;
     }
 
+    public void OverrideTargetTime(float time)
+    {
+        targetTime = time;
+    }
+
     private void Update()
     {
         float time = (float)NetworkTime.time;
