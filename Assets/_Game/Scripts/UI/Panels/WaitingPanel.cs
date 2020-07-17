@@ -14,7 +14,7 @@ public class WaitingPanel : Panel
 
     public void Cancel()
     {
-        ExitManager.Instance.ExitMatch(ExitType.Leave);
+        ExitManager.Instance.ExitMatch(SteamLobbyManager.Instance.IsPrivateMatch ? ExitType.HostLeftWithParty : ExitType.Leave);
     }
 
     private void Update()

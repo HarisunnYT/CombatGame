@@ -63,7 +63,7 @@ public class ExitManager : PersistentSingleton<ExitManager>
         SceneLoader.Instance.LoadScene("MainMenu", () =>
         {
             onLoadedMainMenu?.Invoke();
-            Destroy(gameObject);
+            DestroyInstance();
         });
     }
 

@@ -115,6 +115,6 @@ public class CharacterSelectScreen : Panel
 
     public void Cancel()
     {
-        ExitManager.Instance.ExitMatch(ExitType.Leave);
+        ExitManager.Instance.ExitMatch(SteamLobbyManager.Instance.IsPrivateMatch ? ExitType.HostLeftWithParty : ExitType.Leave);
     }
 }

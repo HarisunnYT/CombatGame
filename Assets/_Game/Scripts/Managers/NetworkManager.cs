@@ -132,6 +132,8 @@ public class NetworkManager : NetworkRoomManager
 
         if (ExitManager.Instance)
             ExitManager.Instance.ExitMatch(Application.internetReachability == NetworkReachability.NotReachable ? ExitType.ClientDisconnected : ExitType.HostDisconnected);
+        else if (SceneManager.GetActiveScene().name == "MainMenu")
+            SteamLobbyManager.Instance.CreateServer();
     }
 
     int timedOutCount = 0;
