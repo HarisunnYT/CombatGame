@@ -31,6 +31,23 @@ public static class Util
         return result;
     }
 
+    public static bool IsFullyVisibleHorizontal(this RectTransform rectTransform, Camera camera = null)
+    {
+        if (!rectTransform.gameObject.activeInHierarchy)
+            return false;
+
+        Vector3[] objectCorners = new Vector3[4];
+        rectTransform.GetWorldCorners(objectCorners);
+
+        int count = 0;
+        if (objectCorners[0].x > 0)
+            count++;
+        if (objectCorners[3].x < Screen.width)
+            count++;
+
+        return count == 2;
+    }
+
     public static bool IsFullyVisibleFrom(this RectTransform rectTransform, Camera camera = null)
     {
         if (!rectTransform.gameObject.activeInHierarchy)
@@ -39,7 +56,7 @@ public static class Util
         return CountCornersVisibleFrom(rectTransform, camera) == 4; // True if all 4 corners are visible
     }
 
-    private static int CountCornersVisibleFrom(this RectTransform rectTransform, Camera camera = null)
+    private static int CountCornersVisibleFrom(this RectTransform rectTransform, Camera camera)
     {
         Rect screenBounds = new Rect(0f, 0f, Screen.width, Screen.height); // Screen space bounds (assumes camera renders across the entire screen)
         Vector3[] objectCorners = new Vector3[4];

@@ -1,6 +1,7 @@
 ﻿using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class FriendsListPanel : Panel
@@ -11,10 +12,23 @@ public class FriendsListPanel : Panel
     [SerializeField]
     private FriendCell friendCellPrefab;
 
+    [Space()]
+    [SerializeField]
+    private TMP_Text messageText;
+
+    [SerializeField]
+    private string offlineString;
+
+    [SerializeField]
+    private string noFriendsOnlineString;
+
     private List<FriendCell> friends = new List<FriendCell>();
 
     protected override void OnShow()
     {
+        bool hasFriendOnline = false;
+        bool isClientOffline = SteamClient.State == FriendState.Offline;
+
         //show online friends first
         foreach (var friend in SteamFriends.GetFriends())
         {
@@ -23,8 +37,19 @@ public class FriendsListPanel : Panel
                 FriendCell cell = FriendCellCreated(friend);
                 if (!cell)
                     ConfigureFriendCell(friend);
+
+                hasFriendOnline = true;
             }
         }
+
+        messageText.gameObject.SetActive(!hasFriendOnline || isClientOffline);
+        messageText.text = isClientOffline  ? offlineString : noFriendsOnlineString;
+    }
+
+    private void Update()
+    {
+        if (CursorManager.Instance.GetLastInteractedCursor().InputProfile.Back.WasPressed)
+            Close();
     }
 
     private void ConfigureFriendCell(Friend friend)

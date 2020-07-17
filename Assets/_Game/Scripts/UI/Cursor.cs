@@ -34,9 +34,14 @@ public class Cursor : MonoBehaviour
 
     private bool messageBoxFacingRight = true;
 
+    private ScrollRect currentScrollable;
+    private PointerEventData fakeEventData;
+
     private void Awake()
     {
         eventSystem = EventSystem.current;
+        fakeEventData = new PointerEventData(eventSystem) { button = PointerEventData.InputButton.Left };
+
         ResetCamera();
     }
 
@@ -74,7 +79,8 @@ public class Cursor : MonoBehaviour
 
         if (previousCursorPosition != transform.position || InputProfile.Select.WasPressed)
         {
-            UpdateSelectedButton();
+            if (currentScrollable == null)
+                UpdateSelectedButton();
         }
 
         if (AssignedCamera == null)
@@ -83,6 +89,21 @@ public class Cursor : MonoBehaviour
         if (messageBox.gameObject.activeSelf)
             SetMessageBoxSide();
 
+        if (InputProfile.Select)
+        {
+            if (currentScrollable != null)
+            {
+                currentScrollable.OnDrag(fakeEventData);
+                currentScrollable.OnScroll(fakeEventData);
+            }
+        }
+        else if (InputProfile.Select.WasReleased)
+        {
+            if (currentScrollable != null)
+                currentScrollable.OnEndDrag(fakeEventData);
+            currentScrollable = null;
+        }
+
         //clamp cursor to camera bounds
         Vector3 pos = AssignedCamera.ScreenToViewportPoint(transform.position);
         pos.x = Mathf.Clamp(pos.x, 0.0f, 0.95f);
@@ -90,19 +111,17 @@ public class Cursor : MonoBehaviour
         transform.position = AssignedCamera.ViewportToScreenPoint(pos);
 
         previousCursorPosition = transform.position;
+        fakeEventData.position = previousCursorPosition;
     }
 
     private void UpdateSelectedButton()
     {
-        PointerEventData pointerEventData = new PointerEventData(eventSystem);
-        pointerEventData.position = transform.position;
-
         List<RaycastResult> results = new List<RaycastResult>();
 
         if (assignedRaycaster)
-            assignedRaycaster.Raycast(pointerEventData, results);
+            assignedRaycaster.Raycast(fakeEventData, results);
         else
-            PanelManager.Instance.Raycaster.Raycast(pointerEventData, results);
+            PanelManager.Instance.Raycaster.Raycast(fakeEventData, results);
 
         eventSystem.SetSelectedGameObject(null);
         HideMessage();
@@ -138,9 +157,16 @@ public class Cursor : MonoBehaviour
                 ISubmitHandler submitHandler = result.gameObject.GetComponentInParent<ISubmitHandler>();
                 submitHandler?.OnSubmit(null);
 
+                if (submitHandler == null) //if there isn't a submit handler, try and get a scroll rect
+                {
+                    currentScrollable = result.gameObject.GetComponentInParent<ScrollRect>();
+                    if (currentScrollable != null)
+                        currentScrollable.OnBeginDrag(fakeEventData);
+                }
+
                 HideMessage();
 
-                if (submitHandler != null) //we don't want to click more than one button at a time
+                if (submitHandler != null || currentScrollable != null) //we don't want to click more than one button at a time
                     break;
             }
         }
@@ -183,7 +209,7 @@ public class Cursor : MonoBehaviour
 
     private void SetMessageBoxSide()
     {
-        bool isFullyVisible = messageBox.IsFullyVisibleFrom();
+        bool isFullyVisible = messageBox.IsFullyVisibleHorizontal();
         if (isFullyVisible)
             return;
 

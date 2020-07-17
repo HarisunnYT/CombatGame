@@ -82,12 +82,8 @@ public class FriendCell : MonoBehaviour
         if (Friend.IsOnline && Friend.IsPlayingThisGame)
             transform.SetAsFirstSibling();
 
-        try
-        {
-            joinButton.interactable = Friend.GameInfo.Value.Lobby != null && (SteamLobbyManager.Instance.PrivateLobby == null ||
-                                                                              SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id != Friend.Id);
-        }
-        catch { }
+        joinButton.interactable = Friend.IsPlayingThisGame && Friend.GameInfo.HasValue && Friend.GameInfo.Value.Lobby != null && (!SteamLobbyManager.Instance.PrivateLobby.HasValue ||
+                                                                                                                                   SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id != Friend.Id);
     }
 
     public void JoinFriend()

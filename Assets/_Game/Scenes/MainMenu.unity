@@ -355,6 +355,7 @@ MonoBehaviour:
   - {fileID: 991451149}
   privacyToggle: {fileID: 1316297681}
   privacyStateText: {fileID: 1385089311}
+  leaveButton: {fileID: 1487033779}
   searchingObj: {fileID: 399123432}
   cancelButton: {fileID: 1458047415}
   playersFoundText: {fileID: 1352601481}
@@ -1227,6 +1228,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5589086535395296369, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
         type: 3}
+      propertyPath: nonInteractableMessage.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5589086535395296369, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 163558480}
@@ -1234,6 +1240,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LeaveLobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 5589086535395296369, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
+        type: 3}
+      propertyPath: nonInteractableMessage.Array.data[0]
+      value: currently searching
       objectReference: {fileID: 0}
     - target: {fileID: 5589086535395296382, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
         type: 3}
@@ -1427,7 +1438,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00012207031, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &400827720
@@ -2018,12 +2029,12 @@ PrefabInstance:
     - target: {fileID: 6661128415014514470, guid: cd2910ac9cb26f94782fd50f1369c083,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 68.000046
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 6661128415014514470, guid: cd2910ac9cb26f94782fd50f1369c083,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6661128415014514470, guid: cd2910ac9cb26f94782fd50f1369c083,
         type: 3}
@@ -5421,12 +5432,12 @@ PrefabInstance:
     - target: {fileID: 6661128415014514470, guid: cd2910ac9cb26f94782fd50f1369c083,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 68.000046
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 6661128415014514470, guid: cd2910ac9cb26f94782fd50f1369c083,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6661128415014514470, guid: cd2910ac9cb26f94782fd50f1369c083,
         type: 3}
@@ -6084,6 +6095,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5589086535395296369, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
         type: 3}
+      propertyPath: nonInteractableMessage.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5589086535395296369, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 163558480}
@@ -6091,6 +6107,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: CancelSearch
+      objectReference: {fileID: 0}
+    - target: {fileID: 5589086535395296369, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
+        type: 3}
+      propertyPath: nonInteractableMessage.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5589086535395296382, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
         type: 3}
@@ -6216,6 +6237,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1458047413}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1487033779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5589086535395296369, guid: 7d7c8aba5aad2894681a327cd6f46bfc,
+    type: 3}
+  m_PrefabInstance: {fileID: 387734145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed6f55ac57390a64aa2e6dca15710547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1509328210
 GameObject:
   m_ObjectHideFlags: 0
@@ -6251,7 +6284,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -115}
+  m_AnchoredPosition: {x: 0, y: -114.99988}
   m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1509328212

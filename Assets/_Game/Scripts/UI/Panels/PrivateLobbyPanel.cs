@@ -19,6 +19,9 @@ public class PrivateLobbyPanel : Panel
     [SerializeField]
     private TMP_Text privacyStateText;
 
+    [SerializeField]
+    private BetterButton leaveButton;
+
     [Space()]
     [SerializeField]
     private GameObject searchingObj;
@@ -142,14 +145,19 @@ public class PrivateLobbyPanel : Panel
             }
         }
 
-        if (SteamLobbyManager.Instance.PublicLobby != null)
-            playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
+        UpdatePlayersFoundText();
 
         if (SteamLobbyManager.Instance.Searching && SteamLobbyManager.Instance.AllPrivateMembersConnectedToPublic())
             cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
 
         if (!SteamLobbyManager.Instance.Searching)
             SetPlayButtonsInteractable(true);
+    }
+
+    private void UpdatePlayersFoundText()
+    {
+        if (SteamLobbyManager.Instance.PublicLobby != null)
+            playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
     }
 
     private void OnBeganSearch()
@@ -195,14 +203,17 @@ public class PrivateLobbyPanel : Panel
         {
             button.interactable = interactable ? SteamLobbyManager.Instance.PrivateHost : false;
         }
+
+        leaveButton.interactable = interactable;
     }
 
     private void SubToEvents()
     {
-        ServerManager.Instance.OnPlayerAdded += OnLobbyMemberJoined;
+        ServerManager.Instance.OnPlayerAdded += OnPlayerAddedToPrivateLobby;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyMemberDataChanged += OnMemberDataChanged;
+        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
 
         SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
         SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
@@ -210,10 +221,11 @@ public class PrivateLobbyPanel : Panel
 
     private void UnSubToEvents()
     {
-        ServerManager.Instance.OnPlayerAdded -= OnLobbyMemberJoined;
+        ServerManager.Instance.OnPlayerAdded -= OnPlayerAddedToPrivateLobby;
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyMemberDataChanged -= OnMemberDataChanged;
+        SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
 
         if (SteamLobbyManager.Instance)
         {
@@ -222,12 +234,17 @@ public class PrivateLobbyPanel : Panel
         }
     }
 
+    private void OnLobbyMemberJoined(Lobby arg1, Friend arg2)
+    {
+        UpdatePlayersFoundText();
+    }
+
     private void OnLobbyEntered(Lobby obj)
     {
         UpdatePlayerCells();
     }
 
-    private void OnLobbyMemberJoined(ServerManager.ConnectedPlayer player)
+    private void OnPlayerAddedToPrivateLobby(ServerManager.ConnectedPlayer player)
     {
         UpdatePlayerCells();
     }
