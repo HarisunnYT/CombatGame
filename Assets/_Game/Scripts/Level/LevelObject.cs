@@ -53,7 +53,11 @@ public class LevelObject : NetworkBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
 
-        playerController = ServerManager.Instance.GetPlayer(cursor.ControllerID).PlayerController;
+        if (ServerManager.Instance.IsOnlineMatch)
+            playerController = ServerManager.Instance.GetPlayerLocal().PlayerController;
+        else
+            playerController = ServerManager.Instance.GetPlayer(cursor.ControllerID).PlayerController;
+
         collider.isTrigger = hasAuthority;
     }
 
