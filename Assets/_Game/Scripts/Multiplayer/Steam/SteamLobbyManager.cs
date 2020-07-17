@@ -549,9 +549,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
         {
-            if (PublicHost)
-                NetworkManager.Instance.ServerChangeScene("Lobby");
-            //SceneLoader.Instance.LoadScene("Lobby");
+            SceneLoader.Instance.LoadScene("Lobby");
             Searching = false;
         }
     }

@@ -151,4 +151,16 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         FightManager.Instance.FightOver(winnerPlayerID);
     }
+
+    [Command]
+    public void CmdRequestTimer()
+    {
+        RpcReceiveTimer(PanelManager.Instance.GetPanel<CharacterSelectScreen>().SelectCharacterTimer);
+    }
+
+    [ClientRpc]
+    private void RpcReceiveTimer(float time)
+    {
+        PanelManager.Instance.GetPanel<CharacterSelectScreen>().ConfigureTimer(time);
+    }
 }

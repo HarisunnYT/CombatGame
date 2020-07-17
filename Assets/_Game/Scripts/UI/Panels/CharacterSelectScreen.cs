@@ -16,7 +16,8 @@ public class CharacterSelectScreen : Panel
     [SerializeField]
     private SelectedCharacterCell[] selectedCharacterCells;
 
-    private float selectCharacterTimer;
+    public float SelectCharacterTimer { get; private set; } //we send this time to the other clients when they connect
+
     private bool finished = false;
 
     private void Awake()
@@ -39,12 +40,12 @@ public class CharacterSelectScreen : Panel
 
     protected override void OnShow()
     {
-        selectCharacterTimer = (float)NetworkTime.time + CharacterSelectManager.Instance.CharacterSelectTime;
+        SelectCharacterTimer = (float)NetworkTime.time + CharacterSelectManager.Instance.CharacterSelectTime;
         finished = false;
 
         //no countdown for local player
         if (ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch)
-            countdownTimer.Configure(selectCharacterTimer);
+            countdownTimer.Configure(SelectCharacterTimer);
         else
             countdownTimer.transform.parent.gameObject.SetActive(false);
 
@@ -54,12 +55,17 @@ public class CharacterSelectScreen : Panel
         }
     }
 
+    public void ConfigureTimer(float targetTime)
+    {
+        countdownTimer.Configure(targetTime);
+    }
+
     private void Update()
     {
         //we don't countdown in local
         if (ServerManager.Instance && ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch)
         {
-            int roundedTime = Mathf.Clamp(Mathf.RoundToInt(selectCharacterTimer - (float)NetworkTime.time), 0, int.MaxValue);
+            int roundedTime = Mathf.Clamp(Mathf.RoundToInt(SelectCharacterTimer - (float)NetworkTime.time), 0, int.MaxValue);
             if (roundedTime <= 0 && !finished)
             {
                 //times up, force random character for local player
