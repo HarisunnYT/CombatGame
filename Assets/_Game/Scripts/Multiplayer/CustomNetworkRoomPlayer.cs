@@ -15,10 +15,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         {
             NetworkManager.Instance.RoomPlayer = this;
             AddConnectedPlayer(index, SteamClient.Name);
-        }
 
-        if (index == NetworkManager.Instance.RoomPlayer.index)
-        {
             if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
                 VoiceCommsManager.Instance.StartClient();
             else if (SteamLobbyManager.Instance.PrivateHost)
@@ -31,7 +28,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(index);
 
-        if (index == NetworkManager.Instance.RoomPlayer.index)
+        if (isLocalPlayer)
             VoiceCommsManager.Instance.Stop();
     }
 
