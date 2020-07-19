@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90eb7903a4db76c48bc5174f6b444231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelType: 1
+  panelType: 2
   pauseTime: 0
   titleText: {fileID: 2740534292935317498}
   descriptionText: {fileID: 5057853137317329540}
@@ -793,6 +793,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  interactableMessage: 
+  nonInteractableMessage: []
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnselected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &3631076828765020925
 Animator:
   serializedVersion: 3

@@ -320,6 +320,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();
         joinedLobbyCallback = (RoomEnter roomEnter) =>
         {
+            joinedLobbyCallback = null;
+            joiningPrivateLobbyTask = null;
+
             if (roomEnter == RoomEnter.Success) //TODO SHOW ERRORS AND STUFF WHEN TRYING TO JOIN LOBBY
             {
                 PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
@@ -331,8 +334,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 else
                     CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
             }
-
-            joinedLobbyCallback = null;
         };
 
         Debug.Log("Joined private lobby");

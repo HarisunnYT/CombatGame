@@ -26,14 +26,21 @@ public class ErrorManager : PersistentSingleton<ErrorManager>
     {
         if (unshownError != null && arg1.name.Contains("MainMenu"))
         {
-            PanelManager.Instance.GetPanel<ErrorPanel>().ShowPanel(unshownError);
-            unshownError = null;
+            ShowError();
         }
+    }
+
+    private void ShowError()
+    {
+        PanelManager.Instance.GetPanel<ErrorPanel>().ShowPanel(unshownError);
+        unshownError = null;
     }
 
     public void EncounteredError(string errorCode)
     {
         unshownError = GetErrorData(errorCode);
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+            ShowError();
     }
 
     public void DisconnectedError()
