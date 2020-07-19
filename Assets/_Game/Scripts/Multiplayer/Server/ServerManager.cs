@@ -13,10 +13,10 @@ public class ServerManager : PersistentSingleton<ServerManager>
         public string Figher;
         public PlayerController PlayerController;
         public System.Guid ControllerGUID;
-        public string SteamId; //can't be a ulong, packets don't like it
+        public ulong SteamId; 
         public string VoiceCommsId;
 
-        public ConnectedPlayer(int playerID, string name, string steamId, string voiceCommsId)
+        public ConnectedPlayer(int playerID, string name, ulong steamId, string voiceCommsId)
         {
             PlayerID = playerID;
             Name = name;
@@ -37,7 +37,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public event PlayerEvent OnPlayerAdded;
     public event PlayerEvent OnPlayerRemoved;
 
-    public ConnectedPlayer AddConnectedPlayer(int id, string playerName, string steamId, string voiceCommsId)
+    public ConnectedPlayer AddConnectedPlayer(int id, string playerName, ulong steamId, string voiceCommsId)
     {
         if (GetPlayer(id) != null)
             return GetPlayer(id);
@@ -121,6 +121,19 @@ public class ServerManager : PersistentSingleton<ServerManager>
         foreach (var player in Players)
         {
             if (player.Name == playerName)
+            {
+                return player;
+            }
+        }
+
+        return default;
+    }
+
+    public ConnectedPlayer GetPlayer(ulong steamId)
+    {
+        foreach (var player in Players)
+        {
+            if (player.SteamId == steamId)
             {
                 return player;
             }

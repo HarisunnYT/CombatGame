@@ -19,7 +19,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
                 VoiceCommsManager.Instance.StartServer();
 
             NetworkManager.Instance.RoomPlayer = this;
-            AddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value.ToString(), VoiceCommsManager.Instance.ClientId);
+            AddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value, VoiceCommsManager.Instance.ClientId);
         }
     }
 
@@ -77,7 +77,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             FighterManager.Instance.SetLocalPlayerReady(false);
     }
 
-    public void AddConnectedPlayer(int netID, string steamName, string steamId, string voiceCommsId)
+    public void AddConnectedPlayer(int netID, string steamName, ulong steamId, string voiceCommsId)
     {
         if (isServer)
             RpcAddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
@@ -86,7 +86,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     }
 
     [Command]
-    private void CmdAddConnectedPlayer(int netID, string steamName, string steamId, string voiceCommsId)
+    private void CmdAddConnectedPlayer(int netID, string steamName, ulong steamId, string voiceCommsId)
     {
         ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
         foreach (var connectPlayer in ServerManager.Instance.Players)
@@ -96,7 +96,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     }
 
     [ClientRpc]
-    private void RpcAddConnectedPlayer(int netID, string steamName, string steamId, string voiceCommsId)
+    private void RpcAddConnectedPlayer(int netID, string steamName, ulong steamId, string voiceCommsId)
     {
         ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
     }

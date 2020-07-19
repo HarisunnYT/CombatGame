@@ -18,7 +18,7 @@ public class LobbyPlayerCell : SelectedCharacterCell
         {
             bool isLocalPlayer = playerName == ServerManager.Instance.GetPlayerLocal().Name;
             muteButton.gameObject.SetActive(!isLocalPlayer);
-            kickButton.gameObject.SetActive(SteamLobbyManager.Instance.PrivateHost);
+            kickButton.gameObject.SetActive(SteamLobbyManager.Instance.PrivateHost && !isLocalPlayer);
         }
     }
 

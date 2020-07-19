@@ -218,7 +218,8 @@ public class PrivateLobbyPanel : Panel
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
 
         SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
-        SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch; 
+        SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch;
+        SteamLobbyManager.Instance.OnKicked += OnKicked; 
     }
 
     private void UnSubToEvents()
@@ -235,7 +236,14 @@ public class PrivateLobbyPanel : Panel
         {
             SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
             SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
+            SteamLobbyManager.Instance.OnKicked -= OnKicked;
         }
+    }
+
+    private void OnKicked()
+    {
+        DelayedInit();
+        UpdatePlayerCells();
     }
 
     private void OnLobbyMemberJoined(Lobby arg1, Friend arg2)

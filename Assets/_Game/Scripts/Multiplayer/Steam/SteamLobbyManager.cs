@@ -102,6 +102,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public event LobbyEvent OnBeganSearch;
     public event LobbyEvent OnCancelledSearch;
     public event LobbyEvent OnPublicMatchCreated;
+    public event LobbyEvent OnKicked;
 
     #endregion
 
@@ -423,15 +424,22 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         return null;
     }
 
-    public void KickPlayer(string steamId)
+    public void KickPlayer(ulong steamId)
     {
-        SendPrivateMessage(kickPlayer, steamId);
+        int playerId = ServerManager.Instance.GetPlayer(steamId).PlayerID;
+        FizzySteamworks.Instance.ServerDisconnect(playerId);
+        SendPrivateMessage(kickPlayer, steamId.ToString());
     }
 
     private void OnPlayerKicked(string steamId)
     {
         if (SteamClient.SteamId.Value.ToString() == steamId)
+        {
             LeavePrivateLobby(); //TODO Show kicked message
+            OnKicked?.Invoke();
+
+            ErrorManager.Instance.EncounteredError("103");
+        }
     }
 
     #endregion
