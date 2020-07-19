@@ -22,6 +22,6 @@ public class ConnectedPlayerCell : PlayerCell
         isMuted = !isMuted;
         muteButtonImage.sprite = isMuted ? mutedIcon : unmutedIcon;
 
-        VoiceCommsManager.Instance.MutePeer(isMuted, ServerManager.Instance.GetPlayer(playerController).SteamId);
+        VoiceCommsManager.Instance.MutePeer(isMuted, ServerManager.Instance.GetPlayer(playerController).VoiceCommsId);
     }
 }

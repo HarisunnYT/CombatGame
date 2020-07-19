@@ -7,6 +7,8 @@ using Dissonance;
 
 public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 {
+    public string ClientId { get { return comms.LocalPlayerName; } }
+
     private DissonanceComms comms;
     private SteamworksP2PCommsNetwork steamComms;
 
@@ -36,9 +38,9 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
         steamComms.Stop();
     }
 
-    public void MutePeer(bool mute, string steamId)
+    public void MutePeer(bool mute, string voiceCommsId)
     {
-        comms.FindPlayer(steamId).IsLocallyMuted = mute;
+        comms.FindPlayer(voiceCommsId).IsLocallyMuted = mute;
     }
 
     private void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)

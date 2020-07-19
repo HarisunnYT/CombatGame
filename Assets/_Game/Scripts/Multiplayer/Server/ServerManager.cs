@@ -14,12 +14,14 @@ public class ServerManager : PersistentSingleton<ServerManager>
         public PlayerController PlayerController;
         public System.Guid ControllerGUID;
         public string SteamId;
+        public string VoiceCommsId;
 
-        public ConnectedPlayer(int playerID, string name, string steamId)
+        public ConnectedPlayer(int playerID, string name, string steamId, string voiceCommsId)
         {
             PlayerID = playerID;
             Name = name;
             SteamId = steamId;
+            VoiceCommsId = voiceCommsId;
 
             Figher = "";
             PlayerController = null;
@@ -35,12 +37,12 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public event PlayerEvent OnPlayerAdded;
     public event PlayerEvent OnPlayerRemoved;
 
-    public ConnectedPlayer AddConnectedPlayer(int id, string playerName, string steamId)
+    public ConnectedPlayer AddConnectedPlayer(int id, string playerName, string steamId, string voiceCommsId)
     {
         if (GetPlayer(id) != null)
             return GetPlayer(id);
 
-        ConnectedPlayer player = new ConnectedPlayer(id, playerName, steamId);
+        ConnectedPlayer player = new ConnectedPlayer(id, playerName, steamId, voiceCommsId);
         Players.Add(player);
 
         OnPlayerAdded?.Invoke(player);

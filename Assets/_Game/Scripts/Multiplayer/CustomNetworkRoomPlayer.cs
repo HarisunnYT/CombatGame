@@ -13,13 +13,13 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 
         if (isLocalPlayer)
         {
-            NetworkManager.Instance.RoomPlayer = this;
-            AddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value.ToString());
-
             if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
                 VoiceCommsManager.Instance.StartClient();
             else if (SteamLobbyManager.Instance.PrivateHost)
                 VoiceCommsManager.Instance.StartServer();
+
+            NetworkManager.Instance.RoomPlayer = this;
+            AddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value.ToString(), VoiceCommsManager.Instance.ClientId);
         }
     }
 
@@ -77,28 +77,28 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             FighterManager.Instance.SetLocalPlayerReady(false);
     }
 
-    public void AddConnectedPlayer(int netID, string steamName, string steamId)
+    public void AddConnectedPlayer(int netID, string steamName, string steamId, string voiceCommsId)
     {
         if (isServer)
-            RpcAddConnectedPlayer(netID, steamName, steamId);
+            RpcAddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
         else
-            CmdAddConnectedPlayer(netID, steamName, steamId);
+            CmdAddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
     }
 
     [Command]
-    private void CmdAddConnectedPlayer(int netID, string steamName, string steamId)
+    private void CmdAddConnectedPlayer(int netID, string steamName, string steamId, string voiceCommsId)
     {
-        ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId);
+        ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
         foreach (var connectPlayer in ServerManager.Instance.Players)
         {
-            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name, steamId);
+            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name, steamId, voiceCommsId);
         }
     }
 
     [ClientRpc]
-    private void RpcAddConnectedPlayer(int netID, string steamName, string steamId)
+    private void RpcAddConnectedPlayer(int netID, string steamName, string steamId, string voiceCommsId)
     {
-        ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId);
+        ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
     }
 
     public void CmdAssignPlayerID(int[] playerNetID, int[] playerID)
