@@ -286,10 +286,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void CreatePrivateLobby()
     {
+        if (joiningPrivateLobbyTask != null) //already joining a lobby
+            return;
+
         if (!FizzySteamworks.Instance.ServerActive())
-        {
             CreateServer();
-        }
 
         if (PrivateLobby != null)
         {
@@ -366,7 +367,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void LeavePrivateLobby()
     {
-        if (PrivateLobby != null)
+        if (PrivateLobby != null && creatingPrivateLobbyTask == null && joiningPrivateLobbyTask == null)
         {
             if (PrivateHost)
                 StopServer();
@@ -396,11 +397,18 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         Searching = false;
     }
 
-    public void ClearPrivateLobbyData()
+    public void ClearPrivateLobbyData(float delay = 0)
     {
+        StartCoroutine(DelayedClear(delay));
+    }
+
+    private IEnumerator DelayedClear(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+
         if (PrivateLobby != null)
         {
-            foreach(var data in PrivateLobby.Value.Data)
+            foreach (var data in PrivateLobby.Value.Data)
                 PrivateLobby.Value.DeleteData(data.Key);
         }
     }
@@ -426,14 +434,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void KickPlayer(ulong steamId)
     {
-        int playerId = ServerManager.Instance.GetPlayer(steamId).PlayerID;
-        CustomNetworkRoomPlayer roomPlayer = NetworkManager.Instance.GetRoomPlayer(playerId);
         SendPrivateMessage(kickPlayer, steamId.ToString());
+        ClearPrivateLobbyData(0.5f);
     }
 
     private void OnPlayerKicked(string steamId)
     {
-        if (SteamClient.SteamId.Value.ToString() == steamId)
+        if (SteamClient.SteamId.Value.ToString() == steamId && PrivateLobby != null)
         {
             LeavePrivateLobby(); //TODO Show kicked message
             OnKicked?.Invoke();
