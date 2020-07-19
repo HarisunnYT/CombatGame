@@ -120,7 +120,7 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnClientConnect(conn);
 
-        if (SteamLobbyManager.Instance.PublicLobby == null)
+        if (SteamLobbyManager.Instance.PublicLobby == null && conn.connectionId == NetworkClient.connection.connectionId)
             SteamLobbyManager.Instance.ConnectedToPrivateLobbyServer();
 
         timedOutCount = 0;

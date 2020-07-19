@@ -122,7 +122,7 @@ public class PrivateLobbyPanel : Panel
         string ownerName = SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name;
 
         //configure host cell
-        connectedPlayerCells[0].Configure(ServerManager.Instance.GetPlayer(ownerName), FighterManager.Instance.GetFighter(fighterName)); 
+        connectedPlayerCells[0].Configure(ownerName, FighterManager.Instance.GetFighter(fighterName)); 
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
         if (privateLobby != null)
@@ -133,7 +133,7 @@ public class PrivateLobbyPanel : Panel
                 if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
                 {
                     fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
-                    connectedPlayerCells[i].Configure(ServerManager.Instance.GetPlayer(friend.Name), FighterManager.Instance.GetFighter(fighterName));
+                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
                     connectedPlayerCells[i].GetComponent<Animator>().SetBool("Connected", true);
                 }
             }
