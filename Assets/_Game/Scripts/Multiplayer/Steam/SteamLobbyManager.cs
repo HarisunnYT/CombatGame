@@ -427,7 +427,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void KickPlayer(ulong steamId)
     {
         int playerId = ServerManager.Instance.GetPlayer(steamId).PlayerID;
-        FizzySteamworks.Instance.ServerDisconnect(playerId);
+        CustomNetworkRoomPlayer roomPlayer = NetworkManager.Instance.GetRoomPlayer(playerId);
+
+        FizzySteamworks.Instance.ServerDisconnect(roomPlayer.connectionToClient.connectionId);
         SendPrivateMessage(kickPlayer, steamId.ToString());
     }
 

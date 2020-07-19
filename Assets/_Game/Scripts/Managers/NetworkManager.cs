@@ -190,4 +190,17 @@ public class NetworkManager : NetworkRoomManager
             base.ChangeScene(sceneName);
         });
     }
+
+    public CustomNetworkRoomPlayer GetRoomPlayer(int index)
+    {
+        foreach(var roomPlayer in roomSlots)
+        {
+            if (roomPlayer.index == index)
+            {
+                return roomPlayer as CustomNetworkRoomPlayer;
+            }
+        }
+
+        return null;
+    }
 }
