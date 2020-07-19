@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BetterButton : Button
+public class BetterButton : Button, IInteractableMessage
 {
     private Animator animator;
 
@@ -23,7 +23,8 @@ public class BetterButton : Button
     [SerializeField]
     private UnityEvent onUnselected;
 
-    private int nonInteractableIndex = 0;
+    public int NonInteractableIndex { get; set; }
+    public bool Interactable { get; set; } = true;
 
     protected override void Awake()
     {
@@ -62,6 +63,13 @@ public class BetterButton : Button
         onUnselected?.Invoke();
     }
 
+    public void SetInteractable(bool interactable, int nonInteractableIndex = 0)
+    {
+        NonInteractableIndex = nonInteractableIndex;
+        this.interactable = interactable;
+        Interactable = interactable;
+    }
+
     public string GetInteractableMessage()
     {
         return interactableMessage;
@@ -69,12 +77,6 @@ public class BetterButton : Button
 
     public string GetNonInteractableMessage()
     {
-        return nonInteractableMessage[nonInteractableIndex];
-    }
-
-    public void SetInteractable(bool interactable, int nonInteractableIndex = 0)
-    {
-        this.nonInteractableIndex = nonInteractableIndex;
-        this.interactable = interactable;
+        return nonInteractableMessage[NonInteractableIndex];
     }
 }

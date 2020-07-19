@@ -23,6 +23,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
     private const string leaveMatchWithPartyKey = "leave_match_with_party";
+    private const string kickPlayer = "kick_player";
 
     #endregion
 
@@ -223,6 +224,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 {
                     HostPulledPartyFromMatch();
                 }
+                else if (data.Key == kickPlayer)
+                {
+                    OnPlayerKicked(data.Value);
+                }
             }
         }
     }
@@ -403,6 +408,30 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         UpdateLobby(PrivateLobby.Value);
         ExitManager.Instance.ExitMatchWithParty();
+    }
+
+    public Friend? GetPrivateMember(ulong steamId)
+    {
+        foreach(var member in PrivateLobby.Value.Members)
+        {
+            if (member.Id.Value == steamId)
+            {
+                return member;
+            }
+        }
+
+        return null;
+    }
+
+    public void KickPlayer(string steamId)
+    {
+        SendPrivateMessage(kickPlayer, steamId);
+    }
+
+    private void OnPlayerKicked(string steamId)
+    {
+        if (SteamClient.SteamId.Value.ToString() == steamId)
+            LeavePrivateLobby(); //TODO Show kicked message
     }
 
     #endregion

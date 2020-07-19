@@ -16,15 +16,11 @@ public class SelectedCharacterCell : MonoBehaviour
     public ServerManager.ConnectedPlayer ConnectedPlayer { get; private set; }
     public bool Occuipied { get; private set; } = false;
 
-    public void Configure(ServerManager.ConnectedPlayer connectedPlayer, FighterData fighter)
+    public virtual void Configure(ServerManager.ConnectedPlayer connectedPlayer, FighterData fighter)
     {
         ConnectedPlayer = connectedPlayer;
-        Configure(connectedPlayer.Name, fighter);
-    }
 
-    public void Configure(string playerName, FighterData fighter)
-    {
-        playerNameText.text = playerName;
+        playerNameText.text = connectedPlayer.Name;
         characterIcon.runtimeAnimatorController = fighter.UIAnimatorController;
 
         Occuipied = true;

@@ -52,7 +52,7 @@ public class PrivateLobbyPanel : Panel
         privacyToggle.gameObject.SetActive(SteamLobbyManager.Instance.PrivateHost);
         foreach(var button in playButtons)
         {
-            button.interactable = SteamLobbyManager.Instance.PrivateHost;
+            button.SetInteractable(SteamLobbyManager.Instance.PrivateHost);
         }
 
         cancelButton.SetActive(false);
@@ -119,8 +119,10 @@ public class PrivateLobbyPanel : Panel
         if (fighterName == null)
             fighterName = "";
 
-        //configure client cell
-        connectedPlayerCells[0].Configure(SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name, FighterManager.Instance.GetFighter(fighterName)); 
+        string ownerName = SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Name;
+
+        //configure host cell
+        connectedPlayerCells[0].Configure(ServerManager.Instance.GetPlayer(ownerName), FighterManager.Instance.GetFighter(fighterName)); 
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
         if (privateLobby != null)
@@ -131,7 +133,7 @@ public class PrivateLobbyPanel : Panel
                 if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
                 {
                     fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
-                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
+                    connectedPlayerCells[i].Configure(ServerManager.Instance.GetPlayer(friend.Name), FighterManager.Instance.GetFighter(fighterName));
                     connectedPlayerCells[i].GetComponent<Animator>().SetBool("Connected", true);
                 }
             }
@@ -201,10 +203,10 @@ public class PrivateLobbyPanel : Panel
     {
         foreach (var button in playButtons)
         {
-            button.interactable = interactable ? SteamLobbyManager.Instance.PrivateHost : false;
+            button.SetInteractable(interactable ? SteamLobbyManager.Instance.PrivateHost : false, 1); //1 is the index of the non interactable message to show
         }
 
-        leaveButton.interactable = interactable;
+        leaveButton.SetInteractable(interactable);
     }
 
     private void SubToEvents()

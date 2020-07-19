@@ -13,7 +13,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
         public string Figher;
         public PlayerController PlayerController;
         public System.Guid ControllerGUID;
-        public string SteamId;
+        public string SteamId; //can't be a ulong, packets don't like it
         public string VoiceCommsId;
 
         public ConnectedPlayer(int playerID, string name, string steamId, string voiceCommsId)
@@ -108,6 +108,19 @@ public class ServerManager : PersistentSingleton<ServerManager>
         foreach (var player in Players)
         {
             if (player.ControllerGUID == id)
+            {
+                return player;
+            }
+        }
+
+        return default;
+    }
+
+    public ConnectedPlayer GetPlayer(string playerName)
+    {
+        foreach (var player in Players)
+        {
+            if (player.Name == playerName)
             {
                 return player;
             }

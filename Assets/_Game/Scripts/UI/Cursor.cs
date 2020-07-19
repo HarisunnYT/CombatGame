@@ -27,6 +27,8 @@ public class Cursor : MonoBehaviour
     private Vector3 previousCursorPosition;
     private Vector3 previousMousePosition;
 
+    private bool forceUpdateNextFrame = false;
+
     private GraphicRaycaster assignedRaycaster;
     private Button previousHighlightedButton;
 
@@ -77,7 +79,7 @@ public class Cursor : MonoBehaviour
             transform.position += new Vector3(InputProfile.Move.X * cursorMoveSpeed, InputProfile.Move.Y * cursorMoveSpeed, 0) * Time.unscaledDeltaTime;
         }
 
-        if (previousCursorPosition != transform.position || InputProfile.Select.WasPressed)
+        if (previousCursorPosition != transform.position || InputProfile.Select.WasPressed || forceUpdateNextFrame)
         {
             if (currentScrollable == null)
                 UpdateSelectedButton();
@@ -116,6 +118,8 @@ public class Cursor : MonoBehaviour
 
     private void UpdateSelectedButton()
     {
+        forceUpdateNextFrame = false;
+
         List<RaycastResult> results = new List<RaycastResult>();
 
         if (assignedRaycaster)
@@ -128,22 +132,22 @@ public class Cursor : MonoBehaviour
 
         foreach (RaycastResult result in results)
         {
+            IInteractableMessage interactable = result.gameObject.GetComponentInParent<IInteractableMessage>();
+            if (interactable != null)
+            {
+                if (interactable.Interactable && !string.IsNullOrEmpty(interactable.GetInteractableMessage()))
+                    ShowMessage(interactable.GetInteractableMessage());
+                else if (!interactable.Interactable && !string.IsNullOrEmpty(interactable.GetNonInteractableMessage()))
+                    ShowMessage(interactable.GetNonInteractableMessage());
+            }
+
             BetterButton button = result.gameObject.GetComponentInParent<BetterButton>();
             if (button)
             {
-                if (button.interactable)
-                {
-                    if (!string.IsNullOrEmpty(button.GetInteractableMessage()))
-                        ShowMessage(button.GetInteractableMessage());
+                button.Select();
+                previousHighlightedButton = button;
 
-                    button.Select();
-                    previousHighlightedButton = button;
-                    break;
-                }
-                else
-                {
-                    ShowMessage(button.GetNonInteractableMessage());
-                }
+                break;
             }
         }
 
@@ -169,12 +173,9 @@ public class Cursor : MonoBehaviour
                 if (submitHandler != null || currentScrollable != null) //we don't want to click more than one button at a time
                     break;
             }
-        }
-    }
 
-    public void ForceUpdate()
-    {
-        UpdateSelectedButton();
+            forceUpdateNextFrame = true;
+        }
     }
 
     public void EnableAllControllerInput()
