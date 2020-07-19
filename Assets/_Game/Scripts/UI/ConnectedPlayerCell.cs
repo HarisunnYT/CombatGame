@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,13 @@ public class ConnectedPlayerCell : PlayerCell
     private Image muteButtonImage;
 
     private bool isMuted = false;
+
+    public override void Configure(int playerID)
+    {
+        base.Configure(playerID);
+
+        muteButtonImage.transform.parent.gameObject.SetActive(playerID != ServerManager.Instance.GetPlayerLocal().PlayerID);
+    }
 
     public void Mute()
     {
