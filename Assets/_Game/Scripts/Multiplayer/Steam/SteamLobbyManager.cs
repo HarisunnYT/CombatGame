@@ -94,6 +94,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private System.Action<Lobby[]> retreivedLobbiesCallback;
     public System.Action<RoomEnter> joinedLobbyCallback;
 
+    private Coroutine creatingServerCoroutine;
+    private Coroutine creatingClientCoroutine;
+
     #endregion
 
     #region CALLBACKS
@@ -173,7 +176,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void CreateServer()
     {
-        StartCoroutine(CreateServerIE());
+        if (creatingServerCoroutine == null)
+            creatingServerCoroutine = StartCoroutine(CreateServerIE());
     }
 
     private IEnumerator CreateServerIE()
@@ -183,11 +187,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         yield return new WaitForEndOfFrame();
 
         NetworkManager.Instance.StartHost();
+        creatingServerCoroutine = null;
     }
 
     public void CreateClient(string networkAddress)
     {
-        StartCoroutine(CreateClientIE(networkAddress));
+        if (creatingClientCoroutine == null)
+            creatingServerCoroutine = StartCoroutine(CreateClientIE(networkAddress));
     }
 
     private IEnumerator CreateClientIE(string networkAddress)
@@ -199,6 +205,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         NetworkManager.Instance.networkAddress = networkAddress;
         NetworkManager.Instance.StartClient();
+        creatingServerCoroutine = null;
     }
 
     #endregion
@@ -397,15 +404,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         Searching = false;
     }
 
-    public void ClearPrivateLobbyData(float delay = 0)
+    public void ClearPrivateLobbyData()
     {
-        StartCoroutine(DelayedClear(delay));
-    }
-
-    private IEnumerator DelayedClear(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-
         if (PrivateLobby != null)
         {
             foreach (var data in PrivateLobby.Value.Data)
@@ -435,7 +435,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void KickPlayer(ulong steamId)
     {
         SendPrivateMessage(kickPlayer, steamId.ToString());
-        ClearPrivateLobbyData(0.5f);
     }
 
     private void OnPlayerKicked(string steamId)
@@ -604,6 +603,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void OnLobbyMemberLeave(Lobby arg1, Friend arg2)
     {
+        ClearPrivateLobbyData();
         UpdateLobby(arg1);
     }
 
