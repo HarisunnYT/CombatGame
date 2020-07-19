@@ -91,7 +91,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         ServerManager.Instance.AddConnectedPlayer(netID, steamName, steamId, voiceCommsId);
         foreach (var connectPlayer in ServerManager.Instance.Players)
         {
-            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name, steamId, voiceCommsId);
+            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name, connectPlayer.SteamId, connectPlayer.VoiceCommsId);
         }
     }
 

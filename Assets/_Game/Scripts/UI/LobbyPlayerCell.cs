@@ -14,6 +14,8 @@ public class LobbyPlayerCell : SelectedCharacterCell
     {
         base.Configure(playerName, fighter);
 
+        ConnectedPlayer = null;
+
         if (ServerManager.Instance.GetPlayerLocal() != null)
         {
             bool isLocalPlayer = playerName == ServerManager.Instance.GetPlayerLocal().Name;

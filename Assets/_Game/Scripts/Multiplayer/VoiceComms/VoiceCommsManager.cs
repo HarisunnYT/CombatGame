@@ -46,6 +46,10 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
     private void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)
     {
         steamComms.PeerConnected(friend.Id);
+
+        if (friend.Id != SteamClient.SteamId)
+            MutePeer(false, ServerManager.Instance.GetPlayer(friend.Id.Value).VoiceCommsId); //unmute player when they enter the room
+
     }
 
     private void PeerDisconnected(Steamworks.Data.Lobby arg1, Friend friend)
