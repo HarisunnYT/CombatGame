@@ -133,16 +133,20 @@ public class PrivateLobbyPanel : Panel
         connectedPlayerCells[0].Configure(ownerName, FighterManager.Instance.GetFighter(fighterName)); 
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
-        if (privateLobby != null)
+        for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
         {
-            for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
+            Friend friend = privateLobby.Value.Members.ElementAt(i);
+            if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
             {
-                Friend friend = privateLobby.Value.Members.ElementAt(i);
-                if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
+                fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
+                foreach (var playerCell in connectedPlayerCells)
                 {
-                    fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
-                    connectedPlayerCells[i + 1].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
-                    connectedPlayerCells[i + 1].GetComponent<Animator>().SetBool("Connected", true);
+                    if (!playerCell.Occuipied)
+                    {
+                        playerCell.Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
+                        playerCell.GetComponent<Animator>().SetBool("Connected", true);
+                        break;
+                    }
                 }
             }
         }
