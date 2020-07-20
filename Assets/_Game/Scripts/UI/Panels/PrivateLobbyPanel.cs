@@ -60,6 +60,14 @@ public class PrivateLobbyPanel : Panel
         UpdatePlayerCells();
     }
 
+    protected override void OnClose()
+    {
+        foreach (var playerCell in connectedPlayerCells)
+        {
+            playerCell.ForceHide();
+        }
+    }
+
     private void DelayedInit()
     {
         if (SteamLobbyManager.Instance.PrivateHost && !FizzySteamworks.Instance.ServerActive())
@@ -172,11 +180,6 @@ public class PrivateLobbyPanel : Panel
     {
         SetPlayButtonsInteractable(true);
         searchingObj.SetActive(false);
-    }
-
-    private void ShowCancelButton()
-    {
-        cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
     }
 
     public void CancelSearch()

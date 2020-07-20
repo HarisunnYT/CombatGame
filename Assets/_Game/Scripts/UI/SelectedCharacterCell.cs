@@ -40,4 +40,10 @@ public class SelectedCharacterCell : MonoBehaviour
         gameObject.SetActive(!hide);
         Occuipied = false;
     }
+
+    public void ForceHide()
+    {
+        Animator.SetTrigger("ForceHide");
+        Unconfigure(true);
+    }
 }

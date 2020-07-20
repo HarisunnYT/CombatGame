@@ -242,6 +242,7 @@ GameObject:
   - component: {fileID: 5589086535395296370}
   - component: {fileID: 5589086535395296369}
   - component: {fileID: 5589086535395296368}
+  - component: {fileID: 816863316510112688}
   m_Layer: 5
   m_Name: Cancel
   m_TagString: Untagged
@@ -331,6 +332,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  interactableMessage: 
+  nonInteractableMessage: []
   onSelected:
     m_PersistentCalls:
       m_Calls: []
@@ -356,3 +359,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!225 &816863316510112688
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5589086535395296382}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

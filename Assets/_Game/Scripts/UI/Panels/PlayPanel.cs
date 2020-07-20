@@ -26,21 +26,34 @@ public class PlayPanel : Panel
     [SerializeField]
     private MatchType local;
 
+    private bool optionSelected = false;
+
     protected override void OnShow()
     {
+        optionSelected = false;
         OnlineSelected();
     }
 
     public void Online()
     {
+        if (optionSelected) //to stop spam clicking on both options
+            return;
+
         SteamLobbyManager.Instance.CreatePrivateLobby();
         ServerManager.Instance.IsOnlineMatch = true;
+
+        optionSelected = true;
     }
 
     public void Local()
     {
+        if (optionSelected) //to stop spam clicking on both options
+            return;
+
         ServerManager.Instance.IsOnlineMatch = false;
         SceneLoader.Instance.LoadScene("Lobby");
+
+        optionSelected = true;
     }
 
     public void OnlineSelected()
