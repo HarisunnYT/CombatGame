@@ -41,7 +41,8 @@ public class Timer : NetworkBehaviour
 
     public void OverrideTargetTime(float time)
     {
-        targetTime = time;
+        if (targetTime == 0)
+            targetTime = time;
     }
 
     private void Update()
