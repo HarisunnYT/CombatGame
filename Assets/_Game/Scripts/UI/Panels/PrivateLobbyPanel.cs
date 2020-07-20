@@ -164,7 +164,7 @@ public class PrivateLobbyPanel : Panel
         UpdatePlayersFoundText();
 
         if (!SteamLobbyManager.Instance.Searching)
-            SetPlayButtonsInteractable(true);
+            SetPlayButtonsInteractable(true, 0);
     }
 
     private void UpdatePlayersFoundText()
@@ -178,13 +178,13 @@ public class PrivateLobbyPanel : Panel
 
     private void OnBeganSearch()
     {
-        SetPlayButtonsInteractable(false);
+        SetPlayButtonsInteractable(false, 1);
         searchingObj.SetActive(true);
     }
 
     private void OnCancelledSearch()
     {
-        SetPlayButtonsInteractable(true);
+        SetPlayButtonsInteractable(true, 1);
         searchingObj.SetActive(false);
     }
 
@@ -208,11 +208,11 @@ public class PrivateLobbyPanel : Panel
             leaveAction.Invoke();
     }
 
-    private void SetPlayButtonsInteractable(bool interactable)
+    private void SetPlayButtonsInteractable(bool interactable, int index)
     {
         foreach (var button in playButtons)
         {
-            button.SetInteractable(interactable ? SteamLobbyManager.Instance.PrivateHost : false, 1); //1 is the index of the non interactable message to show
+            button.SetInteractable(interactable ? SteamLobbyManager.Instance.PrivateHost : false, index); 
         }
 
         leaveButton.SetInteractable(interactable);

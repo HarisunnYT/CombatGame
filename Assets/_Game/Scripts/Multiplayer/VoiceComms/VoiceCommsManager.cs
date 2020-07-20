@@ -8,13 +8,13 @@ using Dissonance;
 public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 {
     public string ClientId { get { return comms.LocalPlayerName; } }
+    public SteamworksP2PCommsNetwork SteamComms { get; private set; }
 
     private DissonanceComms comms;
-    private SteamworksP2PCommsNetwork steamComms;
 
     protected override void Initialize()
     {
-        steamComms = GetComponent<SteamworksP2PCommsNetwork>();
+        SteamComms = GetComponent<SteamworksP2PCommsNetwork>();
         comms = GetComponent<DissonanceComms>();
 
         SteamMatchmaking.OnLobbyMemberJoined += PeerConnected;
@@ -23,19 +23,19 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     public void StartServer()
     {
-        steamComms.InitializeAsServer();
+        SteamComms.InitializeAsServer();
     }
 
     public void StartClient()
     {
         SteamId hostId = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
                                                                           SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
-        steamComms.InitializeAsClient(hostId);
+        SteamComms.InitializeAsClient(hostId);
     }
 
     public void Stop()
     {
-        steamComms.Stop();
+        SteamComms.Stop();
     }
 
     public void MutePeer(bool mute, string voiceCommsId)
@@ -50,7 +50,7 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     private void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)
     {
-        steamComms.PeerConnected(friend.Id);
+        SteamComms.PeerConnected(friend.Id);
 
         if (friend.Id != SteamClient.SteamId)
             MutePeer(false, ServerManager.Instance.GetPlayer(friend.Id.Value).VoiceCommsId); //unmute player when they enter the room
@@ -59,6 +59,11 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     private void PeerDisconnected(Steamworks.Data.Lobby arg1, Friend friend)
     {
-        steamComms.PeerDisconnected(friend.Id);
+        SteamComms.PeerDisconnected(friend.Id);
+    }
+
+    public void SendChatMessage(string message)
+    {
+        SteamComms.SendText(message, ChannelType.Room, comms.FindPlayer(ClientId).Rooms[0]);
     }
 }

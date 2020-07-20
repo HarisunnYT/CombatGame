@@ -7,5 +7,9 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PrivateLobbyPanel
-  m_Controller: {fileID: 0}
-  m_Clips: []
+  m_Controller: {fileID: 9100000, guid: 7422e45fb33fc1f4696f18e870ae751f, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 5aa6888a7a830e240ae4aaed1b28e75a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5809b18cecad10f468a8975860c7c871, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: badc5a9f1514e1b4eb9b468f1cebb4f8, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b07aea4faf2f71d4a9c0780401dfaf14, type: 2}
