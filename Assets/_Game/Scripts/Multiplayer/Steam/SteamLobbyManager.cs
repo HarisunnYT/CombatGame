@@ -459,7 +459,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         OnBeganSearch?.Invoke();
 
-        LookForAvailablePublicMatch(MaxLobbyMembers - PrivateLobby.Value.Members.Count());
+        LookForAvailablePublicMatch(PrivateLobby.Value.Members.Count());
     }
 
     private void LookForAvailablePublicMatch(int slotsAvailable)
@@ -520,7 +520,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PublicLobby != null)
         {
-            LookForAvailablePublicMatch(MaxLobbyMembers - PublicLobby.Value.Members.Count());
+            LookForAvailablePublicMatch(PublicLobby.Value.Members.Count());
             return;
         }
 
@@ -542,7 +542,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
             TryStartPublicMatch();
         else
-            LookForAvailablePublicMatch(MaxLobbyMembers - PrivateLobby.Value.Members.Count());
+            LookForAvailablePublicMatch(PrivateLobby.Value.Members.Count());
 
         Debug.Log("Created public match lobby");
     }
