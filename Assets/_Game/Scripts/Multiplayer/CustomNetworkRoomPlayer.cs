@@ -20,6 +20,9 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 
             NetworkManager.Instance.RoomPlayer = this;
             AddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value, VoiceCommsManager.Instance.ClientId);
+
+            if (ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost) //get the timer in character select screen
+                CmdRequestTimer();
         }
     }
 
