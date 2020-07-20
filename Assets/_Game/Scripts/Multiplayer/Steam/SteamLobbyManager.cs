@@ -193,7 +193,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void CreateClient(string networkAddress)
     {
         if (creatingClientCoroutine == null)
-            creatingServerCoroutine = StartCoroutine(CreateClientIE(networkAddress));
+            creatingClientCoroutine = StartCoroutine(CreateClientIE(networkAddress));
     }
 
     private IEnumerator CreateClientIE(string networkAddress)
