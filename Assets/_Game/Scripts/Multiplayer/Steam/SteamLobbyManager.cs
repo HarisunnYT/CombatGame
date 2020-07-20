@@ -340,7 +340,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void ConnectedToPrivateLobbyServer()
     {
-        if (PanelManager.Instance.GetPanel<JoiningFriendPanel>())
+        if (PanelManager.Instance.GetPanel<JoiningFriendPanel>() && (!PrivateLobby.HasValue || ServerManager.Instance.Players.Count >= PrivateLobby.Value.MemberCount))
             PanelManager.Instance.ClosePanel<JoiningFriendPanel>();
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())

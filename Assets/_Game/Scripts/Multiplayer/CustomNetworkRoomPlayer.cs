@@ -17,13 +17,15 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
                 VoiceCommsManager.Instance.StartServer();
 
             NetworkManager.Instance.RoomPlayer = this;
-            CmdAddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value, VoiceCommsManager.Instance.ClientId);
 
             if (ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost) //get the timer in character select screen
                 CmdRequestTimer();
         }
-        else
-            CmdRequestPlayers();
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        CmdAddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value, VoiceCommsManager.Instance.ClientId);
     }
 
     public override void OnClientExitRoom()
@@ -84,15 +86,6 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 
         if (playerID == ServerManager.Instance.GetPlayerLocal().PlayerID)
             FighterManager.Instance.SetLocalPlayerReady(false);
-    }
-
-    [Command]
-    private void CmdRequestPlayers()
-    {
-        foreach (var connectPlayer in ServerManager.Instance.Players)
-        {
-            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name, connectPlayer.SteamId, connectPlayer.VoiceCommsId);
-        }
     }
 
     [Command]
