@@ -55,7 +55,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents
             int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - (float)NetworkTime.time);
             if (roundedTime <= 0)
             {
-                MatchManager.Instance.RpcCountdownOver();
+                NetworkManager.Instance.RoomPlayer.RpcCountdownOver();
             }
         }
         else

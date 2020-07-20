@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b31852b8b85cd5448fa0b6d10c5e48b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorMoveSpeed: 400
+  cursorMoveSpeed: 600
   cursorIcon: {fileID: 8453873904757086900}
   messageBox: {fileID: 6481409569394574269}
   messageText: {fileID: 2447818597758591316}

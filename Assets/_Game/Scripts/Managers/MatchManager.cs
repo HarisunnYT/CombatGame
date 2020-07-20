@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MatchManager : NetworkBehaviour
+public class MatchManager : Singleton<MatchManager>
 {
     #region EXTENSIONS
     public enum RoundPhase
@@ -32,8 +32,6 @@ public class MatchManager : NetworkBehaviour
 
     #region RUNTIME_VARIABLES
 
-    public static MatchManager Instance;
-
     public int WinsRequired { get; private set; } = 5;
 
     public bool MatchStarted { get; private set; } = false;
@@ -59,11 +57,6 @@ public class MatchManager : NetworkBehaviour
 
     #endregion
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     private void Start()
     {
         if (!ServerManager.Instance.IsOnlineMatch)
@@ -86,17 +79,15 @@ public class MatchManager : NetworkBehaviour
     {
         if (SteamLobbyManager.Instance.PublicHost)
         {
-            RpcBeginPhase((int)phase);
+            NetworkManager.Instance.RoomPlayer.RpcBeginPhase((int)phase);
         }
     }
 
-    [ClientRpc] 
-    private void RpcBeginPhase(int phase)
-    {
-        BeginPhaseClient((RoundPhase)phase);
-    }
-
-    private void BeginPhaseClient(RoundPhase phase)
+    /// <summary>
+    /// call CustomNetworkRoomPlayer RpcBeginPhase instead
+    /// </summary>
+    /// <param name="phase"></param>
+    public void BeginPhaseClient(RoundPhase phase)
     {
         if (phase == RoundPhase.Fight_Phase)
             BeginFightPhase();
@@ -172,12 +163,6 @@ public class MatchManager : NetworkBehaviour
             GameObject manager = new GameObject("Fight Manager");
             currentFight = manager.AddComponent<FightManager>();
         }
-    }
-
-    [ClientRpc]
-    public void RpcCountdownOver()
-    {
-        FightManager.Instance.CountdownOver();
     }
 
     private void Update()

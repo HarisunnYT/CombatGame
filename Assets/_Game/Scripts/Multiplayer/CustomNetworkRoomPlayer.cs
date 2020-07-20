@@ -163,4 +163,16 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         PanelManager.Instance.GetPanel<CharacterSelectScreen>().ConfigureTimer(time);
     }
+
+    [ClientRpc]
+    public void RpcBeginPhase(int phase)
+    {
+        MatchManager.Instance.BeginPhaseClient((MatchManager.RoundPhase)phase);
+    }
+
+    [ClientRpc]
+    public void RpcCountdownOver()
+    {
+        FightManager.Instance.CountdownOver();
+    }
 }
