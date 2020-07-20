@@ -22,6 +22,8 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             if (ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost) //get the timer in character select screen
                 CmdRequestTimer();
         }
+        else
+            CmdRequestPlayers();
     }
 
     public override void OnClientExitRoom()
@@ -82,6 +84,15 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 
         if (playerID == ServerManager.Instance.GetPlayerLocal().PlayerID)
             FighterManager.Instance.SetLocalPlayerReady(false);
+    }
+
+    [Command]
+    private void CmdRequestPlayers()
+    {
+        foreach (var connectPlayer in ServerManager.Instance.Players)
+        {
+            RpcAddConnectedPlayer(connectPlayer.PlayerID, connectPlayer.Name, connectPlayer.SteamId, connectPlayer.VoiceCommsId);
+        }
     }
 
     [Command]
