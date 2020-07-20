@@ -135,14 +135,14 @@ public class PrivateLobbyPanel : Panel
 
         if (privateLobby != null)
         {
-            for (int i = 1; i < ServerManager.Instance.Players.Count; i++)
+            for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
             {
                 Friend friend = privateLobby.Value.Members.ElementAt(i);
                 if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
                 {
                     fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
-                    connectedPlayerCells[i].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
-                    connectedPlayerCells[i].GetComponent<Animator>().SetBool("Connected", true);
+                    connectedPlayerCells[i + 1].Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
+                    connectedPlayerCells[i + 1].GetComponent<Animator>().SetBool("Connected", true);
                 }
             }
         }
