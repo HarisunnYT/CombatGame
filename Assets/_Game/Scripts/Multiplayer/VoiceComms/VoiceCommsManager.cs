@@ -43,6 +43,11 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
         comms.FindPlayer(voiceCommsId).IsLocallyMuted = mute;
     }
 
+    public bool IsPeerMuted(string voiceCommsId)
+    {
+        return comms.FindPlayer(voiceCommsId).IsLocallyMuted;
+    }
+
     private void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)
     {
         steamComms.PeerConnected(friend.Id);
