@@ -106,7 +106,10 @@ public class MatchManager : Singleton<MatchManager>
         LevelEditorManager.Instance.RevealRecentObjects();
 
         if (ServerManager.Instance.IsOnlineMatch)
+        {
             PanelManager.Instance.ClosePanel<CharacterPurchasePanel>();
+            PanelManager.Instance.ClosePanel<LevelEditorPanel>();
+        }
         else
             LocalPlayerUIManager.Instance.DisplayLocalScreens(false);
 

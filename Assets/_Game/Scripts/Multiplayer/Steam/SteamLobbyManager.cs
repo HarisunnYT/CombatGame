@@ -205,7 +205,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         NetworkManager.Instance.networkAddress = networkAddress;
         NetworkManager.Instance.StartClient();
-        creatingServerCoroutine = null;
+        creatingClientCoroutine = null;
     }
 
     #endregion
