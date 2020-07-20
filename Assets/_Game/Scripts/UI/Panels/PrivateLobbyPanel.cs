@@ -257,6 +257,9 @@ public class PrivateLobbyPanel : Panel
 
     private void OnLobbyMemberJoined(Lobby arg1, Friend arg2)
     {
+        if (arg1.Id == SteamLobbyManager.Instance.PrivateLobby.Value.Id && ServerManager.Instance.GetPlayer(arg2.Id.Value) != null)
+            UpdatePlayerCells();
+
         UpdatePlayersFoundText();
     }
 
