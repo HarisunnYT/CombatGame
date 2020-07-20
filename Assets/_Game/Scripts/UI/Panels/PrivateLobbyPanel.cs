@@ -38,6 +38,8 @@ public class PrivateLobbyPanel : Panel
 
     protected override void OnShow()
     {
+        ServerManager.Instance.IsOnlineMatch = true;
+
         if (SteamLobbyManager.Instance.PrivateLobby != null)
         {
             if (SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount > 1) //don't worry about showing this panel as the user is by themselves anyway

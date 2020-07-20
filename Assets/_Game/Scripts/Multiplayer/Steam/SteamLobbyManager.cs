@@ -314,7 +314,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPrivateLobby(Lobby? lobby)
     {
-        ServerManager.Instance.IsOnlineMatch = true;
         PrivateLobby = lobby;
 
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();

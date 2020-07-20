@@ -40,7 +40,6 @@ public class PlayPanel : Panel
             return;
 
         SteamLobbyManager.Instance.CreatePrivateLobby();
-        ServerManager.Instance.IsOnlineMatch = true;
 
         optionSelected = true;
     }
