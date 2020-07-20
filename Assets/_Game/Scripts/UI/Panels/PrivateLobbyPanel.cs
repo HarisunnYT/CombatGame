@@ -157,9 +157,6 @@ public class PrivateLobbyPanel : Panel
 
         UpdatePlayersFoundText();
 
-        if (SteamLobbyManager.Instance.Searching && SteamLobbyManager.Instance.AllPrivateMembersConnectedToPublic())
-            cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
-
         if (!SteamLobbyManager.Instance.Searching)
             SetPlayButtonsInteractable(true);
     }
@@ -168,6 +165,9 @@ public class PrivateLobbyPanel : Panel
     {
         if (SteamLobbyManager.Instance.PublicLobby != null)
             playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
+
+        if (SteamLobbyManager.Instance.Searching && SteamLobbyManager.Instance.AllPrivateMembersConnectedToPublic())
+            cancelButton.SetActive(SteamLobbyManager.Instance.PrivateHost);
     }
 
     private void OnBeganSearch()

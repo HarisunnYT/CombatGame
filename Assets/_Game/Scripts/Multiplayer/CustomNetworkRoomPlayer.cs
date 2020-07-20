@@ -3,14 +3,12 @@ using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MultiplayerBasicExample;
+using UnityEngine.SceneManagement;
 
 public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 {
     public override void OnClientEnterRoom()
     {
-        base.OnClientEnterRoom();
-
         if (isLocalPlayer)
         {
             if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
@@ -24,6 +22,12 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             if (ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost) //get the timer in character select screen
                 CmdRequestTimer();
         }
+    }
+
+    public override void OnClientExitRoom()
+    {
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+            SteamLobbyManager.Instance.CancelSearch();
     }
 
     private void OnDestroy()

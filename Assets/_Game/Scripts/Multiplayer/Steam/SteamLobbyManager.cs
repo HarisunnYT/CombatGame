@@ -580,7 +580,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public bool AllPrivateMembersConnectedToPublic()
     {
-        Debug.Log(PrivateLobby == null || PublicLobby == null || PublicLobby.Value.MemberCount >= PrivateLobby.Value.MemberCount);
         return PrivateLobby == null || PublicLobby == null || PublicLobby.Value.MemberCount >= PrivateLobby.Value.MemberCount;
     }
 
@@ -603,10 +602,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region CALLBACKS
 
-    private void OnLobbyMemberLeave(Lobby arg1, Friend arg2)
+    private void OnLobbyMemberLeave(Lobby lobby, Friend friend)
     {
         ClearPrivateLobbyData();
-        UpdateLobby(arg1);
+        UpdateLobby(lobby);
     }
 
     private void OnLobbyEntered(Lobby obj)
