@@ -47,7 +47,7 @@ public class ChatPanel : Panel
     {
         if (Input.GetKeyDown(KeyCode.T)) //TODO make it work with controller
             ShowInput(true);
-        else if (CursorManager.Instance.GetLastInteractedCursor().InputProfile.Back.WasPressed)
+        else if (CursorManager.Instance && CursorManager.Instance.GetLastInteractedCursor().InputProfile.Back.WasPressed)
             ShowInput(false);
 
         if (hideTarget != -1 && Time.time > hideTarget && inputModule.enabled == false)
@@ -97,11 +97,8 @@ public class ChatPanel : Panel
 
     private void ShowChat(bool show, float duration)
     {
-        if (chatOpen != show)
-        {
-            canvasGroup.DOFade(show ? 1 : 0, duration);
-            chatOpen = show;
-        }
+        canvasGroup.DOFade(show ? 1 : 0, duration);
+        chatOpen = show;
     }
 
     private void SteamComms_TextPacketReceived(Dissonance.Networking.TextMessage obj)
