@@ -139,7 +139,7 @@ public class NetworkManager : NetworkRoomManager
     int timedOutCount = 0;
     public override void TimedOut()
     {
-        if (timedOutCount < maxTimeouts)
+        if (timedOutCount < maxTimeouts && (SteamLobbyManager.Instance.PublicLobby.HasValue || SteamLobbyManager.Instance.PrivateLobby.HasValue))
         {
             timedOutCount++;
             StartCoroutine(DelayedReconnect());
@@ -147,9 +147,10 @@ public class NetworkManager : NetworkRoomManager
         else
         {
             SteamLobbyManager.Instance.LeavePrivateLobby();
-            PanelManager.Instance.ShowPanel<MainMenuPanel>();
-
             timedOutCount = 0;
+
+            if (PanelManager.Instance.GetPanel<MainMenuPanel>())
+                PanelManager.Instance.ShowPanel<MainMenuPanel>();
         }
     }
 
@@ -157,8 +158,13 @@ public class NetworkManager : NetworkRoomManager
     {
         yield return new WaitForSecondsRealtime(1);
 
-        SteamId friendID = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
-                                                                    SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
+        if (!SteamLobbyManager.Instance.PublicLobby.HasValue && !SteamLobbyManager.Instance.PrivateLobby.HasValue)
+        {
+            TimedOut();
+            yield break;
+        }
+
+        SteamId friendID = SteamLobbyManager.Instance.PublicLobby.HasValue ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id : SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
         SteamLobbyManager.Instance.CreateClient(friendID.Value.ToString());
     }
 

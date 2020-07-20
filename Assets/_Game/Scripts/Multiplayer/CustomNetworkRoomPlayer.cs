@@ -164,7 +164,10 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     [ClientRpc]
     private void RpcReceiveTimer(float time)
     {
-        PanelManager.Instance.GetPanel<CharacterSelectScreen>().ConfigureTimer(time);
+        if (time == 0 && !isServer) //time hadn't been set yet, request again
+            CmdRequestTimer();
+        else
+            PanelManager.Instance.GetPanel<CharacterSelectScreen>().ConfigureTimer(time);
     }
 
     [ClientRpc]
