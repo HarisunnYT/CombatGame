@@ -144,11 +144,14 @@ public class ServerManager : PersistentSingleton<ServerManager>
 
     public ConnectedPlayer GetPlayerLocal()
     {
-        foreach (var player in Players)
+        if (NetworkManager.Instance.RoomPlayer != null)
         {
-            if (player.PlayerID == NetworkManager.Instance.RoomPlayer.index)
+            foreach (var player in Players)
             {
-                return player;
+                if (player.PlayerID == NetworkManager.Instance.RoomPlayer.index)
+                {
+                    return player;
+                }
             }
         }
 
