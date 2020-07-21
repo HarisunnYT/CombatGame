@@ -301,6 +301,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         if (PrivateLobby != null)
         {
+            StartVoiceComms();
+
             PrivateLobby.Value.SetFriendsOnly();
             PrivateLobby.Value.SetJoinable(true);
         }
@@ -345,6 +347,16 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+
+        StartVoiceComms();
+    }
+
+    public void StartVoiceComms()
+    {
+        if ((!PrivateHost || !PrivateLobby.HasValue) && (!PublicHost || !PublicLobby.HasValue))
+            VoiceCommsManager.Instance.StartClient();
+        else if (PrivateHost && PrivateLobby.HasValue)
+            VoiceCommsManager.Instance.StartServer();
     }
 
     //this is when the user accepts an invite or clicks 'join game' in steam UI

@@ -14,7 +14,7 @@ public class JoiningFriendPanel : Panel
     {
         if (SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount != 0 && ServerManager.Instance.Players.Count >= SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount)
         {
-            Close();
+            SteamLobbyManager.Instance.StartVoiceComms();
         }
     }
 }
