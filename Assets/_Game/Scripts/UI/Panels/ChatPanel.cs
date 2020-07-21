@@ -49,9 +49,12 @@ public class ChatPanel : Panel
 
     private void Update()
     {
+        if (CursorManager.Instance == null)
+            return;
+
         if (!inputOpen && CursorManager.Instance.GetLastInteractedProfile().Chat.WasPressed)
             ShowInput(true);
-        else if (inputOpen && CursorManager.Instance && CursorManager.Instance.GetLastInteractedProfile().Back.WasPressed)
+        else if (inputOpen && CursorManager.Instance.GetLastInteractedProfile().Back.WasPressed)
             ShowInput(false);
 
         if (hideTarget != -1 && Time.time > hideTarget && inputOpen == false)

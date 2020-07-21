@@ -36,11 +36,6 @@ public class PrivateLobbyPanel : Panel
     [SerializeField]
     private SelectedCharacterCell[] connectedPlayerCells;
 
-    public override void Initialise()
-    {
-        SubToEvents();
-    }
-
     protected override void OnShow()
     {
         ServerManager.Instance.IsOnlineMatch = true;
@@ -52,6 +47,8 @@ public class PrivateLobbyPanel : Panel
 
             Invoke("DelayedInit", 0.5f); //this is a must to stop fizzy steamworks errors
         }
+
+        SubToEvents();
 
         //disable / enable all buttons based on if they're host or not
         privacyToggle.gameObject.SetActive(SteamLobbyManager.Instance.PrivateHost);
@@ -83,12 +80,12 @@ public class PrivateLobbyPanel : Panel
 
     private void OnDestroy()
     {
-       // UnSubToEvents();
+        UnSubToEvents();
     }
 
     private void OnDisable()
     {
-       // UnSubToEvents();
+        UnSubToEvents();
     }
 
     public void Search()
@@ -242,7 +239,6 @@ public class PrivateLobbyPanel : Panel
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyMemberDataChanged -= OnMemberDataChanged;
-        SteamMatchmaking.OnLobbyMemberJoined -= OnLobbyMemberJoined;
 
         if (SteamLobbyManager.Instance)
         {
