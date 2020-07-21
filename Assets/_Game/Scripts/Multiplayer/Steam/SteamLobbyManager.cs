@@ -343,12 +343,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void ConnectedToPrivateLobbyServer()
     {
         if (PanelManager.Instance.GetPanel<JoiningFriendPanel>() && (!PrivateLobby.HasValue || ServerManager.Instance.Players.Count >= PrivateLobby.Value.MemberCount))
+        {
             PanelManager.Instance.ClosePanel<JoiningFriendPanel>();
+            StartVoiceComms();
+        }
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
-
-        StartVoiceComms();
     }
 
     public void StartVoiceComms()
