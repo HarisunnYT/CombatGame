@@ -19,16 +19,6 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         }
     }
 
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-
-        if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
-            VoiceCommsManager.Instance.StartClient();
-        else if (SteamLobbyManager.Instance.PrivateHost)
-            VoiceCommsManager.Instance.StartServer();
-    }
-
     public override void OnClientExitRoom()
     {
         if (SceneManager.GetActiveScene().name == "MainMenu")

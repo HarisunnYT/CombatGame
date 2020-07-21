@@ -345,6 +345,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         if (PanelManager.Instance.GetPanel<PrivateLobbyPanel>())
             PanelManager.Instance.ShowPanel<PrivateLobbyPanel>();
+
+        if (!PrivateHost || SteamLobbyManager.Instance.PublicHost)
+            VoiceCommsManager.Instance.StartClient();
+        else if (PrivateHost)
+            VoiceCommsManager.Instance.StartServer();
     }
 
     //this is when the user accepts an invite or clicks 'join game' in steam UI
