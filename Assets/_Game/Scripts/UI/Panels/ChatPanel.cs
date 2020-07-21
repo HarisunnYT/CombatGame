@@ -30,13 +30,15 @@ public class ChatPanel : Panel
     private Image box;
 
     private bool chatOpen = false;
-    private float hideTarget = -1;
+    private bool inputOpen = false;
 
-    private StandaloneInputModule inputModule;
+    private InControlInputModule inputModule;
+
+    private float hideTarget = -1;
 
     private void Start()
     {
-        inputModule = InControlManager.Instance.GetComponent<StandaloneInputModule>();
+        inputModule = InControlManager.Instance.GetComponent<InControlInputModule>();
 
         VoiceCommsManager.Instance.SteamComms.TextPacketReceived += SteamComms_TextPacketReceived;
         ShowInput(false);
@@ -47,12 +49,12 @@ public class ChatPanel : Panel
 
     private void Update()
     {
-        if (!inputModule.enabled && CursorManager.Instance.GetLastInteractedProfile().Chat.WasPressed)
+        if (!inputOpen && CursorManager.Instance.GetLastInteractedProfile().Chat.WasPressed)
             ShowInput(true);
-        else if (inputModule.enabled && CursorManager.Instance && CursorManager.Instance.GetLastInteractedProfile().Back.WasPressed)
+        else if (inputOpen && CursorManager.Instance && CursorManager.Instance.GetLastInteractedProfile().Back.WasPressed)
             ShowInput(false);
 
-        if (hideTarget != -1 && Time.time > hideTarget && inputModule.enabled == false)
+        if (hideTarget != -1 && Time.time > hideTarget && inputOpen == false)
         {
             ShowChat(false, 0.5f);
             hideTarget = -1;
@@ -66,14 +68,20 @@ public class ChatPanel : Panel
 
     public void ShowInput(bool show)
     {
-        inputModule.enabled = show;
         inputField.gameObject.SetActive(show);
         box.enabled = show;
+        inputOpen = show;
 
         if (show)
         {
             inputField.ActivateInputField();
+            inputModule.ActivateModule();
             ShowChat(true, 0.5f);
+        }
+        else
+        {
+            inputField.DeactivateInputField();
+            inputModule.DeactivateModule();
         }
 
         if (ServerManager.Instance.GetPlayerLocal().PlayerController != null)

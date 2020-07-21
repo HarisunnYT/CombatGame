@@ -29,6 +29,7 @@ public class ConnectedPlayerCell : PlayerCell
 
     public void Mute()
     {
+        Debug.Log("mute");
         isMuted = !isMuted;
         SetMuted(isMuted);
     }

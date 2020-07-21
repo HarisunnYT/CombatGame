@@ -50,7 +50,7 @@ public class CommunicationController : NetworkBehaviour
         if (Time.time < inputDelayTimer)
             return;
 
-        if (!commWheelOpen && playerController.InputProfile != null && playerController.InputProfile.CommunicationWheelOpen.WasPressed)
+        if (!commWheelOpen && playerController.InputProfile != null && playerController.InputProfile.CommunicationWheelOpen.WasPressed && playerController.InputEnabled)
         {
             ShowCommWheel();
             return;
