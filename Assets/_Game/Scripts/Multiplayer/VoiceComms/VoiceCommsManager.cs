@@ -12,9 +12,6 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     private DissonanceComms comms;
 
-    private bool serverStarted = false;
-    private bool clientStarted = false;
-
     protected override void Initialize()
     {
         SteamComms = GetComponent<SteamworksP2PCommsNetwork>();
@@ -26,27 +23,19 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     public void StartServer()
     {
-        if (!serverStarted)
-        {
-            SteamComms.InitializeAsServer();
-            serverStarted = true;
-        }
+        SteamComms.InitializeAsServer();
     }
 
     public void StartClient()
     {
-        if (!clientStarted)
-        {
-            SteamId hostId = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
-                                                                              SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
-            SteamComms.InitializeAsClient(hostId);
-            clientStarted = true;
-        }
+        SteamId hostId = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
+                                                                          SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
+        SteamComms.InitializeAsClient(hostId);
     }
 
     public void Stop()
     {
-        //SteamComms.Stop();
+        SteamComms.Stop();
     }
 
     public void MutePeer(bool mute, string voiceCommsId)

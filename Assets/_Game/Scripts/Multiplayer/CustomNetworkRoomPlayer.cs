@@ -11,17 +11,22 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         if (isLocalPlayer)
         {
-            if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
-                VoiceCommsManager.Instance.StartClient();
-            else if (SteamLobbyManager.Instance.PrivateHost)
-                VoiceCommsManager.Instance.StartServer();
-
             CmdAddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value, VoiceCommsManager.Instance.ClientId);
             NetworkManager.Instance.RoomPlayer = this;
 
             if (ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost) //get the timer in character select screen
                 CmdRequestTimer();
         }
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+
+        if (!SteamLobbyManager.Instance.PrivateHost || !SteamLobbyManager.Instance.PublicHost)
+            VoiceCommsManager.Instance.StartClient();
+        else if (SteamLobbyManager.Instance.PrivateHost)
+            VoiceCommsManager.Instance.StartServer();
     }
 
     public override void OnClientExitRoom()
