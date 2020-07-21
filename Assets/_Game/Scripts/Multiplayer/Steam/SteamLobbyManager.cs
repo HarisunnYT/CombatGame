@@ -353,7 +353,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void StartVoiceComms()
     {
-        if ((!PrivateHost || !PrivateLobby.HasValue) && (!PublicHost || !PublicLobby.HasValue))
+        if (!PrivateHost && !PublicLobby.HasValue)
             VoiceCommsManager.Instance.StartClient();
         else if (PrivateHost && PrivateLobby.HasValue)
             VoiceCommsManager.Instance.StartServer();
