@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using InControl;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -19,6 +20,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
     private Dictionary<Cursor, int> showCursors = new Dictionary<Cursor, int>(); //index to show and hide cursors (value stacks when shown)
 
     private int lastInteractedPlayerIndex = 0;
+    private InputProfile lastInteractedInputProfile;
 
     protected override void Initialize()
     {
@@ -33,6 +35,21 @@ public class CursorManager : PersistentSingleton<CursorManager>
     private void Start()
     {
         LocalPlayersManager.Instance.OnLocalPlayerConnected += OnLocalPlayerConnected;
+    }
+
+    private void Update()
+    {
+        foreach(var cursor in cursors)
+        {
+            foreach(var input in cursor.InputProfile.Actions)
+            {
+                if (input.WasPressed)
+                {
+                    lastInteractedInputProfile = cursor.InputProfile;
+                    return;
+                }
+            }
+        }
     }
 
     private void OnLocalPlayerConnected(int playerIndex, System.Guid controllerGUID)
@@ -57,6 +74,7 @@ public class CursorManager : PersistentSingleton<CursorManager>
         cursors.Add(cursor);
 
         cursor.transform.position = new Vector2(Random.Range(Screen.width / 3, Screen.width - Screen.width / 3), Screen.height / 2);
+        lastInteractedInputProfile = cursor.InputProfile;
 
         ShowCursor(cursor);
         return cursor;
@@ -175,5 +193,10 @@ public class CursorManager : PersistentSingleton<CursorManager>
     public Cursor GetLastInteractedCursor()
     {
         return GetCursor(lastInteractedPlayerIndex);
+    }
+
+    public InputProfile GetLastInteractedProfile()
+    {
+        return lastInteractedInputProfile;
     }
 }

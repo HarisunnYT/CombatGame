@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     private CharacterData gameData;
     public CharacterData GameData { get { return gameData; } }
 
+    public bool CanPause { get; set; }
+
     public bool IsPlayer(GameObject obj)
     {
         return obj.layer == LayerMask.NameToLayer("Player");

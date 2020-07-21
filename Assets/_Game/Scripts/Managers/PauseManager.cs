@@ -14,14 +14,17 @@ public class PauseManager : Singleton<PauseManager>
 
     private void Update()
     {
-        foreach(var inputProfile in InputProfile.InputProfiles)
+        if (GameManager.Instance.CanPause)
         {
-            if (inputProfile.Menu.WasPressed && !pausePanel.gameObject.activeSelf)
+            foreach (var inputProfile in InputProfile.InputProfiles)
             {
-                Cursor cursor = CursorManager.Instance.GetCursor(inputProfile.GUID);
-                ServerManager.Instance.GetPlayer(cursor.ControllerID).PlayerController.DisableInput();
-                PanelManager.Instance.GetPanel<PausePanel>().Show(inputProfile);
+                if (inputProfile.Menu.WasPressed && !pausePanel.gameObject.activeSelf)
+                {
+                    Cursor cursor = CursorManager.Instance.GetCursor(inputProfile.GUID);
+                    ServerManager.Instance.GetPlayer(cursor.ControllerID).PlayerController.DisableInput();
+                    PanelManager.Instance.GetPanel<PausePanel>().Show(inputProfile);
+                }
             }
-        }    
+        }
     }
 }

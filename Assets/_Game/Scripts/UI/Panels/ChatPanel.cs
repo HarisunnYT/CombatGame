@@ -39,15 +39,17 @@ public class ChatPanel : Panel
         inputModule = InControlManager.Instance.GetComponent<StandaloneInputModule>();
 
         VoiceCommsManager.Instance.SteamComms.TextPacketReceived += SteamComms_TextPacketReceived;
-
         ShowInput(false);
+
+        if (!ServerManager.Instance.IsOnlineMatch)
+            Close();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T)) //TODO make it work with controller
+        if (!inputModule.enabled && CursorManager.Instance.GetLastInteractedProfile().Chat.WasPressed)
             ShowInput(true);
-        else if (CursorManager.Instance && CursorManager.Instance.GetLastInteractedCursor().InputProfile.Back.WasPressed)
+        else if (inputModule.enabled && CursorManager.Instance && CursorManager.Instance.GetLastInteractedProfile().Back.WasPressed)
             ShowInput(false);
 
         if (hideTarget != -1 && Time.time > hideTarget && inputModule.enabled == false)
@@ -73,6 +75,16 @@ public class ChatPanel : Panel
             inputField.ActivateInputField();
             ShowChat(true, 0.5f);
         }
+
+        if (ServerManager.Instance.GetPlayerLocal().PlayerController != null)
+        {
+            if (show)
+                ServerManager.Instance.GetPlayerLocal().PlayerController.DisableInput();
+            else
+                ServerManager.Instance.GetPlayerLocal().PlayerController.EnableInput();
+        }
+
+        GameManager.Instance.CanPause = !show;
     }
 
     public void SendMessage()

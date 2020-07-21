@@ -20,6 +20,7 @@ public class InputProfile : PlayerActionSet
     public PlayerAction Select;
     public PlayerAction Menu;
     public PlayerAction Back;
+    public PlayerAction Chat;
 
     public PlayerAction CommunicationWheelOpen;
     public PlayerAction CommunicationWheelUp;
@@ -28,13 +29,12 @@ public class InputProfile : PlayerActionSet
     public PlayerAction CommunicationWheelLeft;
 
     public System.Guid GUID;
-    private UnityInputDevice device;
+    public UnityInputDevice InputDevice;
 
     public static List<InputProfile> InputProfiles = new List<InputProfile>();
 
     public delegate void InputChangedEvent(InputDevice previousDevice, InputDevice newDevice);
     public event InputChangedEvent OnInputChanged;
-
 
     public InputProfile(System.Guid controllerGUID, bool allowAllControllers = false)
     {
@@ -52,6 +52,7 @@ public class InputProfile : PlayerActionSet
         Menu = CreatePlayerAction("Menu");
         Select = CreatePlayerAction("Select");
         Back = CreatePlayerAction("Back");
+        Chat = CreatePlayerAction("Chat");
 
         CommunicationWheelOpen = CreatePlayerAction("CommunicationWheelOpen");
         CommunicationWheelUp = CreatePlayerAction("CommunicationWheelUp");
@@ -74,10 +75,10 @@ public class InputProfile : PlayerActionSet
             {
                 if (InControl.InputManager.Devices[i] is UnityInputDevice)
                 {
-                    device = InControl.InputManager.Devices[i] as UnityInputDevice;
+                    InputDevice = InControl.InputManager.Devices[i] as UnityInputDevice;
 
-                    if (!IncludeDevices.Contains(device))
-                        IncludeDevices.Add(device);
+                    if (!IncludeDevices.Contains(InputDevice))
+                        IncludeDevices.Add(InputDevice);
 
                     if (!allowAllControllers)
                         break;
@@ -86,7 +87,6 @@ public class InputProfile : PlayerActionSet
         }
 
         GUID = controllerGUID;
-
         InputProfiles.Add(this);
 
         InputManager.OnDeviceAttached += OnDeviceAttached;
@@ -94,17 +94,17 @@ public class InputProfile : PlayerActionSet
 
     private void OnDeviceAttached(InputDevice obj)
     {
-        if (device != null && device.JoystickId == ((UnityInputDevice)obj).JoystickId)
+        if (InputDevice != null && InputDevice.JoystickId == ((UnityInputDevice)obj).JoystickId)
         {
-            OnInputChanged?.Invoke(device, obj);
-            IncludeDevices.Remove(device);
+            OnInputChanged?.Invoke(InputDevice, obj);
+            IncludeDevices.Remove(InputDevice);
 
             InputProfiles.Remove(this);
 
-            device = obj as UnityInputDevice;
+            InputDevice = obj as UnityInputDevice;
             GUID = obj.GUID;
 
-            IncludeDevices.Add(device);
+            IncludeDevices.Add(InputDevice);
             InputProfiles.Add(this);
         }
     }
@@ -138,6 +138,7 @@ public class InputProfile : PlayerActionSet
         Menu.AddDefaultBinding(Key.Escape);
         Select.AddDefaultBinding(Mouse.LeftButton);
         Back.AddDefaultBinding(Key.Escape);
+        Chat.AddDefaultBinding(Key.T);
 
         //for some reason it doesn't work if you add multiple keys in the same binding, weird
         CommunicationWheelOpen.AddDefaultBinding(Key.Key1);
@@ -167,12 +168,9 @@ public class InputProfile : PlayerActionSet
         Select.AddDefaultBinding(InputControlType.Action1);
         Back.AddDefaultBinding(InputControlType.Action2);
         Menu.AddDefaultBinding(InputControlType.Command);
+        Chat.AddDefaultBinding(InputControlType.DPadDown);
 
         CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadUp);
-        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadRight);
-        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadDown);
-        CommunicationWheelOpen.AddDefaultBinding(InputControlType.DPadLeft);
-
         CommunicationWheelUp.AddDefaultBinding(InputControlType.DPadUp);
         CommunicationWheelRight.AddDefaultBinding(InputControlType.DPadRight);
         CommunicationWheelDown.AddDefaultBinding(InputControlType.DPadDown);
