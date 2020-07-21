@@ -171,4 +171,16 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         FightManager.Instance.CountdownOver();
     }
+
+    public void VoiceCommsServerCreated()
+    {
+        RpcVoiceCommsServerCreated();
+    }
+
+    [ClientRpc]
+    private void RpcVoiceCommsServerCreated()
+    {
+        if (!SteamLobbyManager.Instance.PrivateHost && !SteamLobbyManager.Instance.PublicHost)
+            VoiceCommsManager.Instance.StartClient();
+    }
 }
