@@ -154,6 +154,8 @@ public class ServerManager : PersistentSingleton<ServerManager>
                 }
             }
         }
+        else if (Players.Count > 0)
+            return Players[0];
 
         return default;
     }

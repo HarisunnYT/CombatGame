@@ -301,8 +301,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         if (PrivateLobby != null)
         {
-            StartVoiceComms();
-
             PrivateLobby.Value.SetFriendsOnly();
             PrivateLobby.Value.SetJoinable(true);
         }
