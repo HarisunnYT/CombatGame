@@ -78,10 +78,4 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
     {
         SteamComms.SendText(message, ChannelType.Room, comms.FindPlayer(ClientId).Rooms[0]);
     }
-
-    private void OnPlayerAdded(ServerManager.ConnectedPlayer connectedPlayer)
-    {
-        if (serverStarted)
-            NetworkManager.Instance.RoomPlayer.VoiceCommsServerCreated();
-    }
 }

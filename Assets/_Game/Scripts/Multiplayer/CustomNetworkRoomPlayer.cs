@@ -29,8 +29,6 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(index);
-        else
-            VoiceCommsManager.Instance.Stop();
     }
 
     [Command]
@@ -170,17 +168,5 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     public void RpcCountdownOver()
     {
         FightManager.Instance.CountdownOver();
-    }
-
-    public void VoiceCommsServerCreated()
-    {
-        RpcVoiceCommsServerCreated();
-    }
-
-    [ClientRpc]
-    private void RpcVoiceCommsServerCreated()
-    {
-        if (!SteamLobbyManager.Instance.PrivateHost && !SteamLobbyManager.Instance.PublicHost)
-            VoiceCommsManager.Instance.StartClient();
     }
 }

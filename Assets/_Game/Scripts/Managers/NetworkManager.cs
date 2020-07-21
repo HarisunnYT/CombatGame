@@ -120,7 +120,7 @@ public class NetworkManager : NetworkRoomManager
     {
         base.OnClientConnect(conn);
 
-        if (SteamLobbyManager.Instance.PublicLobby == null && conn.connectionId == NetworkClient.connection.connectionId)
+        if (SteamLobbyManager.Instance.PublicLobby == null)
             SteamLobbyManager.Instance.ConnectedToPrivateLobbyServer();
 
         timedOutCount = 0;
@@ -134,6 +134,8 @@ public class NetworkManager : NetworkRoomManager
             ExitManager.Instance.ExitMatch(Application.internetReachability == NetworkReachability.NotReachable ? ExitType.ClientDisconnected : ExitType.HostDisconnected);
         else if (SceneManager.GetActiveScene().name == "MainMenu")
             SteamLobbyManager.Instance.CreateServer();
+
+            VoiceCommsManager.Instance.Stop();
     }
 
     int timedOutCount = 0;
@@ -143,6 +145,8 @@ public class NetworkManager : NetworkRoomManager
         {
             timedOutCount++;
             StartCoroutine(DelayedReconnect());
+
+            Debug.LogError("Reconnection attempt : " + timedOutCount);
         }
         else
         {

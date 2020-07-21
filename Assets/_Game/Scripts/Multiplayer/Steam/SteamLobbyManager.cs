@@ -353,10 +353,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void StartVoiceComms()
     {
         if (PrivateHost && PrivateLobby.HasValue)
-        {
             VoiceCommsManager.Instance.StartServer();
-            NetworkManager.Instance.RoomPlayer.VoiceCommsServerCreated();
-        }
+        else if (!PrivateHost && !PublicHost)
+            VoiceCommsManager.Instance.StartClient();
     }
 
     //this is when the user accepts an invite or clicks 'join game' in steam UI
