@@ -21,6 +21,7 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
         comms = GetComponent<DissonanceComms>();
 
         SteamMatchmaking.OnLobbyMemberDisconnected += PeerDisconnected;
+        ServerManager.Instance.OnPlayerAdded += OnPlayerAdded;
     }
 
     public void StartServer()
@@ -76,5 +77,11 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
     public void SendChatMessage(string message)
     {
         SteamComms.SendText(message, ChannelType.Room, comms.FindPlayer(ClientId).Rooms[0]);
+    }
+
+    private void OnPlayerAdded(ServerManager.ConnectedPlayer connectedPlayer)
+    {
+        if (serverStarted)
+            NetworkManager.Instance.RoomPlayer.VoiceCommsServerCreated();
     }
 }
