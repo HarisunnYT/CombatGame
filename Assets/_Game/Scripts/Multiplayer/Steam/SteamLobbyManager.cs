@@ -217,27 +217,30 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void OnLobbyDataChanged(Lobby obj)
     {
-        //the owner sends the messages, they don't need to receive them
-        if (obj.Owner.Id != SteamClient.SteamId)
+        if (PrivateLobby.HasValue && obj.Id == PrivateLobby.Value.Id)
         {
-            foreach (var data in obj.Data)
+            //the owner sends the messages, they don't need to receive them
+            if (obj.Owner.Id != SteamClient.SteamId)
             {
-                if (data.Key == privateLobbyStartedKey)
+                foreach (var data in obj.Data)
                 {
-                    PlayPrivateMatch();
-                    return;
-                }
-                else if (data.Key == publicSearchKey)
-                {
-                    HostCreatedPublicMatch(data.Value);
-                }
-                else if (data.Key == leaveMatchWithPartyKey)
-                {
-                    HostPulledPartyFromMatch();
-                }
-                else if (data.Key == kickPlayer)
-                {
-                    OnPlayerKicked(data.Value);
+                    if (data.Key == privateLobbyStartedKey)
+                    {
+                        PlayPrivateMatch();
+                        return;
+                    }
+                    else if (data.Key == publicSearchKey)
+                    {
+                        HostCreatedPublicMatch(data.Value);
+                    }
+                    else if (data.Key == leaveMatchWithPartyKey)
+                    {
+                        HostPulledPartyFromMatch();
+                    }
+                    else if (data.Key == kickPlayer)
+                    {
+                        OnPlayerKicked(data.Value);
+                    }
                 }
             }
         }
@@ -302,12 +305,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (!FizzySteamworks.Instance.ServerActive())
             CreateServer();
 
-        if (PrivateLobby != null)
-        {
-            PrivateLobby.Value.SetFriendsOnly();
-            PrivateLobby.Value.SetJoinable(true);
-        }
-
         if (creatingPrivateLobbyTask != null || PrivateLobby != null)
             return;
 
@@ -318,6 +315,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private void JoinedPrivateLobby(Lobby? lobby)
     {
         PrivateLobby = lobby;
+
+        if (PrivateHost)
+        {
+            PrivateLobby.Value.SetFriendsOnly();
+            PrivateLobby.Value.SetJoinable(true);
+        }
 
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();
         joinedLobbyCallback = (RoomEnter roomEnter) =>
@@ -494,10 +497,21 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                             (PrivateLobby != null && availableLobbies[i].Id.Value == PrivateLobby.Value.Id.Value))
                         {
                             availableLobbies.RemoveAt(i);
-                            break;
+                            continue;
+                        }
+
+                        if (availableLobbies[i].Owner.Id.Value == 0)
+                        {
+                            availableLobbies.RemoveAt(i);
+                            continue;
+                        }
+
+                        if (availableLobbies[i].Owner.Id == SteamClient.SteamId)
+                        {
+                            CreatePublicMatchLobby();
+                            return;
                         }
                     }
-
                     //found the correct lobby
                     //TODO sort by skill, location, ping etc
                     if (availableLobbies.Count > 0)

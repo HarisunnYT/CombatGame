@@ -16,10 +16,4 @@ public class WaitingPanel : Panel
     {
         ExitManager.Instance.ExitMatch(SteamLobbyManager.Instance.IsPrivateMatch ? ExitType.HostLeftWithParty : ExitType.Leave);
     }
-
-    private void Update()
-    {
-        if (targetTime != -1 && Time.time > targetTime)
-            ExitManager.Instance.ExitMatch(ExitType.Leave);
-    }
 }
