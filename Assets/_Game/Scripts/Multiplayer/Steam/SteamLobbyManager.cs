@@ -18,7 +18,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region CONST_VARIABLES
 
-    public const int MaxLobbyMembers = 3; //TODO SET TO 4
+    public const int MaxLobbyMembers = 2; //TODO SET TO 4
 
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
@@ -590,8 +590,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
-        StopServer();
-
         IsPrivateMatch = false;
 
         LeavePublicLobby();
@@ -633,6 +631,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
         {
+            VoiceCommsManager.Instance.Stop();
+
+            if (!PublicHost)
+                StopServer();
+
             SceneLoader.Instance.LoadScene("Lobby");
             Searching = false;
         }

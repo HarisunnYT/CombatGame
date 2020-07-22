@@ -53,6 +53,9 @@ public class CharacterSelectScreen : Panel
         {
             selectedCharacter.gameObject.SetActive(false);
         }
+
+        if (ServerManager.Instance.IsOnlineMatch)
+            SteamLobbyManager.Instance.StartVoiceComms();
     }
 
     public void ConfigureTimer(float targetTime)
