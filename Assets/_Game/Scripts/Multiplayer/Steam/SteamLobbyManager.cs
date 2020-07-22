@@ -29,6 +29,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region EXPOSED_VARIABLES
 
+    [SerializeField]
+    private float queryMatchesDelay = 1;
+
     #endregion
 
     #region PROPERTIES
@@ -136,8 +139,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (retrievingLobbiesTask != null && retrievingLobbiesTask.IsCompleted)
         {
             retreivedLobbiesCallback?.Invoke(retrievingLobbiesTask.Result);
-            retreivedLobbiesCallback = null;
             retrievingLobbiesTask = null;
+            retreivedLobbiesCallback = null;
         }
 
         if (creatingPrivateLobbyTask != null && creatingPrivateLobbyTask.IsCompleted)
@@ -352,7 +355,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void StartVoiceComms()
     {
-        if (PrivateHost && PrivateLobby.HasValue)
+        if (PrivateHost || (PublicHost && PublicLobby.HasValue))
             VoiceCommsManager.Instance.StartServer();
         else if ((!PrivateHost || !PrivateLobby.HasValue) && (!PublicHost || !PublicLobby.HasValue))
             VoiceCommsManager.Instance.StartClient();
@@ -531,11 +534,19 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (PublicLobby != null)
         {
-            LookForAvailablePublicMatch(PublicLobby.Value.Members.Count());
+            StartCoroutine(DelayedLookForMatch());
             return;
         }
 
         creatingPublicLobbyTask = SteamMatchmaking.CreateLobbyAsync(MaxLobbyMembers);
+    }
+
+    private IEnumerator DelayedLookForMatch()
+    {
+        yield return new WaitForSecondsRealtime(queryMatchesDelay);
+
+        if (PublicLobby.HasValue)
+            LookForAvailablePublicMatch(PublicLobby.Value.Members.Count());
     }
 
     private void CreatedPublicMatch(Lobby? lobby)
