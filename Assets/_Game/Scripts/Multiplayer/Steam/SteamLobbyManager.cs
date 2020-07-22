@@ -147,14 +147,14 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         {
             Lobby? lobby = creatingPrivateLobbyTask.Result;
             creatingPrivateLobbyTask = null;
-            JoinedPrivateLobby(creatingPrivateLobbyTask.Result);
+            JoinedPrivateLobby(lobby);
         }
 
         if (creatingPublicLobbyTask != null && creatingPublicLobbyTask.IsCompleted)
         {
             Lobby? lobby = creatingPublicLobbyTask.Result;
             creatingPublicLobbyTask = null;
-            CreatedPublicMatch(creatingPublicLobbyTask.Result);
+            CreatedPublicMatch(lobby);
         }
 
         if (joiningPrivateLobbyTask != null && joiningPrivateLobbyTask.IsCompleted)
