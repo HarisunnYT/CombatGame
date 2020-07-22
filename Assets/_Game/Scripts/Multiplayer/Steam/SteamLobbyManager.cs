@@ -18,7 +18,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region CONST_VARIABLES
 
-    public const int MaxLobbyMembers = 2; //TODO SET TO 4
+    public const int MaxLobbyMembers = 3; //TODO SET TO 4
 
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
@@ -502,12 +502,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                             continue;
                         }
 
-                        //if (availableLobbies[i].Owner.Id.Value == 0)
-                        //{
-                        //    availableLobbies.RemoveAt(i);
-                        //    continue;
-                        //}
-
                         if (availableLobbies[i].Owner.Id == SteamClient.SteamId)
                         {
                             CreatePublicMatchLobby();
@@ -634,7 +628,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             VoiceCommsManager.Instance.Stop();
 
             if (!PublicHost)
+            {
                 StopServer();
+                StopClient();
+            }
+
 
             SceneLoader.Instance.LoadScene("Lobby");
             Searching = false;
