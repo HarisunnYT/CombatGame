@@ -27,7 +27,7 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
     {
         if (!serverStarted)
         {
-            SteamComms.InitializeAsServer();
+            //SteamComms.InitializeAsServer();
             serverStarted = true;
         }
     }
@@ -38,31 +38,31 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
         {
             SteamId hostId = SteamLobbyManager.Instance.PublicLobby != null ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id :
                                                                               SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
-            SteamComms.InitializeAsClient(hostId);
+            //SteamComms.InitializeAsClient(hostId);
             clientStarted = true;
         }
     }
 
     public void Stop()
     {
-        SteamComms.Stop();
+        //SteamComms.Stop();
         clientStarted = false;
         serverStarted = false;
     }
 
     public void MutePeer(bool mute, string voiceCommsId)
     {
-        comms.FindPlayer(voiceCommsId).IsLocallyMuted = mute;
+        //comms.FindPlayer(voiceCommsId).IsLocallyMuted = mute;
     }
 
     public bool IsPeerMuted(string voiceCommsId)
     {
-        return comms.FindPlayer(voiceCommsId).IsLocallyMuted;
+        return false;//comms.FindPlayer(voiceCommsId).IsLocallyMuted;
     }
 
     public void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)
     {
-        SteamComms.PeerConnected(friend.Id);
+        //SteamComms.PeerConnected(friend.Id);
 
         if (friend.Id != SteamClient.SteamId)
             MutePeer(false, ServerManager.Instance.GetPlayer(friend.Id.Value).VoiceCommsId); //unmute player when they enter the room
@@ -70,11 +70,11 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     private void PeerDisconnected(Steamworks.Data.Lobby arg1, Friend friend)
     {
-        SteamComms.PeerDisconnected(friend.Id);
+        //SteamComms.PeerDisconnected(friend.Id);
     }
 
     public void SendChatMessage(string message)
     {
-        SteamComms.SendText(message, ChannelType.Room, comms.FindPlayer(ClientId).Rooms[0]);
+        //SteamComms.SendText(message, ChannelType.Room, comms.FindPlayer(ClientId).Rooms[0]);
     }
 }

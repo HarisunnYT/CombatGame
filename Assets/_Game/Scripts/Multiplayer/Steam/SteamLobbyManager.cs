@@ -145,14 +145,16 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         if (creatingPrivateLobbyTask != null && creatingPrivateLobbyTask.IsCompleted)
         {
-            JoinedPrivateLobby(creatingPrivateLobbyTask.Result);
+            Lobby? lobby = creatingPrivateLobbyTask.Result;
             creatingPrivateLobbyTask = null;
+            JoinedPrivateLobby(creatingPrivateLobbyTask.Result);
         }
 
         if (creatingPublicLobbyTask != null && creatingPublicLobbyTask.IsCompleted)
         {
-            CreatedPublicMatch(creatingPublicLobbyTask.Result);
+            Lobby? lobby = creatingPublicLobbyTask.Result;
             creatingPublicLobbyTask = null;
+            CreatedPublicMatch(creatingPublicLobbyTask.Result);
         }
 
         if (joiningPrivateLobbyTask != null && joiningPrivateLobbyTask.IsCompleted)
@@ -500,11 +502,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                             continue;
                         }
 
-                        if (availableLobbies[i].Owner.Id.Value == 0)
-                        {
-                            availableLobbies.RemoveAt(i);
-                            continue;
-                        }
+                        //if (availableLobbies[i].Owner.Id.Value == 0)
+                        //{
+                        //    availableLobbies.RemoveAt(i);
+                        //    continue;
+                        //}
 
                         if (availableLobbies[i].Owner.Id == SteamClient.SteamId)
                         {
@@ -565,6 +567,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void CreatedPublicMatch(Lobby? lobby)
     {
+        if (!lobby.HasValue)
+            return;
+
         PublicLobby = lobby;
         PublicLobby.Value.SetPublic();
 
