@@ -137,7 +137,7 @@ public class PlayerController : Character
         if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
-        if (!InputEnabled)
+        if (!InputEnabled || !Alive)
             return;
 
         base.Update();
@@ -186,7 +186,7 @@ public class PlayerController : Character
         if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
-        if (!InputEnabled)
+        if (!InputEnabled || !Alive)
             return;
 
         baseMovement.Update(Time.time);
