@@ -24,7 +24,7 @@ public class ErrorManager : PersistentSingleton<ErrorManager>
 
     private void ActiveSceneChanged(Scene arg0, Scene arg1)
     {
-        if (unshownError != null && arg1.name.Contains("MainMenu"))
+        if (unshownError != null && SceneLoader.IsMainMenu)
         {
             ShowError();
         }
@@ -39,7 +39,7 @@ public class ErrorManager : PersistentSingleton<ErrorManager>
     public void EncounteredError(string errorCode)
     {
         unshownError = GetErrorData(errorCode);
-        if (SceneManager.GetActiveScene().name == "MainMenu")
+        if (SceneLoader.IsMainMenu)
             ShowError();
     }
 

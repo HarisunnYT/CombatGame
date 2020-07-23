@@ -120,6 +120,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyInvite += OnLobbyInvite;
+        SceneManager.activeSceneChanged += activeSceneChanged;
     }
 
     protected override void Deinitialize()
@@ -130,6 +131,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         SteamMatchmaking.OnLobbyEntered -= OnLobbyEntered;
         SteamMatchmaking.OnLobbyMemberLeave -= OnLobbyMemberLeave;
         SteamMatchmaking.OnLobbyInvite -= OnLobbyInvite;
+        SceneManager.activeSceneChanged -= activeSceneChanged;
+
 
         base.Deinitialize();
     }
@@ -176,7 +179,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void StopClient()
     {
         if (FizzySteamworks.Instance.ClientActive())
+        {
             NetworkManager.Instance.StopClient();
+            VoiceCommsManager.Instance.Stop();
+        }
     }
 
     public void CreateServer()
@@ -242,6 +248,19 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                     else if (data.Key == kickPlayer)
                     {
                         OnPlayerKicked(data.Value);
+                    }
+                }
+            }
+        }
+        else if (PublicLobby.HasValue && obj.Id == PublicLobby.Value.Id)
+        {
+            if (obj.Owner.Id != SteamClient.SteamId)
+            {
+                foreach (var data in obj.Data) //lobby host that you joined, joined a different lobby so join that one
+                {
+                    if (data.Key == publicSearchKey)
+                    {
+                        HostCreatedPublicMatch(data.Value);
                     }
                 }
             }
@@ -586,6 +605,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         IsPrivateMatch = false;
 
+        //if (PublicLobby.HasValue)
+            //SendPublicMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
+
         LeavePublicLobby();
 
         PublicLobby = lobby;
@@ -602,9 +624,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (PublicLobby != null)
         {
             if (PrivateLobby == null || PublicLobby.Value.Id != PrivateLobby.Value.Id)
-            {
                 PublicLobby.Value.Leave();
-            }
 
             PublicLobby = null;
         }
@@ -633,9 +653,25 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 StopClient();
             }
 
-
             SceneLoader.Instance.LoadScene("Lobby");
-            Searching = false;
+        }
+    }
+
+    private void SendPublicMessage(string key, string message)
+    {
+        if (PublicLobby.HasValue)
+        {
+            ClearPublicLobbyData();
+            PublicLobby.Value.SetData(key, message);
+        }
+    }
+
+    private void ClearPublicLobbyData()
+    {
+        if (PublicLobby.HasValue)
+        {
+            foreach (var data in PublicLobby.Value.Data)
+                PublicLobby.Value.DeleteData(data.Key);
         }
     }
 
@@ -683,6 +719,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             else
                 PrivateLobby = lobby;
         }
+    }
+
+    private void activeSceneChanged(Scene from, Scene to)
+    {
+        if (SceneLoader.IsMainMenu)
+            Searching = false;
     }
 
     public void LeaveAllLobbies()

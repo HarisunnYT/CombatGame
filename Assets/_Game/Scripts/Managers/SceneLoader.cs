@@ -28,4 +28,28 @@ public class SceneLoader : PersistentSingleton<SceneLoader>
 
         onSceneLoaded.Invoke();
     }
+
+    public static bool IsMainMenu
+    {
+        get
+        {
+            return SceneManager.GetActiveScene().name == "MainMenu";
+        }
+    }
+
+    public static bool IsCharacterScreen
+    {
+        get
+        {
+            return SceneManager.GetActiveScene().name == "Lobby";
+        }
+    }
+
+    public static bool IsGame
+    {
+        get
+        {
+            return SceneManager.GetActiveScene().name == "Game";
+        }
+    }
 }

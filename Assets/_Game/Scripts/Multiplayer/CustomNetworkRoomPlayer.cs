@@ -14,14 +14,14 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             CmdAddConnectedPlayer(index, SteamClient.Name, SteamClient.SteamId.Value, VoiceCommsManager.Instance.ClientId);
             NetworkManager.Instance.RoomPlayer = this;
 
-            if (SceneManager.GetActiveScene().name == "MainMenu" && ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost) //get the timer in character select screen
+            if (SceneLoader.IsCharacterScreen && ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch && !SteamLobbyManager.Instance.PublicHost) //get the timer in character select screen
                 CmdRequestTimer();
         }
     }
 
     public override void OnClientExitRoom()
     {
-        if (SceneManager.GetActiveScene().name == "MainMenu")
+        if (SceneLoader.IsMainMenu)
             SteamLobbyManager.Instance.CancelSearch();
     }
 
@@ -146,7 +146,8 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     [Command]
     public void CmdRequestTimer()
     {
-        RpcReceiveTimer(PanelManager.Instance.GetPanel<CharacterSelectScreen>().SelectCharacterTimer);
+        if (PanelManager.Instance.GetPanel<CharacterSelectScreen>())
+            RpcReceiveTimer(PanelManager.Instance.GetPanel<CharacterSelectScreen>().SelectCharacterTimer);
     }
 
     [ClientRpc]
