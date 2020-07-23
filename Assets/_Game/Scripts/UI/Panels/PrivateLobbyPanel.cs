@@ -135,7 +135,7 @@ public class PrivateLobbyPanel : Panel
         connectedPlayerCells[0].Configure(ownerName, FighterManager.Instance.GetFighter(fighterName)); 
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
-        for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
+        for (int i = 0; i < privateLobby.Value.MemberCount; i++)
         {
             Friend friend = privateLobby.Value.Members.ElementAt(i);
             if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)

@@ -18,7 +18,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region CONST_VARIABLES
 
-    public const int MaxLobbyMembers = 3; //TODO SET TO 4
+    public const int MaxLobbyMembers = 2; //TODO SET TO 4
 
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
@@ -669,7 +669,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void TryStartPublicGame()
     {
-        if (ServerManager.Instance.Players.Count >= PublicLobby.Value.MemberCount)
+        if (PublicLobby.HasValue && ServerManager.Instance.Players.Count >= PublicLobby.Value.MemberCount)
         {
             SceneLoader.Instance.LoadScene("Lobby");
         }
