@@ -25,9 +25,7 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
         {
             if (!SteamLobbyManager.Instance.IsPrivateMatch)
             {
-                if (!SteamLobbyManager.Instance.PublicHost && !SteamLobbyManager.Instance.PrivateHostIsPublicHost)
-                    SteamLobbyManager.Instance.CreateClient(SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id.Value.ToString());
-                else if (SteamLobbyManager.Instance.PrivateHostIsPublicHost && NetworkManager.Instance.RoomPlayer != null)
+                if (SteamLobbyManager.Instance.PrivateHostIsPublicHost && NetworkManager.Instance.RoomPlayer != null)
                     NetworkManager.Instance.RoomPlayer.CmdRequestTimer();
             }
             else if (!SteamLobbyManager.Instance.PublicHost && NetworkManager.Instance.RoomPlayer != null)
