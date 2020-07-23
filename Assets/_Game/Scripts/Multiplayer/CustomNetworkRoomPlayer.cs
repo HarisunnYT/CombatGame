@@ -21,8 +21,8 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
 
     public override void OnClientExitRoom()
     {
-        if (SceneLoader.IsMainMenu)
-            SteamLobbyManager.Instance.CancelSearch();
+        //if (SceneLoader.IsMainMenu)
+            //SteamLobbyManager.Instance.CancelSearch();
     }
 
     private void OnDestroy()

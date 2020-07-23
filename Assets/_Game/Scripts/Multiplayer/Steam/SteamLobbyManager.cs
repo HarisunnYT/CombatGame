@@ -114,6 +114,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     protected override void Initialize()
     {
+        ServerManager.Instance.OnPlayerAdded += OnPlayerAdded;
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
         SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
@@ -554,6 +555,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         OnCancelledSearch?.Invoke();
         SendPrivateMessage(publicSearchKey, "false");
 
+        if (creatingPublicLobbyTask != null)
+            creatingPublicLobbyTask = null;
+        if (retrievingLobbiesTask != null)
+            retrievingLobbiesTask = null;
+
         LeavePublicLobby();
 
         Debug.Log("send cancel");
@@ -580,7 +586,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void CreatedPublicMatch(Lobby? lobby)
     {
-        if (!lobby.HasValue)
+        if (!lobby.HasValue || !PrivateLobby.HasValue)
             return;
 
         PublicLobby = lobby;
@@ -594,7 +600,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         OnPublicMatchCreated?.Invoke();
 
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
-            TryStartPublicMatch();
+            TryJoinPublicServer();
         else
             LookForAvailablePublicMatch(PrivateLobby.Value.Members.Count());
 
@@ -605,8 +611,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         IsPrivateMatch = false;
 
-        //if (PublicLobby.HasValue)
-            //SendPublicMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
+        if (PublicLobby.HasValue)
+            SendPublicMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
 
         LeavePublicLobby();
 
@@ -641,18 +647,30 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             SendPrivateMessage(leaveMatchWithPartyKey, "true");
     }
 
-    private void TryStartPublicMatch()
+    private void TryJoinPublicServer()
     {
         if (PublicLobby.Value.MemberCount >= MaxLobbyMembers)
         {
+            //join first
             VoiceCommsManager.Instance.Stop();
 
-            if (!PublicHost)
+            if (!PublicHost && !PrivateHostIsPublicHost)
             {
                 StopServer();
                 StopClient();
             }
 
+            if (!PublicHost || !PublicLobby.HasValue)
+            {
+                CreateClient(PublicLobby.Value.Owner.Id.Value.ToString());
+            }
+        }
+    }
+
+    private void TryStartPublicGame()
+    {
+        if (ServerManager.Instance.Players.Count >= PublicLobby.Value.MemberCount)
+        {
             SceneLoader.Instance.LoadScene("Lobby");
         }
     }
@@ -678,6 +696,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     #endregion
 
     #region CALLBACKS
+
+    private void OnPlayerAdded(ServerManager.ConnectedPlayer connectedPlayer)
+    {
+        TryStartPublicGame();
+    }
 
     private void OnLobbyMemberLeave(Lobby lobby, Friend friend)
     {
@@ -710,7 +733,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (Searching)
         {
             PublicLobby = lobby;
-            TryStartPublicMatch();
+            TryJoinPublicServer();
         }
         else
         {
