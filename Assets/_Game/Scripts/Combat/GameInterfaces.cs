@@ -58,18 +58,12 @@ public class GameInterfaces
 
     public static void AddListener(IBase obj)
     {
-        if (obj is IFightEvents)
-            listeners.Add(obj as IFightEvents);
-        if (obj is IServerEvents)
-            listeners.Add(obj as IServerEvents);
+        listeners.Add(obj as IServerEvents);
     }
 
     public static void RemoveListener(IBase obj)
     {
-        if (obj is IFightEvents)
-            listeners.Remove(obj);
-        if (obj is IServerEvents)
-            listeners.Remove(obj);
+        listeners.Remove(obj);
     }
 
     public static void OnPlayerDied(PlayerController killer, PlayerController victim)
