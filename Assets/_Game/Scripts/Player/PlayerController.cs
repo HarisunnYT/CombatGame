@@ -44,7 +44,7 @@ public class PlayerController : Character
     private BaseMovement baseMovement;
     private Animator animator;
     private CommunicationController communicationController;
-    private CombatCollider combatCollider;
+    private CombatCollider[] combatColliders;
 
     private Collider2D collider;
 
@@ -93,11 +93,12 @@ public class PlayerController : Character
         communicationController = GetComponent<CommunicationController>();
         collider = GetComponent<Collider2D>();
         PlayerRoundInfo = GetComponent<PlayerRoundInformation>();
-        combatCollider = GetComponentInChildren<CombatCollider>(true);
+
+        combatColliders = GetComponentsInChildren<CombatCollider>(true);
+        foreach (var col in combatColliders)
+            col.Collider.enabled = false;
 
         originalScale = transform.localScale;
-        combatCollider.Collider.enabled = false;
-
         SetMovementType(MovementType.Normal, false);
     }
 
@@ -163,8 +164,18 @@ public class PlayerController : Character
         HoldingJump = InputProfile.Jump;
 
         //attacking
-        if (InputProfile.Attack1.WasPressed)
+        if (InputProfile.Attack.WasPressed)
         {
+            //reset animator value before determining what attack was pressed
+            SetAnimatorMoveNumber(-1);
+
+            if (InputProfile.Attack1.WasPressed)
+                SetAnimatorMoveNumber(0);
+            else if (InputProfile.Attack2.WasPressed)
+                SetAnimatorMoveNumber(1);
+            else if (InputProfile.Attack3.WasPressed)
+                SetAnimatorMoveNumber(2);
+
             baseMovement.Attack();
             attacking = true;
             attackButtonTimer = Time.time + TechnicalData.GetValue(DataKeys.VariableKeys.AttackingButtonResetDelay);
@@ -316,10 +327,28 @@ public class PlayerController : Character
 
     public void Knockback(Vector3 direction, float force)
     {
-        DisableHorizontalMovement(0.5f);
+        if (force > 0)
+        {
+            DisableHorizontalMovement(0.5f);
 
-        Rigidbody.velocity = new Vector2(0, Rigidbody.velocity.y);
-        Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+            Rigidbody.velocity = new Vector2(0, Rigidbody.velocity.y);
+            Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+        }
+    }
+
+    /// <param name="attackIndex">0, 1 or 2</param>
+    public void SetAnimatorMoveNumber(int attackIndex)
+    {
+        //TODO account for cooldowns
+        int moveNumber = 0;
+        if (attackIndex == 0 && PlayerRoundInfo.AttackOne != null)
+            moveNumber = PlayerRoundInfo.AttackOne.MoveId;
+        else if (attackIndex == 1 && PlayerRoundInfo.AttackTwo != null)
+            moveNumber = PlayerRoundInfo.AttackTwo.MoveId;
+        else if (attackIndex == 2 && PlayerRoundInfo.AttackThree != null)
+            moveNumber = PlayerRoundInfo.AttackThree.MoveId;
+
+        animator.SetInteger("MoveNumber", moveNumber);
     }
 
     public void DisableInput()

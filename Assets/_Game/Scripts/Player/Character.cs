@@ -156,8 +156,8 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     private void SetDirectionClient(int direction)
     {
-        spriteRenderer.flipX = direction == -1 ? false : true;
-        scaleFlipper.transform.localScale = new Vector3(-direction, 1, 1);
+        spriteRenderer.flipX = direction == 1 ? false : true;
+        scaleFlipper.transform.localScale = new Vector3(direction, 1, 1);
 
         Direction = direction;
     }

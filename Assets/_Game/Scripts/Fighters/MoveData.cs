@@ -12,6 +12,7 @@ public enum AttackType
 public class MoveData : ScriptableObject
 {
     public string MoveName;
+    public int MoveId;
 
     [Space()]
     public int Cooldown;

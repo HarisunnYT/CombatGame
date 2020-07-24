@@ -13,6 +13,7 @@ public class InputProfile : PlayerActionSet
     public PlayerTwoAxisAction Move;
     public PlayerAction Jump;
 
+    public PlayerAction Attack;
     public PlayerAction Attack1;
     public PlayerAction Attack2;
     public PlayerAction Attack3;
@@ -45,6 +46,7 @@ public class InputProfile : PlayerActionSet
 
         Jump = CreatePlayerAction("Jump");
 
+        Attack = CreatePlayerAction("Attack");
         Attack1 = CreatePlayerAction("Attack1");
         Attack2 = CreatePlayerAction("Attack2");
         Attack3 = CreatePlayerAction("Attack3");
@@ -131,6 +133,10 @@ public class InputProfile : PlayerActionSet
 
         Jump.AddDefaultBinding(Key.Space);
 
+        Attack.AddDefaultBinding(Mouse.LeftButton);
+        Attack.AddDefaultBinding(Mouse.MiddleButton);
+        Attack.AddDefaultBinding(Mouse.RightButton);
+
         Attack1.AddDefaultBinding(Mouse.LeftButton);
         Attack2.AddDefaultBinding(Mouse.MiddleButton);
         Attack3.AddDefaultBinding(Mouse.RightButton);
@@ -160,6 +166,10 @@ public class InputProfile : PlayerActionSet
         Down.AddDefaultBinding(InputControlType.LeftStickDown);
 
         Jump.AddDefaultBinding(InputControlType.Action1);
+
+        Attack.AddDefaultBinding(InputControlType.Action3);
+        Attack.AddDefaultBinding(InputControlType.Action4);
+        Attack.AddDefaultBinding(InputControlType.Action2);
 
         Attack1.AddDefaultBinding(InputControlType.Action3);
         Attack2.AddDefaultBinding(InputControlType.Action4);
