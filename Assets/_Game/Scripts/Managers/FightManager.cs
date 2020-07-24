@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FightManager : Singleton<FightManager>, IFightEvents
+public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
 {
     private const float startFightCountDownTimeInSeconds = 3.5f;
 
@@ -152,11 +152,17 @@ public class FightManager : Singleton<FightManager>, IFightEvents
 
     public void AddListener()
     {
-        CombatInterfaces.AddListener(this);
+        GameInterfaces.AddListener(this);
     }
 
     public void RemoveListener()
     {
-        CombatInterfaces.RemoveListener(this);
+        GameInterfaces.RemoveListener(this);
+    }
+
+    public void OnPlayerDisconnected(int playerId)
+    {
+        PlayerController player = ServerManager.Instance.GetPlayer(playerId).PlayerController;
+        OnPlayerDied(player, player);
     }
 }

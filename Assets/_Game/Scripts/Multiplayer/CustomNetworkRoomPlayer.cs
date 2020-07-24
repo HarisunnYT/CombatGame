@@ -19,14 +19,11 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         }
     }
 
-    public override void OnClientExitRoom()
-    {
-        //if (SceneLoader.IsMainMenu)
-            //SteamLobbyManager.Instance.CancelSearch();
-    }
-
     private void OnDestroy()
     {
+        if (FightManager.Instance) //this MUST be called before remove player
+            GameInterfaces.OnPlayerDisconnected(index);
+
         if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(index);
     }

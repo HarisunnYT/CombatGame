@@ -117,12 +117,12 @@ public class PlayerRoundInformation : MonoBehaviour, IFightEvents
 
     public void AddListener()
     {
-        CombatInterfaces.AddListener(this);
+        GameInterfaces.AddListener(this);
     }
 
     public void RemoveListener()
     {
-        CombatInterfaces.RemoveListener(this);
+        GameInterfaces.RemoveListener(this);
     }
 
     #endregion

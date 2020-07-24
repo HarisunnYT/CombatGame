@@ -352,7 +352,7 @@ public class PlayerController : Character
 
     private void OnDeathClient(int killerID, int victimID)
     {
-        CombatInterfaces.OnPlayerDied(MatchManager.Instance.GetPlayer(killerID), MatchManager.Instance.GetPlayer(victimID));
+        GameInterfaces.OnPlayerDied(MatchManager.Instance.GetPlayer(killerID), MatchManager.Instance.GetPlayer(victimID));
 
         animator.SetBool("Dead", true);
 

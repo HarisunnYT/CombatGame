@@ -1,0 +1,92 @@
+﻿using Mirror;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public interface IHealth
+{
+    int Health { get; set; }
+    bool Invincible { get; set; }
+    bool Alive { get; set; }
+}
+
+public interface IDamagable
+{
+    int Health { get; set; }
+
+    void OnDamaged(int amount, PlayerController player);
+
+    [ClientRpc]
+    void RpcOnDamaged(int amount, int playerID);
+
+    void OnHealed (int amount);
+
+    [ClientRpc]
+    void RpcOnHealed(int amount);
+}
+
+public interface IDamages
+{
+    int Damage { get; set; }
+}
+
+public interface IKnockable
+{
+    void OnKnockback(float knockback, Vector2 direction);
+}
+
+public interface IBase
+{
+    void AddListener();
+    void RemoveListener();
+}
+
+public interface IFightEvents : IBase
+{
+    void OnPlayerDied(PlayerController killer, PlayerController victim);
+}
+
+public interface IServerEvents : IBase
+{
+    void OnPlayerDisconnected(int playerId);
+}
+
+public class GameInterfaces
+{
+    private static List<IBase> listeners = new List<IBase>();
+
+    public static void AddListener(IBase obj)
+    {
+        if (obj is IFightEvents)
+            listeners.Add(obj as IFightEvents);
+        if (obj is IServerEvents)
+            listeners.Add(obj as IServerEvents);
+    }
+
+    public static void RemoveListener(IBase obj)
+    {
+        if (obj is IFightEvents)
+            listeners.Remove(obj);
+        if (obj is IServerEvents)
+            listeners.Remove(obj);
+    }
+
+    public static void OnPlayerDied(PlayerController killer, PlayerController victim)
+    {
+        foreach(var listener in listeners)
+        {
+            if (listener is IFightEvents)
+                ((IFightEvents)listener).OnPlayerDied(killer, victim);
+        }
+    }
+
+    public static void OnPlayerDisconnected(int playerId)
+    {
+        foreach (var listener in listeners)
+        {
+            if (listener is IServerEvents)
+                ((IServerEvents)listener).OnPlayerDisconnected(playerId);
+        }
+    }
+}
