@@ -11,7 +11,9 @@ public class SceneLoader : PersistentSingleton<SceneLoader>
     {
         if (loadingScene)
             return;
-            
+
+        loadingScene = true;
+
         TransitionManager.Instance.ShowTransition(() =>
         {
             StartCoroutine(LoadSceneAsync(sceneName, () =>
