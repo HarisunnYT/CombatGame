@@ -109,6 +109,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public event LobbyEvent OnCancelledSearch;
     public event LobbyEvent OnPublicMatchCreated;
     public event LobbyEvent OnKicked;
+    public event LobbyEvent OnMatchFound;
 
     #endregion
 
@@ -666,12 +667,14 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             {
                 CreateClient(PublicLobby.Value.Owner.Id.Value.ToString());
             }
+
+            OnMatchFound?.Invoke();
         }
     }
 
     private void TryStartPublicGame()
     {
-        if (PublicLobby.HasValue && ServerManager.Instance.Players.Count >= PublicLobby.Value.MemberCount)
+        if (PublicLobby.HasValue && ServerManager.Instance.Players.Count >= MaxLobbyMembers && SceneLoader.IsMainMenu)
         {
             SceneLoader.Instance.LoadScene("Lobby");
         }

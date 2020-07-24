@@ -443,6 +443,7 @@ MonoBehaviour:
   leaveButton: {fileID: 1487033779}
   searchingObj: {fileID: 399123432}
   cancelButton: {fileID: 1458047415}
+  matchSearchTitle: {fileID: 1351458388}
   playersFoundText: {fileID: 1352601481}
   connectedPlayerCells:
   - {fileID: 2044757317}

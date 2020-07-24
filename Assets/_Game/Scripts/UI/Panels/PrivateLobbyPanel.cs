@@ -30,11 +30,16 @@ public class PrivateLobbyPanel : Panel
     private GameObject cancelButton;
 
     [SerializeField]
+    private TMP_Text matchSearchTitle;
+
+    [SerializeField]
     private TMP_Text playersFoundText;
 
     [Space()]
     [SerializeField]
     private SelectedCharacterCell[] connectedPlayerCells;
+
+    private bool matchFound = false;
 
     protected override void OnShow()
     {
@@ -49,6 +54,7 @@ public class PrivateLobbyPanel : Panel
         }
 
         SubToEvents();
+        matchFound = false;
 
         //disable / enable all buttons based on if they're host or not
         privacyToggle.gameObject.SetActive(SteamLobbyManager.Instance.PrivateHost);
@@ -169,8 +175,13 @@ public class PrivateLobbyPanel : Panel
 
     private void UpdatePlayersFoundText()
     {
+        if (matchFound)
+            return;
+
         if (SteamLobbyManager.Instance.PublicLobby != null)
             playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
+
+        matchSearchTitle.text = "Players Found";
     }
 
     private void OnBeganSearch()
@@ -227,7 +238,8 @@ public class PrivateLobbyPanel : Panel
 
         SteamLobbyManager.Instance.OnBeganSearch += OnBeganSearch;
         SteamLobbyManager.Instance.OnCancelledSearch += OnCancelledSearch;
-        SteamLobbyManager.Instance.OnKicked += OnKicked; 
+        SteamLobbyManager.Instance.OnKicked += OnKicked;
+        SteamLobbyManager.Instance.OnMatchFound += OnMatchFound;
     }
 
     private void UnSubToEvents()
@@ -244,6 +256,7 @@ public class PrivateLobbyPanel : Panel
             SteamLobbyManager.Instance.OnBeganSearch -= OnBeganSearch;
             SteamLobbyManager.Instance.OnCancelledSearch -= OnCancelledSearch;
             SteamLobbyManager.Instance.OnKicked -= OnKicked;
+            SteamLobbyManager.Instance.OnMatchFound -= OnMatchFound;
         }
     }
 
@@ -251,6 +264,15 @@ public class PrivateLobbyPanel : Panel
     {
         DelayedInit();
         UpdatePlayerCells();
+    }
+
+    private void OnMatchFound()
+    {
+        matchFound = true;
+        cancelButton.SetActive(false);
+
+        matchSearchTitle.text = "Match Found";
+        playersFoundText.text = "Connecting";
     }
 
     public void OnLobbyMemberJoined(Lobby arg1, Friend arg2)
