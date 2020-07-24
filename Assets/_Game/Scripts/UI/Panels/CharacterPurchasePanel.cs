@@ -10,6 +10,9 @@ public class CharacterPurchasePanel : Panel
     [SerializeField]
     private Timer timer;
 
+    [SerializeField]
+    private LevelEditorCamera levelEditorCamera;
+
     [Space()]
     [SerializeField]
     private Transform movesContent;
@@ -22,17 +25,8 @@ public class CharacterPurchasePanel : Panel
 
     public PurchasableMoveCell CurrentPurchasingMove { get; private set; }
 
-    private int playerIndex = -1;
-
     public override void Initialise()
     {
-        if (!ServerManager.Instance.IsOnlineMatch)
-        {
-            LevelEditorCamera cam = GetComponentInParent<LevelEditorCamera>();
-            if (cam)
-                playerIndex = cam.LocalPlayerIndex;
-        }
-
         MatchManager.Instance.OnPhaseChanged += OnPhaseChanged;
     }
 
@@ -48,8 +42,8 @@ public class CharacterPurchasePanel : Panel
 
         if (ServerManager.Instance.IsOnlineMatch)
             moves = MatchManager.Instance.GetClientPlayer().Fighter.Moves;
-        else if (playerIndex != -1)
-            moves = MatchManager.Instance.GetPlayer(playerIndex).Fighter.Moves;
+        else if (levelEditorCamera.LocalPlayerIndex != -1)
+            moves = MatchManager.Instance.GetPlayer(levelEditorCamera.LocalPlayerIndex).Fighter.Moves;
 
         foreach (var move in moves.OrderBy(x => x.Price)) //sort by lowest price first
         {
@@ -89,12 +83,12 @@ public class CharacterPurchasePanel : Panel
 
     public void PurchasedMove(MoveData move, int position)
     {
-        ServerManager.Instance.GetPlayer(playerIndex).PlayerController.PlayerRoundInfo.Purchase(move.Price);
+        ServerManager.Instance.GetPlayer(levelEditorCamera.LocalPlayerIndex).PlayerController.PlayerRoundInfo.Purchase(move.Price);
 
         CurrentPurchasingMove = null;
         SetDarkness(false);
 
-        ServerManager.Instance.GetPlayer(playerIndex).PlayerController.PlayerRoundInfo.EquipedMove(move, position);
+        ServerManager.Instance.GetPlayer(levelEditorCamera.LocalPlayerIndex).PlayerController.PlayerRoundInfo.EquipedMove(move, position);
     }
 
     public void OpenLevelEditor()

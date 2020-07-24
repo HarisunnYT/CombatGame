@@ -99,11 +99,15 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
 
     public void OnPlayerDied(PlayerController killer, PlayerController victim)
     {
+        ServerManager.ConnectedPlayer connectedPlayer = ServerManager.Instance.GetPlayer(victim);
+        if (!AlivePlayers.Contains(connectedPlayer.PlayerID))
+            return;
+
         //give the dead player their placement cash
         DetermineCashForPlayer(victim, AlivePlayers.Count);
 
         //remove player from alive players and see if there's only a single player left
-        AlivePlayers.Remove(ServerManager.Instance.GetPlayer(victim).PlayerID);
+        AlivePlayers.Remove(connectedPlayer.PlayerID);
         if (AlivePlayers.Count <= 1)
         {
             if (SteamLobbyManager.Instance.PublicHost)
@@ -162,7 +166,14 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
 
     public void OnPlayerDisconnected(int playerId)
     {
-        PlayerController player = ServerManager.Instance.GetPlayer(playerId).PlayerController;
-        OnPlayerDied(player, player);
+        if (ServerManager.Instance)
+        {
+            ServerManager.ConnectedPlayer connectedPlayer = ServerManager.Instance.GetPlayer(playerId);
+            if (connectedPlayer != null)
+            {
+                PlayerController player = connectedPlayer.PlayerController;
+                OnPlayerDied(player, player);
+            }
+        }
     }
 }

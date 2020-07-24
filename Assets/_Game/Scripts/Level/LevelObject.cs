@@ -58,7 +58,7 @@ public class LevelObject : NetworkBehaviour
         else
             playerController = ServerManager.Instance.GetPlayer(cursor.ControllerID).PlayerController;
 
-        collider.isTrigger = hasAuthority;
+        collider.isTrigger = hasAuthority || !ServerManager.Instance.IsOnlineMatch;
     }
 
     private void Update()
