@@ -19,8 +19,6 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
     {
         SteamComms = GetComponent<SteamworksP2PCommsNetwork>();
         comms = GetComponent<DissonanceComms>();
-
-        SteamMatchmaking.OnLobbyMemberDisconnected += PeerDisconnected;
     }
 
     public void StartServer()
@@ -58,19 +56,6 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
     public bool IsPeerMuted(string voiceCommsId)
     {
         return comms.FindPlayer(voiceCommsId).IsLocallyMuted;
-    }
-
-    public void PeerConnected(Steamworks.Data.Lobby arg1, Friend friend)
-    {
-        SteamComms.PeerConnected(friend.Id);
-
-        if (friend.Id != SteamClient.SteamId)
-            MutePeer(false, ServerManager.Instance.GetPlayer(friend.Id.Value).VoiceCommsId); //unmute player when they enter the room
-    }
-
-    private void PeerDisconnected(Steamworks.Data.Lobby arg1, Friend friend)
-    {
-        SteamComms.PeerDisconnected(friend.Id);
     }
 
     public void SendChatMessage(string message)

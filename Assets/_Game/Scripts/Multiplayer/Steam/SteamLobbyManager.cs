@@ -729,7 +729,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         //this is needed for some reason as OnLobbyMemberJoined doesn't work on private lobby panel...
         PanelManager.Instance.GetPanel<PrivateLobbyPanel>()?.OnLobbyMemberJoined(arg1, arg2);
-        VoiceCommsManager.Instance.PeerConnected(arg1, arg2);
     }
 
     private void OnLobbyInvite(Friend arg1, Lobby arg2)

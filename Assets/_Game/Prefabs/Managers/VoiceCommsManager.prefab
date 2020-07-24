@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8bf128a7b99e7b43bc3239debeaa82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commsNetwork: {fileID: 5851751731042121722}
 --- !u!114 &5851726989002893924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,8 +128,8 @@ MonoBehaviour:
     _fadeOutTicks: 11500000
   _broadcastPosition: 1
   _channelType: 0
-  _inputName: 
-  _mode: 1
+  _inputName: PushToTalk
+  _mode: 2
   _muted: 0
   _playerId: 
   _useTrigger: 0

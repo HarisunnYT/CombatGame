@@ -86,9 +86,13 @@ public class FightManager : Singleton<FightManager>, IFightEvents
         {
             if (ServerManager.Instance)
             {
-                PlayerController playerController = ServerManager.Instance.GetPlayer(player).PlayerController;
-                playerController.EnableInput();
-                playerController.SetAlive();
+                ServerManager.ConnectedPlayer connectedPlayer = ServerManager.Instance.GetPlayer(player);
+                if (connectedPlayer != null)
+                {
+                    PlayerController playerController = connectedPlayer.PlayerController;
+                    playerController.EnableInput();
+                    playerController.SetAlive();
+                }
             }
         }
     }
