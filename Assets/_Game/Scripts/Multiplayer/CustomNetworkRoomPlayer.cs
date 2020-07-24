@@ -155,7 +155,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         if (time == 0 && !isServer) //time hadn't been set yet, request again
             CmdRequestTimer();
-        else
+        else if (PanelManager.Instance.GetPanel<CharacterSelectScreen>())
             PanelManager.Instance.GetPanel<CharacterSelectScreen>().ConfigureTimer(time);
     }
 

@@ -141,19 +141,22 @@ public class PrivateLobbyPanel : Panel
         connectedPlayerCells[0].Configure(ownerName, FighterManager.Instance.GetFighter(fighterName)); 
         connectedPlayerCells[0].GetComponent<Animator>().SetBool("Connected", true);
 
-        for (int i = 0; i < privateLobby.Value.MemberCount; i++)
+        for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
         {
-            Friend friend = privateLobby.Value.Members.ElementAt(i);
-            if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
+            if (privateLobby.Value.MemberCount > i)
             {
-                fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
-                foreach (var playerCell in connectedPlayerCells)
+                Friend friend = privateLobby.Value.Members.ElementAt(i);
+                if (friend.Id != 0 && friend.Id.Value != privateLobby.Value.Owner.Id.Value)
                 {
-                    if (!playerCell.Occuipied)
+                    fighterName = privateLobby.Value.GetMemberData(friend, FighterManager.LastPlayerFighterKey);
+                    foreach (var playerCell in connectedPlayerCells)
                     {
-                        playerCell.Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
-                        playerCell.GetComponent<Animator>().SetBool("Connected", true);
-                        break;
+                        if (!playerCell.Occuipied)
+                        {
+                            playerCell.Configure(friend.Name, FighterManager.Instance.GetFighter(fighterName));
+                            playerCell.GetComponent<Animator>().SetBool("Connected", true);
+                            break;
+                        }
                     }
                 }
             }
@@ -179,14 +182,14 @@ public class PrivateLobbyPanel : Panel
             return;
 
         if (SteamLobbyManager.Instance.PublicLobby != null)
-            playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
+            playersFoundText.text = SteamLobbyManager.Instance.PublicLobby.Value.MemberCount + "/" + SteamLobbyManager.Instance.MaxLobbyMembers;
 
         matchSearchTitle.text = "Players Found";
     }
 
     private void OnBeganSearch()
     {
-        playersFoundText.text = SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount + "/" + SteamLobbyManager.MaxLobbyMembers;
+        playersFoundText.text = SteamLobbyManager.Instance.PrivateLobby.Value.MemberCount + "/" + SteamLobbyManager.Instance.MaxLobbyMembers;
         SetPlayButtonsInteractable(false, 1);
         searchingObj.SetActive(true);
 

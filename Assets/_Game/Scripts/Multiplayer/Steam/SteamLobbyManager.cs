@@ -18,7 +18,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region CONST_VARIABLES
 
-    public const int MaxLobbyMembers = 2; //TODO SET TO 4
+    [NonSerialized]
+    public int MaxLobbyMembers = 3; //TODO SET TO 4
 
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
@@ -115,6 +116,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     protected override void Initialize()
     {
+        //TODO REMOVE
+#if !UNITY_EDITOR
+    MaxLobbyMembers = 3;
+#endif
+
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
         SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
@@ -172,16 +178,20 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             TryStartPublicGame();
     }
 
-    #region CLIENT_SERVER
+#region CLIENT_SERVER
 
     public void StopServer()
     {
+        Debug.Log("stop server");
+
         if (FizzySteamworks.Instance.ServerActive())
             NetworkManager.Instance.StopServer();
     }
 
     public void StopClient()
     {
+        Debug.Log("stop client");
+
         if (FizzySteamworks.Instance.ClientActive())
         {
             NetworkManager.Instance.StopClient();
@@ -223,9 +233,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         creatingClientCoroutine = null;
     }
 
-    #endregion
+#endregion
 
-    #region MESSAGES
+#region MESSAGES
 
     private void OnLobbyDataChanged(Lobby obj)
     {
@@ -318,9 +328,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
-    #endregion
+#endregion
 
-    #region PRIVATE_LOBBY
+#region PRIVATE_LOBBY
 
     public void CreatePrivateLobby()
     {
@@ -490,9 +500,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
-    #endregion
+#endregion
 
-    #region MATCH_MAKING
+#region MATCH_MAKING
 
     public void SearchForMatch()
     {
@@ -698,9 +708,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
-    #endregion
+#endregion
 
-    #region CALLBACKS
+#region CALLBACKS
 
     private void OnLobbyMemberLeave(Lobby lobby, Friend friend)
     {
@@ -763,5 +773,5 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         SteamClient.Shutdown();
     }
 
-    #endregion
+#endregion
 }
