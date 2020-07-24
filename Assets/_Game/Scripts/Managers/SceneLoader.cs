@@ -5,12 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : PersistentSingleton<SceneLoader>
 {
+    private bool loadingScene = false;
+
     public void LoadScene(string sceneName, System.Action onSceneLoaded = null)
     {
+        if (loadingScene)
+            return;
+            
         TransitionManager.Instance.ShowTransition(() =>
         {
             StartCoroutine(LoadSceneAsync(sceneName, () =>
             {
+                loadingScene = false;
                 onSceneLoaded?.Invoke();
                 TransitionManager.Instance.HideTransition();
             }));

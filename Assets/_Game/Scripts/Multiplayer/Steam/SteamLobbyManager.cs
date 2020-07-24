@@ -114,7 +114,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     protected override void Initialize()
     {
-        ServerManager.Instance.OnPlayerAdded += OnPlayerAdded;
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
         SteamMatchmaking.OnLobbyDataChanged += OnLobbyDataChanged;
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
@@ -167,11 +166,14 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             joiningPrivateLobbyTask = null;
             joinedLobbyCallback = null;
         }
+
+        if (Searching)
+            TryStartPublicGame();
     }
 
     #region CLIENT_SERVER
 
-    private void StopServer()
+    public void StopServer()
     {
         if (FizzySteamworks.Instance.ServerActive())
             NetworkManager.Instance.StopServer();
@@ -696,11 +698,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     #endregion
 
     #region CALLBACKS
-
-    private void OnPlayerAdded(ServerManager.ConnectedPlayer connectedPlayer)
-    {
-        TryStartPublicGame();
-    }
 
     private void OnLobbyMemberLeave(Lobby lobby, Friend friend)
     {

@@ -168,6 +168,8 @@ public class NetworkManager : NetworkRoomManager
             yield break;
         }
 
+        SteamLobbyManager.Instance.StopServer();
+
         SteamId friendID = SteamLobbyManager.Instance.PublicLobby.HasValue ? SteamLobbyManager.Instance.PublicLobby.Value.Owner.Id : SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id;
         SteamLobbyManager.Instance.CreateClient(friendID.Value.ToString());
     }
