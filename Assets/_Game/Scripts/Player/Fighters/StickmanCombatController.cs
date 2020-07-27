@@ -34,6 +34,10 @@ public class StickmanCombatController : CombatController
     protected override void Update()
     {
         base.Update();
+
+        if (!isLocalPlayer)
+            return;
+
         if (playerController.Grounded && currentAttackType == AttackType.BodySlam)
             EndBodySlam();
     }

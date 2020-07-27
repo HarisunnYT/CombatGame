@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatController : MonoBehaviour
+public class CombatController : NetworkBehaviour
 {
     private float attackOneCooldownTimer = 0;
     private float attackTwoCooldownTimer = 0;
@@ -33,7 +33,7 @@ public class CombatController : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (playerController.InputProfile == null || !playerController.InputEnabled)
+        if (!isLocalPlayer || playerController.InputProfile == null || !playerController.InputEnabled)
             return;
 
         //attacking
