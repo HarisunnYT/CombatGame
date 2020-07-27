@@ -2479,6 +2479,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followSpeed: 10
+  near: 8
+  far: 10
+  minDistance: 25
+  maxDistance: 35
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

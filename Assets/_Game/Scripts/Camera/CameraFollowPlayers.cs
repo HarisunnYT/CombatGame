@@ -7,7 +7,20 @@ using DG.Tweening;
 public class CameraFollowPlayers : MonoBehaviour
 {
     [SerializeField]
-    private float followSpeed;
+    private float followSpeed = 10;
+
+    [Space()]
+    [SerializeField]
+    private float near = 5;
+
+    [SerializeField]
+    private float far = 10;
+
+    [SerializeField]
+    private float minDistance = 25; 
+
+    [SerializeField]
+    private float maxDistance = 35; 
 
     private Vector3 originalPosition;
     private float originalZoom;
@@ -29,19 +42,23 @@ public class CameraFollowPlayers : MonoBehaviour
         }
         else
         {
-            //TODO FIX
-            //if (MatchManager.Instance.Players.Count == 1)
-            //{
-            //    Transform target = MatchManager.Instance.Players[0].transform;
-            //    transform.position = Vector3.Lerp(transform.position, new Vector3(target.position.x, target.position.y, transform.position.z), followSpeed * Time.deltaTime);
-            //}
-            //else if (GameManager.Instance.Players.Count == 2)
-            //{
-            //    Transform p1 = GameManager.Instance.Players[0].transform;
-            //    Transform p2 = GameManager.Instance.Players[1].transform;
-            //    Vector3 target = p1.position + (p2.position - p1.position) / 2;
-            //    transform.position = Vector3.Lerp(transform.position, new Vector3(target.x, target.y, transform.position.z), followSpeed * Time.deltaTime);
-            //}
+            //get the furthest distance between all the players
+            float furthestDistance = 0;
+            foreach(var p1 in ServerManager.Instance.Players)
+            {
+                foreach(var p2 in ServerManager.Instance.Players)
+                {
+                    if (p1 != p2 && p1.PlayerController != null && p2.PlayerController != null)
+                    {
+                        float distance = Vector3.Distance(p1.PlayerController.transform.position, p2.PlayerController.transform.position);
+                        if (distance > furthestDistance)
+                            furthestDistance = distance;
+                    }
+                }
+            }
+
+            float normalizedDistance = (furthestDistance - minDistance) / (maxDistance - minDistance);
+            CameraManager.Instance.Camera.orthographicSize = Mathf.Lerp(near, far, normalizedDistance);
         }
     }
 
