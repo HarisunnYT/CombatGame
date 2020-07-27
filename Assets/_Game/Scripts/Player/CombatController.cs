@@ -14,7 +14,9 @@ public class CombatController : MonoBehaviour
     private PlayerRoundInformation playerRoundInfo;
     private Animator animator;
 
-    public bool Attacking { get; private set; } = false;
+    public bool Attacking { get { return basicAttacking || specialAttacking; } }
+    private bool basicAttacking = false;
+    private bool specialAttacking = false;
 
     private float attackButtonTimer = 0;
 
@@ -45,16 +47,15 @@ public class CombatController : MonoBehaviour
             else if (playerController.InputProfile.Attack3.WasPressed && ServerManager.Time > attackThreeCooldownTimer)
                 DetermineAttack(2);
 
-            Attacking = true;
+            basicAttacking = true;
             attackButtonTimer = Time.time + playerController.TechnicalData.GetValue(DataKeys.VariableKeys.AttackingButtonResetDelay);
         }
 
         if (Time.time > attackButtonTimer)
-        {
-            Attacking = false;
-        }
+            basicAttacking = false;
 
-        animator.SetBool("Attacking", Attacking);
+        animator.SetBool("BasicAttacking", basicAttacking);
+        animator.SetBool("SpecialAttacking", specialAttacking);
     }
 
     /// <param name="attackIndex">0, 1 or 2</param>
@@ -78,11 +79,19 @@ public class CombatController : MonoBehaviour
             attackThreeCooldownTimer = ServerManager.Time + playerRoundInfo.AttackThree.Cooldown;
         }
 
-        OnAttack(moveNumber);
-        animator.SetInteger("MoveNumber", moveNumber);
+        if (attackIndex != -1)
+        {
+            specialAttacking = true;
+
+            OnAttack(moveNumber);
+            animator.SetInteger("MoveNumber", moveNumber);
+        }
     }
 
-    protected virtual void OnAttack(int moveId) { }
+    public void AttackComplete()
+    {
+        specialAttacking = false;
+    }
 
     private void OnPhaseChanged(MatchManager.RoundPhase phase)
     {
@@ -95,4 +104,6 @@ public class CombatController : MonoBehaviour
         attackTwoCooldownTimer = 0;
         attackThreeCooldownTimer = 0;
     }
+
+    protected virtual void OnAttack(int moveId) { }
 }

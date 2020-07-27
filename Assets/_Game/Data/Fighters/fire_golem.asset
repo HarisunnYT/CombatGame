@@ -19,9 +19,9 @@ MonoBehaviour:
   UIAnimatorController: {fileID: 9100000, guid: 65f050eeec2a2704c8b1dd8401311156,
     type: 2}
   Moves:
+  - {fileID: 11400000, guid: 2b3154c277207094e94d2b158f17de8e, type: 2}
   - {fileID: 11400000, guid: cdfe0920c2a84d9469cb5d30589728d7, type: 2}
   - {fileID: 11400000, guid: 1e381f7b6d890484a93a893153b84999, type: 2}
   - {fileID: 11400000, guid: 33a28cdbce414d44f886f4085bcd1216, type: 2}
   - {fileID: 11400000, guid: 615d1824f83c5424ebeaf4cdeba58790, type: 2}
-  - {fileID: 11400000, guid: 2b3154c277207094e94d2b158f17de8e, type: 2}
   - {fileID: 11400000, guid: 8273217ba743d9448b0eaba443d44779, type: 2}

@@ -6,7 +6,7 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Executioner
+  m_Name: Stick_Man
   m_Controller: {fileID: 9100000, guid: c723c6650ec4ba24fae228376c7b56eb, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 2a6c7ac1acef4ff49838b7291f6b8dfe, type: 2}

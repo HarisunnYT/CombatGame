@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &2997272027197956003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952261018385834844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bda58a36d717da04cbf58041917f636e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6831277847191230316
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +185,7 @@ PrefabInstance:
     - target: {fileID: 8938859172034660462, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
       propertyPath: m_Name
-      value: Executioner Variant
+      value: Stick Man Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8938859172034660462, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
         type: 3}
@@ -265,8 +277,15 @@ PrefabInstance:
       propertyPath: m_AssetId
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7261540714273178458, guid: 5cb81fba8dbb2db4faa04aeba56b05c7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5cb81fba8dbb2db4faa04aeba56b05c7, type: 3}
+--- !u!1 &952261018385834844 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8938859172034660462, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
+    type: 3}
+  m_PrefabInstance: {fileID: 8158879130050931506}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &182560626475614154 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8336933373490861304, guid: 5cb81fba8dbb2db4faa04aeba56b05c7,
