@@ -52,7 +52,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
     {
         if (startFightCountdownInProgress && SteamLobbyManager.Instance.PublicHost)
         {
-            int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - (float)NetworkTime.time);
+            int roundedTime = Mathf.RoundToInt(startFightCountdownTimer - ServerManager.Time);
             if (roundedTime <= 0)
             {
                 NetworkManager.Instance.RoomPlayer.RpcCountdownOver();
@@ -70,7 +70,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
     private void BeginFightCountdown()
     {
         startFightCountdownInProgress = true;
-        startFightCountdownTimer = (float)NetworkTime.time + startFightCountDownTimeInSeconds;
+        startFightCountdownTimer = ServerManager.Time + startFightCountDownTimeInSeconds;
 
         hudPanel.BeginFightCountdown(startFightCountdownTimer);
     }

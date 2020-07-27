@@ -119,9 +119,10 @@ GameObject:
   - component: {fileID: 8938859172034660499}
   - component: {fileID: 5988295462337726034}
   - component: {fileID: 8938859172034660496}
-  - component: {fileID: 1835729230993174615}
+  - component: {fileID: 7261540714273178458}
   - component: {fileID: 1268306791404120107}
   - component: {fileID: 7320131908986894954}
+  - component: {fileID: 1835729230993174615}
   - component: {fileID: 8938859172034660460}
   - component: {fileID: 8938859172034660461}
   - component: {fileID: 8938859172034660498}
@@ -210,7 +211,7 @@ MonoBehaviour:
   - MovementType: 11
     MovementData: {fileID: 0}
   technicalData: {fileID: 11400000, guid: 1de75a3608ce0594b9ef10b116afecf7, type: 2}
---- !u!114 &1835729230993174615
+--- !u!114 &7261540714273178458
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,11 +220,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8938859172034660462}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45ba889fbaf91194b887407d65b2eba4, type: 3}
+  m_Script: {fileID: 11500000, guid: e8303a14859137244bc4e59726130f38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 0}
-  timeBetweenFlash: 0.15
 --- !u!114 &1268306791404120107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +255,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa01a269b406e84fa6978e730cf4a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1835729230993174615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8938859172034660462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ba889fbaf91194b887407d65b2eba4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 0}
+  timeBetweenFlash: 0.15
 --- !u!212 &8938859172034660460
 SpriteRenderer:
   m_ObjectHideFlags: 0

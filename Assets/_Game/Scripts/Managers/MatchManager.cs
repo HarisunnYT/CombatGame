@@ -125,7 +125,7 @@ public class MatchManager : Singleton<MatchManager>
             player.PlayerController.ResetCharacter();
         }
 
-        buyPhaseCountdownTimer = (float)NetworkTime.time + buyPhaseTimeInSeconds;
+        buyPhaseCountdownTimer = ServerManager.Time + buyPhaseTimeInSeconds;
 
         if (ServerManager.Instance.IsOnlineMatch)
             PanelManager.Instance.ShowPanel<CharacterPurchasePanel>();
@@ -172,7 +172,7 @@ public class MatchManager : Singleton<MatchManager>
     {
         if (currentPhase == RoundPhase.Buy_Phase)
         {
-            int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - (float)NetworkTime.time);
+            int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - ServerManager.Time);
             if (roundedTime <= 0)
             {
                 BuyPhaseFinished();

@@ -75,6 +75,4 @@ public class BaseMovement
     {
         player.transform.rotation = Quaternion.identity;
     }
-
-    public virtual void Attack() { }
 }

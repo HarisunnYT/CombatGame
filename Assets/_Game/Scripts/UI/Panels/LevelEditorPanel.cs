@@ -55,7 +55,7 @@ public class LevelEditorPanel : Panel
     {
         if (phase == MatchManager.RoundPhase.Buy_Phase)
         {
-            countdownTimer.Configure((float)NetworkTime.time + MatchManager.Instance.BuyPhaseTimeInSeconds);
+            countdownTimer.Configure(ServerManager.Time + MatchManager.Instance.BuyPhaseTimeInSeconds);
         }
     }
 

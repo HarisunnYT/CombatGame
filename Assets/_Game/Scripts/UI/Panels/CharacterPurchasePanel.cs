@@ -66,7 +66,7 @@ public class CharacterPurchasePanel : Panel
     {
         if (phase == MatchManager.RoundPhase.Buy_Phase)
         {
-            timer.Configure((float)NetworkTime.time + MatchManager.Instance.BuyPhaseTimeInSeconds);
+            timer.Configure(ServerManager.Time + MatchManager.Instance.BuyPhaseTimeInSeconds);
         }
     }
 

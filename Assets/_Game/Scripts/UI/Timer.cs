@@ -47,7 +47,7 @@ public class Timer : NetworkBehaviour
 
     private void Update()
     {
-        float time = (float)NetworkTime.time;
+        float time = ServerManager.Time;
         int roundedTime = Mathf.Clamp(Mathf.RoundToInt(targetTime - time), 0, int.MaxValue);
         if (roundedTime != previousRoundedTime)
         {

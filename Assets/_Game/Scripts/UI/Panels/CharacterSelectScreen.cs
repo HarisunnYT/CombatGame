@@ -40,7 +40,7 @@ public class CharacterSelectScreen : Panel
 
     protected override void OnShow()
     {
-        SelectCharacterTimer = (float)NetworkTime.time + CharacterSelectManager.Instance.CharacterSelectTime;
+        SelectCharacterTimer = ServerManager.Time + CharacterSelectManager.Instance.CharacterSelectTime;
         finished = false;
 
         //no countdown for local player
@@ -68,7 +68,7 @@ public class CharacterSelectScreen : Panel
         //we don't countdown in local
         if (ServerManager.Instance && ServerManager.Instance.IsOnlineMatch && !SteamLobbyManager.Instance.IsPrivateMatch)
         {
-            int roundedTime = Mathf.Clamp(Mathf.RoundToInt(SelectCharacterTimer - (float)NetworkTime.time), 0, int.MaxValue);
+            int roundedTime = Mathf.Clamp(Mathf.RoundToInt(SelectCharacterTimer - ServerManager.Time), 0, int.MaxValue);
             if (roundedTime <= 0 && !finished)
             {
                 //times up, force random character for local player

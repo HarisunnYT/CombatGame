@@ -61,14 +61,12 @@ public class PlayerController : Character
     public bool VerticalMovementEnabled { get; private set; } = true;
 
     public FighterData Fighter { get; private set; }
+    public CombatController CombatController { get; private set; }
 
     private Vector3 originalScale;
 
     private float previousScaleSwappedTimer = 0;
-    private float attackButtonTimer = 0;
     private float timeBetweenJumpTimer = 0;
-
-    private bool attacking = false;
 
     private Coroutine horizontalMovementCoroutine;
     private Coroutine verticalMovementCoroutine;
@@ -93,6 +91,7 @@ public class PlayerController : Character
         communicationController = GetComponent<CommunicationController>();
         collider = GetComponent<Collider2D>();
         PlayerRoundInfo = GetComponent<PlayerRoundInformation>();
+        CombatController = GetComponent<CombatController>();
 
         combatColliders = GetComponentsInChildren<CombatCollider>(true);
         foreach (var col in combatColliders)
@@ -163,30 +162,6 @@ public class PlayerController : Character
 
         HoldingJump = InputProfile.Jump;
 
-        //attacking
-        if (InputProfile.Attack.WasPressed)
-        {
-            //reset animator value before determining what attack was pressed
-            SetAnimatorMoveNumber(-1);
-
-            if (InputProfile.Attack1.WasPressed)
-                SetAnimatorMoveNumber(0);
-            else if (InputProfile.Attack2.WasPressed)
-                SetAnimatorMoveNumber(1);
-            else if (InputProfile.Attack3.WasPressed)
-                SetAnimatorMoveNumber(2);
-
-            baseMovement.Attack();
-            attacking = true;
-            attackButtonTimer = Time.time + TechnicalData.GetValue(DataKeys.VariableKeys.AttackingButtonResetDelay);
-        }
-
-        if (Time.time > attackButtonTimer)
-        {
-            attacking = false;
-        }
-
-        animator.SetBool("Attacking", attacking);
         animator.SetBool("Grounded", Grounded);
         animator.SetBool("HoldingJump", HoldingJump);
         animator.SetBool("Falling", !Grounded && Rigidbody.velocity.y < 0);
@@ -316,8 +291,8 @@ public class PlayerController : Character
 
     public float GetMaxHorizontalSpeed()
     {
-        return attacking ? CurrentMovementData.GetValue(DataKeys.VariableKeys.MaxHorizontalSpeed) / CurrentMovementData.GetValue(DataKeys.VariableKeys.AttackSpeedDamper, 1) :
-                           CurrentMovementData.GetValue(DataKeys.VariableKeys.MaxHorizontalSpeed);
+        return CombatController.Attacking ? CurrentMovementData.GetValue(DataKeys.VariableKeys.MaxHorizontalSpeed) / CurrentMovementData.GetValue(DataKeys.VariableKeys.AttackSpeedDamper, 1) :
+                                            CurrentMovementData.GetValue(DataKeys.VariableKeys.MaxHorizontalSpeed);
     }
 
     public float GetMaxVerticalSpeed()
@@ -334,21 +309,6 @@ public class PlayerController : Character
             Rigidbody.velocity = new Vector2(0, Rigidbody.velocity.y);
             Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
         }
-    }
-
-    /// <param name="attackIndex">0, 1 or 2</param>
-    public void SetAnimatorMoveNumber(int attackIndex)
-    {
-        //TODO account for cooldowns
-        int moveNumber = 0;
-        if (attackIndex == 0 && PlayerRoundInfo.AttackOne != null)
-            moveNumber = PlayerRoundInfo.AttackOne.MoveId;
-        else if (attackIndex == 1 && PlayerRoundInfo.AttackTwo != null)
-            moveNumber = PlayerRoundInfo.AttackTwo.MoveId;
-        else if (attackIndex == 2 && PlayerRoundInfo.AttackThree != null)
-            moveNumber = PlayerRoundInfo.AttackThree.MoveId;
-
-        animator.SetInteger("MoveNumber", moveNumber);
     }
 
     public void DisableInput()

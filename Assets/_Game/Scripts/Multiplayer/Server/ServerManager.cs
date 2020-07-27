@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -218,8 +219,11 @@ public class ServerManager : PersistentSingleton<ServerManager>
         }
     }
 
-    public int GetTick()
+    public static float Time
     {
-        return Time.frameCount; 
+        get
+        {
+            return (float)NetworkTime.time;
+        }
     }
 }
