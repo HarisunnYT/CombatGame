@@ -33,7 +33,10 @@ public class CombatController : NetworkBehaviour
 
     protected virtual void Update()
     {
-        if (!isLocalPlayer || playerController.InputProfile == null || !playerController.InputEnabled)
+        if (playerController.InputProfile == null || !playerController.InputEnabled)
+            return;
+
+        if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
         //attacking
@@ -90,7 +93,7 @@ public class CombatController : NetworkBehaviour
             }
         }
 
-        if (attackIndex != -1)
+        if (moveNumber != 0)
         {
             specialAttacking = true;
             animator.SetInteger("MoveNumber", moveNumber);

@@ -35,7 +35,7 @@ public class StickmanCombatController : CombatController
     {
         base.Update();
 
-        if (!isLocalPlayer)
+        if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
         if (playerController.Grounded && currentAttackType == AttackType.BodySlam)

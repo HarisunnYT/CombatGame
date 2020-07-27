@@ -23,9 +23,7 @@ public class LevelEditorManager : Singleton<LevelEditorManager>
     public void CreateLevelObject(LevelObjectData levelObject, Cursor cursor, LevelEditorPanel editorPanel)
     {
         if (ServerManager.Instance.IsOnlineMatch)
-        {
             NetworkManager.Instance.RoomPlayer.CmdSpawnObject(NetworkManager.Instance.GetPrefabID(levelObject.Prefab.gameObject), NetworkClient.connection as NetworkConnectionToClient);
-        }
         else
         {
             LevelObject createdObject = Instantiate(levelObject.Prefab);

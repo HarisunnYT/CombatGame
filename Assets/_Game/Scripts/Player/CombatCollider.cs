@@ -39,7 +39,7 @@ public class CombatCollider : MonoBehaviour
 
                 Vector3 direction = (other.transform.position - transform.position).normalized;
                 direction.x = direction.x > 0 ? 1 : -1;
-                knockable.RpcOnKnockback(ServerManager.Instance.GetPlayer(target).PlayerID, Knockback, direction + Vector3.up);
+                knockable.OnKnockback(ServerManager.Instance.GetPlayer(target).PlayerID, Knockback, direction + Vector3.up);
             }
         }
     }

@@ -124,8 +124,10 @@ public class LevelObject : NetworkBehaviour
     private void OnPhaseChanged(MatchManager.RoundPhase phase)
     {
         //the buy phase is over and the item wasn't purchased, destroy it
-        if (hasAuthority)
+        if (ServerManager.Instance.IsOnlineMatch && hasAuthority)
             NetworkManager.Instance.RoomPlayer.CmdUnspawnObject(gameObject);
+        else if (!ServerManager.Instance.IsOnlineMatch)
+            Destroy(gameObject);
 
         MatchManager.Instance.OnPhaseChanged -= OnPhaseChanged;
     }

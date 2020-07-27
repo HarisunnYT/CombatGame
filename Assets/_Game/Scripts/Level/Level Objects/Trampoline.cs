@@ -8,6 +8,13 @@ public class Trampoline : LevelObject
     [SerializeField]
     private float force;
 
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     protected override void OnTriggerEntered(Collider2D collider)
     {
         Rigidbody2D rigidbody = collider.gameObject.GetComponent<Rigidbody2D>();
@@ -15,6 +22,8 @@ public class Trampoline : LevelObject
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);
             rigidbody.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+
+            animator.SetTrigger("Bounce");
         }
     }
 }

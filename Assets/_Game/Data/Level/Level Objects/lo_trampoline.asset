@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: lo_trampoline
   m_EditorClassIdentifier: 
   ObjectName: Trampoline
-  Icon: {fileID: 21300000, guid: 324f32df7d6867040afbc0c864e2266a, type: 3}
+  Icon: {fileID: 21300000, guid: 2ad7b4875a376664895ceb46d4ad954e, type: 3}
   Prefab: {fileID: 7445113495280079869, guid: 3d0b2eb3003a603468f49640d3b97739, type: 3}
   Price: 800

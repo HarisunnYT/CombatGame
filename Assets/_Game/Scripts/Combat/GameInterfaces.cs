@@ -33,6 +33,8 @@ public interface IDamages
 
 public interface IKnockable
 {
+    void OnKnockback(int playerId, float knockback, Vector2 direction);
+
     [ClientRpc]
     void RpcOnKnockback(int playerId, float knockback, Vector2 direction);
 }

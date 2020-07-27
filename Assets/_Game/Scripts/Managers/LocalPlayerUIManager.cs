@@ -12,6 +12,9 @@ public class LocalPlayerUIManager : Singleton<LocalPlayerUIManager>
     private CharacterPurchasePanel[] purchasePanels;
 
     [SerializeField]
+    private LevelEditorPanel[] levelEditorPanels;
+
+    [SerializeField]
     private GraphicRaycaster[] raycasters;
 
     protected override void Initialize()
@@ -33,7 +36,10 @@ public class LocalPlayerUIManager : Singleton<LocalPlayerUIManager>
             if (showScreens)
                 purchasePanels[i].ShowPanel();
             else
+            {
                 purchasePanels[i].Close();
+                levelEditorPanels[i].Close();
+            }
 
             Cursor cursor = CursorManager.Instance.GetCursor(i);
             if (showScreens)

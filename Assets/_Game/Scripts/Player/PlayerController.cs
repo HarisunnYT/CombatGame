@@ -372,13 +372,25 @@ public class PlayerController : Character, IKnockable
         OnDeathClient(killerID, victimID);
     }
 
-    [ClientRpc]
-    public virtual void RpcOnKnockback(int playerId, float knockback, Vector2 direction)
+    public void OnKnockback(int playerId, float knockback, Vector2 direction)
     {
-        if (Alive && playerId == playerID)
-        {
+        if (ServerManager.Instance.IsOnlineMatch)
+            RpcOnKnockback(playerId, knockback, direction);
+        else if (playerId == playerID)
+            OnKnockbackClient(knockback, direction);
+    }
+
+    [ClientRpc]
+    public void RpcOnKnockback(int playerId, float knockback, Vector2 direction)
+    {
+        if (playerId == playerID)
+            OnKnockbackClient(knockback, direction);
+    }
+
+    protected virtual void OnKnockbackClient(float knockback, Vector2 direction)
+    {
+        if (Alive)
             Rigidbody.AddForce(direction * knockback, ForceMode2D.Impulse);
-        }
     }
 
     #endregion
