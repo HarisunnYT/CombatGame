@@ -87,12 +87,13 @@ MonoBehaviour:
   - {fileID: 2642494164833384864, guid: 2f92ca18d279db44a8723c888adc75c8, type: 3}
   - {fileID: 137491593661284252, guid: 76d816446ce8b0a49b540474939373e7, type: 3}
   - {fileID: 952261018385834844, guid: ee88b1876601d884a854b6df77d119a4, type: 3}
+  - {fileID: 5572249047524278853, guid: ef59d1b1f38521d4f8267b5322cb418a, type: 3}
   HUD: {fileID: 1683995628}
   showRoomGUI: 0
   minPlayers: 1
   roomPlayerPrefab: {fileID: 3083466524672307662, guid: 9c0690602a01d9f4aba3962135543903,
     type: 3}
-  RoomScene: Assets/_Game/Scenes/MainMenu.unity
+  RoomScene: Assets/_Game/Scenes/Lobby.unity
   GameplayScene: Assets/_Game/Scenes/Game.unity
   _allPlayersReady: 0
   roomSlots: []

@@ -239,12 +239,17 @@ public class MatchManager : Singleton<MatchManager>
 
     public PlayerController GetPlayer(int playerID)
     {
-        return ServerManager.Instance.GetPlayer(playerID).PlayerController;
+        if (ServerManager.Instance.GetPlayer(playerID) != null)
+            return ServerManager.Instance.GetPlayer(playerID).PlayerController;
+        else
+            return null;
     }
 
     public int GetPlayerID(PlayerController player)
     {
-        return ServerManager.Instance.GetPlayer(player).PlayerID;
+        if (ServerManager.Instance.GetPlayer(player) != null)
+            return ServerManager.Instance.GetPlayer(player).PlayerID;
+        return -1;
     }
 
     public PlayerController GetClientPlayer()

@@ -89,6 +89,7 @@ public class FriendCell : MonoBehaviour
     public void JoinFriend()
     {
         SteamLobbyManager.Instance.JoinFriendLobby(Friend.GameInfo.Value.Lobby.Value);
+        PanelManager.Instance.ClosePanel<FriendsListPanel>();
     }
 
     public void InviteFriend()

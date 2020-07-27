@@ -15,4 +15,4 @@ MonoBehaviour:
   ObjectName: Crate
   Icon: {fileID: 21300000, guid: 2c8770748edd7fa49925b1da18d56947, type: 3}
   Prefab: {fileID: 1713808219089675443, guid: 611dfe9c893a6614ab479c81401d06c3, type: 3}
-  Price: 600
+  Price: 100

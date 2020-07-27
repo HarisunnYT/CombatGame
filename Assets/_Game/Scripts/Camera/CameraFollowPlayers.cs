@@ -46,13 +46,16 @@ public class CameraFollowPlayers : MonoBehaviour
             float furthestDistance = 0;
             foreach(var p1 in ServerManager.Instance.Players)
             {
-                foreach(var p2 in ServerManager.Instance.Players)
+                if (p1.PlayerController != null && p1.PlayerController.Alive)
                 {
-                    if (p1 != p2 && p1.PlayerController != null && p2.PlayerController != null)
+                    foreach (var p2 in ServerManager.Instance.Players)
                     {
-                        float distance = Vector3.Distance(p1.PlayerController.transform.position, p2.PlayerController.transform.position);
-                        if (distance > furthestDistance)
-                            furthestDistance = distance;
+                        if (p1 != p2 && p2.PlayerController != null && p2.PlayerController.Alive)
+                        {
+                            float distance = Vector3.Distance(p1.PlayerController.transform.position, p2.PlayerController.transform.position);
+                            if (distance > furthestDistance)
+                                furthestDistance = distance;
+                        }
                     }
                 }
             }
