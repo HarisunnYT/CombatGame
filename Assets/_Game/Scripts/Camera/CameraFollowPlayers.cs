@@ -35,7 +35,6 @@ public class CameraFollowPlayers : MonoBehaviour
     {
         if (forcedTarget)
             transform.position = Vector3.Lerp(transform.position, new Vector3(forcedTarget.position.x + offset.x, forcedTarget.position.y + offset.y, transform.position.z), followSpeed * Time.deltaTime);
-
     }
 
     private void LateUpdate()
@@ -43,7 +42,7 @@ public class CameraFollowPlayers : MonoBehaviour
         if (forcedTarget == null && FightManager.Instance)
         {
             Rect boundingBox = CalculateTargetsBoundingBox();
-            transform.position = CalculateCameraPosition(boundingBox);
+            transform.position = Vector3.Lerp(transform.position, CalculateCameraPosition(boundingBox), followSpeed * Time.deltaTime);
             CameraManager.Instance.Camera.orthographicSize = CalculateOrthographicSize(boundingBox);
         }
     }

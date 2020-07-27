@@ -2563,7 +2563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee025777c61b3540bf4c134924990b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followSpeed: 10
+  followSpeed: 5
   zoomSpeed: 3
   boundingBoxPadding: 5
   near: 4
