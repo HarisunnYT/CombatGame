@@ -11,7 +11,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
         public int PlayerID;
         public int NetID;
         public string Name;
-        public string Figher;
+        public string Fighter;
         public PlayerController PlayerController;
         public System.Guid ControllerGUID;
         public ulong SteamId; 
@@ -24,7 +24,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
             SteamId = steamId;
             VoiceCommsId = voiceCommsId;
 
-            Figher = "";
+            Fighter = "";
             PlayerController = null;
             ControllerGUID = default;
         }

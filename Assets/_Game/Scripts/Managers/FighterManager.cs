@@ -35,7 +35,7 @@ public class FighterManager : PersistentSingleton<FighterManager>
 
     public string GetFighterNameFromPlayerID(int playerID)
     {
-        return ServerManager.Instance.GetPlayer(playerID).Figher;
+        return ServerManager.Instance.GetPlayer(playerID).Fighter;
     }
 
     public FighterData GetFighter(string fighterName)

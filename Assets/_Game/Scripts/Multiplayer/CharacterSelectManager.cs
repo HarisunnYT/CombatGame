@@ -46,7 +46,7 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
     {
         foreach(var player in ServerManager.Instance.Players)
         {
-            if (player.Figher == characterName)
+            if (player.Fighter == characterName)
                 return;
         }
 
@@ -56,7 +56,7 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
             CursorManager.Instance.HideAllCursors();
         }
 
-        ServerManager.Instance.GetPlayer(playerID).Figher = characterName;
+        ServerManager.Instance.GetPlayer(playerID).Fighter = characterName;
         OnCharacterSelected?.Invoke(playerID, characterName);
     }
 
@@ -65,7 +65,7 @@ public class CharacterSelectManager : Singleton<CharacterSelectManager>
         if (ServerManager.Instance.IsOnlineMatch && playerID == NetworkManager.Instance.RoomPlayer.index)
             NetworkManager.Instance.RoomPlayer.CmdChangeReadyState(false);
 
-        ServerManager.Instance.GetPlayer(playerID).Figher = "";
+        ServerManager.Instance.GetPlayer(playerID).Fighter = "";
         OnCharacterUnselected?.Invoke(playerID, characterName);
     }
 }

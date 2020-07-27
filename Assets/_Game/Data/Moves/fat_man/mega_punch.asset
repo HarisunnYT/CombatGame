@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: mega_punch
   m_EditorClassIdentifier: 
   MoveName: Mega Punch
+  MoveId: 1
   Cooldown: 3
   AttackType: 0
   Icon: {fileID: 0}
-  Price: 350
+  Price: 250

@@ -188,28 +188,6 @@ MonoBehaviour:
   movementTypeDataItems:
   - MovementType: 0
     MovementData: {fileID: 11400000, guid: dedadc2b79a104644bacc0e976137ff6, type: 2}
-  - MovementType: 1
-    MovementData: {fileID: 0}
-  - MovementType: 2
-    MovementData: {fileID: 0}
-  - MovementType: 3
-    MovementData: {fileID: 0}
-  - MovementType: 4
-    MovementData: {fileID: 0}
-  - MovementType: 5
-    MovementData: {fileID: 0}
-  - MovementType: 6
-    MovementData: {fileID: 0}
-  - MovementType: 7
-    MovementData: {fileID: 0}
-  - MovementType: 8
-    MovementData: {fileID: 0}
-  - MovementType: 9
-    MovementData: {fileID: 0}
-  - MovementType: 10
-    MovementData: {fileID: 0}
-  - MovementType: 11
-    MovementData: {fileID: 0}
   technicalData: {fileID: 11400000, guid: 1de75a3608ce0594b9ef10b116afecf7, type: 2}
 --- !u!114 &7261540714273178458
 MonoBehaviour:

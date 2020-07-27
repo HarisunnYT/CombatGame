@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DebugPanel : Panel
 {
+    [SerializeField]
+    private TMP_Text equipMoveButtonText;
+
     private void Update()
     {
         if (Input.GetButtonDown("Menu"))
@@ -38,5 +42,26 @@ public class DebugPanel : Panel
     public void InstantHost()
     {
         NetworkManager.Instance.StartHost();
+    }
+
+    int moveIndex = 0;
+    public void EquipMove()
+    {
+        if (moveIndex >= ServerManager.Instance.Players[0].PlayerController.Fighter.Moves.Length)
+            moveIndex = 0;
+
+        foreach (var player in ServerManager.Instance.Players)
+        {
+            if (moveIndex < player.PlayerController.Fighter.Moves.Length)
+            {
+                MoveData move = player.PlayerController.Fighter.Moves[moveIndex];
+                player.PlayerController.PlayerRoundInfo.EquipedMove(move, 1);
+            }
+        }
+
+        moveIndex++;
+        equipMoveButtonText.text = "Equip Move " + moveIndex.ToString();
+
+        ForceClose();
     }
 }
