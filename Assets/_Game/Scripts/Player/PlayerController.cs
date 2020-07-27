@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Character
+public class PlayerController : Character, IKnockable
 {
     #region PLAYER_EXTENSIONS
 
@@ -372,7 +372,16 @@ public class PlayerController : Character
         OnDeathClient(killerID, victimID);
     }
 
-#endregion
+    [ClientRpc]
+    public virtual void RpcOnKnockback(int playerId, float knockback, Vector2 direction)
+    {
+        if (Alive && playerId == playerID)
+        {
+            Rigidbody.AddForce(direction * knockback, ForceMode2D.Impulse);
+        }
+    }
+
+    #endregion
 
     #region DISABLE_INPUT
 

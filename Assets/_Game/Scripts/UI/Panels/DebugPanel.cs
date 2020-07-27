@@ -47,7 +47,7 @@ public class DebugPanel : Panel
     public void HealAllPlayers()
     {
         foreach (var player in ServerManager.Instance.Players)
-            player.PlayerController.AddHealth(100);
+            player.PlayerController.OnHealed(100);
     }
 
     int moveIndex = 0;

@@ -28,7 +28,7 @@ public class StickmanCombatController : CombatController
         if (moveData.name == "body_slam")
             return StartBodySlam();
 
-        return false;
+        return true;
     }
 
     protected override void Update()

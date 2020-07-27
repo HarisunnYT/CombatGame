@@ -35,9 +35,11 @@ public class CombatCollider : MonoBehaviour
             IKnockable knockable = other.GetComponent<IKnockable>();
             if (knockable != null)
             {
+                PlayerController target = other.GetComponent<PlayerController>();
+
                 Vector3 direction = (other.transform.position - transform.position).normalized;
                 direction.x = direction.x > 0 ? 1 : -1;
-                knockable.OnKnockback(Knockback, direction + Vector3.up);
+                knockable.RpcOnKnockback(ServerManager.Instance.GetPlayer(target).PlayerID, Knockback, direction + Vector3.up);
             }
         }
     }

@@ -9,7 +9,6 @@ public interface IHealth
     int Health { get; set; }
     bool Invincible { get; set; }
     bool Alive { get; set; }
-    void AddHealth(int health);
 }
 
 public interface IDamagable
@@ -34,7 +33,8 @@ public interface IDamages
 
 public interface IKnockable
 {
-    void OnKnockback(float knockback, Vector2 direction);
+    [ClientRpc]
+    void RpcOnKnockback(int playerId, float knockback, Vector2 direction);
 }
 
 public interface IBase

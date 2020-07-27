@@ -83,12 +83,13 @@ public class CharacterPurchasePanel : Panel
 
     public void PurchasedMove(MoveData move, int position)
     {
-        ServerManager.Instance.GetPlayer(levelEditorCamera.LocalPlayerIndex).PlayerController.PlayerRoundInfo.Purchase(move.Price);
+        ServerManager.ConnectedPlayer player = ServerManager.Instance.IsOnlineMatch ? ServerManager.Instance.GetPlayerLocal() : ServerManager.Instance.GetPlayer(levelEditorCamera.LocalPlayerIndex);
 
         CurrentPurchasingMove = null;
         SetDarkness(false);
 
-        ServerManager.Instance.GetPlayer(levelEditorCamera.LocalPlayerIndex).PlayerController.PlayerRoundInfo.EquipedMove(move, position);
+        player.PlayerController.PlayerRoundInfo.Purchase(move.Price);
+        player.PlayerController.PlayerRoundInfo.EquipedMove(move, position);
     }
 
     public void OpenLevelEditor()

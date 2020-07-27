@@ -133,10 +133,13 @@ public class MatchManager : Singleton<MatchManager>
             LocalPlayerUIManager.Instance.DisplayLocalScreens(true);
 
         CursorManager.Instance.ShowAllCursors();
-        currentFight.AlivePlayers.Clear();
 
-        Destroy(currentFight.gameObject);
-        currentFight = null;
+        if (currentFight != null)
+        {
+            currentFight.AlivePlayers.Clear();
+            Destroy(currentFight.gameObject);
+            currentFight = null;
+        }
 
         FightStarted = false;
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
+public class Character : NetworkBehaviour, IHealth, IDamagable
 {
     [SerializeField]
     protected int startingHealth = 100;
@@ -130,14 +130,6 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
         Alive = false;
     }
 
-    public virtual void OnKnockback(float knockback, Vector2 direction)
-    {
-        if (Alive)
-        {
-            Rigidbody.AddForce(direction * knockback, ForceMode2D.Impulse);
-        }
-    }
-
     public virtual void ResetCharacter()
     {
         Health = startingHealth;
@@ -188,11 +180,5 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
         Invincible = false;
         invincibleRoutine = null;
-    }
-
-    public void AddHealth(int health)
-    {
-        Health = Mathf.Clamp(Health + health, 0, startingHealth);
-        OnHealthChanged?.Invoke(Health);
     }
 }
