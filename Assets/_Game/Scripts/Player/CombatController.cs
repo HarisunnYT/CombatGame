@@ -10,9 +10,10 @@ public class CombatController : MonoBehaviour
     private float attackTwoCooldownTimer = 0;
     private float attackThreeCooldownTimer = 0;
 
-    private PlayerController playerController;
-    private PlayerRoundInformation playerRoundInfo;
-    private Animator animator;
+    protected PlayerController playerController;
+    protected PlayerRoundInformation playerRoundInfo;
+    protected Animator animator;
+    protected Rigidbody2D rigidbody;
 
     public bool Attacking { get { return basicAttacking || specialAttacking; } }
     private bool basicAttacking = false;
@@ -25,11 +26,12 @@ public class CombatController : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         playerRoundInfo = playerController.PlayerRoundInfo;
         animator = GetComponent<Animator>();
+        rigidbody = GetComponent<Rigidbody2D>();
 
         MatchManager.Instance.OnPhaseChanged += OnPhaseChanged;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (playerController.InputProfile == null || !playerController.InputEnabled)
             return;
@@ -65,32 +67,40 @@ public class CombatController : MonoBehaviour
         int moveNumber = 0;
         if (attackIndex == 0 && playerRoundInfo.AttackOne != null)
         {
-            moveNumber = playerRoundInfo.AttackOne.MoveId;
-            attackOneCooldownTimer = ServerManager.Time + playerRoundInfo.AttackOne.Cooldown;
+            if (Attack(playerRoundInfo.AttackOne))
+            {
+                moveNumber = playerRoundInfo.AttackOne.MoveId;
+                attackOneCooldownTimer = ServerManager.Time + playerRoundInfo.AttackOne.Cooldown;
+            }
         }
         else if (attackIndex == 1 && playerRoundInfo.AttackTwo != null)
         {
-            moveNumber = playerRoundInfo.AttackTwo.MoveId;
-            attackTwoCooldownTimer = ServerManager.Time + playerRoundInfo.AttackTwo.Cooldown;
+            if (Attack(playerRoundInfo.AttackTwo))
+            {
+                moveNumber = playerRoundInfo.AttackTwo.MoveId;
+                attackTwoCooldownTimer = ServerManager.Time + playerRoundInfo.AttackTwo.Cooldown;
+            }
         }
         else if (attackIndex == 2 && playerRoundInfo.AttackThree != null)
         {
-            moveNumber = playerRoundInfo.AttackThree.MoveId;
-            attackThreeCooldownTimer = ServerManager.Time + playerRoundInfo.AttackThree.Cooldown;
+            if (Attack(playerRoundInfo.AttackThree))
+            {
+                moveNumber = playerRoundInfo.AttackThree.MoveId;
+                attackThreeCooldownTimer = ServerManager.Time + playerRoundInfo.AttackThree.Cooldown;
+            }
         }
 
         if (attackIndex != -1)
         {
             specialAttacking = true;
-
-            OnAttack(moveNumber);
             animator.SetInteger("MoveNumber", moveNumber);
         }
     }
 
-    public void AttackComplete()
+    public virtual void AttackComplete()
     {
         specialAttacking = false;
+        playerController.DisableAllCombatColliders();
     }
 
     private void OnPhaseChanged(MatchManager.RoundPhase phase)
@@ -105,5 +115,8 @@ public class CombatController : MonoBehaviour
         attackThreeCooldownTimer = 0;
     }
 
-    protected virtual void OnAttack(int moveId) { }
+    protected virtual bool Attack(MoveData moveData) 
+    {
+        return true;
+    }
 }

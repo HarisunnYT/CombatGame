@@ -44,6 +44,12 @@ public class DebugPanel : Panel
         NetworkManager.Instance.StartHost();
     }
 
+    public void HealAllPlayers()
+    {
+        foreach (var player in ServerManager.Instance.Players)
+            player.PlayerController.AddHealth(100);
+    }
+
     int moveIndex = 0;
     public void EquipMove()
     {

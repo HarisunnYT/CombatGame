@@ -40,13 +40,12 @@ public class PlayerController : Character
     public MovementType CurrentMovementType { get; private set; } = MovementType.Normal;
     public InputProfile InputProfile { get; private set; }
     public PlayerRoundInformation PlayerRoundInfo { get; private set; }
+    public Collider2D Collider { get; private set; }
 
     private BaseMovement baseMovement;
     private Animator animator;
     private CommunicationController communicationController;
     private CombatCollider[] combatColliders;
-
-    private Collider2D collider;
 
     #endregion
 
@@ -89,13 +88,12 @@ public class PlayerController : Character
 
         animator = GetComponent<Animator>();
         communicationController = GetComponent<CommunicationController>();
-        collider = GetComponent<Collider2D>();
+        Collider = GetComponent<Collider2D>();
         PlayerRoundInfo = GetComponent<PlayerRoundInformation>();
         CombatController = GetComponent<CombatController>();
 
         combatColliders = GetComponentsInChildren<CombatCollider>(true);
-        foreach (var col in combatColliders)
-            col.Collider.enabled = false;
+        DisableAllCombatColliders();
 
         originalScale = transform.localScale;
         SetMovementType(MovementType.Normal, false);
@@ -134,13 +132,13 @@ public class PlayerController : Character
 
     protected override void Update()
     {
+        base.Update();
+
         if (!isLocalPlayer && ServerManager.Instance && ServerManager.Instance.IsOnlineMatch)
             return;
 
         if (!InputEnabled || !Alive)
             return;
-
-        base.Update();
 
         InputAxis = InputProfile.Move;
         int roundedXAxis = InputAxis.x > 0 ? 1 : -1;
@@ -241,6 +239,12 @@ public class PlayerController : Character
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
+    public void DisableAllCombatColliders()
+    {
+        foreach (var col in combatColliders)
+            col.Collider.enabled = false;
+    }
+
     #region MOVEMENT
 
     public void SetMovementType(MovementType movementType, bool displayPuffParticle = true)
@@ -319,6 +323,14 @@ public class PlayerController : Character
     public void EnableInput()
     {
         InputEnabled = true;
+    }
+
+    public void DisablePlayerToPlayerCollisions(bool disable)
+    {
+        foreach(var player in ServerManager.Instance.Players)
+        {
+            Physics2D.IgnoreCollision(Collider, player.PlayerController.Collider, disable);
+        }
     }
 
 #endregion

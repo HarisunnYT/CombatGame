@@ -9,6 +9,7 @@ public interface IHealth
     int Health { get; set; }
     bool Invincible { get; set; }
     bool Alive { get; set; }
+    void AddHealth(int health);
 }
 
 public interface IDamagable

@@ -11,6 +11,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
     [SerializeField]
     protected LayerMask invertedCharacterMask;
 
+    [SerializeField]
+    private float groundedRaySize = 1.75f;
+
     [Space()]
     [SerializeField]
     private GameObject scaleFlipper;
@@ -117,7 +120,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
     protected virtual void Update()
     {
-        Grounded = Physics2D.Raycast(transform.position, Vector2.down, 1.75f, invertedCharacterMask);
+        Vector3 pivot = transform.position + Vector3.up;
+        Grounded = Physics2D.Raycast(pivot, Vector2.down, groundedRaySize, invertedCharacterMask);
+        Debug.DrawLine(pivot, new Vector3(pivot.x, pivot.y - groundedRaySize, 0), Color.green);
     }
 
     protected virtual void OnDeath(int playerID)
@@ -183,5 +188,11 @@ public class Character : NetworkBehaviour, IHealth, IDamagable, IKnockable
 
         Invincible = false;
         invincibleRoutine = null;
+    }
+
+    public void AddHealth(int health)
+    {
+        Health = Mathf.Clamp(Health + health, 0, startingHealth);
+        OnHealthChanged?.Invoke(Health);
     }
 }
