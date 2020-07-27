@@ -11,16 +11,13 @@ public class CameraFollowPlayers : MonoBehaviour
 
     [Space()]
     [SerializeField]
+    private float zoomSpeed = 20f;
+
+    [SerializeField]
+    private float boundingBoxPadding = 2f;
+
+    [SerializeField]
     private float near = 5;
-
-    [SerializeField]
-    private float far = 10;
-
-    [SerializeField]
-    private float minDistance = 25; 
-
-    [SerializeField]
-    private float maxDistance = 35; 
 
     private Vector3 originalPosition;
     private float originalZoom;
@@ -37,32 +34,63 @@ public class CameraFollowPlayers : MonoBehaviour
     private void FixedUpdate()
     {
         if (forcedTarget)
-        {
             transform.position = Vector3.Lerp(transform.position, new Vector3(forcedTarget.position.x + offset.x, forcedTarget.position.y + offset.y, transform.position.z), followSpeed * Time.deltaTime);
-        }
-        else
-        {
-            //get the furthest distance between all the players
-            float furthestDistance = 0;
-            foreach(var p1 in ServerManager.Instance.Players)
-            {
-                if (p1.PlayerController != null && p1.PlayerController.Alive)
-                {
-                    foreach (var p2 in ServerManager.Instance.Players)
-                    {
-                        if (p1 != p2 && p2.PlayerController != null && p2.PlayerController.Alive)
-                        {
-                            float distance = Vector3.Distance(p1.PlayerController.transform.position, p2.PlayerController.transform.position);
-                            if (distance > furthestDistance)
-                                furthestDistance = distance;
-                        }
-                    }
-                }
-            }
 
-            float normalizedDistance = (furthestDistance - minDistance) / (maxDistance - minDistance);
-            CameraManager.Instance.Camera.orthographicSize = Mathf.Lerp(near, far, normalizedDistance);
+    }
+
+    private void LateUpdate()
+    {
+        if (forcedTarget == null && FightManager.Instance)
+        {
+            Rect boundingBox = CalculateTargetsBoundingBox();
+            transform.position = CalculateCameraPosition(boundingBox);
+            CameraManager.Instance.Camera.orthographicSize = CalculateOrthographicSize(boundingBox);
         }
+    }
+
+    Rect CalculateTargetsBoundingBox()
+    {
+        float minX = Mathf.Infinity;
+        float maxX = Mathf.NegativeInfinity;
+        float minY = Mathf.Infinity;
+        float maxY = Mathf.NegativeInfinity;
+
+        foreach (var target in FightManager.Instance.AlivePlayers)
+        {
+            PlayerController pc = ServerManager.Instance.GetPlayer(target).PlayerController;
+            if (pc == null || !pc.Alive)
+                continue;
+
+            Vector3 position = pc.transform.position;
+
+            minX = Mathf.Min(minX, position.x);
+            minY = Mathf.Min(minY, position.y);
+            maxX = Mathf.Max(maxX, position.x);
+            maxY = Mathf.Max(maxY, position.y);
+        }
+
+        return Rect.MinMaxRect(minX - boundingBoxPadding, maxY + boundingBoxPadding, maxX + boundingBoxPadding, minY - boundingBoxPadding);
+    }
+
+    Vector3 CalculateCameraPosition(Rect boundingBox)
+    {
+        Vector2 boundingBoxCenter = boundingBox.center;
+
+        return new Vector3(boundingBoxCenter.x, boundingBoxCenter.y, CameraManager.Instance.Camera.transform.position.z);
+    }
+
+    float CalculateOrthographicSize(Rect boundingBox)
+    {
+        float orthographicSize = CameraManager.Instance.Camera.orthographicSize;
+        Vector3 topRight = new Vector3(boundingBox.x + boundingBox.width, boundingBox.y, 0f);
+        Vector3 topRightAsViewport = CameraManager.Instance.Camera.WorldToViewportPoint(topRight);
+
+        if (topRightAsViewport.x >= topRightAsViewport.y)
+            orthographicSize = Mathf.Abs(boundingBox.width) / CameraManager.Instance.Camera.aspect / 2f;
+        else
+            orthographicSize = Mathf.Abs(boundingBox.height) / 2f;
+
+        return Mathf.Clamp(Mathf.Lerp(CameraManager.Instance.Camera.orthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), near, Mathf.Infinity);
     }
 
     public void ZoomInOnPlayer(GameObject target, Vector2 offset, float duration = 2.0f, float zoom = 1.0f, System.Action callback = null)
@@ -76,8 +104,7 @@ public class CameraFollowPlayers : MonoBehaviour
     public void ResetCamera()
     {
         transform.position = originalPosition;
-
-        forcedTarget = null;
         CameraManager.Instance.Camera.orthographicSize = originalZoom;
+        forcedTarget = null;
     }
 }

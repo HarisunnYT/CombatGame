@@ -41,11 +41,12 @@ public class MatchManager : Singleton<MatchManager>
     private Dictionary<PlayerController, int> wins = new Dictionary<PlayerController, int>();
     public Dictionary<PlayerController, int> MatchResults { get { return wins; } }
 
+    public int Round { get; private set; } = 0;
+
     private FightManager currentFight;
     private RoundPhase currentPhase;
 
     private float buyPhaseCountdownTimer = 0;
-
     private int spawnIndex = 0;
 
     #endregion
@@ -100,7 +101,6 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginFightPhase()
     {
-        CameraManager.Instance.CameraFollow.ResetCamera();
         CursorManager.Instance.Cursors.ResetCamera();
 
         LevelEditorManager.Instance.RevealRecentObjects();
@@ -113,6 +113,7 @@ public class MatchManager : Singleton<MatchManager>
         else
             LocalPlayerUIManager.Instance.DisplayLocalScreens(false);
 
+        Round++;
         CreateFightManager();
     }
 
@@ -168,6 +169,8 @@ public class MatchManager : Singleton<MatchManager>
         {
             GameObject manager = new GameObject("Fight Manager");
             currentFight = manager.AddComponent<FightManager>();
+
+            CameraManager.Instance.CameraFollow.ResetCamera();
         }
     }
 

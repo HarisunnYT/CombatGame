@@ -134,6 +134,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
     {
         Health = startingHealth;
         OnHealthChanged?.Invoke(Health);
+        SetAlive();
 
         gameObject.SetActive(true);
     }
