@@ -51,6 +51,9 @@ public class ChatPanel : Panel
         inputField.gameObject.SetActive(false);
         box.enabled = false;
 
+        if (GameManager.Instance)
+            GameManager.Instance.CanPause = true;
+
         if (!ServerManager.Instance.IsOnlineMatch)
             Close();
     }

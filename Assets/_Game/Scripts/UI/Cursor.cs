@@ -200,7 +200,7 @@ public class Cursor : MonoBehaviour
 
     public void ResetCamera()
     {
-        AssignedCamera = Camera.main;
+        AssignedCamera = CameraManager.Instance ? CameraManager.Instance.Camera : Camera.main;
     }
 
     public void SetScale(Vector3 scale)
