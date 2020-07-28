@@ -32,7 +32,10 @@ public class ChatPanel : Panel
     [SerializeField]
     private Image box;
 
-    private bool chatOpen = false;
+    private List<ChatMessage> messages = new List<ChatMessage>();
+
+    public bool ChatOpen { get; private set; } = false;
+
     private bool inputOpen = false;
 
     private InControlInputModule inputModule;
@@ -86,6 +89,15 @@ public class ChatPanel : Panel
             inputModule.DeactivateModule();
         }
 
+        //show all previous messages
+        for (int i = 0; i < messages.Count; i++)
+        {
+            if (show)
+                messages[i].Show();
+            else if (!messages[i].IsShowing)
+                messages[i].Hide();
+        }
+
         //disable player movement
         if (ServerManager.Instance.GetPlayerLocal() != null && ServerManager.Instance.GetPlayerLocal().PlayerController != null)
         {
@@ -127,6 +139,7 @@ public class ChatPanel : Panel
     {
         ChatMessage messageObj = Instantiate(chatMessagePrefab, content);
         messageObj.Configure(message);
+        messages.Add(messageObj);
 
         ShowChat(true, 0.25f);
         hideTarget = Time.time + noMessageTime;
@@ -144,7 +157,7 @@ public class ChatPanel : Panel
     private void ShowChat(bool show, float duration)
     {
         canvasGroup.DOFade(show ? 1 : 0, duration);
-        chatOpen = show;
+        ChatOpen = show;
     }
 
     private void SteamComms_TextPacketReceived(Dissonance.Networking.TextMessage obj)

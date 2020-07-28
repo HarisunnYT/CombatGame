@@ -16,18 +16,38 @@ public class ChatMessage : MonoBehaviour
 
     private float targetTime = -1;
 
+    public bool IsShowing { get; private set; } = true;
+
     public void Configure(string message)
     {
         chatMessageText.text = message;
         targetTime = Time.time + timeTillHide;
 
         canvasGroup = GetComponent<CanvasGroup>();
+        Show();
+    }
+
+    public void Show()
+    {
         canvasGroup.DOFade(1, 0.25f);
+    }
+
+    public void Hide()
+    {
+        targetTime = -1;
+        IsShowing = false;
+        canvasGroup.DOFade(0, 0.25f);
     }
 
     private void Update()
     {
         if (targetTime != -1 && Time.time > targetTime)
-            canvasGroup.DOFade(0, 0.25f);
+        {
+            targetTime = -1;
+            IsShowing = false;
+
+            if (!PanelManager.Instance.GetPanel<ChatPanel>().ChatOpen)
+                canvasGroup.DOFade(0, 0.25f);
+        }
     }
 }

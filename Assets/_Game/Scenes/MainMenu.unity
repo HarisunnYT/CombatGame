@@ -2657,31 +2657,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 308106396}
     m_Modifications:
-    - target: {fileID: 1870188458566562357, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188458566562357, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188458566562357, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188458566562357, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188458566562357, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1870188459317347128, guid: 1bcc87d79a99a89478f63b74c42d52ca,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2795,27 +2770,7 @@ PrefabInstance:
     - target: {fileID: 1870188459509121738, guid: 1bcc87d79a99a89478f63b74c42d52ca,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188459912175535, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188459912175535, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188459912175535, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870188459912175535, guid: 1bcc87d79a99a89478f63b74c42d52ca,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 0
+      value: -116.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bcc87d79a99a89478f63b74c42d52ca, type: 3}
