@@ -45,6 +45,8 @@ public class LevelEditorPanel : Panel
         if (levelEditorCamera)
             levelEditorCamera.SetCameraToMainPosition();
 
+        CameraManager.Instance.CameraFollow.ResetCamera();
+
         ShowPurchasableBar(true);
 
     }

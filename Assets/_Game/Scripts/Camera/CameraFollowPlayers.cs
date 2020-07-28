@@ -19,6 +19,9 @@ public class CameraFollowPlayers : MonoBehaviour
     [SerializeField]
     private float near = 5;
 
+    [SerializeField]
+    private float far = 10;
+
     private Vector3 originalPosition;
     private float originalZoom;
 
@@ -80,7 +83,8 @@ public class CameraFollowPlayers : MonoBehaviour
 
     float CalculateOrthographicSize(Rect boundingBox)
     {
-        float orthographicSize = CameraManager.Instance.Camera.orthographicSize;
+        float orthographicSize = 0;
+        float previousOrthographicSize = CameraManager.Instance.Camera.orthographicSize;
         Vector3 topRight = new Vector3(boundingBox.x + boundingBox.width, boundingBox.y, 0f);
         Vector3 topRightAsViewport = CameraManager.Instance.Camera.WorldToViewportPoint(topRight);
 
@@ -89,7 +93,9 @@ public class CameraFollowPlayers : MonoBehaviour
         else
             orthographicSize = Mathf.Abs(boundingBox.height) / 2f;
 
-        return Mathf.Clamp(Mathf.Lerp(CameraManager.Instance.Camera.orthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), near, Mathf.Infinity);
+        previousOrthographicSize = previousOrthographicSize == float.NaN ? 0 : previousOrthographicSize;
+
+        return Mathf.Clamp(Mathf.Lerp(previousOrthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), near, far);
     }
 
     public void ZoomInOnPlayer(GameObject target, Vector2 offset, float duration = 2.0f, float zoom = 1.0f, System.Action callback = null)

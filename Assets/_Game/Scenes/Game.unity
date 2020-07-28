@@ -2567,6 +2567,7 @@ MonoBehaviour:
   zoomSpeed: 3
   boundingBoxPadding: 5
   near: 4
+  far: 20
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
