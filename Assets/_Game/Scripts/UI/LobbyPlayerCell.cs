@@ -31,7 +31,7 @@ public class LobbyPlayerCell : SelectedCharacterCell
 
     public void MutePlayer(bool mute)
     {
-        muteButton.SetState(mute);
+        muteButton.ForceSetToggleState(mute);
         VoiceCommsManager.Instance.MutePeer(mute, ConnectedPlayer.VoiceCommsId);
     }
 
