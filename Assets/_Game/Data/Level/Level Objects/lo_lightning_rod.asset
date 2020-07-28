@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b36f7ef5e5b4a4d94da334c3f483d6, type: 3}
+  m_Name: lo_lightning_rod
+  m_EditorClassIdentifier: 
+  ObjectName: Lightning Rod
+  Icon: {fileID: 21300000, guid: 293bc27090f25184a9fb76f0d5c79951, type: 3}
+  Prefab: {fileID: 4388172929703369377, guid: 49b9e6723ea08124aa08c248ed6adf10, type: 3}
+  Price: 100

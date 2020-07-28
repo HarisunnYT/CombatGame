@@ -61,7 +61,7 @@ public class LevelObject : NetworkBehaviour
         collider.isTrigger = hasAuthority || !ServerManager.Instance.IsOnlineMatch;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (cursor == null) //if this hit, it's an object spawned from the server
             ServerConfigure();
