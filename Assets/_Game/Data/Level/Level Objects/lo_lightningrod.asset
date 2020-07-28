@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b36f7ef5e5b4a4d94da334c3f483d6, type: 3}
-  m_Name: lo_lightning_rod
+  m_Name: lo_lightningrod
   m_EditorClassIdentifier: 
   ObjectName: Lightning Rod
   Icon: {fileID: 21300000, guid: 293bc27090f25184a9fb76f0d5c79951, type: 3}
   Prefab: {fileID: 4388172929703369377, guid: 49b9e6723ea08124aa08c248ed6adf10, type: 3}
   Price: 100
+  Description: 'Strikes lightning every few
+
+    seconds, damages when hit'

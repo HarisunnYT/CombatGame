@@ -22,8 +22,10 @@ public class ConnectedPlayerCell : PlayerCell
     {
         base.Configure(playerID);
 
-        muteButtonImage.transform.parent.gameObject.SetActive(playerID != ServerManager.Instance.GetPlayerLocal().PlayerID);
-        isMuted = VoiceCommsManager.Instance.IsPeerMuted(ServerManager.Instance.GetPlayer(playerController).VoiceCommsId);
+        bool isLocalPlayer = playerID == ServerManager.Instance.GetPlayerLocal().PlayerID;
+        muteButtonImage.transform.parent.gameObject.SetActive(!isLocalPlayer);
+
+        isMuted = VoiceCommsManager.Instance.IsPeerMuted(ServerManager.Instance.GetPlayer(playerID).VoiceCommsId);
         SetMuted(isMuted);
     }
 

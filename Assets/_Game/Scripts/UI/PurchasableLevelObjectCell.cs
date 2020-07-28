@@ -31,6 +31,8 @@ public class PurchasableLevelObjectCell : MonoBehaviour
                 playerRoundInfo = ServerManager.Instance.GetPlayer(cam.LocalPlayerIndex).PlayerController.PlayerRoundInfo;
         }
 
+        GetComponent<BetterButton>().SetInteractableMessage("<color=green>" + objectData.ObjectName + "</color>: " + objectData.Description);
+
         this.objectData = objectData;
         this.levelEditorPanel = levelEditorPanel;
     }

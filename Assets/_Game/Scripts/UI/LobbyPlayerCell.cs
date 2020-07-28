@@ -21,14 +21,17 @@ public class LobbyPlayerCell : SelectedCharacterCell
             bool isLocalPlayer = playerName == ServerManager.Instance.GetPlayerLocal().Name;
             muteButton.gameObject.SetActive(!isLocalPlayer);
             kickButton.gameObject.SetActive(SteamLobbyManager.Instance.PrivateHost && !isLocalPlayer);
+
+            if (ConnectedPlayer == null)
+                ConnectedPlayer = ServerManager.Instance.GetPlayer(playerName); //lazy init
+
+            MutePlayer(VoiceCommsManager.Instance.IsPeerMuted(ConnectedPlayer.VoiceCommsId));
         }
     }
 
     public void MutePlayer(bool mute)
     {
-        if (ConnectedPlayer == null)
-            ConnectedPlayer = ServerManager.Instance.GetPlayer(playerName); //lazy init
-
+        muteButton.SetState(mute);
         VoiceCommsManager.Instance.MutePeer(mute, ConnectedPlayer.VoiceCommsId);
     }
 

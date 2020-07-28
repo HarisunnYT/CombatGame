@@ -65,8 +65,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  offset: {x: 0, y: 0}
-  isTrigger: 0
+  offset: {x: 0, y: -0.5}
+  isTrigger: 1
 --- !u!212 &5572249047524279006
 SpriteRenderer:
   m_ObjectHideFlags: 0

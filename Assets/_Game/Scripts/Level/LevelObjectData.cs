@@ -13,4 +13,8 @@ public class LevelObjectData : ScriptableObject
 
     [Space()]
     public int Price;
+
+    [Space()]
+    [Multiline]
+    public string Description;
 }

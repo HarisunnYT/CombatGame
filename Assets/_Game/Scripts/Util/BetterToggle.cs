@@ -61,7 +61,7 @@ public class BetterToggle : MonoBehaviour, ISubmitHandler, IInteractableMessage
             onDeselected?.Invoke();
     }
 
-    private void SetState(bool selected)
+    public void SetState(bool selected)
     {
         target.sprite = selected ? selectedSprite : unselectedSprite;
     }

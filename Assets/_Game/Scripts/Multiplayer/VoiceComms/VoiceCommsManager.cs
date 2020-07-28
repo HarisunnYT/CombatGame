@@ -50,12 +50,16 @@ public class VoiceCommsManager : PersistentSingleton<VoiceCommsManager>
 
     public void MutePeer(bool mute, string voiceCommsId)
     {
-        comms.FindPlayer(voiceCommsId).IsLocallyMuted = mute;
+        if (comms.FindPlayer(voiceCommsId) != null && ServerManager.Instance.GetPlayerLocal().VoiceCommsId != voiceCommsId)
+            comms.FindPlayer(voiceCommsId).IsLocallyMuted = mute;
     }
 
     public bool IsPeerMuted(string voiceCommsId)
     {
-        return comms.FindPlayer(voiceCommsId).IsLocallyMuted;
+        if (comms.FindPlayer(voiceCommsId) != null)
+            return comms.FindPlayer(voiceCommsId).IsLocallyMuted;
+        else
+            return false;
     }
 
     public void SendChatMessage(string message)

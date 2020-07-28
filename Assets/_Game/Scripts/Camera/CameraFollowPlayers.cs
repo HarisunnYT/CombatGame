@@ -45,7 +45,12 @@ public class CameraFollowPlayers : MonoBehaviour
         if (forcedTarget == null && FightManager.Instance)
         {
             Rect boundingBox = CalculateTargetsBoundingBox();
-            transform.position = Vector3.Lerp(transform.position, CalculateCameraPosition(boundingBox), followSpeed * Time.deltaTime);
+            try
+            {
+                transform.position = Vector3.Lerp(transform.position, CalculateCameraPosition(boundingBox), followSpeed * Time.deltaTime);
+            }
+            catch { }
+
             CameraManager.Instance.Camera.orthographicSize = CalculateOrthographicSize(boundingBox);
         }
     }
@@ -59,6 +64,9 @@ public class CameraFollowPlayers : MonoBehaviour
 
         foreach (var target in FightManager.Instance.AlivePlayers)
         {
+            if (ServerManager.Instance == null)
+                return default;
+
             PlayerController pc = ServerManager.Instance.GetPlayer(target).PlayerController;
             if (pc == null || !pc.Alive)
                 continue;

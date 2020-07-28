@@ -70,6 +70,11 @@ public class BetterButton : Button, IInteractableMessage
         Interactable = interactable;
     }
 
+    public void SetInteractableMessage(string message)
+    {
+        interactableMessage = message;
+    }
+
     public string GetInteractableMessage()
     {
         return interactableMessage;
