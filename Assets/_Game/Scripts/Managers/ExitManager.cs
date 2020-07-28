@@ -62,7 +62,7 @@ public class ExitManager : PersistentSingleton<ExitManager>
 
         SceneLoader.Instance.LoadScene("MainMenu", () =>
         {
-            if (ExitType == ExitType.HostDisconnected)
+            if (ExitType == ExitType.HostDisconnected || ExitType == ExitType.LeftLocal)
                 PanelManager.Instance.ShowPanel<MainMenuPanel>();
 
             onLoadedMainMenu?.Invoke();

@@ -15,6 +15,9 @@ public class ChatPanel : Panel
     private float noMessageTime = 5;
 
     [SerializeField]
+    private Color nameColor;
+
+    [SerializeField]
     private ChatMessage chatMessagePrefab;
 
     [SerializeField]
@@ -64,9 +67,7 @@ public class ChatPanel : Panel
         }
 
         if (Input.GetKeyDown(KeyCode.Return) && !string.IsNullOrEmpty(inputField.text)) //TODO make it work with controller
-        {
             SendMessage();
-        }
     }
 
     public void ShowInput(bool show)
@@ -76,11 +77,7 @@ public class ChatPanel : Panel
         inputOpen = show;
 
         if (show)
-        {
-            inputField.ActivateInputField();
-            inputModule.ActivateModule();
-            ShowChat(true, 0.5f);
-        }
+            StartCoroutine(FrameDelayEnableInput());
         else
         {
             inputField.DeactivateInputField();
@@ -98,10 +95,18 @@ public class ChatPanel : Panel
         GameManager.Instance.CanPause = !show;
     }
 
+    private IEnumerator FrameDelayEnableInput()
+    {
+        yield return new WaitForEndOfFrame(); //we wait a frame to stop the input for showing dialogue show in dialogue
+
+        inputField.ActivateInputField();
+        inputModule.ActivateModule();
+        ShowChat(true, 0.5f);
+    }
+
     public void SendMessage()
     {
-        string message = SteamClient.Name + ": " + inputField.text;
-        DisplayMessage(message); 
+        string message = DisplayMessage(SteamClient.Name, inputField.text); 
         inputField.text = "";
         hideTarget = Time.time + noMessageTime;
 
@@ -109,13 +114,22 @@ public class ChatPanel : Panel
         VoiceCommsManager.Instance.SendChatMessage(message);
     }
 
-    private void DisplayMessage(string message)
+    public void DisplayMessage(string message)
     {
         ChatMessage messageObj = Instantiate(chatMessagePrefab, content);
         messageObj.Configure(message);
 
         ShowChat(true, 0.25f);
         hideTarget = Time.time + noMessageTime;
+    }
+
+    public string DisplayMessage(string playerName, string message)
+    {
+        playerName = string.Format("<color=#{0}>{1}: </color>", ColorUtility.ToHtmlStringRGB(nameColor), playerName);
+        string result = playerName + message;
+        DisplayMessage(result);
+
+        return result;
     }
 
     private void ShowChat(bool show, float duration)

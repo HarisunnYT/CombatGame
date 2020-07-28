@@ -135,7 +135,7 @@ public class NetworkManager : NetworkRoomManager
         else if (SceneLoader.IsMainMenu)
             SteamLobbyManager.Instance.CreateServer();
 
-            VoiceCommsManager.Instance.Stop();
+        VoiceCommsManager.Instance.Stop();
     }
 
     int timedOutCount = 0;
