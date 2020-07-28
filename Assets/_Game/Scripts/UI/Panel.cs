@@ -80,7 +80,7 @@ public class Panel : MonoBehaviour, IAnimationHandler
         {
             panelManager.PanelShown(this);
 
-            if (panelType != PanelType.Modal)
+            if (panelType == PanelType.Normal)
                 panelManager.CloseAllPanels(this);
         }
 

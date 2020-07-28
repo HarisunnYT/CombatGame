@@ -44,7 +44,9 @@ public class ChatPanel : Panel
         inputModule = InControlManager.Instance.GetComponent<InControlInputModule>();
 
         VoiceCommsManager.Instance.SteamComms.TextPacketReceived += SteamComms_TextPacketReceived;
-        ShowInput(false);
+
+        inputField.gameObject.SetActive(false);
+        box.enabled = false;
 
         if (!ServerManager.Instance.IsOnlineMatch)
             Close();
@@ -84,7 +86,8 @@ public class ChatPanel : Panel
             inputModule.DeactivateModule();
         }
 
-        if (ServerManager.Instance.GetPlayerLocal().PlayerController != null)
+        //disable player movement
+        if (ServerManager.Instance.GetPlayerLocal() != null && ServerManager.Instance.GetPlayerLocal().PlayerController != null)
         {
             if (show)
                 ServerManager.Instance.GetPlayerLocal().PlayerController.DisableInput();
@@ -92,7 +95,13 @@ public class ChatPanel : Panel
                 ServerManager.Instance.GetPlayerLocal().PlayerController.EnableInput();
         }
 
-        GameManager.Instance.CanPause = !show;
+        if (show)
+            CursorManager.Instance.HideAllCursors();
+        else
+            CursorManager.Instance.ShowAllCursors();
+
+        if (GameManager.Instance)
+            GameManager.Instance.CanPause = !show;
     }
 
     private IEnumerator FrameDelayEnableInput()
