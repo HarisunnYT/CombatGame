@@ -17,8 +17,6 @@ public class Projectile : NetworkBehaviour
 
     private float targetDestroyTime = -1;
 
-    private PlayerController sender;
-
     protected bool isHost { get { return (SteamLobbyManager.Instance && SteamLobbyManager.Instance.PublicHost) || (ServerManager.Instance && !ServerManager.Instance.IsOnlineMatch);  } }
 
     private void Awake()
@@ -30,8 +28,6 @@ public class Projectile : NetworkBehaviour
     private void OnEnable()
     {
         targetDestroyTime = ServerManager.Time + secondsTillDestroy;
-        //if (sender != null)
-        //    IgnoreSender(sender.PlayerID);
     }
 
     public virtual void AddForce(Vector3 spawnPosition, Vector3 direction, float force, ForceMode2D forceMode)
@@ -48,20 +44,8 @@ public class Projectile : NetworkBehaviour
 
     public void AddForce(PlayerController player, Vector3 direction, float force, ForceMode2D forceMode)
     {
-        sender = player;
-        RpcIgnoreSender(player.PlayerID);
+        Physics2D.IgnoreCollision(player.Collider, collider);
         AddForce(player.Collider.bounds.center, direction, force, forceMode);
-    }
-
-    [ClientRpc]
-    private void RpcIgnoreSender(int playerId)
-    {
-        IgnoreSender(playerId);
-    }
-
-    private void IgnoreSender(int playerId)
-    {
-        Physics2D.IgnoreCollision(ServerManager.Instance.GetPlayer(playerId).PlayerController.Collider, collider);
     }
 
     private void AddForce()
@@ -81,7 +65,10 @@ public class Projectile : NetworkBehaviour
 
     protected void Despawn()
     {
-        gameObject.SetActive(false);
-        sender = null;
+        if (isHost)
+        {
+            gameObject.SetActive(false);
+            NetworkServer.UnSpawn(gameObject);
+        }
     }
 }
