@@ -13,7 +13,7 @@ public class PlayerControllerEditor : Editor
             PlayerController player = target as PlayerController;
             if (GUILayout.Button("Die"))
             {
-                player.RpcOnDamaged(9999, 0);
+                player.RpcOnDamaged(ServerManager.Time, 9999, 0);
             }
         }
 
