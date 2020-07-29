@@ -1,4 +1,5 @@
-﻿using MultiplayerBasicExample;
+﻿using Mirror;
+using MultiplayerBasicExample;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,10 +24,19 @@ public class StickmanCombatController : CombatController
     [SerializeField]
     private float getUpDelay = 0.2f;
 
+    [Header("Axe Throw")]
+    [SerializeField]
+    private Projectile axePrefab;
+
+    [SerializeField]
+    private float axeForce = 10;
+
     protected override bool Attack(MoveData moveData)
     {
         if (moveData.name == "body_slam")
             return StartBodySlam();
+        else if (moveData.name == "axe_throw")
+            ThrowAxe();
 
         return true;
     }
@@ -88,6 +98,30 @@ public class StickmanCombatController : CombatController
             playerController.EnableInput();
             playerController.DisablePlayerToPlayerCollisions(false);
         }));
+    }
+
+    #endregion
+
+    #region AXE_THROW
+
+    private void ThrowAxe()
+    {
+        if (ServerManager.Instance.IsOnlineMatch)
+            CmdThrowAxe(NetworkClient.connection as NetworkConnectionToClient, playerController.PlayerID, playerController.Direction, (int)(axeForce * 100), (int)ForceMode2D.Impulse);
+        else
+        {
+            Projectile axe = ObjectPooler.GetPooledObject(axePrefab.gameObject).GetComponent<Projectile>();
+            axe.AddForce(playerController, new Vector3(playerController.Direction, 0, 0), axeForce, ForceMode2D.Impulse);
+        }
+    }
+
+    [Command]
+    private void CmdThrowAxe(NetworkConnectionToClient conn, int playerId, int direction, int force, int forceMode2D)
+    {
+        PlayerController playerController = ServerManager.Instance.GetPlayer(playerId).PlayerController;
+        Projectile axe = ObjectPooler.GetPooledObject(axePrefab.gameObject).GetComponent<Projectile>();
+        axe.AddForce(playerController, new Vector3(direction, 0, 0), (float)force / 100, (ForceMode2D)forceMode2D);
+        NetworkServer.Spawn(axe.gameObject, conn);
     }
 
     #endregion

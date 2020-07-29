@@ -60,6 +60,11 @@ public class ChatPanel : Panel
         SteamLobbyManager.Instance.OnPrivateLobbyLeft += ClearMessages;
     }
 
+    private void OnDestroy()
+    {
+        SteamLobbyManager.Instance.OnPrivateLobbyLeft -= ClearMessages;
+    }
+
     private void Update()
     {
         if (CursorManager.Instance == null)

@@ -70,7 +70,7 @@ public class PlayerController : Character, IKnockable
     private Coroutine horizontalMovementCoroutine;
     private Coroutine verticalMovementCoroutine;
 
-    private int playerID = -1;
+    public int PlayerID { get; private set; } = -1;
 
     #endregion
 
@@ -127,7 +127,7 @@ public class PlayerController : Character, IKnockable
             InputProfile.Deinitialise();
 
         if (ServerManager.Instance)
-            ServerManager.Instance.RemovePlayer(playerID);
+            ServerManager.Instance.RemovePlayer(PlayerID);
     }
 
     protected override void Update()
@@ -190,20 +190,20 @@ public class PlayerController : Character, IKnockable
     public void OnAssignedID(int id)
     {
         //player id already assigned
-        if (playerID != -1)
+        if (PlayerID != -1)
             return;
 
-        playerID = id;
+        PlayerID = id;
 
-        Fighter = FighterManager.Instance.GetFighterForPlayer(playerID);
-        MatchManager.Instance.AddPlayer(this, playerID);
+        Fighter = FighterManager.Instance.GetFighterForPlayer(PlayerID);
+        MatchManager.Instance.AddPlayer(this, PlayerID);
 
-        InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(playerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch || playerID == 0);
+        InputProfile = new InputProfile(ServerManager.Instance.GetPlayer(PlayerID).ControllerGUID, ServerManager.Instance.IsOnlineMatch || PlayerID == 0);
         InputProfile.OnInputChanged += OnInputChanged;
         OnInputProfileSet?.Invoke();
 
         //remove already used controllers
-        if (playerID == 0 && !ServerManager.Instance.IsOnlineMatch)
+        if (PlayerID == 0 && !ServerManager.Instance.IsOnlineMatch)
         {
             foreach(var player in ServerManager.Instance.Players)
             {
@@ -221,7 +221,7 @@ public class PlayerController : Character, IKnockable
         }
 
         //set the last player fighter, only if it's an online match or the players index is 0
-        if ((ServerManager.Instance.IsOnlineMatch && isLocalPlayer) || (!ServerManager.Instance.IsOnlineMatch && playerID == 0))
+        if ((ServerManager.Instance.IsOnlineMatch && isLocalPlayer) || (!ServerManager.Instance.IsOnlineMatch && PlayerID == 0))
             FighterManager.Instance.SetLastPlayedFighter(Fighter.FighterName);
     }
 
@@ -347,7 +347,7 @@ public class PlayerController : Character, IKnockable
         }
         else
         {
-            OnDeathClient(killedFromPlayerID, playerID);
+            OnDeathClient(killedFromPlayerID, PlayerID);
         }
     }
 
@@ -376,14 +376,14 @@ public class PlayerController : Character, IKnockable
     {
         if (ServerManager.Instance.IsOnlineMatch)
             RpcOnKnockback(playerId, knockback, direction);
-        else if (playerId == playerID)
+        else if (playerId == PlayerID)
             OnKnockbackClient(knockback, direction);
     }
 
     [ClientRpc]
     public void RpcOnKnockback(int playerId, float knockback, Vector2 direction)
     {
-        if (playerId == playerID)
+        if (playerId == PlayerID)
             OnKnockbackClient(knockback, direction);
     }
 

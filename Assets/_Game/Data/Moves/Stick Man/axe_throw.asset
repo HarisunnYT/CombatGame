@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6dee4546908f3fe419937f170835f2a7, type: 3}
-  m_Name: body_bounce
+  m_Name: axe_throw
   m_EditorClassIdentifier: 
-  MoveName: Body Bounce
-  Cooldown: 3
-  AttackType: 1
+  MoveName: Axe Throw
+  MoveId: 3
+  Cooldown: 0
+  AttackType: 0
   Icon: {fileID: 0}
-  Price: 850
+  Price: 450

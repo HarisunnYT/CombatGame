@@ -12,6 +12,16 @@ public class DamageOnTouch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        Collided(collider);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Collided(collision.collider);
+    }
+
+    private void Collided(Collider2D collider)
+    {
         if ((SteamLobbyManager.Instance && SteamLobbyManager.Instance.PublicHost) || (ServerManager.Instance && !ServerManager.Instance.IsOnlineMatch))
         {
             IDamagable damagable = collider.GetComponent<IDamagable>();
