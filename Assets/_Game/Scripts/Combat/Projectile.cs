@@ -68,7 +68,13 @@ public class Projectile : NetworkBehaviour
         if (isHost)
         {
             gameObject.SetActive(false);
-            NetworkServer.UnSpawn(gameObject);
+            RpcHide();
         }
+    }
+
+    [ClientRpc]
+    private void RpcHide()
+    {
+        gameObject.SetActive(false);
     }
 }

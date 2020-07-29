@@ -19,7 +19,7 @@ MonoBehaviour:
   getUpDelay: 0.5
   axePrefab: {fileID: -5486136116698914909, guid: bb0d606ccb3f6354f9589f38e29c4792,
     type: 3}
-  axeForce: 50
+  axeForce: 25
 --- !u!1 &1031631625611364505
 GameObject:
   m_ObjectHideFlags: 0

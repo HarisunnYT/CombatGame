@@ -119,7 +119,7 @@ public class StickmanCombatController : CombatController
     private void CmdThrowAxe(int playerId, int direction, int force, int forceMode2D, NetworkConnectionToClient conn)
     {
         PlayerController playerController = ServerManager.Instance.GetPlayer(playerId).PlayerController;
-        Projectile axe = Instantiate(axePrefab);
+        Projectile axe = ObjectPooler.GetPooledObject(axePrefab.gameObject).GetComponent<Projectile>();
         axe.AddForce(playerController, new Vector3(direction, 0, 0), (float)force / 100, (ForceMode2D)forceMode2D);
         NetworkServer.Spawn(axe.gameObject, conn);
     }

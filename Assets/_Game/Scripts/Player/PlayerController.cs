@@ -383,7 +383,7 @@ public class PlayerController : Character, IKnockable
     [ClientRpc]
     public void RpcOnKnockback(int playerId, float knockback, Vector2 direction)
     {
-        if (playerId == PlayerID)
+        if (playerId == PlayerID && isLocalPlayer)
             OnKnockbackClient(knockback, direction);
     }
 
