@@ -112,6 +112,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public event LobbyEvent OnKicked;
     public event LobbyEvent OnMatchFound;
 
+    public event LobbyEvent OnPrivateLobbyLeft;
+    public event LobbyEvent OnPublicLobbyLeft;
+
     #endregion
 
     protected override void Initialize()
@@ -437,6 +440,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             {
                 PrivateLobby.Value.Leave();
                 PrivateLobby = null;
+
+                OnPrivateLobbyLeft?.Invoke();
             }
         }
     }
@@ -643,7 +648,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (PublicLobby != null)
         {
             if (PrivateLobby == null || PublicLobby.Value.Id != PrivateLobby.Value.Id)
+            {
                 PublicLobby.Value.Leave();
+                OnPublicLobbyLeft?.Invoke();
+            }
 
             PublicLobby = null;
         }

@@ -44,6 +44,8 @@ public class PrivateLobbyPanel : Panel
     protected override void OnShow()
     {
         PanelManager.Instance.ShowPanel<ChatPanel>();
+        PanelManager.Instance.GetPanel<ChatPanel>().ClearMessages();
+
         ServerManager.Instance.IsOnlineMatch = true;
 
         if (SteamLobbyManager.Instance.PrivateLobby != null)

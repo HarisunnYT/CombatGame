@@ -25,7 +25,8 @@ public class LobbyPlayerCell : SelectedCharacterCell
             if (ConnectedPlayer == null)
                 ConnectedPlayer = ServerManager.Instance.GetPlayer(playerName); //lazy init
 
-            MutePlayer(VoiceCommsManager.Instance.IsPeerMuted(ConnectedPlayer.VoiceCommsId));
+            if (ConnectedPlayer != null)
+                MutePlayer(VoiceCommsManager.Instance.IsPeerMuted(ConnectedPlayer.VoiceCommsId));
         }
     }
 

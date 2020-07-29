@@ -56,6 +56,8 @@ public class ChatPanel : Panel
 
         if (!ServerManager.Instance.IsOnlineMatch)
             Close();
+
+        SteamLobbyManager.Instance.OnPrivateLobbyLeft += ClearMessages;
     }
 
     private void Update()
@@ -166,5 +168,15 @@ public class ChatPanel : Panel
     private void SteamComms_TextPacketReceived(Dissonance.Networking.TextMessage obj)
     {
         DisplayMessage(obj.Message);
+    }
+
+    public void ClearMessages()
+    {
+        for (int i = 0; i < messages.Count; i++)
+        {
+            Destroy(messages[i].gameObject);
+        }
+
+        messages.Clear();
     }
 }
