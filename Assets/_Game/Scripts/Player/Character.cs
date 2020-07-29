@@ -34,6 +34,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
 
     private Coroutine invincibleRoutine;
 
+    private List<float> damageTimes = new List<float>(); //a list of times of when damage was taken, 
+                                                         //used to stop taken damage multiple times for the same attack
+
     public delegate void HealthEvent(int health);
     public event HealthEvent OnHealthChanged;
 
@@ -47,21 +50,23 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
         Health = startingHealth;
     }
 
-    public void OnDamaged(int amount, PlayerController player)
+    public void OnDamaged(float serverTime, int amount, PlayerController player)
     {
         if (!MatchManager.Instance.MatchStarted)
             return;
 
         if (ServerManager.Instance.IsOnlineMatch)
-            RpcOnDamaged(amount, MatchManager.Instance.GetPlayerID(player));
+            RpcOnDamaged(serverTime, amount, MatchManager.Instance.GetPlayerID(player));
         else
-            OnDamagedClient(amount, MatchManager.Instance.GetPlayerID(player));
+            OnDamagedClient(serverTime, amount, MatchManager.Instance.GetPlayerID(player));
     }
 
-    private void OnDamagedClient(int amount, int playerID)
+    private void OnDamagedClient(float serverTime, int amount, int playerID)
     {
         if (Alive && !Invincible)
         {
+            Debug.Log(serverTime);
+
             Health -= amount;
 
             //damage text
@@ -91,9 +96,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
     }
 
     [ClientRpc]
-    public virtual void RpcOnDamaged(int amount, int playerID)
+    public virtual void RpcOnDamaged(float serverTime, int amount, int playerID)
     {
-        OnDamagedClient(amount, playerID);
+        OnDamagedClient(serverTime, amount, playerID);
     }
 
     public void OnHealed(int amount)
