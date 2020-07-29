@@ -107,7 +107,7 @@ public class StickmanCombatController : CombatController
     private void ThrowAxe()
     {
         if (ServerManager.Instance.IsOnlineMatch)
-            CmdThrowAxe(NetworkClient.connection as NetworkConnectionToClient, playerController.PlayerID, playerController.Direction, (int)(axeForce * 100), (int)ForceMode2D.Impulse);
+            CmdThrowAxe(playerController.PlayerID, playerController.Direction, (int)(axeForce * 100), (int)ForceMode2D.Impulse, NetworkClient.connection as NetworkConnectionToClient);
         else
         {
             Projectile axe = ObjectPooler.GetPooledObject(axePrefab.gameObject).GetComponent<Projectile>();
@@ -116,7 +116,7 @@ public class StickmanCombatController : CombatController
     }
 
     [Command]
-    private void CmdThrowAxe(NetworkConnectionToClient conn, int playerId, int direction, int force, int forceMode2D)
+    private void CmdThrowAxe(int playerId, int direction, int force, int forceMode2D, NetworkConnectionToClient conn)
     {
         PlayerController playerController = ServerManager.Instance.GetPlayer(playerId).PlayerController;
         Projectile axe = ObjectPooler.GetPooledObject(axePrefab.gameObject).GetComponent<Projectile>();
