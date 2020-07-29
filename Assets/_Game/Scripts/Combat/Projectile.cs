@@ -77,4 +77,10 @@ public class Projectile : NetworkBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    [ClientRpc]
+    public void RpcShow()
+    {
+        gameObject.SetActive(true);
+    }
 }
