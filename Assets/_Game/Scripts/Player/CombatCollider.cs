@@ -29,7 +29,7 @@ public class CombatCollider : MonoBehaviour
             IDamagable damagable = other.GetComponent<IDamagable>();
             if (damagable != null)
             {
-                damagable.OnDamaged(ServerManager.Time, Damage, playerController);
+                damagable.OnDamaged(Damage, playerController);
                 playerController.Knockback((transform.position - other.transform.position).normalized, playerController.CharacterStats.Weight);
             }
 

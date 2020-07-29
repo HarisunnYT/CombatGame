@@ -50,23 +50,25 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
         Health = startingHealth;
     }
 
-    public void OnDamaged(float serverTime, int amount, PlayerController player)
+    public void OnDamaged(int amount, PlayerController player)
     {
         if (!MatchManager.Instance.MatchStarted)
             return;
 
         if (ServerManager.Instance.IsOnlineMatch)
-            RpcOnDamaged(serverTime, amount, MatchManager.Instance.GetPlayerID(player));
+            RpcOnDamaged(ServerManager.Time, amount, MatchManager.Instance.GetPlayerID(player));
         else
-            OnDamagedClient(serverTime, amount, MatchManager.Instance.GetPlayerID(player));
+            OnDamagedClient(ServerManager.Time, amount, MatchManager.Instance.GetPlayerID(player));
     }
 
     private void OnDamagedClient(float serverTime, int amount, int playerID)
     {
+        if (damageTimes.Contains(serverTime))
+            return;
+
         if (Alive && !Invincible)
         {
-            Debug.Log(serverTime);
-
+            damageTimes.Add(serverTime);
             Health -= amount;
 
             //damage text

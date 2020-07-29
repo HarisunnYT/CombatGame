@@ -16,7 +16,7 @@ public class DamageOnTouch : MonoBehaviour
         {
             IDamagable damagable = collider.GetComponent<IDamagable>();
             if (damagable != null)
-                damagable.OnDamaged(ServerManager.Time, damage, null);
+                damagable.OnDamaged(damage, null);
 
             IKnockable knockable = collider.GetComponent<IKnockable>();
             if (knockable != null)

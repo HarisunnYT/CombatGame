@@ -15,7 +15,7 @@ public interface IDamagable
 {
     int Health { get; set; }
 
-    void OnDamaged(float serverTime, int amount, PlayerController player);
+    void OnDamaged(int amount, PlayerController player);
 
     [ClientRpc]
     void RpcOnDamaged(float serverTime, int amount, int playerID);

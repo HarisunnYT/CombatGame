@@ -11,7 +11,7 @@ public class Boundary : MonoBehaviour
             IDamagable damagable = collision.GetComponent<IDamagable>();
             if (damagable != null)
             {
-                damagable.OnDamaged(ServerManager.Time, int.MaxValue, collision.GetComponent<PlayerController>());
+                damagable.OnDamaged(int.MaxValue, collision.GetComponent<PlayerController>());
             }
         }
     }
