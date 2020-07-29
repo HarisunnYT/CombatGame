@@ -36,7 +36,7 @@ public interface IKnockable
     void OnKnockback(int playerId, float knockback, Vector2 direction);
 
     [ClientRpc]
-    void RpcOnKnockback(int playerId, float knockback, Vector2 direction);
+    void RpcOnKnockback(float serverTime, int playerId, float knockback, Vector2 direction);
 }
 
 public interface IBase

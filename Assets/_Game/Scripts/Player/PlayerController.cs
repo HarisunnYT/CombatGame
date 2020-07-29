@@ -58,6 +58,7 @@ public class PlayerController : Character, IKnockable
     public bool HoldingJump { get; private set; } = false;
     public bool HorizontalMovementEnabled { get; private set; } = true;
     public bool VerticalMovementEnabled { get; private set; } = true;
+    public int PlayerID { get; private set; } = -1;
 
     public FighterData Fighter { get; private set; }
     public CombatController CombatController { get; private set; }
@@ -70,7 +71,7 @@ public class PlayerController : Character, IKnockable
     private Coroutine horizontalMovementCoroutine;
     private Coroutine verticalMovementCoroutine;
 
-    public int PlayerID { get; private set; } = -1;
+    private List<float> knockbackServerTimes = new List<float>(); //stops duplicate knockback calls
 
     #endregion
 
@@ -375,22 +376,25 @@ public class PlayerController : Character, IKnockable
     public void OnKnockback(int playerId, float knockback, Vector2 direction)
     {
         if (ServerManager.Instance.IsOnlineMatch)
-            RpcOnKnockback(playerId, knockback, direction);
+            RpcOnKnockback(ServerManager.Time, playerId, knockback, direction);
         else if (playerId == PlayerID)
-            OnKnockbackClient(knockback, direction);
+            OnKnockbackClient(ServerManager.Time, knockback, direction);
     }
 
     [ClientRpc]
-    public void RpcOnKnockback(int playerId, float knockback, Vector2 direction)
+    public void RpcOnKnockback(float serverTime, int playerId, float knockback, Vector2 direction)
     {
-        if (playerId == PlayerID && isLocalPlayer)
-            OnKnockbackClient(knockback, direction);
+        if (playerId == PlayerID)
+            OnKnockbackClient(serverTime, knockback, direction);
     }
 
-    protected virtual void OnKnockbackClient(float knockback, Vector2 direction)
+    protected virtual void OnKnockbackClient(float serverTime, float knockback, Vector2 direction)
     {
-        if (Alive)
+        if (Alive && !knockbackServerTimes.Contains(serverTime))
+        {
             Rigidbody.AddForce(direction * knockback, ForceMode2D.Impulse);
+            knockbackServerTimes.Add(serverTime);
+        }
     }
 
     #endregion
