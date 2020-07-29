@@ -65,10 +65,6 @@ public class Projectile : NetworkBehaviour
 
     protected void Despawn()
     {
-        if (isHost)
-        {
-            gameObject.SetActive(false);
-            NetworkServer.UnSpawn(gameObject);
-        }
+        gameObject.SetActive(false);
     }
 }
