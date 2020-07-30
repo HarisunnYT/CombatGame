@@ -149,6 +149,7 @@ public class ChatPanel : Panel
     public void DisplayMessage(string message)
     {
         ChatMessage messageObj = Instantiate(chatMessagePrefab, content);
+        message = ProfanityFilter.ReplaceProfanity(message); //replace profanity
         messageObj.Configure(message);
         messages.Add(messageObj);
 
