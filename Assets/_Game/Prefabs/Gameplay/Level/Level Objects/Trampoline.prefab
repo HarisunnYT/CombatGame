@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8367836872364827056}
   - component: {fileID: 879940427745727901}
   - component: {fileID: -1983347004343403960}
+  - component: {fileID: -4067731127842603879}
   m_Layer: 0
   m_Name: Trampoline
   m_TagString: Untagged
@@ -204,3 +205,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-4067731127842603879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4634661858584805104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  animator: {fileID: 0}
