@@ -333,7 +333,7 @@ namespace InControl
 			}
 
 			lastSubmitState = thisSubmitState;
-			thisSubmitState = SubmitAction == null ? SubmitButton.IsPressed : SubmitAction.IsPressed;
+			thisSubmitState = false;//SubmitAction == null ? SubmitButton.IsPressed : SubmitAction.IsPressed;
 
 			lastCancelState = thisCancelState;
 			thisCancelState = CancelAction == null ? CancelButton.IsPressed : CancelAction.IsPressed;

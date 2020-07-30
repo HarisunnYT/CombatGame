@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     public CharacterData GameData { get { return gameData; } }
 
     public bool CanPause { get; set; }
+    public bool PauseMenuOpened { get; set; }
 
     public bool IsPlayer(GameObject obj)
     {

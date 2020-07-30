@@ -69,7 +69,7 @@ public class Cursor : MonoBehaviour
     private void Update()
     {
         //0 means it's the person on the PC
-        if (PlayerIndex == 0 && (previousMousePosition != Input.mousePosition || FightManager.Instance)) //this is so cursor isn't modified by keyboard when cursor active in fight
+        if (PlayerIndex == 0 && previousMousePosition != Input.mousePosition) 
         {
             transform.position = Input.mousePosition;
             previousMousePosition = Input.mousePosition;

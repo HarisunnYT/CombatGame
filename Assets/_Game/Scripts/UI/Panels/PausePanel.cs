@@ -18,9 +18,10 @@ public class PausePanel : Panel
     {
         base.Initialise();
 
-        for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
+        if (ServerManager.Instance.IsOnlineMatch)
         {
-            connectPlayerCells[i].Configure(ServerManager.Instance.Players[i].PlayerID);
+            for (int i = 0; i < ServerManager.Instance.Players.Count; i++)
+                connectPlayerCells[i].Configure(ServerManager.Instance.Players[i].PlayerID);
         }
     }
 
@@ -37,8 +38,11 @@ public class PausePanel : Panel
             Time.timeScale = 0;
         }
 
+        GameManager.Instance.PauseMenuOpened = true;
+
         exitText.text = ServerManager.Instance.IsOnlineMatch ? "Leave" : "Exit";
         CursorManager.Instance.ShowCursor(interactingProfile.GUID);
+        ServerManager.Instance.GetPlayer(CursorManager.Instance.GetCursor(interactingProfile.GUID).PlayerIndex).PlayerController.DisableInput();
     }
 
     protected override void OnClose()
@@ -47,7 +51,10 @@ public class PausePanel : Panel
         {
             CursorManager.Instance.HideCursor(interactingProfile.GUID);
             ServerManager.Instance.GetPlayer(interactingProfile.GUID).PlayerController.EnableInput();
+            ServerManager.Instance.GetPlayer(CursorManager.Instance.GetCursor(interactingProfile.GUID).PlayerIndex).PlayerController.EnableInput();
         }
+
+        GameManager.Instance.PauseMenuOpened = false;
 
         Time.timeScale = 1;
     }
