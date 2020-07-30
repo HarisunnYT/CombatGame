@@ -384,7 +384,7 @@ public class PlayerController : Character, IKnockable
     [ClientRpc]
     public void RpcOnKnockback(float serverTime, int playerId, float knockback, Vector2 direction)
     {
-        if (playerId == PlayerID)
+        if (playerId == PlayerID && isLocalPlayer)
             OnKnockbackClient(serverTime, knockback, direction);
     }
 
@@ -392,7 +392,7 @@ public class PlayerController : Character, IKnockable
     {
         if (Alive && !knockbackServerTimes.Contains(serverTime))
         {
-            Rigidbody.AddForce(direction * knockback, ForceMode2D.Impulse);
+            Rigidbody.AddForce(direction * knockback, ForceMode2D.Force);
             knockbackServerTimes.Add(serverTime);
         }
     }

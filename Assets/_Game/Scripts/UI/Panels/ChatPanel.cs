@@ -62,7 +62,8 @@ public class ChatPanel : Panel
 
     private void OnDestroy()
     {
-        SteamLobbyManager.Instance.OnPrivateLobbyLeft -= ClearMessages;
+        if (SteamLobbyManager.Instance)
+            SteamLobbyManager.Instance.OnPrivateLobbyLeft -= ClearMessages;
     }
 
     private void Update()
