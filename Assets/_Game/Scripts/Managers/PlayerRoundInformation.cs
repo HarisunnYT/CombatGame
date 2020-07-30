@@ -16,7 +16,8 @@ public class PlayerRoundInformation : MonoBehaviour, IFightEvents
     public delegate void CashEvent(int newAmount);
     public event CashEvent OnCashUpdated;
 
-    public delegate void MoveEvent(MoveData move);
+    /// <param name="position">button position eg button 1 is X / Mouse 1</param>
+    public delegate void MoveEvent(MoveData move, int position);
     public event MoveEvent OnEquipedMove;
 
     private void Awake()
@@ -105,7 +106,7 @@ public class PlayerRoundInformation : MonoBehaviour, IFightEvents
         else if (position == 3)
             AttackThree = moveData;
 
-        OnEquipedMove?.Invoke(moveData);
+        OnEquipedMove?.Invoke(moveData, position);
     }
 
     public bool IsMoveEquiped(MoveData move)

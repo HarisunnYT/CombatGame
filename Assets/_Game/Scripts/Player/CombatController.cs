@@ -45,11 +45,11 @@ public class CombatController : NetworkBehaviour
             //reset animator value before determining what attack was pressed
             DetermineAttack(-1);
 
-            if (playerController.InputProfile.Attack1.WasPressed && ServerManager.Time > attackOneCooldownTimer)
+            if (playerController.InputProfile.Attack1.WasPressed && CanDoMove(1))
                 DetermineAttack(0);
-            else if (playerController.InputProfile.Attack2.WasPressed && ServerManager.Time > attackTwoCooldownTimer)
+            else if (playerController.InputProfile.Attack2.WasPressed && CanDoMove(2))
                 DetermineAttack(1);
-            else if (playerController.InputProfile.Attack3.WasPressed && ServerManager.Time > attackThreeCooldownTimer)
+            else if (playerController.InputProfile.Attack3.WasPressed && CanDoMove(3))
                 DetermineAttack(2);
 
             basicAttacking = true;
@@ -98,6 +98,36 @@ public class CombatController : NetworkBehaviour
             specialAttacking = true;
             animator.SetInteger("MoveNumber", moveNumber);
         }
+    }
+
+    public float GetMoveCooldownState(int movePosition)
+    {
+        float result = 0;
+        if (movePosition == 1)
+        {
+            if (playerRoundInfo.AttackOne == null)
+                return 0;
+            result = (attackOneCooldownTimer - ServerManager.Time) / playerRoundInfo.AttackOne.Cooldown;
+        }
+        else if (movePosition == 2)
+        {
+            if (playerRoundInfo.AttackTwo == null)
+                return 0;
+            result = (attackTwoCooldownTimer - ServerManager.Time) / playerRoundInfo.AttackTwo.Cooldown;
+        }
+        else if (movePosition == 3)
+        {
+            if (playerRoundInfo.AttackThree == null)
+                return 0;
+            result = (attackThreeCooldownTimer - ServerManager.Time) / playerRoundInfo.AttackThree.Cooldown;
+        }
+
+        return result <= 0 ? 1 : 1 - result;
+    }
+
+    public bool CanDoMove(int movePosition)
+    {
+        return GetMoveCooldownState(movePosition) >= 1;
     }
 
     public virtual void AttackComplete()

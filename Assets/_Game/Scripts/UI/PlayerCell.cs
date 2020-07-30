@@ -12,8 +12,9 @@ public class PlayerCell : MonoBehaviour
     [SerializeField]
     private TMP_Text playerNameText;
 
+    public PlayerController PlayerController { get; private set; } 
+
     protected int playerID;
-    protected PlayerController playerController;
 
     public virtual void Configure(int playerID)
     {
@@ -27,7 +28,7 @@ public class PlayerCell : MonoBehaviour
         if (ServerManager.Instance == null)
             return;
 
-        if (playerController == null && ServerManager.Instance.GetPlayer(playerID).PlayerController != null)
+        if (PlayerController == null && ServerManager.Instance.GetPlayer(playerID).PlayerController != null)
             OnPlayerCreated(playerID, ServerManager.Instance.GetPlayer(playerID).PlayerController);
         else
             Invoke("TryAssignPlayerController", 0.1f);
@@ -37,7 +38,7 @@ public class PlayerCell : MonoBehaviour
     {
         if (playerID == this.playerID)
         {
-            this.playerController = playerController;
+            this.PlayerController = playerController;
 
             gameObject.SetActive(true);
 
@@ -50,7 +51,7 @@ public class PlayerCell : MonoBehaviour
 
     private void OnDestroy()
     {
-        playerController.OnPlayerDisconnected -= OnPlayerDisconnected;
+        PlayerController.OnPlayerDisconnected -= OnPlayerDisconnected;
     }
 
     protected void OnPlayerDisconnected()

@@ -34,7 +34,7 @@ public class PurchasableMoveCell : MoveCell
         playerRoundInfo.OnEquipedMove += OnEquipedMove;
     }
 
-    private void OnEquipedMove(MoveData move)
+    private void OnEquipedMove(MoveData move, int buttonPosition)
     {
         //dont pass through move, we need to check if the move this cell is associated with is equiped, 
         //thus why we pass through MoveData

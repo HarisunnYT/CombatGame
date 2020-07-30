@@ -39,6 +39,6 @@ public class ConnectedPlayerCell : PlayerCell
     private void SetMuted(bool muted)
     {
         muteButtonImage.sprite = muted ? mutedIcon : unmutedIcon;
-        VoiceCommsManager.Instance.MutePeer(muted, ServerManager.Instance.GetPlayer(playerController).VoiceCommsId);
+        VoiceCommsManager.Instance.MutePeer(muted, ServerManager.Instance.GetPlayer(PlayerController).VoiceCommsId);
     }
 }

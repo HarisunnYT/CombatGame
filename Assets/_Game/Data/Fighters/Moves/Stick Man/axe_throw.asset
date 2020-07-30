@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveName: Axe Throw
   MoveId: 3
-  Cooldown: 0
+  Cooldown: 2
   AttackType: 0
   Icon: {fileID: 0}
   Price: 450

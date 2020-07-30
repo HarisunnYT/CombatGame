@@ -14,7 +14,7 @@ public class PlayerWinsCell : PlayerCell
 
     private void OnEnable()
     {
-        if (previousWinsAmount < MatchManager.Instance.GetWins(playerController))
+        if (previousWinsAmount < MatchManager.Instance.GetWins(PlayerController))
         {
             StartCoroutine(DelayedTokenCreation());
         }
@@ -23,7 +23,7 @@ public class PlayerWinsCell : PlayerCell
     private void CreateToken()
     {
         Instantiate(winTokenPrefab, winsParents);
-        previousWinsAmount = MatchManager.Instance.GetWins(playerController);
+        previousWinsAmount = MatchManager.Instance.GetWins(PlayerController);
     }
 
     private IEnumerator DelayedTokenCreation()
