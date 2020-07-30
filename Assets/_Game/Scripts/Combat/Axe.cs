@@ -14,7 +14,7 @@ public class Axe : Projectile
         rigidbody.AddTorque(torque, ForceMode2D.Impulse);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         Despawn();
     }

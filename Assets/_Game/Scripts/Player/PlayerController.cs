@@ -392,7 +392,7 @@ public class PlayerController : Character, IKnockable
     {
         if (Alive && !knockbackServerTimes.Contains(serverTime))
         {
-            Rigidbody.AddForce(direction * knockback, ForceMode2D.Force);
+            Rigidbody.AddForce(direction * knockback, ForceMode2D.Impulse);
             knockbackServerTimes.Add(serverTime);
         }
     }
