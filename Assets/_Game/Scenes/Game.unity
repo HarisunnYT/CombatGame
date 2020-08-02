@@ -1268,7 +1268,7 @@ GameObject:
   - component: {fileID: 161212142}
   - component: {fileID: 161212143}
   - component: {fileID: 161212144}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1414,7 +1414,7 @@ GameObject:
   - component: {fileID: 259197955}
   - component: {fileID: 259197956}
   - component: {fileID: 259197957}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4717,7 +4717,7 @@ GameObject:
   - component: {fileID: 1075317243}
   - component: {fileID: 1075317244}
   - component: {fileID: 1075317245}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8217,7 +8217,7 @@ GameObject:
   - component: {fileID: 1778481339}
   - component: {fileID: 1778481340}
   - component: {fileID: 1778481341}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
