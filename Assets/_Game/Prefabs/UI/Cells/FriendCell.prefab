@@ -760,6 +760,7 @@ MonoBehaviour:
   nonInteractableMessage:
   - not in lobby
   - invite sent
+  - can't invite
   onSelected:
     m_PersistentCalls:
       m_Calls: []
