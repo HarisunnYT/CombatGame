@@ -36,7 +36,7 @@ public class ChatPanel : Panel
 
     public bool ChatOpen { get; private set; } = false;
 
-    private bool inputOpen = false;
+    public bool InputOpen { get; private set; } = false;
 
     private InControlInputModule inputModule;
 
@@ -58,12 +58,17 @@ public class ChatPanel : Panel
             Close();
 
         SteamLobbyManager.Instance.OnPrivateLobbyLeft += ClearMessages;
+        ServerManager.Instance.OnPlayerAdded += OnPlayerAdded;
     }
 
     private void OnDestroy()
     {
         if (SteamLobbyManager.Instance)
             SteamLobbyManager.Instance.OnPrivateLobbyLeft -= ClearMessages;
+        if (ServerManager.Instance)
+            ServerManager.Instance.OnPlayerAdded -= OnPlayerAdded;
+
+        VoiceCommsManager.Instance.SteamComms.TextPacketReceived -= SteamComms_TextPacketReceived;
     }
 
     private void Update()
@@ -71,12 +76,12 @@ public class ChatPanel : Panel
         if (CursorManager.Instance == null)
             return;
 
-        if (!inputOpen && CursorManager.Instance.GetLastInteractedProfile().Chat.WasPressed)
+        if (!InputOpen && CursorManager.Instance.GetLastInteractedProfile().Chat.WasPressed)
             ShowInput(true);
-        else if (inputOpen && CursorManager.Instance.GetLastInteractedProfile().Back.WasPressed)
+        else if (InputOpen && CursorManager.Instance.GetLastInteractedProfile().Back.WasPressed)
             ShowInput(false);
 
-        if (hideTarget != -1 && Time.time > hideTarget && inputOpen == false)
+        if (hideTarget != -1 && Time.time > hideTarget && InputOpen == false)
         {
             ShowChat(false, 0.5f);
             hideTarget = -1;
@@ -90,7 +95,7 @@ public class ChatPanel : Panel
     {
         inputField.gameObject.SetActive(show);
         box.enabled = show;
-        inputOpen = show;
+        InputOpen = show;
 
         if (show)
             StartCoroutine(FrameDelayEnableInput());
@@ -185,5 +190,11 @@ public class ChatPanel : Panel
         }
 
         messages.Clear();
+    }
+
+    private void OnPlayerAdded(ServerManager.ConnectedPlayer connectedPlayer)
+    {
+        if (ServerManager.Instance.GetPlayerLocal() != connectedPlayer)
+            DisplayMessage(connectedPlayer.Name, "<color=green>Connected</color>");
     }
 }

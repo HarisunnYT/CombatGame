@@ -12,3 +12,4 @@ w\s*a\s*n\s*k\s*e\s*r
 a\s*s\s*s\s*h\s*o\s*l\s*e
 c\s*o\s*c\s*k
 b\s*i\s*t\s*c\s*h
+n\s*i\s*g\s*g\s*e\s*r

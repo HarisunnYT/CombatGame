@@ -8,13 +8,12 @@ using UnityEngine;
 
 public class ProfanityFilter
 {
-    public const string profanityListPath = "Assets/_Game/Resources/ProfanityList.txt";
-
+    public const string profanityListFileName = "ProfanityList.txt";
     public const string replacement = "$#%!";
 
     public static string ReplaceProfanity(string message)
     {
-        string[] profanityWords = System.IO.File.ReadAllLines(profanityListPath);
+        string[] profanityWords = System.IO.File.ReadAllLines(profanityListFileName);
         string result = message;
 
         foreach (var profanity in profanityWords)

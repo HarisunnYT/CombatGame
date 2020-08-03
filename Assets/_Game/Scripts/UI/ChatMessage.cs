@@ -46,7 +46,7 @@ public class ChatMessage : MonoBehaviour
             targetTime = -1;
             IsShowing = false;
 
-            if (!PanelManager.Instance.GetPanel<ChatPanel>().ChatOpen)
+            if (!PanelManager.Instance.GetPanel<ChatPanel>().InputOpen)
                 canvasGroup.DOFade(0, 0.25f);
         }
     }

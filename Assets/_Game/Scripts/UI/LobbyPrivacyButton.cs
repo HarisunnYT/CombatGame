@@ -6,9 +6,9 @@ public class LobbyPrivacyButton : BetterButton
     [SerializeField]
     private TMP_Text privacyText;
 
-    protected override void Awake()
+    protected override void OnEnable()
     {
-        base.Awake();
+        base.OnEnable();
 
         UpdateText();
     }
