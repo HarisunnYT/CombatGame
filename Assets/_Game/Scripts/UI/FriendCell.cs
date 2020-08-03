@@ -89,10 +89,9 @@ public class FriendCell : MonoBehaviour
         bool alreadyInLobby = SteamLobbyManager.Instance.PrivateLobby.HasValue && SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id == Friend.Id;
         bool friendInPrivateLobby = isPlayingThisGame && string.IsNullOrEmpty(Friend.GameInfo.Value.Lobby.Value.GetData(SteamLobbyManager.PublicLobbyKey));
         bool searching = SteamLobbyManager.Instance.Searching;
-        bool sameVersion = isPlayingThisGame && Friend.GameInfo.Value.Lobby.Value.GetData(SteamLobbyManager.VersionKey) == Application.version;
 
         //set join button message index
-        bool result = isPlayingThisGame && !alreadyInLobby && friendInPrivateLobby && !searching && sameVersion;
+        bool result = isPlayingThisGame && !alreadyInLobby && friendInPrivateLobby && !searching;
         if (result)
             joinButton.SetInteractable(true);
         else
@@ -103,8 +102,6 @@ public class FriendCell : MonoBehaviour
                 joinButton.SetInteractable(false, 1);
             else if (searching)
                 joinButton.SetInteractable(false, 2);
-            else if (!sameVersion)
-                joinButton.SetInteractable(false, 3);
         }
     }
 

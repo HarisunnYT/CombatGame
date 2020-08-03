@@ -381,7 +381,23 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                     PrivateLobby.Value.SetData(VersionKey, Application.version);
                 }
                 else
+                {
+                    if (PrivateLobby.Value.GetData(VersionKey) != Application.version)
+                    {
+                        if (ExitManager.Instance)
+                            ExitManager.Instance.ExitMatch(ExitType.Leave);
+                        else
+                        {
+                            PanelManager.Instance.ShowPanel<PlayPanel>();
+                            LeavePrivateLobby();
+                        }
+
+                        ErrorManager.Instance.EncounteredError("104");
+                        return;
+                    }
+
                     CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
+                }
             }
         };
 
@@ -416,7 +432,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void JoinFriendLobby(Lobby lobby)
     {
-        PanelManager.Instance.ShowPanel<JoiningFriendPanel>();
+        if (SceneLoader.IsMainMenu)
+            PanelManager.Instance.ShowPanel<JoiningFriendPanel>();
 
         StopClient(); 
         StopServer();
@@ -472,7 +489,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         if (PrivateLobby != null)
         {
             foreach (var data in PrivateLobby.Value.Data)
-                PrivateLobby.Value.DeleteData(data.Key);
+            {
+                if (data.Key != VersionKey) //we don't want to delete this type of key
+                    PrivateLobby.Value.DeleteData(data.Key);
+            }
         }
     }
 

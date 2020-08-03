@@ -59,7 +59,7 @@ public class CameraFollowPlayers : MonoBehaviour
 
         foreach (var target in FightManager.Instance.AlivePlayers)
         {
-            if (ServerManager.Instance == null)
+            if (ServerManager.Instance == null || ServerManager.Instance.GetPlayer(target) == null)
                 return default;
 
             PlayerController pc = ServerManager.Instance.GetPlayer(target).PlayerController;
