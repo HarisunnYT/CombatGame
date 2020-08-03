@@ -24,7 +24,7 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
         if (FightManager.Instance) //this MUST be called before remove player
             GameInterfaces.OnPlayerDisconnected(index);
 
-        if (PanelManager.Instance && ServerManager.Instance && PanelManager.Instance.GetPanel<ChatPanel>())
+        if (PanelManager.Instance && ServerManager.Instance && PanelManager.Instance.GetPanel<ChatPanel>() != null && ServerManager.Instance.GetPlayer(index) != null)
             PanelManager.Instance.GetPanel<ChatPanel>().DisplayMessage(ServerManager.Instance.GetPlayer(index).Name, "<color=red>Disconnected</color>"); //TODO maybe move this
 
         if (ServerManager.Instance)
@@ -169,5 +169,12 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     public void RpcCountdownOver()
     {
         FightManager.Instance.CountdownOver();
+    }
+
+    [ClientRpc]
+    public void RpcSetPlayerSpawnPosition(int playerId, int spawnPositionsIndex)
+    {
+        if (ServerManager.Instance.GetPlayerLocal().PlayerID == playerId)
+            MatchManager.Instance.SetPlayerSpawn(ServerManager.Instance.GetPlayerLocal().PlayerController, spawnPositionsIndex);
     }
 }

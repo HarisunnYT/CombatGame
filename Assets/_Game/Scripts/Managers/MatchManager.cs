@@ -47,7 +47,6 @@ public class MatchManager : Singleton<MatchManager>
     private RoundPhase currentPhase;
 
     private float buyPhaseCountdownTimer = 0;
-    private int spawnIndex = 0;
 
     #endregion
 
@@ -119,8 +118,6 @@ public class MatchManager : Singleton<MatchManager>
 
     private void BeginBuyPhase()
     {
-        spawnIndex = 0;
-
         foreach (var player in ServerManager.Instance.Players)
         {
             player.PlayerController.ResetCharacter();
@@ -202,9 +199,36 @@ public class MatchManager : Singleton<MatchManager>
             return 0;
     }
 
+    public void ResetSpawnPositions()
+    {
+        foreach(var spawnPos in spawnPositions)
+            spawnPos.ResetData();
+    }
+
     public void SetPlayerSpawn(PlayerController player)
     {
-        spawnPositions[spawnIndex++].SetPlayerSpawn(player);
+        List<SpawnPosition> availableSpawns = spawnPositions.ToList();
+        for (int i = 0; i < availableSpawns.Count; i++)
+        {
+            if (availableSpawns[i].Occupied)
+                availableSpawns.RemoveAt(i);
+        }
+
+        int randomAvailableIndex = Random.Range(0, availableSpawns.Count);
+        int actualIndex = 0;
+        for (int i = 0; i < spawnPositions.Length; i++)
+        {
+            if (spawnPositions[i] == availableSpawns[randomAvailableIndex])
+                actualIndex = i;
+        }
+
+        availableSpawns[randomAvailableIndex].SetPlayerSpawn(player);
+        NetworkManager.Instance.RoomPlayer.RpcSetPlayerSpawnPosition(player.PlayerID, actualIndex);
+    }
+
+    public void SetPlayerSpawn(PlayerController player, int spawnPositionIndex)
+    {
+        spawnPositions[spawnPositionIndex].SetPlayerSpawn(player);
     }
 
     public bool HasPlayerWon()
@@ -236,7 +260,9 @@ public class MatchManager : Singleton<MatchManager>
         if (!currentFight.AlivePlayers.Contains(id))
             currentFight.AlivePlayers.Add(id);
 
-        SetPlayerSpawn(player);
+        if (SteamLobbyManager.Instance.PublicHost)
+            SetPlayerSpawn(player);
+
         wins.Add(player, 0);
     }
 

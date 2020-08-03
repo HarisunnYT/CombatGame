@@ -1,4 +1,8 @@
 f\s*u\s*c\s*k
+f\s*u\s*u\s*c\s*k
+f\s*u\s*u\s*u\s*c\s*k
+f\s*u\s*u\s*u\s*u\s*c\s*k
+f\s*u\s*u\s*u\s*u\s*u\s*c\s*k
 s\s*h\s*i\s*t
 d\s*i\s*c\s*k
 c\s*u\s*n\s*t

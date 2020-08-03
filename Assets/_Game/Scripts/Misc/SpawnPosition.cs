@@ -7,6 +7,8 @@ public class SpawnPosition : MonoBehaviour
     [SerializeField]
     private int spawnDirection;
 
+    public bool Occupied { get; private set; }
+
     public void SetPlayerSpawn(PlayerController player)
     {
         player.transform.position = transform.position;
@@ -16,6 +18,13 @@ public class SpawnPosition : MonoBehaviour
 
         player.SetDirection(spawnDirection);
         player.DisableInput();
+
+        Occupied = true;
+    }
+
+    public void ResetData()
+    {
+        Occupied = false;
     }
 
     private void OnDrawGizmos()

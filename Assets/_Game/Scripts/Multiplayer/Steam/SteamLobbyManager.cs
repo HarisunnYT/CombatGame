@@ -639,6 +639,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
+        ServerManager.Instance.Players.Clear();
+
         IsPrivateMatch = false;
 
         if (PublicLobby.HasValue)
