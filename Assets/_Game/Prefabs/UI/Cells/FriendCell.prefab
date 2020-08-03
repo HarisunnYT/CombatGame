@@ -493,6 +493,9 @@ MonoBehaviour:
   interactableMessage: join lobby
   nonInteractableMessage:
   - not joinable
+  - already in friend's lobby
+  - you are searching
+  - game versions do not match
   onSelected:
     m_PersistentCalls:
       m_Calls: []

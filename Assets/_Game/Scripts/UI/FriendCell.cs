@@ -86,11 +86,26 @@ public class FriendCell : MonoBehaviour
             transform.SetAsFirstSibling();
 
         bool isPlayingThisGame = Friend.IsPlayingThisGame && Friend.GameInfo.HasValue && Friend.GameInfo.Value.Lobby != null;
-        bool inLobby = !SteamLobbyManager.Instance.PrivateLobby.HasValue || SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id != Friend.Id;
+        bool alreadyInLobby = SteamLobbyManager.Instance.PrivateLobby.HasValue && SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id == Friend.Id;
         bool friendInPrivateLobby = isPlayingThisGame && string.IsNullOrEmpty(Friend.GameInfo.Value.Lobby.Value.GetData(SteamLobbyManager.PublicLobbyKey));
         bool searching = SteamLobbyManager.Instance.Searching;
+        bool sameVersion = isPlayingThisGame && Friend.GameInfo.Value.Lobby.Value.GetData(SteamLobbyManager.VersionKey) == Application.version;
 
-        joinButton.SetInteractable(isPlayingThisGame && inLobby && friendInPrivateLobby && !searching);
+        //set join button message index
+        bool result = isPlayingThisGame && !alreadyInLobby && friendInPrivateLobby && !searching && sameVersion;
+        if (result)
+            joinButton.SetInteractable(true);
+        else
+        {
+            if (!isPlayingThisGame || !friendInPrivateLobby)
+                joinButton.SetInteractable(false, 0);
+            else if (alreadyInLobby)
+                joinButton.SetInteractable(false, 1);
+            else if (searching)
+                joinButton.SetInteractable(false, 2);
+            else if (!sameVersion)
+                joinButton.SetInteractable(false, 3);
+        }
     }
 
     public void JoinFriend()

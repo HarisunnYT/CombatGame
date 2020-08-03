@@ -25,8 +25,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private const string publicSearchKey = "public_search";
     private const string leaveMatchWithPartyKey = "leave_match_with_party";
     private const string kickPlayerKey = "kick_player";
-    private const string versionKey = "version";
 
+    public const string VersionKey = "version";
     public const string PublicLobbyKey = "public_lobby";
 
     #endregion
@@ -378,6 +378,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 {
                     ConnectedToPrivateLobbyServer();
                     CreatePrivateLobby();
+                    PrivateLobby.Value.SetData(VersionKey, Application.version);
                 }
                 else
                     CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
@@ -560,7 +561,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                         }
 
                         //lobby must be of the same version as the client
-                        if (availableLobbies[i].GetData(versionKey) != Application.version)
+                        if (availableLobbies[i].GetData(VersionKey) != Application.version)
                         {
                             availableLobbies.RemoveAt(i);
                             continue;
@@ -629,7 +630,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         PublicLobby = lobby;
         PublicLobby.Value.SetData(PublicLobbyKey, "true");
-        PublicLobby.Value.SetData(versionKey, Application.version);
+        PublicLobby.Value.SetData(VersionKey, Application.version);
 
         SetPrivateLobbyJoinable(false, true);
 
