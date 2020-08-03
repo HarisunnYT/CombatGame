@@ -763,6 +763,7 @@ MonoBehaviour:
   - not in lobby
   - invite sent
   - can't invite
+  - already in friend's lobby
   onSelected:
     m_PersistentCalls:
       m_Calls: []

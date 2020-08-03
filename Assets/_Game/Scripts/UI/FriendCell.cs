@@ -5,6 +5,7 @@ using Steamworks;
 using TMPro;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using System.Linq;
 
 public class FriendCell : MonoBehaviour
 {
@@ -76,19 +77,29 @@ public class FriendCell : MonoBehaviour
     {
         background.color = Friend.IsOnline && Friend.IsPlayingThisGame ? Color.white : offlineColor;
 
-        if (!inviteSent)
-        {
-            bool canInvite = SteamLobbyManager.Instance.PrivateLobby != null && SteamLobbyManager.Instance.PublicLobby == null;
-            inviteButton.SetInteractable(canInvite, SteamLobbyManager.Instance.PublicLobby != null ? 2 : 0);
-        }
-
-        if (Friend.IsOnline && Friend.IsPlayingThisGame)
-            transform.SetAsFirstSibling();
-
         bool isPlayingThisGame = Friend.IsPlayingThisGame && Friend.GameInfo.HasValue && Friend.GameInfo.Value.Lobby != null;
         bool alreadyInLobby = SteamLobbyManager.Instance.PrivateLobby.HasValue && SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id == Friend.Id;
         bool friendInPrivateLobby = isPlayingThisGame && string.IsNullOrEmpty(Friend.GameInfo.Value.Lobby.Value.GetData(SteamLobbyManager.PublicLobbyKey));
         bool searching = SteamLobbyManager.Instance.Searching;
+
+        if (!inviteSent)
+        {
+            bool canInvite = SteamLobbyManager.Instance.PrivateLobby != null && SteamLobbyManager.Instance.PublicLobby == null;
+            if (canInvite)
+                inviteButton.SetInteractable(true);
+            else
+            {
+                if (SteamLobbyManager.Instance.PublicLobby != null)
+                    inviteButton.SetInteractable(false, 2);
+                else if (alreadyInLobby)
+                    inviteButton.SetInteractable(false, 3);
+                else
+                    inviteButton.SetInteractable(false, 0);
+            }
+        }
+
+        if (Friend.IsOnline && Friend.IsPlayingThisGame)
+            transform.SetAsFirstSibling();
 
         //set join button message index
         bool result = isPlayingThisGame && !alreadyInLobby && friendInPrivateLobby && !searching;

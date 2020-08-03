@@ -17,9 +17,6 @@ public class PrivateLobbyPanel : Panel
     private GameObject privacyToggle;
 
     [SerializeField]
-    private TMP_Text privacyStateText;
-
-    [SerializeField]
     private BetterButton leaveButton;
 
     [Space()]
@@ -112,16 +109,6 @@ public class PrivateLobbyPanel : Panel
     public void ShowFriendsList()
     {
         PanelManager.Instance.ShowPanel<FriendsListPanel>();
-    }
-
-    public void LobbyPrivacyChanged(bool isOn)
-    {
-        if (isOn)
-            SteamLobbyManager.Instance.PrivateLobby.Value.SetFriendsOnly();
-        else
-            SteamLobbyManager.Instance.PrivateLobby.Value.SetPrivate();
-
-        privacyStateText.text = isOn ? "Public" : "Private";
     }
 
     private void UpdatePlayerCells()

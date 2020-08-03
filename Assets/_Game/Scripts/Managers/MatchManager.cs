@@ -123,6 +123,7 @@ public class MatchManager : Singleton<MatchManager>
             player.PlayerController.ResetCharacter();
         }
 
+        ResetSpawnPositions();
         buyPhaseCountdownTimer = ServerManager.Time + buyPhaseTimeInSeconds;
 
         if (ServerManager.Instance.IsOnlineMatch)
@@ -199,7 +200,7 @@ public class MatchManager : Singleton<MatchManager>
             return 0;
     }
 
-    public void ResetSpawnPositions()
+    private void ResetSpawnPositions()
     {
         foreach(var spawnPos in spawnPositions)
             spawnPos.ResetData();

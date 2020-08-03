@@ -63,6 +63,15 @@ public class BetterButton : Button, IInteractableMessage
         onUnselected?.Invoke();
     }
 
+    public override void OnSubmit(BaseEventData eventData)
+    {
+        base.OnSubmit(eventData);
+
+        OnClicked();
+    }
+
+    protected virtual void OnClicked() { }
+
     public void SetInteractable(bool interactable, int nonInteractableIndex = 0)
     {
         NonInteractableIndex = nonInteractableIndex;

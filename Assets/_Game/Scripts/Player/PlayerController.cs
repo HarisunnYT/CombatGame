@@ -324,22 +324,6 @@ public class PlayerController : Character, IKnockable
         }
     }
 
-    public void DisableInput()
-    {
-        InputEnabled = false;
-        inputDisabledCounter++;
-    }
-
-    public void EnableInput()
-    {
-        inputDisabledCounter--;
-        if (inputDisabledCounter <= 0)
-        {
-            inputDisabledCounter = 0;
-            InputEnabled = true;
-        }
-    }
-
     public void DisablePlayerToPlayerCollisions(bool disable)
     {
         foreach(var player in ServerManager.Instance.Players)
@@ -413,7 +397,7 @@ public class PlayerController : Character, IKnockable
 
     #endregion
 
-    #region DISABLE_INPUT
+    #region INPUT
 
     public void DisableHorizontalMovement(float duration)
     {
@@ -449,6 +433,22 @@ public class PlayerController : Character, IKnockable
         verticalMovementCoroutine = null;
     }
 
-#endregion
+    public void DisableInput()
+    {
+        InputEnabled = false;
+        inputDisabledCounter++;
+    }
+
+    public void EnableInput()
+    {
+        inputDisabledCounter--;
+        if (inputDisabledCounter <= 0)
+        {
+            inputDisabledCounter = 0;
+            InputEnabled = true;
+        }
+    }
+
+    #endregion
 
 }

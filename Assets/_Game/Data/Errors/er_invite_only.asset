@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fe98c74a31b20a4ba1b037058963059, type: 3}
-  m_Name: er_couldn't_join_private_lobby
+  m_Name: er_invite_only
   m_EditorClassIdentifier: 
-  ErrorCode: 104
+  ErrorCode: 105
   ErrorMessages:
-  - Game versions do not match... one of you need to update!
+  - Your friend's lobby is invite only

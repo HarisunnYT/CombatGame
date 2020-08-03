@@ -28,6 +28,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public const string VersionKey = "version";
     public const string PublicLobbyKey = "public_lobby";
+    public const string InviteOnlyKey = "invite_only";
 
     #endregion
 
@@ -383,25 +384,29 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 else
                 {
                     if (PrivateLobby.Value.GetData(VersionKey) != Application.version)
-                    {
-                        if (ExitManager.Instance)
-                            ExitManager.Instance.ExitMatch(ExitType.Leave);
-                        else
-                        {
-                            PanelManager.Instance.ShowPanel<PlayPanel>();
-                            LeavePrivateLobby();
-                        }
-
-                        ErrorManager.Instance.EncounteredError("104");
-                        return;
-                    }
-
-                    CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
+                        CouldntJoinPrivateLobby("104");
+                    if (PrivateLobby.Value.GetData(InviteOnlyKey) == "true")
+                        CouldntJoinPrivateLobby("105");
+                    else
+                        CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
                 }
             }
         };
 
         Debug.Log("Joined private lobby");
+    }
+
+    private void CouldntJoinPrivateLobby(string errorCode)
+    {
+        if (ExitManager.Instance)
+            ExitManager.Instance.ExitMatch(ExitType.Leave);
+        else
+        {
+            PanelManager.Instance.ShowPanel<PlayPanel>();
+            LeavePrivateLobby();
+        }
+
+        ErrorManager.Instance.EncounteredError(errorCode);
     }
 
     public void ConnectedToPrivateLobbyServer()
@@ -490,7 +495,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         {
             foreach (var data in PrivateLobby.Value.Data)
             {
-                if (data.Key != VersionKey) //we don't want to delete this type of key
+                if (data.Key != VersionKey && data.Key != InviteOnlyKey) //we don't want to delete this type of key
                     PrivateLobby.Value.DeleteData(data.Key);
             }
         }
@@ -534,7 +539,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void SetPrivateLobbyJoinable(bool joinable, bool forced = false)
     {
         if (!forced)
+        {
             PrivateLobbyJoinable = joinable;
+            PrivateLobby.Value.SetData(InviteOnlyKey, (!joinable).ToString());
+        }
 
         PrivateLobby.Value.SetFriendsOnly();
         PrivateLobby.Value.SetJoinable(joinable);
