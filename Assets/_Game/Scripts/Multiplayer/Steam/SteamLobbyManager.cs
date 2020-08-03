@@ -91,6 +91,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     #region RUNTIME_VARIABLES
 
+    public SteamId InvitedFromId { get; set; }
+
     #endregion
 
     #region TASKS
@@ -385,7 +387,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 {
                     if (PrivateLobby.Value.GetData(VersionKey) != Application.version)
                         CouldntJoinPrivateLobby("104");
-                    else if (PrivateLobby.Value.GetData(InviteOnlyKey) == "true")
+                    else if (PrivateLobby.Value.GetData(InviteOnlyKey) == "True" && PrivateLobby.Value.Owner.Id != InvitedFromId)
                         CouldntJoinPrivateLobby("105");
                     else
                         CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
@@ -795,6 +797,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void OnLobbyInvite(Friend arg1, Lobby arg2)
     {
+        InvitedFromId = arg1.Id;
         PanelManager.Instance.GetPanel<FriendInvitePanel>().ShowPanel(arg1, arg2);
     }
 

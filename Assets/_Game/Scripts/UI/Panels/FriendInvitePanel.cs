@@ -26,6 +26,7 @@ public class FriendInvitePanel : Panel
 
     protected override void OnClose()
     {
+        SteamLobbyManager.Instance.InvitedFromId = default;
         CursorManager.Instance.HideCursor(0);
     }
 

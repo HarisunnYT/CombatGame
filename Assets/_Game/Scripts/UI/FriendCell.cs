@@ -78,7 +78,8 @@ public class FriendCell : MonoBehaviour
         background.color = Friend.IsOnline && Friend.IsPlayingThisGame ? Color.white : offlineColor;
 
         bool isPlayingThisGame = Friend.IsPlayingThisGame && Friend.GameInfo.HasValue && Friend.GameInfo.Value.Lobby != null;
-        bool alreadyInLobby = SteamLobbyManager.Instance.PrivateLobby.HasValue && SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id == Friend.Id;
+        bool alreadyInTheirLobby = SteamLobbyManager.Instance.PrivateLobby.HasValue && SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id == Friend.Id;
+        bool alreadyInMyLobby = isPlayingThisGame && Friend.GameInfo.Value.Lobby.Value.Owner.Id == SteamClient.SteamId;
         bool friendInPrivateLobby = isPlayingThisGame && string.IsNullOrEmpty(Friend.GameInfo.Value.Lobby.Value.GetData(SteamLobbyManager.PublicLobbyKey));
         bool searching = SteamLobbyManager.Instance.Searching;
 
@@ -91,7 +92,7 @@ public class FriendCell : MonoBehaviour
             {
                 if (SteamLobbyManager.Instance.PublicLobby != null)
                     inviteButton.SetInteractable(false, 2);
-                else if (alreadyInLobby)
+                else if (alreadyInTheirLobby || alreadyInMyLobby)
                     inviteButton.SetInteractable(false, 3);
                 else
                     inviteButton.SetInteractable(false, 0);
@@ -102,14 +103,14 @@ public class FriendCell : MonoBehaviour
             transform.SetAsFirstSibling();
 
         //set join button message index
-        bool result = isPlayingThisGame && !alreadyInLobby && friendInPrivateLobby && !searching;
+        bool result = isPlayingThisGame && !alreadyInTheirLobby && !alreadyInMyLobby && friendInPrivateLobby && !searching;
         if (result)
             joinButton.SetInteractable(true);
         else
         {
             if (!isPlayingThisGame || !friendInPrivateLobby)
                 joinButton.SetInteractable(false, 0);
-            else if (alreadyInLobby)
+            else if (alreadyInTheirLobby || alreadyInMyLobby)
                 joinButton.SetInteractable(false, 1);
             else if (searching)
                 joinButton.SetInteractable(false, 2);
