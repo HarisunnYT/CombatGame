@@ -25,6 +25,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private const string publicSearchKey = "public_search";
     private const string leaveMatchWithPartyKey = "leave_match_with_party";
     private const string kickPlayerKey = "kick_player";
+    private const string versionKey = "version";
 
     public const string PublicLobbyKey = "public_lobby";
 
@@ -557,6 +558,13 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                             CreatePublicMatchLobby();
                             return;
                         }
+
+                        //lobby must be of the same version as the client
+                        if (availableLobbies[i].GetData(versionKey) != Application.version)
+                        {
+                            availableLobbies.RemoveAt(i);
+                            continue;
+                        }
                     }
                     //found the correct lobby
                     //TODO sort by skill, location, ping etc
@@ -621,6 +629,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         PublicLobby = lobby;
         PublicLobby.Value.SetData(PublicLobbyKey, "true");
+        PublicLobby.Value.SetData(versionKey, Application.version);
 
         SetPrivateLobbyJoinable(false, true);
 

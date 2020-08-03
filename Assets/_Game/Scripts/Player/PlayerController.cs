@@ -52,13 +52,13 @@ public class PlayerController : Character, IKnockable
     #region RUNTIME_VARIABLES
 
     public bool InputEnabled { get; private set; }
-
     public Vector2 InputAxis { get; private set; }
 
     public bool HoldingJump { get; private set; } = false;
     public bool HorizontalMovementEnabled { get; private set; } = true;
     public bool VerticalMovementEnabled { get; private set; } = true;
     public int PlayerID { get; private set; } = -1;
+    public bool Spawned { get; private set; } = false;
 
     public FighterData Fighter { get; private set; }
     public CombatController CombatController { get; private set; }
@@ -72,6 +72,8 @@ public class PlayerController : Character, IKnockable
     private Coroutine verticalMovementCoroutine;
 
     private List<float> knockbackServerTimes = new List<float>(); //stops duplicate knockback calls
+
+    private int inputDisabledCounter = 0;
 
     #endregion
 
@@ -238,12 +240,18 @@ public class PlayerController : Character, IKnockable
 
         animator.SetBool("Dead", false);
         gameObject.layer = LayerMask.NameToLayer("Player");
+        SetSpawned(false);
     }
 
     public void DisableAllCombatColliders()
     {
         foreach (var col in combatColliders)
             col.Collider.enabled = false;
+    }
+
+    public void SetSpawned(bool spawned)
+    {
+        Spawned = spawned;
     }
 
     #region MOVEMENT
@@ -319,11 +327,17 @@ public class PlayerController : Character, IKnockable
     public void DisableInput()
     {
         InputEnabled = false;
+        inputDisabledCounter++;
     }
 
     public void EnableInput()
     {
-        InputEnabled = true;
+        inputDisabledCounter--;
+        if (inputDisabledCounter <= 0)
+        {
+            inputDisabledCounter = 0;
+            InputEnabled = true;
+        }
     }
 
     public void DisablePlayerToPlayerCollisions(bool disable)

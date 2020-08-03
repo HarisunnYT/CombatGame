@@ -66,7 +66,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   secondsTillDestroy: 5
-  torque: 5
+  torque: 25
 --- !u!212 &4952571543238207755
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -11,10 +11,14 @@ public class SpawnPosition : MonoBehaviour
 
     public void SetPlayerSpawn(PlayerController player)
     {
+        if (player.Spawned)
+            return;
+
         player.transform.position = transform.position;
         player.gameObject.SetActive(true);
 
         player.ResetCharacter();
+        player.SetSpawned(true);
 
         player.SetDirection(spawnDirection);
         player.DisableInput();
