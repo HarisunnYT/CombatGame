@@ -372,7 +372,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             joinedLobbyCallback = null;
             joiningPrivateLobbyTask = null;
 
-            if (roomEnter == RoomEnter.Success) //TODO SHOW ERRORS AND STUFF WHEN TRYING TO JOIN LOBBY
+            if (roomEnter == RoomEnter.Success) 
             {
                 PrivateLobby.Value.SetMemberData(FighterManager.LastPlayerFighterKey, FighterManager.Instance.LastPlayedFighterName);
                 if (PrivateHost)
@@ -385,7 +385,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 {
                     if (PrivateLobby.Value.GetData(VersionKey) != Application.version)
                         CouldntJoinPrivateLobby("104");
-                    if (PrivateLobby.Value.GetData(InviteOnlyKey) == "true")
+                    else if (PrivateLobby.Value.GetData(InviteOnlyKey) == "true")
                         CouldntJoinPrivateLobby("105");
                     else
                         CreateClient(PrivateLobby.Value.Owner.Id.Value.ToString());
@@ -542,10 +542,12 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         {
             PrivateLobbyJoinable = joinable;
             PrivateLobby.Value.SetData(InviteOnlyKey, (!joinable).ToString());
+            PrivateLobby.Value.SetJoinable(true);
         }
+        else
+            PrivateLobby.Value.SetJoinable(joinable);
 
         PrivateLobby.Value.SetFriendsOnly();
-        PrivateLobby.Value.SetJoinable(joinable);
     }
 
 #endregion
