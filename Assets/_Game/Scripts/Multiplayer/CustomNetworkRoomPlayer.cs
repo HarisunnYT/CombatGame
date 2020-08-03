@@ -25,7 +25,10 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
             GameInterfaces.OnPlayerDisconnected(index);
 
         if (PanelManager.Instance && ServerManager.Instance && PanelManager.Instance.GetPanel<ChatPanel>() != null && ServerManager.Instance.GetPlayer(index) != null)
-            PanelManager.Instance.GetPanel<ChatPanel>().DisplayMessage(ServerManager.Instance.GetPlayer(index).Name, "<color=red>Disconnected</color>"); //TODO maybe move this
+        {
+            if (ServerManager.Instance.GetPlayerLocal().PlayerID != index)
+                PanelManager.Instance.GetPanel<ChatPanel>().DisplayMessage(ServerManager.Instance.GetPlayer(index).Name, "<color=red>Disconnected</color>"); 
+        }
 
         if (ServerManager.Instance)
             ServerManager.Instance.RemovePlayer(index);

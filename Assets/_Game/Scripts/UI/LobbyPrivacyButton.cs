@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class LobbyPrivacyButton : BetterButton
 {
     [SerializeField]
     private TMP_Text privacyText;
 
-    protected override void OnEnable()
+    protected override void Awake()
     {
+        base.Awake();
+
         UpdateText();
     }
 

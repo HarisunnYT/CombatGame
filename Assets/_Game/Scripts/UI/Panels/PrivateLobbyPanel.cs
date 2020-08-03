@@ -162,6 +162,8 @@ public class PrivateLobbyPanel : Panel
             }
         }
 
+        privacyToggle.gameObject.SetActive(SteamLobbyManager.Instance.PrivateHost);
+
         UpdatePlayersFoundText();
 
         if (!SteamLobbyManager.Instance.Searching)
