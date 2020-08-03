@@ -77,13 +77,20 @@ public class FriendCell : MonoBehaviour
         background.color = Friend.IsOnline && Friend.IsPlayingThisGame ? Color.white : offlineColor;
 
         if (!inviteSent)
-            inviteButton.SetInteractable(SteamLobbyManager.Instance.PrivateLobby != null, 0);
+        {
+            bool canInvite = SteamLobbyManager.Instance.PrivateLobby != null && SteamLobbyManager.Instance.PublicLobby == null;
+            inviteButton.SetInteractable(canInvite, SteamLobbyManager.Instance.PublicLobby != null ? 2 : 0);
+        }
 
         if (Friend.IsOnline && Friend.IsPlayingThisGame)
             transform.SetAsFirstSibling();
 
-        joinButton.SetInteractable(Friend.IsPlayingThisGame && Friend.GameInfo.HasValue && Friend.GameInfo.Value.Lobby != null && (!SteamLobbyManager.Instance.PrivateLobby.HasValue ||
-                                                                                                                                   SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id != Friend.Id));
+        bool isPlayingThisGame = Friend.IsPlayingThisGame && Friend.GameInfo.HasValue && Friend.GameInfo.Value.Lobby != null;
+        bool inLobby = !SteamLobbyManager.Instance.PrivateLobby.HasValue || SteamLobbyManager.Instance.PrivateLobby.Value.Owner.Id != Friend.Id;
+        bool friendInPrivateLobby = isPlayingThisGame && string.IsNullOrEmpty(Friend.GameInfo.Value.Lobby.Value.GetData(SteamLobbyManager.PublicLobbyKey));
+        bool searching = SteamLobbyManager.Instance.Searching;
+
+        joinButton.SetInteractable(isPlayingThisGame && inLobby && friendInPrivateLobby && !searching);
     }
 
     public void JoinFriend()

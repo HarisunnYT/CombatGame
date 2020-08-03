@@ -24,7 +24,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     private const string privateLobbyStartedKey = "private_lobby_started";
     private const string publicSearchKey = "public_search";
     private const string leaveMatchWithPartyKey = "leave_match_with_party";
-    private const string kickPlayer = "kick_player";
+    private const string kickPlayerKey = "kick_player";
+
+    public const string PublicLobbyKey = "public_lobby";
 
     #endregion
 
@@ -80,6 +82,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public bool InSoloLobby { get { return PrivateLobby == null || PrivateLobby.Value.MemberCount <= 1; } }
 
     public bool PrivateHostIsPublicHost { get { return PrivateLobby.Value.Owner.Id == PublicLobby.Value.Owner.Id; } }
+
+    public bool PrivateLobbyJoinable { get; private set; } = true;
 
     #endregion
 
@@ -262,7 +266,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                     {
                         HostPulledPartyFromMatch();
                     }
-                    else if (data.Key == kickPlayer)
+                    else if (data.Key == kickPlayerKey)
                     {
                         OnPlayerKicked(data.Value);
                     }
@@ -344,7 +348,10 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             CreateServer();
 
         if (creatingPrivateLobbyTask != null || PrivateLobby != null)
+        {
+            SetPrivateLobbyJoinable(PrivateLobbyJoinable, true);
             return;
+        }
 
         creatingPrivateLobbyTask = SteamMatchmaking.CreateLobbyAsync(MaxLobbyMembers);
         Debug.Log("Created private lobby");
@@ -355,10 +362,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         PrivateLobby = lobby;
 
         if (PrivateHost)
-        {
-            PrivateLobby.Value.SetFriendsOnly();
-            PrivateLobby.Value.SetJoinable(true);
-        }
+            SetPrivateLobbyJoinable(true);
 
         joiningPrivateLobbyTask = PrivateLobby.Value.Join();
         joinedLobbyCallback = (RoomEnter roomEnter) =>
@@ -449,7 +453,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void PlayPrivateMatch()
     {
         PublicLobby = PrivateLobby;
-        PrivateLobby.Value.SetJoinable(false);
+        SetPrivateLobbyJoinable(false, true);
 
         IsPrivateMatch = true;
 
@@ -491,7 +495,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void KickPlayer(ulong steamId)
     {
-        SendPrivateMessage(kickPlayer, steamId.ToString());
+        SendPrivateMessage(kickPlayerKey, steamId.ToString());
     }
 
     private void OnPlayerKicked(string steamId)
@@ -505,6 +509,15 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
+    public void SetPrivateLobbyJoinable(bool joinable, bool forced = false)
+    {
+        if (!forced)
+            PrivateLobbyJoinable = joinable;
+
+        PrivateLobby.Value.SetFriendsOnly();
+        PrivateLobby.Value.SetJoinable(joinable);
+    }
+
 #endregion
 
 #region MATCH_MAKING
@@ -512,10 +525,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void SearchForMatch()
     {
         Searching = true;
-        PrivateLobby.Value.SetJoinable(false);
+        SetPrivateLobbyJoinable(false, true);
 
         OnBeganSearch?.Invoke();
-
         LookForAvailablePublicMatch(PrivateLobby.Value.Members.Count());
     }
 
@@ -568,7 +580,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     public void CancelSearch()
     {
         Searching = false;
-        PrivateLobby.Value.SetJoinable(true);
+        SetPrivateLobbyJoinable(PrivateLobbyJoinable, true);
 
         OnCancelledSearch?.Invoke();
         SendPrivateMessage(publicSearchKey, "false");
@@ -608,9 +620,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             return;
 
         PublicLobby = lobby;
-        PublicLobby.Value.SetPublic();
+        PublicLobby.Value.SetData(PublicLobbyKey, "true");
 
-        PrivateLobby.Value.SetJoinable(false);
+        SetPrivateLobbyJoinable(false, true);
 
         //send a message to all members in the private lobby to join the public lobby that has been created
         SendPrivateMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
