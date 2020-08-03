@@ -174,7 +174,6 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     [ClientRpc]
     public void RpcSetPlayerSpawnPosition(int playerId, int spawnPositionsIndex)
     {
-        if (ServerManager.Instance.GetPlayerLocal().PlayerID == playerId)
-            MatchManager.Instance.SetPlayerSpawn(ServerManager.Instance.GetPlayerLocal().PlayerController, spawnPositionsIndex);
+        MatchManager.Instance.SetPlayerSpawn(ServerManager.Instance.GetPlayer(playerId).PlayerController, spawnPositionsIndex);
     }
 }

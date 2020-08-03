@@ -30,13 +30,13 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
 
         MatchManager.Instance.ResetSpawnPositions();
 
-        if (SteamLobbyManager.Instance.PublicHost && AlivePlayers.Count == 0)
+        if (AlivePlayers.Count == 0)
         {
             foreach(var player in ServerManager.Instance.Players)
             {
                 AlivePlayers.Add(player.PlayerID);
 
-                if (player.PlayerController != null) //there's a chance it may not exist yet if it's the first round
+                if (SteamLobbyManager.Instance.PublicHost && player.PlayerController != null) //there's a chance it may not exist yet if it's the first round
                     MatchManager.Instance.SetPlayerSpawn(player.PlayerController);
             }
         }

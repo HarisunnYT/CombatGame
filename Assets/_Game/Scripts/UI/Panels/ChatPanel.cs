@@ -120,7 +120,7 @@ public class ChatPanel : Panel
 
         if (show)
             CursorManager.Instance.HideAllCursors();
-        else
+        else if (SceneLoader.IsMainMenu)
             CursorManager.Instance.ShowAllCursors();
 
         if (GameManager.Instance)
