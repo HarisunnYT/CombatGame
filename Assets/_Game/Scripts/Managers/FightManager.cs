@@ -131,7 +131,6 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
 
         CameraManager.Instance.CameraFollow.ZoomInOnPlayer(winner.gameObject, new Vector2(0, 0.75f), 2, 1, () =>
         {
-            winner.EnableInput();
             if (MatchManager.Instance.HasPlayerWon())
                 GameComplete();
             else

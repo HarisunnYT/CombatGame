@@ -9,7 +9,7 @@ public class FighterManager : PersistentSingleton<FighterManager>
     private FighterData[] fighters;
 
     public string LastPlayedFighterName { get; private set; }
-    public bool HasLocalPlayerReadiedUp { get; private set; }
+    public bool HasLocalPlayerReadiedUp { get; private set; } = false;
 
     public const string LastPlayerFighterKey = "last_player_fighter";
 

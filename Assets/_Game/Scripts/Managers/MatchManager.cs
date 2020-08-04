@@ -78,9 +78,7 @@ public class MatchManager : Singleton<MatchManager>
     public void BeginPhase(RoundPhase phase)
     {
         if (SteamLobbyManager.Instance.PublicHost)
-        {
             NetworkManager.Instance.RoomPlayer.RpcBeginPhase((int)phase);
-        }
     }
 
     /// <summary>
@@ -90,7 +88,10 @@ public class MatchManager : Singleton<MatchManager>
     public void BeginPhaseClient(RoundPhase phase)
     {
         if (phase == RoundPhase.Fight_Phase)
+        {
+            CursorManager.Instance.HideAllCursors();
             BeginFightPhase();
+        }
         else
             BeginBuyPhase();
 
@@ -157,6 +158,7 @@ public class MatchManager : Singleton<MatchManager>
 
         foreach(var player in ServerManager.Instance.Players)
         {
+            player.PlayerController.EnableInput();
             player.PlayerController.gameObject.SetActive(false);
         }
     }
@@ -174,7 +176,7 @@ public class MatchManager : Singleton<MatchManager>
 
     private void Update()
     {
-        if (currentPhase == RoundPhase.Buy_Phase)
+        if (SteamLobbyManager.Instance.PublicHost && currentPhase == RoundPhase.Buy_Phase)
         {
             int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - ServerManager.Time);
             if (roundedTime <= 0)
@@ -209,7 +211,7 @@ public class MatchManager : Singleton<MatchManager>
     public void SetPlayerSpawn(PlayerController player)
     {
         List<SpawnPosition> availableSpawns = spawnPositions.ToList();
-        for (int i = 0; i < availableSpawns.Count; i++)
+        for (int i = availableSpawns.Count - 1; i > 0; i--)
         {
             if (availableSpawns[i].Occupied)
                 availableSpawns.RemoveAt(i);

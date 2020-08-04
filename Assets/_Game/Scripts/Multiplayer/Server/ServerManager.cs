@@ -1,7 +1,9 @@
 ﻿using Mirror;
 using Steamworks;
+using Steamworks.Data;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ServerManager : PersistentSingleton<ServerManager>
@@ -216,6 +218,15 @@ public class ServerManager : PersistentSingleton<ServerManager>
             {
                 return fighter.FighterName;
             }
+        }
+    }
+
+    public void ClearPlayersExcludingPrivateLobby()
+    {
+        for (int i = 0; i < Players.Count; i++)
+        {
+            if (!SteamLobbyManager.Instance.PrivateLobbyContainsPlayer(Players[i].SteamId))
+                Players.RemoveAt(i);
         }
     }
 

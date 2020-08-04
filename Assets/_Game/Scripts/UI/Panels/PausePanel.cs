@@ -42,7 +42,11 @@ public class PausePanel : Panel
 
         exitText.text = ServerManager.Instance.IsOnlineMatch ? "Leave" : "Exit";
         CursorManager.Instance.ShowCursor(interactingProfile.GUID);
-        ServerManager.Instance.GetPlayer(CursorManager.Instance.GetCursor(interactingProfile.GUID).PlayerIndex).PlayerController.DisableInput();
+
+        if (ServerManager.Instance.IsOnlineMatch)
+            ServerManager.Instance.GetPlayerLocal().PlayerController.DisableInput();
+        else
+            ServerManager.Instance.GetPlayer(CursorManager.Instance.GetCursor(interactingProfile.GUID).PlayerIndex).PlayerController.DisableInput();
     }
 
     protected override void OnClose()
@@ -50,8 +54,11 @@ public class PausePanel : Panel
         if (CursorManager.Instance && interactingProfile != null)
         {
             CursorManager.Instance.HideCursor(interactingProfile.GUID);
-            ServerManager.Instance.GetPlayer(interactingProfile.GUID).PlayerController.EnableInput();
-            ServerManager.Instance.GetPlayer(CursorManager.Instance.GetCursor(interactingProfile.GUID).PlayerIndex).PlayerController.EnableInput();
+
+            if (ServerManager.Instance.IsOnlineMatch)
+                ServerManager.Instance.GetPlayerLocal().PlayerController.EnableInput();
+            else
+                ServerManager.Instance.GetPlayer(CursorManager.Instance.GetCursor(interactingProfile.GUID).PlayerIndex).PlayerController.EnableInput();
         }
 
         GameManager.Instance.PauseMenuOpened = false;

@@ -21,7 +21,6 @@ public class PauseManager : Singleton<PauseManager>
                 if (inputProfile.Menu.WasPressed && !pausePanel.gameObject.activeSelf)
                 {
                     Cursor cursor = CursorManager.Instance.GetCursor(inputProfile.GUID);
-                    ServerManager.Instance.GetPlayer(cursor.ControllerID).PlayerController.DisableInput();
                     PanelManager.Instance.GetPanel<PausePanel>().Show(inputProfile);
                 }
             }

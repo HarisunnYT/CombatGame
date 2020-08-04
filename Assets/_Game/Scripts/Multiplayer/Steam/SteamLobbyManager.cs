@@ -93,6 +93,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public SteamId InvitedFromId { get; set; }
 
+    private bool matchFound = false;
+
     #endregion
 
     #region TASKS
@@ -185,7 +187,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             joinedLobbyCallback = null;
         }
 
-        if (Searching)
+        if (Searching && matchFound)
             TryStartPublicGame();
     }
 
@@ -345,6 +347,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void CreatePrivateLobby()
     {
+        IsPrivateMatch = false;
+
         if (joiningPrivateLobbyTask != null) //already joining a lobby
             return;
 
@@ -531,7 +535,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
     {
         if (SteamClient.SteamId.Value.ToString() == steamId && PrivateLobby != null)
         {
-            LeavePrivateLobby(); //TODO Show kicked message
+            LeavePrivateLobby(); 
             OnKicked?.Invoke();
 
             ErrorManager.Instance.EncounteredError("103");
@@ -666,6 +670,8 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
         SetPrivateLobbyJoinable(false, true);
 
+        ServerManager.Instance.ClearPlayersExcludingPrivateLobby();
+
         //send a message to all members in the private lobby to join the public lobby that has been created
         SendPrivateMessage(publicSearchKey, lobby.Value.Id.Value.ToString());
 
@@ -681,8 +687,6 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void JoinedPublicLobby(Lobby? lobby)
     {
-        ServerManager.Instance.Players.Clear();
-
         IsPrivateMatch = false;
 
         if (PublicLobby.HasValue)
@@ -742,14 +746,16 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
                 CreateClient(PublicLobby.Value.Owner.Id.Value.ToString());
             }
 
+            matchFound = true;
             OnMatchFound?.Invoke();
         }
     }
 
     private void TryStartPublicGame()
     {
-        if (PublicLobby.HasValue && ServerManager.Instance.Players.Count >= MaxLobbyMembers && SceneLoader.IsMainMenu)
+        if (PublicLobby.HasValue && ServerManager.Instance.Players.Count >= PublicLobby.Value.MemberCount && SceneLoader.IsMainMenu)
         {
+            matchFound = false;
             SceneLoader.Instance.LoadScene("Lobby");
         }
     }
@@ -770,6 +776,17 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
             foreach (var data in PublicLobby.Value.Data)
                 PublicLobby.Value.DeleteData(data.Key);
         }
+    }
+
+    public bool PrivateLobbyContainsPlayer(SteamId id)
+    {
+        foreach(var player in PrivateLobby.Value.Members)
+        {
+            if (player.Id == id)
+                return true;
+        }
+
+        return false;
     }
 
 #endregion
