@@ -30,6 +30,8 @@ public class PurchasableMoveCell : MoveCell
                 playerRoundInfo = ServerManager.Instance.GetPlayer(cam.LocalPlayerIndex).PlayerController.PlayerRoundInfo;
         }
 
+        GetComponent<BetterButton>().SetInteractableMessage("<color=green>" + moveData.MoveName + "</color>: " + moveData.Description);
+
         priceText.text = Util.FormatToCurrency(moveData.Price);
         playerRoundInfo.OnEquipedMove += OnEquipedMove;
     }

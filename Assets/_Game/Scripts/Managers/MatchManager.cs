@@ -170,7 +170,7 @@ public class MatchManager : Singleton<MatchManager>
             GameObject manager = new GameObject("Fight Manager");
             currentFight = manager.AddComponent<FightManager>();
 
-            CameraManager.Instance.CameraFollow.ResetCamera();
+            CameraManager.Instance.ResetCamera();
         }
     }
 

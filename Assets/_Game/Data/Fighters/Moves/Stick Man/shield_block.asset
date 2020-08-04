@@ -18,3 +18,4 @@ MonoBehaviour:
   AttackType: 1
   Icon: {fileID: 0}
   Price: 500
+  Description: Block all in-coming attacks

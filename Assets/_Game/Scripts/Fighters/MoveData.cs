@@ -21,4 +21,8 @@ public class MoveData : ScriptableObject
     [Space()]
     public Sprite Icon;
     public int Price;
+
+    [Space()]
+    [Multiline]
+    public string Description;
 }

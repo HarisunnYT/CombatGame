@@ -129,7 +129,7 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
         hudPanel.HidePlayerCells(true);
         DetermineCashForPlayer(winner, 1);
 
-        CameraManager.Instance.CameraFollow.ZoomInOnPlayer(winner.gameObject, new Vector2(0, 0.75f), 2, 1, () =>
+        CameraManager.Instance.ZoomInOnPlayer(winner.gameObject, new Vector2(0, 0.75f), 2, 1, () =>
         {
             if (MatchManager.Instance.HasPlayerWon())
                 GameComplete();

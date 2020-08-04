@@ -18,3 +18,4 @@ MonoBehaviour:
   AttackType: 0
   Icon: {fileID: 0}
   Price: 350
+  Description: Slam your belly down (must be in air)

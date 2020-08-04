@@ -31,12 +31,18 @@ public class StickmanCombatController : CombatController
     [SerializeField]
     private float axeForce = 10;
 
+    [Header("Dash")]
+    [SerializeField]
+    private float dashForce = 10;
+
     protected override bool Attack(MoveData moveData)
     {
         if (moveData.name == "body_slam")
             return StartBodySlam();
         else if (moveData.name == "axe_throw")
             ThrowAxe();
+        else if (moveData.name == "dash")
+            Dash();
 
         return true;
     }
@@ -123,6 +129,16 @@ public class StickmanCombatController : CombatController
         axe.AddForce(playerController, new Vector3(direction, 0, 0), (float)force / 100, (ForceMode2D)forceMode2D);
         axe.RpcShow();
         NetworkServer.Spawn(axe.gameObject, conn);
+    }
+
+    #endregion
+
+    #region DASH
+
+    private void Dash()
+    {
+        rigidbody.velocity = Vector2.zero;
+        rigidbody.AddForce(new Vector2(playerController.Direction, 0) * dashForce, ForceMode2D.Impulse);
     }
 
     #endregion

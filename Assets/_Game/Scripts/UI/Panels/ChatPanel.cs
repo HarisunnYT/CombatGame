@@ -68,7 +68,8 @@ public class ChatPanel : Panel
         if (ServerManager.Instance)
             ServerManager.Instance.OnPlayerAdded -= OnPlayerAdded;
 
-        VoiceCommsManager.Instance.SteamComms.TextPacketReceived -= SteamComms_TextPacketReceived;
+        if (VoiceCommsManager.Instance)
+            VoiceCommsManager.Instance.SteamComms.TextPacketReceived -= SteamComms_TextPacketReceived;
     }
 
     private void Update()
