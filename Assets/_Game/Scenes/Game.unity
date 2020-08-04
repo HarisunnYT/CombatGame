@@ -2353,11 +2353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16810fd957d8d4549a264cb94f59b128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followSpeed: 10
-  zoomSpeed: 20
-  boundingBoxPadding: 2
-  near: 5
-  far: 10
+  followSpeed: 5
+  zoomSpeed: 3
+  boundingBoxPadding: 5
+  near: 4
+  far: 20
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
