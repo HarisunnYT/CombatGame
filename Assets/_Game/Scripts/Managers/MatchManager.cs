@@ -211,7 +211,7 @@ public class MatchManager : Singleton<MatchManager>
     public void SetPlayerSpawn(PlayerController player)
     {
         List<SpawnPosition> availableSpawns = spawnPositions.ToList();
-        for (int i = availableSpawns.Count - 1; i > 0; i--)
+        for (int i = availableSpawns.Count - 1; i >= 0; i--)
         {
             if (availableSpawns[i].Occupied)
                 availableSpawns.RemoveAt(i);
