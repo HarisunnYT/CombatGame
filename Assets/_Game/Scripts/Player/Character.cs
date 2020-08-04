@@ -52,7 +52,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
 
     public void OnDamaged(int amount, PlayerController player)
     {
-        if (!MatchManager.Instance.MatchStarted)
+        if (!MatchManager.Instance.MatchStarted || Invincible)
             return;
 
         if (ServerManager.Instance.IsOnlineMatch)
