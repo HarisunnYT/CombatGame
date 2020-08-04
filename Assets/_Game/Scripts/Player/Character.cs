@@ -198,6 +198,22 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
     //it's int so it works with animation events
     public void SetInvincible(int invincible)
     {
+        if (!ServerManager.Instance.IsOnlineMatch)
+            Invincible = invincible == 1;
+        else
+            CmdSetInvincible(invincible);
+    }
+
+    [Command]
+    private void CmdSetInvincible(int invincible)
+    {
+        SetInvincible(invincible);
+        RpcSetInvincible(invincible);
+    }
+
+    [ClientRpc]
+    private void RpcSetInvincible(int invincible)
+    {
         Invincible = invincible == 1;
     }
 
