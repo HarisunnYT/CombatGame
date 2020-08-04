@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FighterName: Slug
   FigherIcon: {fileID: 21300000, guid: 05c6a5435d20d4542886e89ac8177626, type: 3}
-  PlayerControllerPrefab: {fileID: 952261018385834914, guid: ee88b1876601d884a854b6df77d119a4,
+  PlayerControllerPrefab: {fileID: 8158879130050932525, guid: ee88b1876601d884a854b6df77d119a4,
     type: 3}
   UIAnimatorController: {fileID: 22100000, guid: f608e11676497e146a17a21fdf5d21a8,
     type: 2}

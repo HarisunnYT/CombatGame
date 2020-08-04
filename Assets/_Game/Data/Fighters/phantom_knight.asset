@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FighterName: Phantom Knight
   FigherIcon: {fileID: 21300000, guid: 633729684aea78e4a81a7c76a5955295, type: 3}
-  PlayerControllerPrefab: {fileID: 952261018385834914, guid: ee88b1876601d884a854b6df77d119a4,
+  PlayerControllerPrefab: {fileID: 8158879130050932525, guid: ee88b1876601d884a854b6df77d119a4,
     type: 3}
   UIAnimatorController: {fileID: 22100000, guid: c0a3474ad44427648a5c519f1b517da9,
     type: 2}

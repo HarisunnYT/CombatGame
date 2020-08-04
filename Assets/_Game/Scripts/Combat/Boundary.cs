@@ -8,11 +8,9 @@ public class Boundary : MonoBehaviour
     {
         if (MatchManager.Instance.FightStarted && (SteamLobbyManager.Instance.PublicHost || !ServerManager.Instance.IsOnlineMatch))
         {
-            IDamagable damagable = collision.GetComponent<IDamagable>();
-            if (damagable != null)
-            {
-                damagable.OnDamaged(int.MaxValue, collision.GetComponent<PlayerController>());
-            }
+            PlayerController playerController = collision.GetComponent<PlayerController>();
+            if (playerController)
+                playerController.ForceKill();
         }
     }
 }

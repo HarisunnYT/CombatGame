@@ -6,7 +6,7 @@ using UnityEngine;
 public class Character : NetworkBehaviour, IHealth, IDamagable
 {
     [SerializeField]
-    protected int startingHealth = 100;
+    protected int maxHealth = 100;
 
     [SerializeField]
     protected LayerMask invertedCharacterMask;
@@ -47,7 +47,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
         spriteRenderer = GetComponent<SpriteRenderer>();
         damageFlash = GetComponent<ColorFlash>();
 
-        Health = startingHealth;
+        Health = maxHealth;
     }
 
     public void OnDamaged(int amount, PlayerController player)
@@ -56,17 +56,32 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
             return;
 
         if (ServerManager.Instance.IsOnlineMatch)
-            RpcOnDamaged(ServerManager.Time, amount, MatchManager.Instance.GetPlayerID(player));
+            RpcOnDamaged(ServerManager.Time, amount, MatchManager.Instance.GetPlayerID(player), false);
         else
-            OnDamagedClient(ServerManager.Time, amount, MatchManager.Instance.GetPlayerID(player));
+            OnDamagedClient(ServerManager.Time, amount, MatchManager.Instance.GetPlayerID(player), false);
     }
 
-    private void OnDamagedClient(float serverTime, int amount, int playerID)
+    /// <summary>
+    /// should only be called if you need to guarantee kill the player
+    /// </summary>
+    /// <param name="player"></param>
+    public void ForceKill()
+    {
+        if (!MatchManager.Instance.MatchStarted)
+            return;
+
+        if (ServerManager.Instance.IsOnlineMatch)
+            RpcOnDamaged(ServerManager.Time, maxHealth, MatchManager.Instance.GetPlayerID(this as PlayerController), true);
+        else
+            OnDamagedClient(ServerManager.Time, maxHealth, MatchManager.Instance.GetPlayerID(this as PlayerController), true);
+    }
+
+    private void OnDamagedClient(float serverTime, int amount, int playerID, bool ignoreInvincibility = false)
     {
         if (damageTimes.Contains(serverTime))
             return;
 
-        if (Alive && !Invincible)
+        if (Alive && (ignoreInvincibility || !Invincible))
         {
             damageTimes.Add(serverTime);
             Health -= amount;
@@ -98,9 +113,9 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
     }
 
     [ClientRpc]
-    public virtual void RpcOnDamaged(float serverTime, int amount, int playerID)
+    public virtual void RpcOnDamaged(float serverTime, int amount, int playerID, bool ignoreInvincibility)
     {
-        OnDamagedClient(serverTime, amount, playerID);
+        OnDamagedClient(serverTime, amount, playerID, ignoreInvincibility);
     }
 
     public void OnHealed(int amount)
@@ -113,7 +128,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
 
     private void OnHealedClient(int amount)
     {
-        Health = Mathf.Clamp(Health + amount, 0, startingHealth);
+        Health = Mathf.Clamp(Health + amount, 0, maxHealth);
         Alive = Health > 0;
 
         OnHealthChanged?.Invoke(Health);
@@ -139,7 +154,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
 
     public virtual void ResetCharacter()
     {
-        Health = startingHealth;
+        Health = maxHealth;
         OnHealthChanged?.Invoke(Health);
         SetAlive();
 
@@ -180,13 +195,19 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
         SetDirectionClient(direction);
     }
 
+    //it's int so it works with animation events
+    public void SetInvincible(int invincible)
+    {
+        Invincible = invincible == 1;
+    }
+
     private IEnumerator InvincibleCoroutine()
     {
-        Invincible = true;
+        SetInvincible(1);
 
         yield return new WaitForSeconds(CharacterStats.InvincibleTime);
 
-        Invincible = false;
+        SetInvincible(0);
         invincibleRoutine = null;
     }
 }

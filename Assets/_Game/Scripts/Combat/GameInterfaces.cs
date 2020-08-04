@@ -18,7 +18,7 @@ public interface IDamagable
     void OnDamaged(int amount, PlayerController player);
 
     [ClientRpc]
-    void RpcOnDamaged(float serverTime, int amount, int playerID);
+    void RpcOnDamaged(float serverTime, int amount, int playerID, bool ignoreInvincibility);
 
     void OnHealed (int amount);
 
