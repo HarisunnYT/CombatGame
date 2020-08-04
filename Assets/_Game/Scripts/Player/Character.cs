@@ -199,7 +199,7 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
     public void SetInvincible(int invincible)
     {
         if (!ServerManager.Instance.IsOnlineMatch)
-            Invincible = invincible == 1;
+            RpcSetInvincible(invincible);
         else
             CmdSetInvincible(invincible);
     }
@@ -207,7 +207,6 @@ public class Character : NetworkBehaviour, IHealth, IDamagable
     [Command]
     private void CmdSetInvincible(int invincible)
     {
-        SetInvincible(invincible);
         RpcSetInvincible(invincible);
     }
 
