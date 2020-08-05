@@ -198,13 +198,7 @@ public class NetworkManager : NetworkRoomManager
     public override void OnRoomServerPlayersReady()
     {
         SceneLoader.Instance.LoadScene("Game");
-        RpcChangeToGameScene();
-    }
-
-    [ClientRpc]
-    private void RpcChangeToGameScene()
-    {
-        SceneLoader.Instance.LoadScene("Game");
+        RoomPlayer.RpcChangeToGameScene();
     }
 
     public override void ChangeScene(string sceneName)
