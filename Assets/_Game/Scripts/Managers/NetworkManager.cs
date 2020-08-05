@@ -195,6 +195,18 @@ public class NetworkManager : NetworkRoomManager
             throw new System.Exception("Object not added to network spawnables list");
     }
 
+    public override void OnRoomServerPlayersReady()
+    {
+        SceneLoader.Instance.LoadScene("Game");
+        RpcChangeToGameScene();
+    }
+
+    [ClientRpc]
+    private void RpcChangeToGameScene()
+    {
+        SceneLoader.Instance.LoadScene("Game");
+    }
+
     public override void ChangeScene(string sceneName)
     {
         TransitionManager.Instance.ShowTransition(() =>
