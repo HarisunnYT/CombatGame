@@ -77,6 +77,11 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
     }
 
+    /// <summary>
+    /// The last public match the user was in, used for reconnection
+    /// </summary>
+    public Lobby? PreviousPublicLobby;
+
     public bool IsPrivateMatch { get; private set; }
 
     public bool Searching { get; private set; } = false;
@@ -703,12 +708,15 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         Debug.Log("Joined public match");
     }
 
-    public void LeavePublicLobby()
+    public void LeavePublicLobby(bool matchOver = false)
     {
         if (PublicLobby != null)
         {
             if (PrivateLobby == null || PublicLobby.Value.Id != PrivateLobby.Value.Id)
             {
+                if (!matchOver)
+                    PreviousPublicLobby = PublicLobby;
+
                 PublicLobby.Value.Leave();
                 OnPublicLobbyLeft?.Invoke();
             }
@@ -787,6 +795,16 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
         }
 
         return false;
+    }
+
+    public void ReconnectToPublicMatch()
+    {
+        JoinedPublicLobby(PreviousPublicLobby);
+    }
+
+    public void CancelReconnectToPublicMatch()
+    {
+        PreviousPublicLobby = null;
     }
 
 #endregion

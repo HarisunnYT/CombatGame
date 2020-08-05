@@ -34,6 +34,10 @@ public class PrivateLobbyPanel : Panel
 
     [Space()]
     [SerializeField]
+    private GameObject reconnectObj;
+
+    [Space()]
+    [SerializeField]
     private SelectedCharacterCell[] connectedPlayerCells;
 
     private bool matchFound = false;
@@ -44,6 +48,8 @@ public class PrivateLobbyPanel : Panel
         PanelManager.Instance.GetPanel<ChatPanel>().ClearMessages();
 
         ServerManager.Instance.IsOnlineMatch = true;
+
+        reconnectObj.SetActive(SteamLobbyManager.Instance.PreviousPublicLobby.HasValue);
 
         if (SteamLobbyManager.Instance.PrivateLobby != null)
         {
@@ -224,6 +230,17 @@ public class PrivateLobbyPanel : Panel
         }
 
         leaveButton.SetInteractable(interactable);
+    }
+
+    public void ReconnectToPreviousMatch()
+    {
+        SteamLobbyManager.Instance.ReconnectToPublicMatch();
+    }
+
+    public void CancelReconnect()
+    {
+        SteamLobbyManager.Instance.CancelReconnectToPublicMatch();
+        reconnectObj.SetActive(false);
     }
 
     private void SubToEvents()

@@ -10,7 +10,8 @@ public class LobbyPrivacyButton : BetterButton
     {
         base.OnEnable();
 
-        UpdateText();
+        if (Application.isPlaying)
+            UpdateText();
     }
 
     protected override void OnClicked()

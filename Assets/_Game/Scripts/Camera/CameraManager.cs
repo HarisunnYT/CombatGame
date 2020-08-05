@@ -60,6 +60,8 @@ public class CameraManager : Singleton<CameraManager>
         float minY = Mathf.Infinity;
         float maxY = Mathf.NegativeInfinity;
 
+        Debug.Log(FightManager.Instance.AlivePlayers.Count);
+
         foreach (var target in FightManager.Instance.AlivePlayers)
         {
             if (ServerManager.Instance == null || ServerManager.Instance.GetPlayer(target) == null)

@@ -8,6 +8,7 @@ public enum ExitType
     Leave,
     HostDisconnected,
     ClientDisconnected,
+    MatchOver,
 
     HostLeftWithParty = 10,
     LeftLocal,
@@ -50,8 +51,8 @@ public class ExitManager : PersistentSingleton<ExitManager>
         SteamLobbyManager.Instance.StopClient();
 
         DestroySingletons();
+        SteamLobbyManager.Instance.LeavePublicLobby(ExitType == ExitType.MatchOver);
 
-        SteamLobbyManager.Instance.LeavePublicLobby();
         if (ExitType != ExitType.HostLeftWithParty && ExitType != ExitType.LeftToJoinLobby)
             SteamLobbyManager.Instance.LeavePrivateLobby();
 
