@@ -179,10 +179,4 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         MatchManager.Instance.SetPlayerSpawn(ServerManager.Instance.GetPlayer(playerId).PlayerController, spawnPositionsIndex);
     }
-
-    [ClientRpc]
-    public void RpcChangeToGameScene()
-    {
-        SceneLoader.Instance.LoadScene("Game");
-    }
 }

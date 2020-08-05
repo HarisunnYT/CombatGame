@@ -25,7 +25,6 @@ public class NetworkManager : NetworkRoomManager
         base.Awake();
 
         Instance = this;
-        SceneManager.activeSceneChanged += ActiveSceneChanged;
     }
 
     private void Update()
@@ -37,8 +36,10 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
-    private void ActiveSceneChanged(Scene from, Scene to)
+    public override void OnClientSceneChanged(NetworkConnection conn)
     {
+        base.OnClientSceneChanged(conn);
+
         if (SceneManager.GetActiveScene().name == "Game" && !SteamLobbyManager.Instance.PublicHost)
         {
             SceneLoadedAndPlayersConnected();
@@ -49,6 +50,7 @@ public class NetworkManager : NetworkRoomManager
 
     int indexAssigning = 0;
     int playersCreated = 0;
+
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
         int playerID = ServerManager.Instance.IsOnlineMatch ? roomPlayer.GetComponent<CustomNetworkRoomPlayer>().index : indexAssigning++;
@@ -191,12 +193,6 @@ public class NetworkManager : NetworkRoomManager
             return spawnPrefabs[id];
         else
             throw new System.Exception("Object not added to network spawnables list");
-    }
-
-    public override void OnRoomServerPlayersReady()
-    {
-        SceneLoader.Instance.LoadScene("Game");
-        RoomPlayer.RpcChangeToGameScene();
     }
 
     public override void ChangeScene(string sceneName)
