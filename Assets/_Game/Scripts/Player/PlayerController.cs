@@ -120,6 +120,12 @@ public class PlayerController : Character, IKnockable
             OnAssignedID(LocalPlayersManager.Instance.PlayerIndexForAssigning);
             LocalPlayersManager.Instance.PlayerIndexForAssigning++;
         }
+
+        //this means the player reconnected
+        if (NetworkManager.Instance.RoomPlayer == null && isLocalPlayer)
+        {
+            //NetworkManager.Instance.CreateRoomPlayer(NetworkClient.connection);
+        }
     }
 
     private void OnDestroy()

@@ -34,6 +34,7 @@ public class ServerManager : PersistentSingleton<ServerManager>
     public bool IsOnlineMatch { get; set; }
 
     public List<ConnectedPlayer> Players { get; private set; } = new List<ConnectedPlayer>();
+
     private List<string> SelectedCharacters = new List<string>();
 
     public delegate void PlayerEvent(ConnectedPlayer connectedPlayer);

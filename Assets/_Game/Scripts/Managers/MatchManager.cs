@@ -42,9 +42,9 @@ public class MatchManager : Singleton<MatchManager>
     public Dictionary<PlayerController, int> MatchResults { get { return wins; } }
 
     public int Round { get; private set; } = 0;
+    public RoundPhase CurrentPhase { get; private set; }
 
     private FightManager currentFight;
-    private RoundPhase currentPhase;
 
     private float buyPhaseCountdownTimer = 0;
 
@@ -95,8 +95,8 @@ public class MatchManager : Singleton<MatchManager>
         else
             BeginBuyPhase();
 
-        currentPhase = phase;
-        OnPhaseChanged?.Invoke(currentPhase);
+        CurrentPhase = phase;
+        OnPhaseChanged?.Invoke(CurrentPhase);
     }
 
     private void BeginFightPhase()
@@ -176,7 +176,7 @@ public class MatchManager : Singleton<MatchManager>
 
     private void Update()
     {
-        if (SteamLobbyManager.Instance.PublicHost && currentPhase == RoundPhase.Buy_Phase)
+        if (SteamLobbyManager.Instance.PublicHost && CurrentPhase == RoundPhase.Buy_Phase)
         {
             int roundedTime = Mathf.RoundToInt(buyPhaseCountdownTimer - ServerManager.Time);
             if (roundedTime <= 0)

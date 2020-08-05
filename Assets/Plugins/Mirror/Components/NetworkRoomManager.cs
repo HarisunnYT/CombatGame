@@ -308,24 +308,27 @@ namespace Mirror
             if (IsSceneActive(GameplayScene))
                 return OnRoomServerAddPlayer(conn);
             else
+                return CreateRoomPlayer(conn);
+        }
+
+        public GameObject CreateRoomPlayer(NetworkConnection conn)
+        {
+            if (roomSlots.Count == maxConnections)
+                return null;
+
+            allPlayersReady = false;
+
+            if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "NetworkRoomManager.OnServerAddPlayer playerPrefab:{0}", roomPlayerPrefab.name);
+
+            GameObject newRoomGameObject = OnRoomServerCreateRoomPlayer(conn);
+            if (newRoomGameObject == null)
             {
-                if (roomSlots.Count == maxConnections)
-                    return null;
-
-                allPlayersReady = false;
-
-                if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "NetworkRoomManager.OnServerAddPlayer playerPrefab:{0}", roomPlayerPrefab.name);
-
-                GameObject newRoomGameObject = OnRoomServerCreateRoomPlayer(conn);
-                if (newRoomGameObject == null)
-                {
-                    newRoomGameObject = Instantiate(roomPlayerPrefab.gameObject, Vector3.zero, Quaternion.identity);
-                }
-
-                NetworkServer.AddPlayerForConnection(conn, newRoomGameObject);
-
-                return newRoomGameObject;
+                newRoomGameObject = Instantiate(roomPlayerPrefab.gameObject, Vector3.zero, Quaternion.identity);
             }
+
+            NetworkServer.AddPlayerForConnection(conn, newRoomGameObject);
+
+            return newRoomGameObject;
         }
 
         public void RecalculateRoomPlayerIndices()
