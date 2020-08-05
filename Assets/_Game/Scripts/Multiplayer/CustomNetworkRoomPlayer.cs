@@ -179,4 +179,18 @@ public class CustomNetworkRoomPlayer : NetworkRoomPlayer
     {
         MatchManager.Instance.SetPlayerSpawn(ServerManager.Instance.GetPlayer(playerId).PlayerController, spawnPositionsIndex);
     }
+
+    [Command]
+    public void CmdRequestReadiedUpClients(int requesterId)
+    {
+        foreach (var player in ServerManager.Instance.Players)
+            RpcReceivedReadiedUpClients(requesterId, player.PlayerID, player.Fighter);
+    }
+
+    [ClientRpc]
+    private void RpcReceivedReadiedUpClients(int requesterId, int playerId, string characterName)
+    {
+        if (index == requesterId)
+            RpcSelectCharacter(playerId, characterName);
+    }
 }
