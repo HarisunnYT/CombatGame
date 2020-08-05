@@ -25,6 +25,7 @@ public class NetworkManager : NetworkRoomManager
         base.Awake();
 
         Instance = this;
+        SceneManager.activeSceneChanged += ActiveSceneChanged;
     }
 
     private void Update()
@@ -36,10 +37,8 @@ public class NetworkManager : NetworkRoomManager
         }
     }
 
-    public override void OnClientSceneChanged(NetworkConnection conn)
+    private void ActiveSceneChanged(Scene from, Scene to)
     {
-        base.OnClientSceneChanged(conn);
-
         if (SceneManager.GetActiveScene().name == "Game" && !SteamLobbyManager.Instance.PublicHost)
         {
             SceneLoadedAndPlayersConnected();
@@ -50,7 +49,6 @@ public class NetworkManager : NetworkRoomManager
 
     int indexAssigning = 0;
     int playersCreated = 0;
-
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
         int playerID = ServerManager.Instance.IsOnlineMatch ? roomPlayer.GetComponent<CustomNetworkRoomPlayer>().index : indexAssigning++;
