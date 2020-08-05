@@ -799,6 +799,7 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     public void ReconnectToPublicMatch()
     {
+        Searching = true;
         JoinedPublicLobby(PreviousPublicLobby);
     }
 
@@ -838,6 +839,9 @@ public class SteamLobbyManager : PersistentSingleton<SteamLobbyManager>
 
     private void UpdateLobby(Lobby lobby)
     {
+        if (!SceneLoader.IsMainMenu)
+            return;
+
         //if we aren't searching and the lobby has updated, it must be a private lobby
         if (Searching)
         {
