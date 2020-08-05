@@ -35,6 +35,10 @@ public class StickmanCombatController : CombatController
     [SerializeField]
     private float dashForce = 10;
 
+    [Header("Block")]
+    [SerializeField]
+    private GameObject forceField;
+
     protected override bool Attack(MoveData moveData)
     {
         if (moveData.name == "body_slam")
@@ -68,6 +72,11 @@ public class StickmanCombatController : CombatController
     {
         base.AttackComplete();
         currentAttackType = AttackType.None;
+    }
+
+    public override void OnVictory()
+    {
+        forceField.SetActive(false);
     }
 
     #region BODY_SLAM

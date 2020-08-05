@@ -120,12 +120,6 @@ public class PlayerController : Character, IKnockable
             OnAssignedID(LocalPlayersManager.Instance.PlayerIndexForAssigning);
             LocalPlayersManager.Instance.PlayerIndexForAssigning++;
         }
-
-        //this means the player reconnected
-        if (NetworkManager.Instance.RoomPlayer == null && isLocalPlayer)
-        {
-            //NetworkManager.Instance.CreateRoomPlayer(NetworkClient.connection);
-        }
     }
 
     private void OnDestroy()
@@ -245,6 +239,8 @@ public class PlayerController : Character, IKnockable
         base.ResetCharacter();
 
         animator.SetBool("Dead", false);
+        animator.SetBool("Victory", false);
+
         gameObject.layer = LayerMask.NameToLayer("Player");
         SetSpawned(false);
     }
@@ -258,6 +254,12 @@ public class PlayerController : Character, IKnockable
     public void SetSpawned(bool spawned)
     {
         Spawned = spawned;
+    }
+
+    public virtual void OnVictory()
+    {
+        CombatController.OnVictory();
+        animator.SetBool("Victory", true);
     }
 
     #region MOVEMENT

@@ -152,4 +152,6 @@ public class CombatController : NetworkBehaviour
     {
         return true;
     }
+
+    public virtual void OnVictory() { }
 }

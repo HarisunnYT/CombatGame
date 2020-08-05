@@ -1,5 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &2997272027197956003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952261018385834844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bda58a36d717da04cbf58041917f636e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  bodySlamForce: 25
+  bodySlamDelay: 0.2
+  getUpDelay: 0.5
+  axePrefab: {fileID: -5486136116698914909, guid: bb0d606ccb3f6354f9589f38e29c4792,
+    type: 3}
+  axeForce: 25
+  dashForce: 40
+  forceField: {fileID: 3027304864128277210}
 --- !u!1 &1031631625611364505
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,27 +255,6 @@ MonoBehaviour:
   Damage: 30
   Knockback: 10
   collider: {fileID: 1018519423957240794}
---- !u!114 &2997272027197956003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 952261018385834844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bda58a36d717da04cbf58041917f636e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  bodySlamForce: 25
-  bodySlamDelay: 0.2
-  getUpDelay: 0.5
-  axePrefab: {fileID: -5486136116698914909, guid: bb0d606ccb3f6354f9589f38e29c4792,
-    type: 3}
-  axeForce: 25
-  dashForce: 40
 --- !u!1001 &8158879130050931506
 PrefabInstance:
   m_ObjectHideFlags: 0

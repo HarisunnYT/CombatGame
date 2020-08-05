@@ -124,6 +124,8 @@ public class FightManager : Singleton<FightManager>, IFightEvents, IServerEvents
         PlayerController winner = ServerManager.Instance.GetPlayer(winnerPlayerID).PlayerController;
 
         winner.DisableInput();
+        winner.OnVictory();
+
         MatchManager.Instance.AddWin(winner);
 
         hudPanel.HidePlayerCells(true);

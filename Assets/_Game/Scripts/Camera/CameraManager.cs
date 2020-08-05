@@ -7,12 +7,15 @@ public class CameraManager : Singleton<CameraManager>
 {
     public Camera Camera { get; private set; }
 
+    [Header("Gameplay")]
     [SerializeField]
-    private float followSpeed = 10;
+    private float zoomInSpeed = 20f;
 
-    [Space()]
     [SerializeField]
-    private float zoomSpeed = 20f;
+    private float zoomOutSpeed = 20f;
+
+    [SerializeField]
+    private float moveSpeed = 10f;
 
     [SerializeField]
     private float boundingBoxPadding = 2f;
@@ -22,6 +25,10 @@ public class CameraManager : Singleton<CameraManager>
 
     [SerializeField]
     private float far = 10;
+
+    [Header("Winner Phase")]
+    [SerializeField]
+    private float followSpeed = 10;
 
     private Vector3 originalPosition;
     private float originalZoom;
@@ -48,7 +55,7 @@ public class CameraManager : Singleton<CameraManager>
         if (forcedTarget == null && FightManager.Instance && FightManager.Instance.AlivePlayers.Count > 0)
         {
             Rect boundingBox = CalculateTargetsBoundingBox();
-            transform.position = Vector3.Lerp(transform.position, CalculateCameraPosition(boundingBox), followSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, CalculateCameraPosition(boundingBox), moveSpeed * Time.deltaTime);
             Camera.orthographicSize = CalculateOrthographicSize(boundingBox);
         }
     }
@@ -102,6 +109,7 @@ public class CameraManager : Singleton<CameraManager>
 
         previousOrthographicSize = previousOrthographicSize == float.NaN ? 0 : previousOrthographicSize;
 
+        float zoomSpeed = orthographicSize > previousOrthographicSize ? zoomOutSpeed : zoomInSpeed;
         return Mathf.Clamp(Mathf.Lerp(previousOrthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), near, far);
     }
 
